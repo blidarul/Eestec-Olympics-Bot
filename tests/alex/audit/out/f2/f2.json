@@ -12,7 +12,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.72,
+     "lat": 0.47,
      "action": "C1",
      "chat": "Hm.",
      "gw": 1,
@@ -29,9 +29,9 @@
    "ready_chat": "Warm-up's over.",
    "prep": {
     "ok": true,
-    "s": 0.7
+    "s": 0.5
    },
-   "start_s": 0.08,
+   "start_s": 0.06,
    "expected_ok": true,
    "answer": "C1",
    "result": "not over",
@@ -65,9 +65,9 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.72,
+     "lat": 0.5,
      "action": "C1",
-     "chat": "Evening. Let's see how you actually play.",
+     "chat": "Hey. Don't get comfortable. Move made.",
      "gw": 1,
      "strategy": "search",
      "source": "tool",
@@ -82,7 +82,7 @@
    "ready_chat": "Bring it on.",
    "prep": {
     "ok": true,
-    "s": 0.7
+    "s": 0.5
    },
    "start_s": 0.06,
    "expected_ok": true,
@@ -118,45 +118,39 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.64,
-     "action": "take 3 5",
-     "chat": "stub chat",
-     "gw": 1,
+     "lat": 0.47,
+     "action": "take 1 2",
+     "chat": "Playing take 1 2: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     }
    ],
    "actions": [
-    "take 3 5"
+    "take 1 2"
    ],
    "chats": [],
    "ready_chat": "Alright, let's fight.",
    "prep": {
     "ok": true,
-    "s": 0.5
+    "s": 0.4
    },
-   "start_s": 0.06,
-   "expected_ok": false,
-   "answer": "take 3 5",
+   "start_s": 0.08,
+   "expected_ok": true,
+   "answer": "take 1 2",
    "result": "not over",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 1,
-   "opp_marker_in_requests": "1/1",
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
    "nasty_block_in_requests": null,
-   "key_tails": [
-    "en_nim"
-   ],
-   "thinking_modes": [
-    "{'type': 'disabled'}"
-   ],
-   "max_tokens": [
-    400
-   ],
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": [],
    "scenario": "nim_win_move"
   },
   {
@@ -171,7 +165,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.7,
+     "lat": 0.45,
      "action": "take 4 7",
      "chat": "stub chat",
      "gw": 1,
@@ -188,7 +182,7 @@
    "ready_chat": "Ready when you are.",
    "prep": {
     "ok": true,
-    "s": 0.4
+    "s": 0.3
    },
    "start_s": 0.08,
    "expected_ok": false,
@@ -224,9 +218,9 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.76,
-     "action": "CLAIM R12-C12",
-     "chat": "Evening. Let's see how you actually play.",
+     "lat": 0.53,
+     "action": "CLAIM R2-C1",
+     "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -235,17 +229,17 @@
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r2-c1"
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
    "prep": {
     "ok": true,
-    "s": 0.5
+    "s": 0.4
    },
-   "start_s": 0.08,
-   "expected_ok": true,
-   "answer": "CLAIM R12-C12",
+   "start_s": 0.06,
+   "expected_ok": false,
+   "answer": "CLAIM R2-C1",
    "result": "not over",
    "broke_speech_rule": [],
    "stray": 0,
@@ -278,8 +272,8 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.77,
-     "action": "CLAIM R9-C9",
+     "lat": 0.52,
+     "action": "CLAIM R2-C9",
      "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
@@ -289,17 +283,17 @@
     }
    ],
    "actions": [
-    "claim r9-c9"
+    "claim r2-c9"
    ],
    "chats": [],
    "ready_chat": "Alright, let's fight.",
    "prep": {
     "ok": true,
-    "s": 0.6
+    "s": 0.4
    },
-   "start_s": 0.08,
-   "expected_ok": true,
-   "answer": "CLAIM R9-C9",
+   "start_s": 0.06,
+   "expected_ok": false,
+   "answer": "CLAIM R2-C9",
    "result": "not over",
    "broke_speech_rule": [],
    "stray": 0,
@@ -328,51 +322,50 @@
    "seed": 1,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.56,
-     "action": "guess 50",
-     "chat": "Sure.",
+     "lat": 0.41,
+     "action": "answer unknown",
+     "chat": "Hm.",
      "gw": 1,
-     "illegal": true,
      "strategy": "chat_defense",
-     "source": "model",
+     "source": "fallback",
      "model_error": null,
-     "tool": "model"
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "answer 40"
+    "answer unknown"
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
    "prep": {
     "ok": true,
-    "s": 0.3
+    "s": 0.6
    },
-   "start_s": 0.12,
-   "expected_ok": false,
-   "answer": "guess 50",
+   "start_s": 0.11,
+   "expected_ok": true,
+   "answer": "answer unknown",
    "result": "not over",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 1,
-   "opp_marker_in_requests": "1/1",
+   "gw_requests": 3,
+   "opp_marker_in_requests": "1/3",
    "nasty_block_in_requests": null,
    "key_tails": [
     "en_qa_"
    ],
    "thinking_modes": [
-    "{'type': 'disabled'}"
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 200"
    ],
    "max_tokens": [
-    250
+    250,
+    4000
    ],
    "scenario": "qa_truth_not_in_doc"
   }
@@ -390,7 +383,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.62,
+     "lat": 0.8,
      "action": "hold",
      "chat": "stub chat",
      "gw": 1,
@@ -456,7 +449,7 @@
     },
     {
      "turn": 7,
-     "lat": 0.02,
+     "lat": 0.01,
      "action": "hold",
      "chat": "stub chat",
      "gw": 1,
@@ -508,7 +501,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.78,
+     "lat": 0.58,
      "action": "guess 50",
      "chat": "stub chat",
      "gw": 1,
@@ -519,8 +512,8 @@
     },
     {
      "turn": 2,
-     "lat": 0.03,
-     "action": "guess 14",
+     "lat": 0.02,
+     "action": "guess 68",
      "chat": "Evening. Let's see how you actually play. Looking closer.",
      "gw": 2,
      "strategy": "generic",
@@ -530,9 +523,9 @@
     },
     {
      "turn": 3,
-     "lat": 0.03,
-     "action": "guess 26",
-     "chat": "A small test.",
+     "lat": 0.02,
+     "action": "guess 52",
+     "chat": "If you say so.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -541,8 +534,8 @@
     },
     {
      "turn": 4,
-     "lat": 0.01,
-     "action": "guess 30",
+     "lat": 0.02,
+     "action": "guess 100",
      "chat": "We'll see.",
      "gw": 2,
      "strategy": "generic",
@@ -553,7 +546,7 @@
     {
      "turn": 5,
      "lat": 0.02,
-     "action": "guess 10",
+     "action": "guess 78",
      "chat": "Alright.",
      "gw": 2,
      "strategy": "generic",
@@ -564,7 +557,7 @@
     {
      "turn": 6,
      "lat": 0.02,
-     "action": "guess 31",
+     "action": "guess 85",
      "chat": "We'll see.",
      "gw": 2,
      "strategy": "generic",
@@ -575,8 +568,8 @@
     {
      "turn": 7,
      "lat": 0.02,
-     "action": "guess 37",
-     "chat": "Luck won't save you. Looking closer.",
+     "action": "guess 62",
+     "chat": "Alright.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -586,7 +579,7 @@
     {
      "turn": 8,
      "lat": 0.03,
-     "action": "guess 33",
+     "action": "guess 32",
      "chat": "We'll see.",
      "gw": 2,
      "strategy": "generic",
@@ -597,8 +590,8 @@
     {
      "turn": 9,
      "lat": 0.03,
-     "action": "guess 89",
-     "chat": "Alright.",
+     "action": "guess 98",
+     "chat": "Hello. Show me what you've got. Checking something.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -607,9 +600,20 @@
     },
     {
      "turn": 10,
-     "lat": 0.03,
-     "action": "guess 76",
-     "chat": "Looking closer.",
+     "lat": 0.02,
+     "action": "guess 7",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "guess 21",
+     "chat": "Alright.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -619,30 +623,31 @@
    ],
    "actions": [
     "guess 50",
-    "guess 14",
-    "guess 26",
-    "guess 30",
-    "guess 10",
-    "guess 31",
-    "guess 37",
-    "guess 33",
-    "guess 89",
-    "guess 76"
+    "guess 68",
+    "guess 52",
+    "guess 100",
+    "guess 78",
+    "guess 85",
+    "guess 62",
+    "guess 32",
+    "guess 98",
+    "guess 7",
+    "guess 21"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
    "prep": {
     "ok": true,
-    "s": 1.0
+    "s": 0.9
    },
    "start_s": 0.11,
-   "result": "{'winner': 0, 'scores': [1, 0], 'reason': \"seat 0 found the opponent's number in round 10\"",
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 23,
-   "opp_marker_in_requests": "19/23",
+   "gw_requests": 25,
+   "opp_marker_in_requests": "21/25",
    "nasty_block_in_requests": null,
    "key_tails": [
     "j_gue_"
@@ -669,8 +674,8 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.69,
-     "action": "roll",
+     "lat": 0.81,
+     "action": "hold",
      "chat": "Hm.",
      "gw": 4,
      "strategy": "generic",
@@ -680,8 +685,8 @@
     },
     {
      "turn": 2,
-     "lat": 0.02,
-     "action": "roll",
+     "lat": 0.03,
+     "action": "hold",
      "chat": "Sure.",
      "gw": 4,
      "strategy": "generic",
@@ -691,8 +696,8 @@
     },
     {
      "turn": 3,
-     "lat": 0.0,
-     "action": "roll",
+     "lat": 0.02,
+     "action": "hold",
      "chat": "Interesting.",
      "gw": 0,
      "strategy": "generic",
@@ -702,8 +707,8 @@
     },
     {
      "turn": 4,
-     "lat": 0.0,
-     "action": "roll",
+     "lat": 0.02,
+     "action": "hold",
      "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
@@ -725,7 +730,7 @@
     {
      "turn": 6,
      "lat": 0.03,
-     "action": "hold",
+     "action": "roll",
      "chat": "We'll see.",
      "gw": 4,
      "strategy": "generic",
@@ -735,113 +740,29 @@
     },
     {
      "turn": 7,
-     "lat": 0.0,
-     "action": "roll",
-     "chat": "Alright.",
-     "gw": 0,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "skipped",
-     "tool": "fallback"
-    },
-    {
-     "turn": 8,
      "lat": 0.02,
-     "action": "roll",
-     "chat": "We'll see.",
-     "gw": 0,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "skipped",
-     "tool": "fallback"
-    },
-    {
-     "turn": 9,
-     "lat": 0.03,
-     "action": "roll",
-     "chat": "Alright.",
-     "gw": 4,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "InternalServerError: Error code: 500",
-     "tool": "fallback"
-    },
-    {
-     "turn": 10,
-     "lat": 0.03,
-     "action": "roll",
-     "chat": "We'll see.",
-     "gw": 4,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "InternalServerError: Error code: 500",
-     "tool": "fallback"
-    },
-    {
-     "turn": 11,
-     "lat": 0.02,
-     "action": "roll",
+     "action": "hold",
      "chat": "Alright.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
      "model_error": "skipped",
-     "tool": "fallback"
-    },
-    {
-     "turn": 12,
-     "lat": 0.02,
-     "action": "roll",
-     "chat": "We'll see.",
-     "gw": 0,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "skipped",
-     "tool": "fallback"
-    },
-    {
-     "turn": 13,
-     "lat": 0.03,
-     "action": "roll",
-     "chat": "Alright.",
-     "gw": 4,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "InternalServerError: Error code: 500",
-     "tool": "fallback"
-    },
-    {
-     "turn": 14,
-     "lat": 0.03,
-     "action": "roll",
-     "chat": "We'll see.",
-     "gw": 4,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "InternalServerError: Error code: 500",
      "tool": "fallback"
     }
    ],
    "actions": [
-    "roll",
-    "roll",
-    "roll",
-    "roll",
-    "roll",
+    "hold",
+    "hold",
+    "hold",
     "hold",
     "roll",
     "roll",
-    "roll",
-    "roll",
-    "roll",
-    "roll",
-    "roll",
-    "roll"
+    "hold"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
    "start_s": 0.06,
-   "result": "not over",
+   "result": "{'winner': 1, 'scores': [3, 65], 'reason': 'seat 1 reached 65 (target 50)'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
@@ -851,8 +772,8 @@
     "llm error: InternalServerError Error code: 500",
     "[toolloop] round 1 error: InternalServerError: Error code: 500"
    ],
-   "gw_requests": 32,
-   "opp_marker_in_requests": "32/32",
+   "gw_requests": 16,
+   "opp_marker_in_requests": "16/16",
    "nasty_block_in_requests": null,
    "key_tails": [
     "j_pig_"
@@ -877,9 +798,9 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.67,
+     "lat": 0.64,
      "action": "guess 50",
-     "chat": "Hey. Don't get comfortable. Checking something.",
+     "chat": "Hm.",
      "gw": 4,
      "strategy": "generic",
      "source": "fallback",
@@ -888,8 +809,8 @@
     },
     {
      "turn": 2,
-     "lat": 0.05,
-     "action": "guess 33",
+     "lat": 0.03,
+     "action": "guess 36",
      "chat": "Sure.",
      "gw": 4,
      "strategy": "generic",
@@ -899,9 +820,9 @@
     },
     {
      "turn": 3,
-     "lat": 0.0,
-     "action": "guess 79",
-     "chat": "Interesting.",
+     "lat": 0.01,
+     "action": "guess 78",
+     "chat": "A small test.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -910,8 +831,8 @@
     },
     {
      "turn": 4,
-     "lat": 0.0,
-     "action": "guess 10",
+     "lat": 0.02,
+     "action": "guess 66",
      "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
@@ -922,8 +843,8 @@
     {
      "turn": 5,
      "lat": 0.03,
-     "action": "guess 87",
-     "chat": "Luck won't save you. A small test.",
+     "action": "guess 73",
+     "chat": "Alright.",
      "gw": 4,
      "strategy": "generic",
      "source": "fallback",
@@ -933,8 +854,8 @@
     {
      "turn": 6,
      "lat": 0.03,
-     "action": "guess 49",
-     "chat": "We'll see.",
+     "action": "guess 44",
+     "chat": "Skip the pleasantries. Play. Let us see.",
      "gw": 4,
      "strategy": "generic",
      "source": "fallback",
@@ -944,8 +865,8 @@
     {
      "turn": 7,
      "lat": 0.02,
-     "action": "guess 98",
-     "chat": "Alright.",
+     "action": "guess 81",
+     "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -955,8 +876,8 @@
     {
      "turn": 8,
      "lat": 0.02,
-     "action": "guess 19",
-     "chat": "Skip the pleasantries. Play. Curious what that shows.",
+     "action": "guess 40",
+     "chat": "Alright.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -965,19 +886,8 @@
     },
     {
      "turn": 9,
-     "lat": 0.03,
-     "action": "guess 64",
-     "chat": "Hello. Show me what you've got. Checking something.",
-     "gw": 4,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "InternalServerError: Error code: 500",
-     "tool": "fallback"
-    },
-    {
-     "turn": 10,
-     "lat": 0.03,
-     "action": "guess 51",
+     "lat": 0.05,
+     "action": "guess 46",
      "chat": "We'll see.",
      "gw": 4,
      "strategy": "generic",
@@ -986,9 +896,20 @@
      "tool": "fallback"
     },
     {
+     "turn": 10,
+     "lat": 0.05,
+     "action": "guess 13",
+     "chat": "Alright.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
      "turn": 11,
-     "lat": 0.01,
-     "action": "guess 34",
+     "lat": 0.0,
+     "action": "guess 51",
      "chat": "Nice try. A small test.",
      "gw": 0,
      "strategy": "generic",
@@ -999,16 +920,16 @@
    ],
    "actions": [
     "guess 50",
-    "guess 33",
-    "guess 79",
-    "guess 10",
-    "guess 87",
-    "guess 49",
-    "guess 98",
-    "guess 19",
-    "guess 64",
-    "guess 51",
-    "guess 34"
+    "guess 36",
+    "guess 78",
+    "guess 66",
+    "guess 73",
+    "guess 44",
+    "guess 81",
+    "guess 40",
+    "guess 46",
+    "guess 13",
+    "guess 51"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
@@ -1016,7 +937,7 @@
     "ok": true,
     "s": 1.0
    },
-   "start_s": 0.09,
+   "start_s": 0.08,
    "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
    "broke_speech_rule": [],
    "stray": 0,
@@ -1055,8 +976,8 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.7,
-     "action": "roll",
+     "lat": 0.58,
+     "action": "hold",
      "chat": "Hm.",
      "gw": 3,
      "strategy": "generic",
@@ -1077,8 +998,8 @@
     },
     {
      "turn": 3,
-     "lat": 0.0,
-     "action": "hold",
+     "lat": 0.02,
+     "action": "roll",
      "chat": "Interesting.",
      "gw": 0,
      "strategy": "generic",
@@ -1089,7 +1010,7 @@
     {
      "turn": 4,
      "lat": 0.0,
-     "action": "hold",
+     "action": "roll",
      "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
@@ -1099,7 +1020,7 @@
     },
     {
      "turn": 5,
-     "lat": 0.05,
+     "lat": 0.02,
      "action": "roll",
      "chat": "Alright.",
      "gw": 3,
@@ -1110,7 +1031,7 @@
     },
     {
      "turn": 6,
-     "lat": 0.03,
+     "lat": 0.02,
      "action": "hold",
      "chat": "We'll see.",
      "gw": 3,
@@ -1121,8 +1042,8 @@
     },
     {
      "turn": 7,
-     "lat": 0.02,
-     "action": "hold",
+     "lat": 0.0,
+     "action": "roll",
      "chat": "Alright.",
      "gw": 0,
      "strategy": "generic",
@@ -1143,8 +1064,8 @@
     },
     {
      "turn": 9,
-     "lat": 0.02,
-     "action": "hold",
+     "lat": 0.03,
+     "action": "roll",
      "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
@@ -1162,24 +1083,72 @@
      "source": "fallback",
      "model_error": "empty_or_cut_off",
      "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 12,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 13,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 14,
+     "lat": 0.01,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "roll",
-    "roll",
-    "hold",
     "hold",
     "roll",
+    "roll",
+    "roll",
+    "roll",
     "hold",
+    "roll",
     "hold",
+    "roll",
+    "hold",
+    "roll",
     "hold",
     "hold",
     "hold"
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
-   "start_s": 0.08,
-   "result": "{'winner': 1, 'scores': [12, 55], 'reason': 'seat 1 reached 55 (target 50)'}",
+   "start_s": 0.06,
+   "result": "not over",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
@@ -1189,8 +1158,8 @@
     "[toolloop] round 1 error: TypeError: 'NoneType' object is not callable",
     "[toolloop] round 2 error: TypeError: 'NoneType' object is not callable"
    ],
-   "gw_requests": 18,
-   "opp_marker_in_requests": "18/18",
+   "gw_requests": 24,
+   "opp_marker_in_requests": "24/24",
    "nasty_block_in_requests": null,
    "key_tails": [
     "j_pig_"
@@ -1215,7 +1184,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.61,
+     "lat": 0.62,
      "action": "guess 50",
      "chat": "Hey. Don't get comfortable. Checking something.",
      "gw": 3,
@@ -1227,7 +1196,7 @@
     {
      "turn": 2,
      "lat": 0.03,
-     "action": "guess 87",
+     "action": "guess 100",
      "chat": "Evening. Let's see how you actually play. Looking closer.",
      "gw": 3,
      "strategy": "generic",
@@ -1238,8 +1207,8 @@
     {
      "turn": 3,
      "lat": 0.02,
-     "action": "guess 66",
-     "chat": "A small test.",
+     "action": "guess 60",
+     "chat": "Interesting.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -1249,7 +1218,7 @@
     {
      "turn": 4,
      "lat": 0.0,
-     "action": "guess 29",
+     "action": "guess 28",
      "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
@@ -1260,7 +1229,7 @@
     {
      "turn": 5,
      "lat": 0.03,
-     "action": "guess 41",
+     "action": "guess 45",
      "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
@@ -1270,8 +1239,8 @@
     },
     {
      "turn": 6,
-     "lat": 0.05,
-     "action": "guess 16",
+     "lat": 0.03,
+     "action": "guess 56",
      "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
@@ -1282,8 +1251,8 @@
     {
      "turn": 7,
      "lat": 0.01,
-     "action": "guess 33",
-     "chat": "Alright.",
+     "action": "guess 42",
+     "chat": "Luck won't save you. Looking closer.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -1292,9 +1261,9 @@
     },
     {
      "turn": 8,
-     "lat": 0.0,
-     "action": "guess 21",
-     "chat": "We'll see.",
+     "lat": 0.02,
+     "action": "guess 9",
+     "chat": "Skip the pleasantries. Play. Curious what that shows.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -1304,8 +1273,8 @@
     {
      "turn": 9,
      "lat": 0.03,
-     "action": "guess 2",
-     "chat": "Alright.",
+     "action": "guess 92",
+     "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1314,9 +1283,9 @@
     },
     {
      "turn": 10,
-     "lat": 0.05,
-     "action": "guess 45",
-     "chat": "Looking closer.",
+     "lat": 0.03,
+     "action": "guess 53",
+     "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1325,9 +1294,9 @@
     },
     {
      "turn": 11,
-     "lat": 0.0,
-     "action": "guess 63",
-     "chat": "We'll see.",
+     "lat": 0.02,
+     "action": "guess 71",
+     "chat": "Nice try. A small test.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -1337,16 +1306,16 @@
    ],
    "actions": [
     "guess 50",
-    "guess 87",
-    "guess 66",
-    "guess 29",
-    "guess 41",
-    "guess 16",
-    "guess 33",
-    "guess 21",
-    "guess 2",
+    "guess 100",
+    "guess 60",
+    "guess 28",
     "guess 45",
-    "guess 63"
+    "guess 56",
+    "guess 42",
+    "guess 9",
+    "guess 92",
+    "guess 53",
+    "guess 71"
    ],
    "chats": [],
    "ready_chat": "Round one. Go.",
@@ -1354,7 +1323,7 @@
     "ok": true,
     "s": 1.0
    },
-   "start_s": 0.08,
+   "start_s": 0.09,
    "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
    "broke_speech_rule": [],
    "stray": 0,
@@ -1393,8 +1362,8 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.73,
-     "action": "roll",
+     "lat": 0.74,
+     "action": "hold",
      "chat": "Hm.",
      "gw": 3,
      "strategy": "generic",
@@ -1405,7 +1374,7 @@
     {
      "turn": 2,
      "lat": 0.03,
-     "action": "hold",
+     "action": "roll",
      "chat": "Sure.",
      "gw": 3,
      "strategy": "generic",
@@ -1416,7 +1385,7 @@
     {
      "turn": 3,
      "lat": 0.03,
-     "action": "hold",
+     "action": "roll",
      "chat": "Interesting.",
      "gw": 3,
      "strategy": "generic",
@@ -1427,7 +1396,7 @@
     {
      "turn": 4,
      "lat": 0.03,
-     "action": "roll",
+     "action": "hold",
      "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
@@ -1437,7 +1406,7 @@
     },
     {
      "turn": 5,
-     "lat": 0.02,
+     "lat": 0.03,
      "action": "roll",
      "chat": "Alright.",
      "gw": 3,
@@ -1449,7 +1418,7 @@
     {
      "turn": 6,
      "lat": 0.02,
-     "action": "hold",
+     "action": "roll",
      "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
@@ -1470,7 +1439,7 @@
     },
     {
      "turn": 8,
-     "lat": 0.03,
+     "lat": 0.02,
      "action": "roll",
      "chat": "We'll see.",
      "gw": 3,
@@ -1481,7 +1450,7 @@
     },
     {
      "turn": 9,
-     "lat": 0.03,
+     "lat": 0.02,
      "action": "roll",
      "chat": "Alright.",
      "gw": 3,
@@ -1492,9 +1461,20 @@
     },
     {
      "turn": 10,
-     "lat": 0.02,
+     "lat": 0.01,
      "action": "hold",
      "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1503,27 +1483,28 @@
     }
    ],
    "actions": [
-    "roll",
-    "hold",
     "hold",
     "roll",
     "roll",
     "hold",
+    "roll",
+    "roll",
     "hold",
     "roll",
     "roll",
+    "hold",
     "hold"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
    "start_s": 0.08,
-   "result": "{'winner': 1, 'scores': [10, 71], 'reason': 'seat 1 reached 71 (target 50)'}",
+   "result": "{'winner': 1, 'scores': [12, 60], 'reason': 'seat 1 reached 60 (target 50)'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 30,
-   "opp_marker_in_requests": "30/30",
+   "gw_requests": 33,
+   "opp_marker_in_requests": "33/33",
    "nasty_block_in_requests": null,
    "key_tails": [
     "j_pig_"
@@ -1559,8 +1540,8 @@
     },
     {
      "turn": 2,
-     "lat": 0.03,
-     "action": "guess 23",
+     "lat": 0.02,
+     "action": "guess 16",
      "chat": "Sure.",
      "gw": 3,
      "strategy": "generic",
@@ -1570,9 +1551,9 @@
     },
     {
      "turn": 3,
-     "lat": 0.02,
-     "action": "guess 24",
-     "chat": "A small test.",
+     "lat": 0.05,
+     "action": "guess 38",
+     "chat": "Interesting.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1582,8 +1563,8 @@
     {
      "turn": 4,
      "lat": 0.03,
-     "action": "guess 49",
-     "chat": "Skip the pleasantries. Play. Curious what that shows.",
+     "action": "guess 31",
+     "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1592,9 +1573,9 @@
     },
     {
      "turn": 5,
-     "lat": 0.03,
-     "action": "guess 88",
-     "chat": "Luck won't save you. Checking something.",
+     "lat": 0.01,
+     "action": "guess 61",
+     "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1604,8 +1585,8 @@
     {
      "turn": 6,
      "lat": 0.03,
-     "action": "guess 53",
-     "chat": "Skip the pleasantries. Play. Let us see.",
+     "action": "guess 88",
+     "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1615,52 +1596,8 @@
     {
      "turn": 7,
      "lat": 0.03,
-     "action": "guess 72",
+     "action": "guess 76",
      "chat": "Luck won't save you. Looking closer.",
-     "gw": 3,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": null,
-     "tool": "fallback"
-    },
-    {
-     "turn": 8,
-     "lat": 0.03,
-     "action": "guess 2",
-     "chat": "Skip the pleasantries. Play. Curious what that shows.",
-     "gw": 3,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": null,
-     "tool": "fallback"
-    },
-    {
-     "turn": 9,
-     "lat": 0.03,
-     "action": "guess 87",
-     "chat": "Hello. Show me what you've got. Checking something.",
-     "gw": 3,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": null,
-     "tool": "fallback"
-    },
-    {
-     "turn": 10,
-     "lat": 0.03,
-     "action": "guess 34",
-     "chat": "Looking closer.",
-     "gw": 3,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": null,
-     "tool": "fallback"
-    },
-    {
-     "turn": 11,
-     "lat": 0.03,
-     "action": "guess 85",
-     "chat": "Nice try. A small test.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1670,16 +1607,12 @@
    ],
    "actions": [
     "guess 50",
-    "guess 23",
-    "guess 24",
-    "guess 49",
+    "guess 16",
+    "guess 38",
+    "guess 31",
+    "guess 61",
     "guess 88",
-    "guess 53",
-    "guess 72",
-    "guess 2",
-    "guess 87",
-    "guess 34",
-    "guess 85"
+    "guess 76"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
@@ -1687,14 +1620,14 @@
     "ok": true,
     "s": 1.1
    },
-   "start_s": 0.08,
-   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': \"seat 0 found the opponent's number in round 7\"}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 37,
-   "opp_marker_in_requests": "33/37",
+   "gw_requests": 25,
+   "opp_marker_in_requests": "21/25",
    "nasty_block_in_requests": null,
    "key_tails": [
     "j_gue_"
@@ -1721,7 +1654,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.62,
+     "lat": 0.67,
      "action": "roll",
      "chat": "Hm.",
      "gw": 3,
@@ -1733,7 +1666,7 @@
     {
      "turn": 2,
      "lat": 0.02,
-     "action": "hold",
+     "action": "roll",
      "chat": "Sure.",
      "gw": 3,
      "strategy": "generic",
@@ -1743,8 +1676,8 @@
     },
     {
      "turn": 3,
-     "lat": 0.02,
-     "action": "roll",
+     "lat": 0.01,
+     "action": "hold",
      "chat": "Interesting.",
      "gw": 3,
      "strategy": "generic",
@@ -1754,7 +1687,7 @@
     },
     {
      "turn": 4,
-     "lat": 0.02,
+     "lat": 0.03,
      "action": "hold",
      "chat": "We'll see.",
      "gw": 3,
@@ -1777,7 +1710,7 @@
     {
      "turn": 6,
      "lat": 0.03,
-     "action": "roll",
+     "action": "hold",
      "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
@@ -1788,7 +1721,7 @@
     {
      "turn": 7,
      "lat": 0.03,
-     "action": "roll",
+     "action": "hold",
      "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
@@ -1809,8 +1742,8 @@
     },
     {
      "turn": 9,
-     "lat": 0.01,
-     "action": "hold",
+     "lat": 0.02,
+     "action": "roll",
      "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
@@ -1820,8 +1753,8 @@
     },
     {
      "turn": 10,
-     "lat": 0.03,
-     "action": "hold",
+     "lat": 0.02,
+     "action": "roll",
      "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
@@ -1831,9 +1764,42 @@
     },
     {
      "turn": 11,
-     "lat": 0.03,
+     "lat": 0.02,
      "action": "hold",
      "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 12,
+     "lat": 0.01,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 13,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 14,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1843,27 +1809,30 @@
    ],
    "actions": [
     "roll",
-    "hold",
-    "roll",
-    "hold",
-    "roll",
-    "roll",
-    "roll",
     "roll",
     "hold",
     "hold",
+    "roll",
+    "hold",
+    "hold",
+    "roll",
+    "roll",
+    "roll",
+    "hold",
+    "hold",
+    "roll",
     "hold"
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.08,
-   "result": "{'winner': 1, 'scores': [15, 57], 'reason': 'seat 1 reached 57 (target 50)'}",
+   "start_s": 0.09,
+   "result": "not over",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 33,
-   "opp_marker_in_requests": "33/33",
+   "gw_requests": 42,
+   "opp_marker_in_requests": "42/42",
    "nasty_block_in_requests": null,
    "key_tails": [
     "j_pig_"
@@ -1888,9 +1857,9 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.64,
+     "lat": 0.55,
      "action": "guess 50",
-     "chat": "Hey. Don't get comfortable. Checking something.",
+     "chat": "Hm.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1900,8 +1869,8 @@
     {
      "turn": 2,
      "lat": 0.03,
-     "action": "guess 80",
-     "chat": "Evening. Let's see how you actually play. Looking closer.",
+     "action": "guess 86",
+     "chat": "Sure.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1911,8 +1880,8 @@
     {
      "turn": 3,
      "lat": 0.03,
-     "action": "guess 67",
-     "chat": "Interesting.",
+     "action": "guess 37",
+     "chat": "A small test.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1921,9 +1890,9 @@
     },
     {
      "turn": 4,
-     "lat": 0.03,
-     "action": "guess 91",
-     "chat": "Skip the pleasantries. Play. Curious what that shows.",
+     "lat": 0.02,
+     "action": "guess 8",
+     "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1934,7 +1903,7 @@
      "turn": 5,
      "lat": 0.03,
      "action": "guess 34",
-     "chat": "We'll see.",
+     "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1943,9 +1912,9 @@
     },
     {
      "turn": 6,
-     "lat": 0.03,
-     "action": "guess 35",
-     "chat": "Alright.",
+     "lat": 0.01,
+     "action": "guess 43",
+     "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1955,7 +1924,7 @@
     {
      "turn": 7,
      "lat": 0.03,
-     "action": "guess 38",
+     "action": "guess 91",
      "chat": "Luck won't save you. Looking closer.",
      "gw": 3,
      "strategy": "generic",
@@ -1966,7 +1935,7 @@
     {
      "turn": 8,
      "lat": 0.03,
-     "action": "guess 8",
+     "action": "guess 55",
      "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
@@ -1976,8 +1945,8 @@
     },
     {
      "turn": 9,
-     "lat": 0.03,
-     "action": "guess 44",
+     "lat": 0.02,
+     "action": "guess 22",
      "chat": "Alright.",
      "gw": 3,
      "strategy": "generic",
@@ -1988,8 +1957,8 @@
     {
      "turn": 10,
      "lat": 0.03,
-     "action": "guess 74",
-     "chat": "Looking closer.",
+     "action": "guess 88",
+     "chat": "We'll see.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -1999,8 +1968,8 @@
     {
      "turn": 11,
      "lat": 0.05,
-     "action": "guess 37",
-     "chat": "We'll see.",
+     "action": "guess 72",
+     "chat": "Nice try. A small test.",
      "gw": 3,
      "strategy": "generic",
      "source": "fallback",
@@ -2010,16 +1979,16 @@
    ],
    "actions": [
     "guess 50",
-    "guess 80",
-    "guess 67",
-    "guess 91",
-    "guess 34",
-    "guess 35",
-    "guess 38",
+    "guess 86",
+    "guess 37",
     "guess 8",
-    "guess 44",
-    "guess 74",
-    "guess 37"
+    "guess 34",
+    "guess 43",
+    "guess 91",
+    "guess 55",
+    "guess 22",
+    "guess 88",
+    "guess 72"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
@@ -2027,7 +1996,7 @@
     "ok": true,
     "s": 1.0
    },
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
    "broke_speech_rule": [],
    "stray": 0,
@@ -2061,7 +2030,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.56,
+     "lat": 0.7,
      "action": "hold",
      "chat": "Hm.",
      "gw": 2,
@@ -2072,7 +2041,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.02,
+     "lat": 0.01,
      "action": "hold",
      "chat": "Sure.",
      "gw": 2,
@@ -2083,8 +2052,8 @@
     },
     {
      "turn": 3,
-     "lat": 0.01,
-     "action": "hold",
+     "lat": 0.02,
+     "action": "roll",
      "chat": "Interesting.",
      "gw": 2,
      "strategy": "generic",
@@ -2094,8 +2063,8 @@
     },
     {
      "turn": 4,
-     "lat": 0.02,
-     "action": "hold",
+     "lat": 0.03,
+     "action": "roll",
      "chat": "We'll see.",
      "gw": 2,
      "strategy": "generic",
@@ -2106,7 +2075,7 @@
     {
      "turn": 5,
      "lat": 0.02,
-     "action": "hold",
+     "action": "roll",
      "chat": "Alright.",
      "gw": 2,
      "strategy": "generic",
@@ -2116,7 +2085,7 @@
     },
     {
      "turn": 6,
-     "lat": 0.03,
+     "lat": 0.02,
      "action": "hold",
      "chat": "We'll see.",
      "gw": 2,
@@ -2127,8 +2096,8 @@
     },
     {
      "turn": 7,
-     "lat": 0.03,
-     "action": "roll",
+     "lat": 0.02,
+     "action": "hold",
      "chat": "Alright.",
      "gw": 2,
      "strategy": "generic",
@@ -2138,7 +2107,7 @@
     },
     {
      "turn": 8,
-     "lat": 0.03,
+     "lat": 0.02,
      "action": "roll",
      "chat": "We'll see.",
      "gw": 2,
@@ -2149,29 +2118,7 @@
     },
     {
      "turn": 9,
-     "lat": 0.02,
-     "action": "roll",
-     "chat": "Alright.",
-     "gw": 2,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": null,
-     "tool": "fallback"
-    },
-    {
-     "turn": 10,
-     "lat": 0.02,
-     "action": "roll",
-     "chat": "We'll see.",
-     "gw": 2,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": null,
-     "tool": "fallback"
-    },
-    {
-     "turn": 11,
-     "lat": 0.01,
+     "lat": 0.03,
      "action": "hold",
      "chat": "Alright.",
      "gw": 2,
@@ -2184,26 +2131,24 @@
    "actions": [
     "hold",
     "hold",
-    "hold",
-    "hold",
-    "hold",
-    "hold",
     "roll",
     "roll",
     "roll",
+    "hold",
+    "hold",
     "roll",
     "hold"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.06,
-   "result": "{'winner': 1, 'scores': [12, 69], 'reason': 'seat 1 reached 69 (target 50)'}",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [6, 66], 'reason': 'seat 1 reached 66 (target 50)'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 22,
-   "opp_marker_in_requests": "22/22",
+   "gw_requests": 18,
+   "opp_marker_in_requests": "18/18",
    "nasty_block_in_requests": null,
    "key_tails": [
     "j_pig_"
@@ -2228,9 +2173,9 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.62,
+     "lat": 0.53,
      "action": "guess 50",
-     "chat": "Hm.",
+     "chat": "Hey. Don't get comfortable. Checking something.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -2240,8 +2185,8 @@
     {
      "turn": 2,
      "lat": 0.03,
-     "action": "guess 71",
-     "chat": "Evening. Let's see how you actually play. Looking closer.",
+     "action": "guess 20",
+     "chat": "Sure.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -2251,7 +2196,7 @@
     {
      "turn": 3,
      "lat": 0.03,
-     "action": "guess 80",
+     "action": "guess 95",
      "chat": "Interesting.",
      "gw": 2,
      "strategy": "generic",
@@ -2263,7 +2208,7 @@
      "turn": 4,
      "lat": 0.03,
      "action": "guess 86",
-     "chat": "We'll see.",
+     "chat": "Skip the pleasantries. Play. Curious what that shows.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -2272,9 +2217,9 @@
     },
     {
      "turn": 5,
-     "lat": 0.02,
-     "action": "guess 61",
-     "chat": "Alright.",
+     "lat": 0.03,
+     "action": "guess 87",
+     "chat": "Luck won't save you. A small test.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -2283,8 +2228,8 @@
     },
     {
      "turn": 6,
-     "lat": 0.03,
-     "action": "guess 48",
+     "lat": 0.02,
+     "action": "guess 29",
      "chat": "We'll see.",
      "gw": 2,
      "strategy": "generic",
@@ -2295,8 +2240,8 @@
     {
      "turn": 7,
      "lat": 0.02,
-     "action": "guess 23",
-     "chat": "Alright.",
+     "action": "guess 32",
+     "chat": "Luck won't save you. Looking closer.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -2305,8 +2250,8 @@
     },
     {
      "turn": 8,
-     "lat": 0.02,
-     "action": "guess 24",
+     "lat": 0.01,
+     "action": "guess 96",
      "chat": "We'll see.",
      "gw": 2,
      "strategy": "generic",
@@ -2317,7 +2262,7 @@
     {
      "turn": 9,
      "lat": 0.03,
-     "action": "guess 92",
+     "action": "guess 25",
      "chat": "Alright.",
      "gw": 2,
      "strategy": "generic",
@@ -2328,8 +2273,8 @@
     {
      "turn": 10,
      "lat": 0.03,
-     "action": "guess 29",
-     "chat": "We'll see.",
+     "action": "guess 9",
+     "chat": "Looking closer.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -2338,9 +2283,9 @@
     },
     {
      "turn": 11,
-     "lat": 0.01,
-     "action": "guess 100",
-     "chat": "Alright.",
+     "lat": 0.03,
+     "action": "guess 67",
+     "chat": "We'll see.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -2350,24 +2295,24 @@
    ],
    "actions": [
     "guess 50",
-    "guess 71",
-    "guess 80",
+    "guess 20",
+    "guess 95",
     "guess 86",
-    "guess 61",
-    "guess 48",
-    "guess 23",
-    "guess 24",
-    "guess 92",
+    "guess 87",
     "guess 29",
-    "guess 100"
+    "guess 32",
+    "guess 96",
+    "guess 25",
+    "guess 9",
+    "guess 67"
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
    "prep": {
     "ok": true,
-    "s": 1.0
+    "s": 1.1
    },
-   "start_s": 0.08,
+   "start_s": 0.09,
    "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
    "broke_speech_rule": [],
    "stray": 0,
@@ -2401,7 +2346,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.69,
+     "lat": 0.61,
      "action": "roll",
      "chat": "Hm.",
      "gw": 4,
@@ -2412,7 +2357,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.05,
+     "lat": 0.03,
      "action": "roll",
      "chat": "Sure.",
      "gw": 4,
@@ -2423,8 +2368,8 @@
     },
     {
      "turn": 3,
-     "lat": 0.02,
-     "action": "hold",
+     "lat": 0.0,
+     "action": "roll",
      "chat": "Interesting.",
      "gw": 0,
      "strategy": "generic",
@@ -2434,8 +2379,8 @@
     },
     {
      "turn": 4,
-     "lat": 0.01,
-     "action": "hold",
+     "lat": 0.02,
+     "action": "roll",
      "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
@@ -2457,7 +2402,7 @@
     {
      "turn": 6,
      "lat": 0.03,
-     "action": "hold",
+     "action": "roll",
      "chat": "We'll see.",
      "gw": 4,
      "strategy": "generic",
@@ -2468,7 +2413,7 @@
     {
      "turn": 7,
      "lat": 0.0,
-     "action": "hold",
+     "action": "roll",
      "chat": "Alright.",
      "gw": 0,
      "strategy": "generic",
@@ -2478,7 +2423,7 @@
     },
     {
      "turn": 8,
-     "lat": 0.0,
+     "lat": 0.01,
      "action": "roll",
      "chat": "We'll see.",
      "gw": 0,
@@ -2490,7 +2435,7 @@
     {
      "turn": 9,
      "lat": 0.03,
-     "action": "roll",
+     "action": "hold",
      "chat": "Alright.",
      "gw": 4,
      "strategy": "generic",
@@ -2500,8 +2445,8 @@
     },
     {
      "turn": 10,
-     "lat": 0.05,
-     "action": "roll",
+     "lat": 0.03,
+     "action": "hold",
      "chat": "We'll see.",
      "gw": 4,
      "strategy": "generic",
@@ -2522,46 +2467,34 @@
     },
     {
      "turn": 12,
-     "lat": 0.01,
-     "action": "roll",
+     "lat": 0.0,
+     "action": "hold",
      "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
      "model_error": "skipped",
      "tool": "fallback"
-    },
-    {
-     "turn": 13,
-     "lat": 0.03,
-     "action": "hold",
-     "chat": "Alright.",
-     "gw": 4,
-     "strategy": "generic",
-     "source": "fallback",
-     "model_error": "RateLimitError: Error code: 429",
-     "tool": "fallback"
     }
    ],
    "actions": [
     "roll",
     "roll",
-    "hold",
-    "hold",
-    "hold",
-    "hold",
-    "hold",
-    "roll",
     "roll",
     "roll",
     "hold",
     "roll",
+    "roll",
+    "roll",
+    "hold",
+    "hold",
+    "hold",
     "hold"
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.08,
-   "result": "{'winner': 1, 'scores': [20, 59], 'reason': 'seat 1 reached 59 (target 50)'}",
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [18, 66], 'reason': 'seat 1 reached 66 (target 50)'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
@@ -2571,8 +2504,8 @@
     "llm error: RateLimitError Error code: 429",
     "[toolloop] round 1 error: RateLimitError: Error code: 429"
    ],
-   "gw_requests": 28,
-   "opp_marker_in_requests": "28/28",
+   "gw_requests": 24,
+   "opp_marker_in_requests": "24/24",
    "nasty_block_in_requests": null,
    "key_tails": [
     "j_pig_"
@@ -2597,9 +2530,9 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.66,
+     "lat": 0.61,
      "action": "guess 50",
-     "chat": "Hey. Don't get comfortable. Checking something.",
+     "chat": "Hm.",
      "gw": 4,
      "strategy": "generic",
      "source": "fallback",
@@ -2608,9 +2541,9 @@
     },
     {
      "turn": 2,
-     "lat": 0.05,
-     "action": "guess 48",
-     "chat": "Evening. Let's see how you actually play. Looking closer.",
+     "lat": 0.03,
+     "action": "guess 89",
+     "chat": "Sure.",
      "gw": 4,
      "strategy": "generic",
      "source": "fallback",
@@ -2620,8 +2553,8 @@
     {
      "turn": 3,
      "lat": 0.02,
-     "action": "guess 18",
-     "chat": "Interesting.",
+     "action": "guess 49",
+     "chat": "A small test.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -2630,9 +2563,9 @@
     },
     {
      "turn": 4,
-     "lat": 0.02,
-     "action": "guess 21",
-     "chat": "We'll see.",
+     "lat": 0.01,
+     "action": "guess 31",
+     "chat": "Skip the pleasantries. Play. Curious what that shows.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -2641,9 +2574,9 @@
     },
     {
      "turn": 5,
-     "lat": 0.05,
-     "action": "guess 61",
-     "chat": "Luck won't save you. A small test.",
+     "lat": 0.03,
+     "action": "guess 69",
+     "chat": "Luck won't save you. Checking something.",
      "gw": 4,
      "strategy": "generic",
      "source": "fallback",
@@ -2653,7 +2586,7 @@
     {
      "turn": 6,
      "lat": 0.03,
-     "action": "guess 33",
+     "action": "guess 13",
      "chat": "We'll see.",
      "gw": 4,
      "strategy": "generic",
@@ -2663,9 +2596,9 @@
     },
     {
      "turn": 7,
-     "lat": 0.02,
-     "action": "guess 22",
-     "chat": "Luck won't save you. Looking closer.",
+     "lat": 0.0,
+     "action": "guess 12",
+     "chat": "Alright.",
      "gw": 0,
      "strategy": "generic",
      "source": "fallback",
@@ -2675,7 +2608,7 @@
     {
      "turn": 8,
      "lat": 0.02,
-     "action": "guess 86",
+     "action": "guess 79",
      "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
@@ -2686,7 +2619,7 @@
     {
      "turn": 9,
      "lat": 0.03,
-     "action": "guess 53",
+     "action": "guess 58",
      "chat": "Alright.",
      "gw": 4,
      "strategy": "generic",
@@ -2697,7 +2630,7 @@
     {
      "turn": 10,
      "lat": 0.03,
-     "action": "guess 6",
+     "action": "guess 24",
      "chat": "We'll see.",
      "gw": 4,
      "strategy": "generic",
@@ -2707,8 +2640,8 @@
     },
     {
      "turn": 11,
-     "lat": 0.0,
-     "action": "guess 45",
+     "lat": 0.02,
+     "action": "guess 3",
      "chat": "Alright.",
      "gw": 0,
      "strategy": "generic",
@@ -2719,22 +2652,22 @@
    ],
    "actions": [
     "guess 50",
-    "guess 48",
-    "guess 18",
-    "guess 21",
-    "guess 61",
-    "guess 33",
-    "guess 22",
-    "guess 86",
-    "guess 53",
-    "guess 6",
-    "guess 45"
+    "guess 89",
+    "guess 49",
+    "guess 31",
+    "guess 69",
+    "guess 13",
+    "guess 12",
+    "guess 79",
+    "guess 58",
+    "guess 24",
+    "guess 3"
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
    "prep": {
     "ok": true,
-    "s": 1.1
+    "s": 0.9
    },
    "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
@@ -2775,8 +2708,8 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 10.02,
-     "action": "roll",
+     "lat": 10.03,
+     "action": "hold",
      "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
@@ -2787,7 +2720,7 @@
     {
      "turn": 2,
      "lat": 9.98,
-     "action": "hold",
+     "action": "roll",
      "chat": "Sure.",
      "gw": 2,
      "strategy": "generic",
@@ -2797,8 +2730,8 @@
     },
     {
      "turn": 3,
-     "lat": 0.0,
-     "action": "roll",
+     "lat": 0.02,
+     "action": "hold",
      "chat": "Interesting.",
      "gw": 0,
      "strategy": "generic",
@@ -2808,7 +2741,7 @@
     },
     {
      "turn": 4,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "hold",
      "chat": "We'll see.",
      "gw": 0,
@@ -2830,15 +2763,15 @@
     }
    ],
    "actions": [
-    "roll",
     "hold",
     "roll",
+    "hold",
     "hold",
     "hold"
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
-   "start_s": 0.08,
+   "start_s": 0.09,
    "result": "not over",
    "broke_speech_rule": [],
    "stray": 0,
@@ -2875,7 +2808,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 10.03,
+     "lat": 10.05,
      "action": "guess 50",
      "chat": "Hm.",
      "gw": 2,
@@ -2886,9 +2819,9 @@
     },
     {
      "turn": 2,
-     "lat": 10.0,
-     "action": "guess 72",
-     "chat": "Evening. Let's see how you actually play. Looking closer.",
+     "lat": 9.98,
+     "action": "guess 97",
+     "chat": "Sure.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -2897,8 +2830,8 @@
     },
     {
      "turn": 3,
-     "lat": 0.02,
-     "action": "guess 92",
+     "lat": 0.01,
+     "action": "guess 26",
      "chat": "Interesting.",
      "gw": 0,
      "strategy": "generic",
@@ -2909,7 +2842,7 @@
     {
      "turn": 4,
      "lat": 0.02,
-     "action": "guess 73",
+     "action": "guess 55",
      "chat": "We'll see.",
      "gw": 0,
      "strategy": "generic",
@@ -2919,8 +2852,8 @@
     },
     {
      "turn": 5,
-     "lat": 9.97,
-     "action": "guess 3",
+     "lat": 9.98,
+     "action": "guess 47",
      "chat": "Alright.",
      "gw": 2,
      "strategy": "generic",
@@ -2931,18 +2864,18 @@
    ],
    "actions": [
     "guess 50",
-    "guess 72",
-    "guess 92",
-    "guess 73",
-    "guess 3"
+    "guess 97",
+    "guess 26",
+    "guess 55",
+    "guess 47"
    ],
    "chats": [],
    "ready_chat": "Warm-up's over.",
    "prep": {
     "ok": true,
-    "s": 121.0
+    "s": 120.9
    },
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "not over",
    "broke_speech_rule": [],
    "stray": 0,
@@ -2981,7 +2914,7 @@
    "chat": "We'll see."
   },
   "warning_legal": true,
-  "warning_latency": 0.02,
+  "warning_latency": 0.01,
   "start2_ready": {
    "type": "ready",
    "chat": "Let's do this."
@@ -3031,51 +2964,93 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.59,
-     "action": "take 3 5",
-     "chat": "stub chat",
-     "gw": 1,
+     "lat": 0.47,
+     "action": "take 1 2",
+     "chat": "Playing take 1 2: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     },
     {
      "turn": 2,
-     "lat": 0.02,
-     "action": "take 2 4",
-     "chat": "stub chat",
-     "gw": 1,
+     "lat": 0.0,
+     "action": "take 1 1",
+     "chat": "Playing take 1 1: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "take 3 1",
+     "chat": "Playing take 3 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "take 3 1",
+     "chat": "Playing take 3 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 5,
+     "lat": 0.02,
+     "action": "take 2 1",
+     "chat": "Playing take 2 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 6,
+     "lat": 0.0,
+     "action": "take 3 1",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
     }
    ],
    "actions": [
-    "take 3 5",
-    "take 2 4"
+    "take 1 2",
+    "take 1 1",
+    "take 3 1",
+    "take 3 1",
+    "take 2 1",
+    "take 3 1"
    ],
    "chats": [],
    "ready_chat": "Warm-up's over.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
-   "opp_marker_in_requests": "2/2",
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
    "nasty_block_in_requests": null,
-   "key_tails": [
-    "_nim_0"
-   ],
-   "thinking_modes": [
-    "{'type': 'disabled'}"
-   ],
-   "max_tokens": [
-    400
-   ]
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
   },
   {
    "tag": "ug_nim_0_1_nasty",
@@ -3089,30 +3064,78 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.55,
-     "action": "take 3 5",
-     "chat": "stub chat",
-     "gw": 1,
+     "lat": 0.48,
+     "action": "take 1 2",
+     "chat": "Playing take 1 2: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     },
     {
      "turn": 2,
      "lat": 0.02,
-     "action": "take 2 4",
-     "chat": "stub chat",
-     "gw": 1,
+     "action": "take 1 1",
+     "chat": "Playing take 1 1: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "take 3 1",
+     "chat": "Playing take 3 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "take 3 1",
+     "chat": "Playing take 3 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 5,
+     "lat": 0.0,
+     "action": "take 2 1",
+     "chat": "Playing take 2 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 6,
+     "lat": 0.0,
+     "action": "take 3 1",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
     }
    ],
    "actions": [
-    "take 3 5",
-    "take 2 4"
+    "take 1 2",
+    "take 1 1",
+    "take 3 1",
+    "take 3 1",
+    "take 2 1",
+    "take 3 1"
    ],
    "chats": [],
    "ready_chat": "Warm-up's over.",
@@ -3122,18 +3145,12 @@
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
+   "gw_requests": 0,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "1/2",
-   "key_tails": [
-    "_nim_0"
-   ],
-   "thinking_modes": [
-    "{'type': 'disabled'}"
-   ],
-   "max_tokens": [
-    400
-   ]
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
   },
   {
    "tag": "ug_nim_0_2_random",
@@ -3147,42 +3164,54 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.56,
-     "action": "take 3 5",
-     "chat": "stub chat",
-     "gw": 1,
-     "strategy": "generic",
-     "source": "model",
-     "model_error": null,
-     "tool": "model (tools: )"
-    },
-    {
-     "turn": 2,
-     "lat": 0.02,
-     "action": "take 2 4",
-     "chat": "stub chat",
-     "gw": 1,
-     "strategy": "generic",
-     "source": "model",
-     "model_error": null,
-     "tool": "model (tools: )"
-    },
-    {
-     "turn": 3,
-     "lat": 0.0,
-     "action": "take 1 1",
-     "chat": "We'll see.",
+     "lat": 0.47,
+     "action": "take 1 2",
+     "chat": "Playing take 1 2: it finishes the game.",
      "gw": 0,
      "strategy": "generic",
      "source": "tool",
      "model_error": null,
-     "tool": "strategy"
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "take 3 3",
+     "chat": "Playing take 3 3: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "take 2 1",
+     "chat": "Playing take 2 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "take 2 2",
+     "chat": "Playing take 2 2: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
     }
    ],
    "actions": [
-    "take 3 5",
-    "take 2 4",
-    "take 1 1"
+    "take 1 2",
+    "take 3 3",
+    "take 2 1",
+    "take 2 2"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
@@ -3192,18 +3221,12 @@
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
-   "opp_marker_in_requests": "2/2",
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
    "nasty_block_in_requests": null,
-   "key_tails": [
-    "_nim_0"
-   ],
-   "thinking_modes": [
-    "{'type': 'disabled'}"
-   ],
-   "max_tokens": [
-    400
-   ]
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
   },
   {
    "tag": "ug_nim_0_2_nasty",
@@ -3217,63 +3240,69 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.56,
-     "action": "take 3 5",
-     "chat": "stub chat",
-     "gw": 1,
-     "strategy": "generic",
-     "source": "model",
-     "model_error": null,
-     "tool": "model (tools: )"
-    },
-    {
-     "turn": 2,
-     "lat": 0.0,
-     "action": "take 2 4",
-     "chat": "stub chat",
-     "gw": 1,
-     "strategy": "generic",
-     "source": "model",
-     "model_error": null,
-     "tool": "model (tools: )"
-    },
-    {
-     "turn": 3,
-     "lat": 0.0,
-     "action": "take 1 1",
-     "chat": "We'll see.",
+     "lat": 0.47,
+     "action": "take 1 2",
+     "chat": "Playing take 1 2: it finishes the game.",
      "gw": 0,
      "strategy": "generic",
      "source": "tool",
      "model_error": null,
-     "tool": "strategy"
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "take 3 3",
+     "chat": "Playing take 3 3: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "take 2 1",
+     "chat": "Playing take 2 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "take 2 2",
+     "chat": "Playing take 2 2: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
     }
    ],
    "actions": [
-    "take 3 5",
-    "take 2 4",
-    "take 1 1"
+    "take 1 2",
+    "take 3 3",
+    "take 2 1",
+    "take 2 2"
    ],
    "chats": [],
    "ready_chat": "Warm-up's over.",
-   "start_s": 0.06,
+   "start_s": 0.08,
    "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
+   "gw_requests": 0,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "1/2",
-   "key_tails": [
-    "_nim_0"
-   ],
-   "thinking_modes": [
-    "{'type': 'disabled'}"
-   ],
-   "max_tokens": [
-    400
-   ]
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
   },
   {
    "tag": "ug_nim_1_1_random",
@@ -3287,28 +3316,39 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.52,
-     "action": "take 3 5",
-     "chat": "stub chat",
-     "gw": 1,
+     "lat": 0.48,
+     "action": "take 3 3",
+     "chat": "Playing take 3 3: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     },
     {
      "turn": 2,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "take 2 1",
-     "chat": "stub chat",
-     "gw": 1,
+     "chat": "Playing take 2 1: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     },
     {
      "turn": 3,
+     "lat": 0.0,
+     "action": "take 3 1",
+     "chat": "Playing take 3 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 4,
      "lat": 0.0,
      "action": "take 1 1",
      "chat": "We'll see.",
@@ -3320,30 +3360,25 @@
     }
    ],
    "actions": [
-    "take 3 5",
+    "take 3 3",
     "take 2 1",
+    "take 3 1",
     "take 1 1"
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.06,
+   "start_s": 0.08,
    "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
-   "opp_marker_in_requests": "2/2",
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
    "nasty_block_in_requests": null,
-   "key_tails": [
-    "_nim_1"
-   ],
-   "thinking_modes": [
-    "{'type': 'disabled'}"
-   ],
-   "max_tokens": [
-    400
-   ]
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
   },
   {
    "tag": "ug_nim_1_1_nasty",
@@ -3357,31 +3392,42 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.61,
-     "action": "take 3 5",
-     "chat": "stub chat",
-     "gw": 1,
+     "lat": 0.45,
+     "action": "take 3 3",
+     "chat": "Playing take 3 3: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     },
     {
      "turn": 2,
      "lat": 0.02,
      "action": "take 2 1",
-     "chat": "stub chat",
-     "gw": 1,
+     "chat": "Playing take 2 1: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     },
     {
      "turn": 3,
      "lat": 0.0,
+     "action": "take 3 1",
+     "chat": "Playing take 3 1: it finishes the game.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "nim-sum winning move"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
      "action": "take 1 1",
-     "chat": "We'll see.",
+     "chat": "Ask again. Same answer. Pushing forward.",
      "gw": 0,
      "strategy": "generic",
      "source": "tool",
@@ -3390,8 +3436,9 @@
     }
    ],
    "actions": [
-    "take 3 5",
+    "take 3 3",
     "take 2 1",
+    "take 3 1",
     "take 1 1"
    ],
    "chats": [],
@@ -3402,18 +3449,12 @@
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
+   "gw_requests": 0,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "2/2",
-   "key_tails": [
-    "_nim_1"
-   ],
-   "thinking_modes": [
-    "{'type': 'disabled'}"
-   ],
-   "max_tokens": [
-    400
-   ]
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
   },
   {
    "tag": "ug_nim_1_2_random",
@@ -3440,12 +3481,12 @@
      "turn": 2,
      "lat": 0.0,
      "action": "take 2 4",
-     "chat": "stub chat",
-     "gw": 1,
+     "chat": "Playing take 2 4: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     }
    ],
    "actions": [
@@ -3454,14 +3495,14 @@
    ],
    "chats": [],
    "ready_chat": "Alright, let's fight.",
-   "start_s": 0.06,
+   "start_s": 0.08,
    "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
-   "opp_marker_in_requests": "2/2",
+   "gw_requests": 1,
+   "opp_marker_in_requests": "1/1",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_nim_1"
@@ -3485,7 +3526,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.59,
+     "lat": 0.5,
      "action": "take 3 5",
      "chat": "stub chat",
      "gw": 1,
@@ -3496,14 +3537,14 @@
     },
     {
      "turn": 2,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "take 2 4",
-     "chat": "stub chat",
-     "gw": 1,
+     "chat": "Playing take 2 4: it finishes the game.",
+     "gw": 0,
      "strategy": "generic",
-     "source": "model",
+     "source": "tool",
      "model_error": null,
-     "tool": "model (tools: )"
+     "tool": "nim-sum winning move"
     }
    ],
    "actions": [
@@ -3518,9 +3559,9 @@
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
+   "gw_requests": 1,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "2/2",
+   "nasty_block_in_requests": "1/1",
    "key_tails": [
     "_nim_1"
    ],
@@ -3539,16 +3580,13 @@
    "seed": 1,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 2 ILLEGAL 'F6'",
-    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.66,
-     "action": "CLAIM R12-C12",
-     "chat": "Hey. Don't get comfortable. Taking the initiative.",
+     "lat": 0.5,
+     "action": "CLAIM R1-C9",
+     "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -3558,28 +3596,53 @@
     {
      "turn": 2,
      "lat": 0.02,
-     "action": "F6",
-     "chat": "Okay then.",
+     "action": "CLAIM R2-C8",
+     "chat": "Evening. Let's see how you actually play. No backing off.",
      "gw": 2,
-     "illegal": true,
-     "retry": "G6",
-     "retry_lat": 0.03
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "CLAIM R10-C12",
+     "chat": "Pressing on.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "CLAIM R11-C11",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r1-c9",
+    "claim r2-c8",
+    "claim r10-c12",
+    "claim r11-c11"
    ],
    "chats": [],
    "ready_chat": "Warm-up's over.",
    "start_s": 0.08,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "result": "{'winner': 0, 'scores': [266, 112], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 6,
-   "opp_marker_in_requests": "6/6",
+   "gw_requests": 8,
+   "opp_marker_in_requests": "8/8",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_claim"
@@ -3600,15 +3663,12 @@
    "seed": 1,
    "opp": "nasty",
    "gw": "fixed",
-   "problems": [
-    "turn 2 ILLEGAL 'F6'",
-    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.53,
-     "action": "CLAIM R12-C12",
+     "lat": 0.48,
+     "action": "CLAIM R10-C6",
      "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
@@ -3618,30 +3678,55 @@
     },
     {
      "turn": 2,
-     "lat": 0.02,
-     "action": "F6",
-     "chat": "Okay then.",
+     "lat": 0.03,
+     "action": "CLAIM R11-C9",
+     "chat": "Okay. And? No backing off.",
      "gw": 2,
-     "illegal": true,
-     "retry": "G6",
-     "retry_lat": 0.01
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "CLAIM R9-C11",
+     "chat": "Interesting.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "CLAIM R9-C3",
+     "chat": "Ask again. Same answer. Pushing forward.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r10-c6",
+    "claim r11-c9",
+    "claim r9-c11",
+    "claim r9-c3"
    ],
    "chats": [],
    "ready_chat": "Alright, let's fight.",
-   "start_s": 0.08,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [285, 25], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 6,
+   "gw_requests": 8,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "4/6",
+   "nasty_block_in_requests": "6/8",
    "key_tails": [
     "_claim"
    ],
@@ -3661,15 +3746,12 @@
    "seed": 2,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 2 ILLEGAL 'F6'",
-    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.55,
-     "action": "CLAIM R12-C12",
+     "lat": 0.52,
+     "action": "CLAIM R9-C4",
      "chat": "Hey. Don't get comfortable. Taking the initiative.",
      "gw": 2,
      "strategy": "generic",
@@ -3680,28 +3762,53 @@
     {
      "turn": 2,
      "lat": 0.02,
-     "action": "F6",
-     "chat": "Ready.",
+     "action": "CLAIM R4-C11",
+     "chat": "Evening. Let's see how you actually play. No backing off.",
      "gw": 2,
-     "illegal": true,
-     "retry": "G6",
-     "retry_lat": 0.02
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.01,
+     "action": "CLAIM R12-C7",
+     "chat": "Pressing on.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "CLAIM R11-C2",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r9-c4",
+    "claim r4-c11",
+    "claim r12-c7",
+    "claim r11-c2"
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
-   "start_s": 0.08,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [186, 165], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 6,
-   "opp_marker_in_requests": "6/6",
+   "gw_requests": 8,
+   "opp_marker_in_requests": "8/8",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_claim"
@@ -3722,15 +3829,12 @@
    "seed": 2,
    "opp": "nasty",
    "gw": "fixed",
-   "problems": [
-    "turn 2 ILLEGAL 'F6'",
-    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.62,
-     "action": "CLAIM R12-C12",
+     "lat": 0.5,
+     "action": "CLAIM R9-C9",
      "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
@@ -3741,29 +3845,54 @@
     {
      "turn": 2,
      "lat": 0.02,
-     "action": "F6",
-     "chat": "Okay then.",
+     "action": "CLAIM R4-C7",
+     "chat": "Nice try. Not telling. No backing off.",
      "gw": 2,
-     "illegal": true,
-     "retry": "G6",
-     "retry_lat": 0.03
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "CLAIM R2-C4",
+     "chat": "Interesting.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.01,
+     "action": "CLAIM R2-C7",
+     "chat": "Ask nicely. Still no. Pushing forward.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r9-c9",
+    "claim r4-c7",
+    "claim r2-c4",
+    "claim r2-c7"
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.08,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [131, 165], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 6,
+   "gw_requests": 8,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "4/6",
+   "nasty_block_in_requests": "6/8",
    "key_tails": [
     "_claim"
    ],
@@ -3783,16 +3912,13 @@
    "seed": 1,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 2 ILLEGAL 'F6'",
-    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.55,
-     "action": "CLAIM R12-C12",
-     "chat": "Hey. Don't get comfortable. Taking the initiative.",
+     "lat": 0.48,
+     "action": "CLAIM R5-C3",
+     "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -3802,28 +3928,53 @@
     {
      "turn": 2,
      "lat": 0.02,
-     "action": "F6",
-     "chat": "Ready.",
+     "action": "CLAIM R5-C5",
+     "chat": "Sure.",
      "gw": 2,
-     "illegal": true,
-     "retry": "G6",
-     "retry_lat": 0.02
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "CLAIM R6-C7",
+     "chat": "Interesting.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "CLAIM R7-C2",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r5-c3",
+    "claim r5-c5",
+    "claim r6-c7",
+    "claim r7-c2"
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
-   "start_s": 0.08,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [112, 96], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 6,
-   "opp_marker_in_requests": "6/6",
+   "gw_requests": 8,
+   "opp_marker_in_requests": "8/8",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_claim"
@@ -3844,16 +3995,13 @@
    "seed": 1,
    "opp": "nasty",
    "gw": "fixed",
-   "problems": [
-    "turn 2 ILLEGAL 'F6'",
-    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.58,
-     "action": "CLAIM R12-C12",
-     "chat": "Huh. Keep talking, I'm enjoying the show. Taking the initiat",
+     "lat": 0.52,
+     "action": "CLAIM R7-C6",
+     "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -3863,29 +4011,54 @@
     {
      "turn": 2,
      "lat": 0.02,
-     "action": "F6",
-     "chat": "Okay then.",
+     "action": "CLAIM R7-C1",
+     "chat": "Nice costume. Still no. No backing off.",
      "gw": 2,
-     "illegal": true,
-     "retry": "G6",
-     "retry_lat": 0.02
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.03,
+     "action": "CLAIM R11-C7",
+     "chat": "I don't fold to talk. Pressing on.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "CLAIM R3-C2",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r7-c6",
+    "claim r7-c1",
+    "claim r11-c7",
+    "claim r3-c2"
    ],
    "chats": [],
    "ready_chat": "Warm-up's over.",
-   "start_s": 0.11,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [112, 132], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 6,
+   "gw_requests": 8,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "6/6",
+   "nasty_block_in_requests": "8/8",
    "key_tails": [
     "_claim"
    ],
@@ -3905,16 +4078,13 @@
    "seed": 2,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 2 ILLEGAL 'F6'",
-    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.66,
-     "action": "CLAIM R12-C12",
-     "chat": "Hey. Don't get comfortable. Taking the initiative.",
+     "lat": 0.5,
+     "action": "CLAIM R1-C11",
+     "chat": "Hm.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -3923,29 +4093,54 @@
     },
     {
      "turn": 2,
-     "lat": 0.03,
-     "action": "F6",
-     "chat": "Playing.",
+     "lat": 0.02,
+     "action": "CLAIM R2-C9",
+     "chat": "Evening. Let's see how you actually play. No backing off.",
      "gw": 2,
-     "illegal": true,
-     "retry": "G6",
-     "retry_lat": 0.02
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "CLAIM R2-C12",
+     "chat": "Interesting.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "CLAIM R6-C10",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r1-c11",
+    "claim r2-c9",
+    "claim r2-c12",
+    "claim r6-c10"
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
-   "start_s": 0.08,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [165, 113], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 6,
-   "opp_marker_in_requests": "6/6",
+   "gw_requests": 8,
+   "opp_marker_in_requests": "8/8",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_claim"
@@ -3966,16 +4161,13 @@
    "seed": 2,
    "opp": "nasty",
    "gw": "fixed",
-   "problems": [
-    "turn 2 ILLEGAL 'F6'",
-    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.59,
-     "action": "CLAIM R12-C12",
-     "chat": "Hm.",
+     "lat": 0.48,
+     "action": "CLAIM R1-C12",
+     "chat": "Curious, aren't you? Taking the initiative.",
      "gw": 2,
      "strategy": "generic",
      "source": "fallback",
@@ -3984,30 +4176,55 @@
     },
     {
      "turn": 2,
-     "lat": 0.01,
-     "action": "F6",
-     "chat": "Okay then.",
+     "lat": 0.02,
+     "action": "CLAIM R1-C1",
+     "chat": "Sure.",
      "gw": 2,
-     "illegal": true,
-     "retry": "G6",
-     "retry_lat": 0.02
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.01,
+     "action": "CLAIM R11-C12",
+     "chat": "You'll find out soon enough. Pressing on.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "CLAIM R12-C6",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
    "actions": [
-    "claim r12-c12"
+    "claim r1-c12",
+    "claim r1-c1",
+    "claim r11-c12",
+    "claim r12-c6"
    ],
    "chats": [],
    "ready_chat": "Round one. Go.",
    "start_s": 0.06,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "result": "{'winner': 1, 'scores': [165, 217], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 6,
+   "gw_requests": 8,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "6/6",
+   "nasty_block_in_requests": "8/8",
    "key_tails": [
     "_claim"
    ],
@@ -4031,7 +4248,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.09,
+     "lat": 0.06,
      "action": "check",
      "chat": "Sure.",
      "gw": 0,
@@ -4042,7 +4259,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "bet",
      "chat": "Right.",
      "gw": 0,
@@ -4058,7 +4275,7 @@
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
-   "start_s": 0.16,
+   "start_s": 0.11,
    "result": "{'winner': 0, 'scores': [2, -2], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4083,7 +4300,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.09,
+     "lat": 0.06,
      "action": "check",
      "chat": "Sure.",
      "gw": 0,
@@ -4110,7 +4327,7 @@
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.11,
+   "start_s": 0.12,
    "result": "{'winner': 0, 'scores': [2, -2], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4157,7 +4374,7 @@
     },
     {
      "turn": 3,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "check",
      "chat": "Mm-hm.",
      "gw": 0,
@@ -4174,7 +4391,7 @@
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.14,
+   "start_s": 0.12,
    "result": "{'winner': 1, 'scores': [-3, 3], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4199,7 +4416,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.08,
+     "lat": 0.06,
      "action": "check",
      "chat": "Sure.",
      "gw": 0,
@@ -4238,7 +4455,7 @@
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.14,
+   "start_s": 0.11,
    "result": "{'winner': 1, 'scores': [-3, 3], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4263,7 +4480,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.11,
+     "lat": 0.08,
      "action": "check",
      "chat": "Sure.",
      "gw": 0,
@@ -4290,7 +4507,7 @@
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.14,
+   "start_s": 0.12,
    "result": "{'winner': 0, 'scores': [3, -3], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4342,7 +4559,7 @@
    ],
    "chats": [],
    "ready_chat": "Alright, let's fight.",
-   "start_s": 0.14,
+   "start_s": 0.11,
    "result": "{'winner': 0, 'scores': [3, -3], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4367,7 +4584,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.09,
+     "lat": 0.06,
      "action": "fold",
      "chat": "Sure.",
      "gw": 0,
@@ -4394,7 +4611,7 @@
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.14,
+   "start_s": 0.11,
    "result": "{'winner': 1, 'scores': [-2, 4], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4419,7 +4636,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.08,
+     "lat": 0.06,
      "action": "fold",
      "chat": "Sure.",
      "gw": 0,
@@ -4430,7 +4647,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "bet",
      "chat": "Right.",
      "gw": 0,
@@ -4471,7 +4688,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.16,
+     "lat": 0.11,
      "action": "C",
      "chat": "Come on.",
      "gw": 0,
@@ -4482,7 +4699,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Getting jumpy.",
      "gw": 0,
@@ -4526,7 +4743,7 @@
     },
     {
      "turn": 6,
-     "lat": 0.01,
+     "lat": 0.0,
      "action": "B",
      "chat": "Over to you.",
      "gw": 0,
@@ -4570,7 +4787,7 @@
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [7, 9], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4595,7 +4812,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.16,
+     "lat": 0.11,
      "action": "C",
      "chat": "Come on.",
      "gw": 0,
@@ -4617,7 +4834,7 @@
     },
     {
      "turn": 3,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "B",
      "chat": "Ask the board.",
      "gw": 0,
@@ -4650,7 +4867,7 @@
     },
     {
      "turn": 6,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Nice try.",
      "gw": 0,
@@ -4694,7 +4911,7 @@
    ],
    "chats": [],
    "ready_chat": "Round one. Go.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [7, 9], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4719,7 +4936,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.12,
+     "lat": 0.11,
      "action": "C",
      "chat": "Come on.",
      "gw": 0,
@@ -4741,7 +4958,7 @@
     },
     {
      "turn": 3,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Okay.",
      "gw": 0,
@@ -4785,7 +5002,7 @@
     },
     {
      "turn": 7,
-     "lat": 0.01,
+     "lat": 0.0,
      "action": "C",
      "chat": "We'll see.",
      "gw": 0,
@@ -4796,7 +5013,7 @@
     },
     {
      "turn": 8,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Okay.",
      "gw": 0,
@@ -4818,7 +5035,7 @@
    ],
    "chats": [],
    "ready_chat": "Round one. Go.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [7, 9], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4843,7 +5060,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.16,
+     "lat": 0.12,
      "action": "C",
      "chat": "Cute. Try again.",
      "gw": 0,
@@ -4854,7 +5071,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "B",
      "chat": "Nice try.",
      "gw": 0,
@@ -4876,7 +5093,7 @@
     },
     {
      "turn": 4,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "C",
      "chat": "Okay.",
      "gw": 0,
@@ -4898,7 +5115,7 @@
     },
     {
      "turn": 6,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Over to you.",
      "gw": 0,
@@ -4942,7 +5159,7 @@
    ],
    "chats": [],
    "ready_chat": "Let's do this.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [7, 9], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -4967,7 +5184,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.12,
+     "lat": 0.11,
      "action": "C",
      "chat": "Come on.",
      "gw": 0,
@@ -4978,7 +5195,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "B",
      "chat": "Getting jumpy.",
      "gw": 0,
@@ -5000,7 +5217,7 @@
     },
     {
      "turn": 4,
-     "lat": 0.01,
+     "lat": 0.0,
      "action": "C",
      "chat": "We'll see.",
      "gw": 0,
@@ -5022,7 +5239,7 @@
     },
     {
      "turn": 6,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Over to you.",
      "gw": 0,
@@ -5033,7 +5250,7 @@
     },
     {
      "turn": 7,
-     "lat": 0.01,
+     "lat": 0.0,
      "action": "C",
      "chat": "We'll see.",
      "gw": 0,
@@ -5091,7 +5308,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.16,
+     "lat": 0.12,
      "action": "C",
      "chat": "Come on.",
      "gw": 0,
@@ -5113,7 +5330,7 @@
     },
     {
      "turn": 3,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "B",
      "chat": "Ask the board.",
      "gw": 0,
@@ -5146,7 +5363,7 @@
     },
     {
      "turn": 6,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Nice try.",
      "gw": 0,
@@ -5168,7 +5385,7 @@
     },
     {
      "turn": 8,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Okay.",
      "gw": 0,
@@ -5215,7 +5432,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.14,
+     "lat": 0.11,
      "action": "C",
      "chat": "Come on.",
      "gw": 0,
@@ -5226,7 +5443,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Getting jumpy.",
      "gw": 0,
@@ -5237,7 +5454,7 @@
     },
     {
      "turn": 3,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "B",
      "chat": "Okay.",
      "gw": 0,
@@ -5281,7 +5498,7 @@
     },
     {
      "turn": 7,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "C",
      "chat": "We'll see.",
      "gw": 0,
@@ -5292,7 +5509,7 @@
     },
     {
      "turn": 8,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "B",
      "chat": "Okay.",
      "gw": 0,
@@ -5314,7 +5531,7 @@
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 0, 'scores': [9, 7], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -5372,7 +5589,7 @@
     },
     {
      "turn": 4,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "C",
      "chat": "Okay.",
      "gw": 0,
@@ -5383,7 +5600,7 @@
     },
     {
      "turn": 5,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "A",
      "chat": "Keep guessing.",
      "gw": 0,
@@ -5394,7 +5611,7 @@
     },
     {
      "turn": 6,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "B",
      "chat": "Over to you.",
      "gw": 0,
@@ -5438,7 +5655,7 @@
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 0, 'scores': [9, 7], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -5463,7 +5680,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.12,
+     "lat": 0.11,
      "action": "offer 2 0",
      "chat": "Evening. Let's see how you actually play.",
      "gw": 0,
@@ -5474,7 +5691,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.0,
+     "lat": 0.01,
      "action": "reject",
      "chat": "Luck? Bring more than that.",
      "gw": 0,
@@ -5538,7 +5755,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.0,
+     "lat": 0.02,
      "action": "reject",
      "chat": "Not falling for it.",
      "gw": 0,
@@ -5566,7 +5783,7 @@
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [6, 18], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -5591,7 +5808,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.12,
+     "lat": 0.11,
      "action": "offer 2 0",
      "chat": "Evening. Let's see how you actually play.",
      "gw": 0,
@@ -5606,7 +5823,7 @@
    ],
    "chats": [],
    "ready_chat": "Alright, let's fight.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [6, 18], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -5631,7 +5848,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.16,
+     "lat": 0.12,
      "action": "offer 2 0",
      "chat": "Same as before.",
      "gw": 0,
@@ -5646,7 +5863,7 @@
    ],
    "chats": [],
    "ready_chat": "Bring it on.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 1, 'scores': [6, 18], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -5671,7 +5888,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.12,
+     "lat": 0.11,
      "action": "reject",
      "chat": "Evening. Let's see how you actually play.",
      "gw": 0,
@@ -5723,7 +5940,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.12,
+     "lat": 0.11,
      "action": "reject",
      "chat": "Okay. And?",
      "gw": 0,
@@ -5775,7 +5992,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.16,
+     "lat": 0.12,
      "action": "reject",
      "chat": "Evening. Let's see how you actually play.",
      "gw": 0,
@@ -5786,7 +6003,7 @@
     },
     {
      "turn": 2,
-     "lat": 0.02,
+     "lat": 0.0,
      "action": "offer 2 0",
      "chat": "Luck? Bring more than that.",
      "gw": 0,
@@ -5802,7 +6019,7 @@
    ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.08,
+   "start_s": 0.06,
    "result": "{'winner': 0, 'scores': [14, 2], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
@@ -5827,7 +6044,7 @@
    "turns": [
     {
      "turn": 1,
-     "lat": 0.14,
+     "lat": 0.11,
      "action": "reject",
      "chat": "Curious, aren't you?",
      "gw": 0,
@@ -5875,34 +6092,57 @@
    "seed": 1,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'",
-    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.59,
-     "action": "guess 50",
+     "lat": 0.44,
+     "action": "answer unknown",
+     "chat": "Hm.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "answer unknown",
+     "chat": "Okay then.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "answer unknown",
      "chat": "Sure.",
      "gw": 1,
-     "illegal": true,
-     "retry": "pass",
-     "retry_lat": 0.0
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
-   "actions": [],
+   "actions": [
+    "answer unknown",
+    "answer unknown",
+    "answer unknown"
+   ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.14,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.12,
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
-   "opp_marker_in_requests": "2/2",
+   "gw_requests": 3,
+   "opp_marker_in_requests": "3/3",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_qa_0_"
@@ -5922,27 +6162,26 @@
    "seed": 1,
    "opp": "nasty",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'",
-    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.59,
-     "action": "guess 50",
-     "chat": "Sure.",
+     "lat": 0.47,
+     "action": "answer unknown",
+     "chat": "Hm.",
      "gw": 1,
-     "illegal": true,
-     "retry": "pass",
-     "retry_lat": 0.02
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
-   "actions": [],
+   "actions": [
+    "answer unknown"
+   ],
    "chats": [],
    "ready_chat": "Let's do this.",
-   "start_s": 0.12,
-   "lost_by_second_bad": true,
+   "start_s": 0.11,
    "result": "{'winner': None, 'scores': [0, 0], 'reason': 'end'}",
    "broke_speech_rule": [
     1
@@ -5950,9 +6189,9 @@
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
+   "gw_requests": 1,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "2/2",
+   "nasty_block_in_requests": "1/1",
    "key_tails": [
     "_qa_0_"
    ],
@@ -5971,34 +6210,57 @@
    "seed": 2,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'",
-    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.49,
-     "action": "guess 50",
+     "lat": 0.42,
+     "action": "answer unknown",
+     "chat": "Hm.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "answer unknown",
+     "chat": "Okay then.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "answer unknown",
      "chat": "Sure.",
      "gw": 1,
-     "illegal": true,
-     "retry": "pass",
-     "retry_lat": 0.0
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
-   "actions": [],
+   "actions": [
+    "answer unknown",
+    "answer unknown",
+    "answer unknown"
+   ],
    "chats": [],
    "ready_chat": "Warm-up's over.",
-   "start_s": 0.14,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.12,
+   "result": "{'winner': None, 'scores': [1, 1], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
-   "opp_marker_in_requests": "2/2",
+   "gw_requests": 3,
+   "opp_marker_in_requests": "3/3",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_qa_0_"
@@ -6018,35 +6280,58 @@
    "seed": 2,
    "opp": "nasty",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'",
-    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.61,
-     "action": "guess 50",
+     "lat": 0.47,
+     "action": "answer unknown",
+     "chat": "Hm.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "answer unknown",
+     "chat": "Playing.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "answer unknown",
      "chat": "Sure.",
      "gw": 1,
-     "illegal": true,
-     "retry": "pass",
-     "retry_lat": 0.02
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
-   "actions": [],
+   "actions": [
+    "answer unknown",
+    "answer unknown",
+    "answer unknown"
+   ],
    "chats": [],
    "ready_chat": "Alright, let's fight.",
-   "start_s": 0.12,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.11,
+   "result": "{'winner': None, 'scores': [1, 1], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
+   "gw_requests": 3,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "2/2",
+   "nasty_block_in_requests": "3/3",
    "key_tails": [
     "_qa_0_"
    ],
@@ -6065,34 +6350,57 @@
    "seed": 1,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'",
-    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.59,
-     "action": "guess 50",
+     "lat": 0.48,
+     "action": "answer unknown",
+     "chat": "Ready.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "answer unknown",
+     "chat": "Playing.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "answer unknown",
      "chat": "Sure.",
      "gw": 1,
-     "illegal": true,
-     "retry": "pass",
-     "retry_lat": 0.02
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
-   "actions": [],
+   "actions": [
+    "answer unknown",
+    "answer unknown",
+    "answer unknown"
+   ],
    "chats": [],
    "ready_chat": "Ready when you are.",
-   "start_s": 0.14,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "start_s": 0.12,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
-   "opp_marker_in_requests": "2/2",
+   "gw_requests": 3,
+   "opp_marker_in_requests": "3/3",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_qa_1_"
@@ -6112,27 +6420,26 @@
    "seed": 1,
    "opp": "nasty",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'",
-    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.5,
-     "action": "guess 50",
-     "chat": "Sure.",
+     "lat": 0.41,
+     "action": "answer unknown",
+     "chat": "Hm.",
      "gw": 1,
-     "illegal": true,
-     "retry": "pass",
-     "retry_lat": 0.0
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
-   "actions": [],
+   "actions": [
+    "answer unknown"
+   ],
    "chats": [],
    "ready_chat": "Warm-up's over.",
-   "start_s": 0.16,
-   "lost_by_second_bad": true,
+   "start_s": 0.12,
    "result": "{'winner': None, 'scores': [0, 0], 'reason': 'end'}",
    "broke_speech_rule": [
     0
@@ -6140,9 +6447,9 @@
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
+   "gw_requests": 1,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "2/2",
+   "nasty_block_in_requests": "1/1",
    "key_tails": [
     "_qa_1_"
    ],
@@ -6161,34 +6468,57 @@
    "seed": 2,
    "opp": "random",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'",
-    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.58,
-     "action": "guess 50",
+     "lat": 0.44,
+     "action": "answer unknown",
+     "chat": "Ready.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.01,
+     "action": "answer unknown",
+     "chat": "Okay then.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "answer unknown",
      "chat": "Sure.",
      "gw": 1,
-     "illegal": true,
-     "retry": "pass",
-     "retry_lat": 0.02
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
-   "actions": [],
+   "actions": [
+    "answer unknown",
+    "answer unknown",
+    "answer unknown"
+   ],
    "chats": [],
    "ready_chat": "Ready when you are.",
    "start_s": 0.12,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "result": "{'winner': None, 'scores': [1, 1], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
-   "opp_marker_in_requests": "2/2",
+   "gw_requests": 3,
+   "opp_marker_in_requests": "3/3",
    "nasty_block_in_requests": null,
    "key_tails": [
     "_qa_1_"
@@ -6208,35 +6538,58 @@
    "seed": 2,
    "opp": "nasty",
    "gw": "fixed",
-   "problems": [
-    "turn 1 ILLEGAL 'guess 50'",
-    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
-   ],
+   "problems": [],
    "turns": [
     {
      "turn": 1,
-     "lat": 0.58,
-     "action": "guess 50",
+     "lat": 0.44,
+     "action": "answer unknown",
+     "chat": "Hm.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "answer unknown",
+     "chat": "Ready.",
+     "gw": 1,
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "answer unknown",
      "chat": "Sure.",
      "gw": 1,
-     "illegal": true,
-     "retry": "pass",
-     "retry_lat": 0.02
+     "strategy": "chat_defense",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
     }
    ],
-   "actions": [],
+   "actions": [
+    "answer unknown",
+    "answer unknown",
+    "answer unknown"
+   ],
    "chats": [],
    "ready_chat": "Alright, let's fight.",
    "start_s": 0.14,
-   "lost_by_second_bad": true,
-   "result": "not over",
+   "result": "{'winner': None, 'scores': [1, 1], 'reason': 'end'}",
    "broke_speech_rule": [],
    "stray": 0,
    "early": 0,
    "stderr_odd": [],
-   "gw_requests": 2,
+   "gw_requests": 3,
    "opp_marker_in_requests": null,
-   "nasty_block_in_requests": "2/2",
+   "nasty_block_in_requests": "3/3",
    "key_tails": [
     "_qa_1_"
    ],
@@ -6247,5 +6600,127 @@
     250
    ]
   }
- ]
+ ],
+ "b3": {
+  "prep_ok": true,
+  "n_terms": 20,
+  "has_harbor": true,
+  "has_variants": [
+   "Harbor",
+   "harbors",
+   "h4rbor"
+  ],
+  "sample": [
+   "HARBOR",
+   "Harbor",
+   "h a r b o r",
+   "h-a-r-b-o-r",
+   "h.a.r.b.o.r",
+   "h4r80r",
+   "h4rbor",
+   "h@rbor",
+   "h_a_r_b_o_r",
+   "har8or",
+   "harb0r",
+   "harbor"
+  ],
+  "runs": [
+   {
+    "tag": "b3_harbor_0",
+    "problems": [],
+    "broke": [],
+    "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+    "lost_by_second_bad": null,
+    "actions": [
+     "answer unknown",
+     "answer unknown",
+     "answer unknown"
+    ]
+   },
+   {
+    "tag": "b3_harbor_1",
+    "problems": [],
+    "broke": [],
+    "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
+    "lost_by_second_bad": null,
+    "actions": [
+     "answer unknown",
+     "answer unknown",
+     "answer unknown"
+    ]
+   },
+   {
+    "tag": "b3_Harbor_0",
+    "problems": [],
+    "broke": [],
+    "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+    "lost_by_second_bad": null,
+    "actions": [
+     "answer unknown",
+     "answer unknown",
+     "answer unknown"
+    ]
+   },
+   {
+    "tag": "b3_Harbor_1",
+    "problems": [],
+    "broke": [],
+    "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
+    "lost_by_second_bad": null,
+    "actions": [
+     "answer unknown",
+     "answer unknown",
+     "answer unknown"
+    ]
+   },
+   {
+    "tag": "b3_h4rbor_0",
+    "problems": [],
+    "broke": [],
+    "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+    "lost_by_second_bad": null,
+    "actions": [
+     "answer unknown",
+     "answer unknown",
+     "answer unknown"
+    ]
+   },
+   {
+    "tag": "b3_h4rbor_1",
+    "problems": [],
+    "broke": [],
+    "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
+    "lost_by_second_bad": null,
+    "actions": [
+     "answer unknown",
+     "answer unknown",
+     "answer unknown"
+    ]
+   },
+   {
+    "tag": "b3_harbors_0",
+    "problems": [],
+    "broke": [],
+    "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+    "lost_by_second_bad": null,
+    "actions": [
+     "answer unknown",
+     "answer unknown",
+     "answer unknown"
+    ]
+   },
+   {
+    "tag": "b3_harbors_1",
+    "problems": [],
+    "broke": [],
+    "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
+    "lost_by_second_bad": null,
+    "actions": [
+     "answer unknown",
+     "answer unknown",
+     "answer unknown"
+    ]
+   }
+  ]
+ }
 }
