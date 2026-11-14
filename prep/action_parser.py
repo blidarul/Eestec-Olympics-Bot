@@ -441,4 +441,21 @@ def parse_observation_layout(obs_text: str) -> dict[str, Any]:
     if banked_match:
         layout["banked_scores"] = [int(banked_match.group(1)), int(banked_match.group(2))]
 
+    # Extract deduction / guessing sections strictly separating our guesses from opponent guesses
+    if "Your guesses" in obs_text or "opponent guessed" in obs_text.lower():
+        parts = obs_text.split("Opponent's guesses")
+        my_sec = parts[0]
+        opp_sec = parts[1] if len(parts) > 1 else ""
+
+        my_guesses = []
+        for m in re.finditer(r"(?:you guessed|\bguess)\s+(\d+)\s*->\s*(higher|lower|correct|above|below)", my_sec, re.IGNORECASE):
+            my_guesses.append({"guess": int(m.group(1)), "feedback": m.group(2).lower()})
+
+        opp_guesses = []
+        for m in re.finditer(r"(?:opponent guessed|\bguess)\s+(\d+)\s*->\s*(higher|lower|correct|above|below)", opp_sec, re.IGNORECASE):
+            opp_guesses.append({"guess": int(m.group(1)), "feedback": m.group(2).lower()})
+
+        layout["my_guesses"] = my_guesses
+        layout["opponent_guesses"] = opp_guesses
+
     return layout

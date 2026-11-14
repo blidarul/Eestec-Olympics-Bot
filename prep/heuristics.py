@@ -181,6 +181,11 @@ def compute_heuristics(
             "interval_min": lo,
             "interval_max": hi,
             "partition_rule": "guess = (lo + hi) // 2",
+            "observation_guidance": (
+                "CRITICAL: Base binary search interval ONLY on 'Your guesses at the opponent's number'. "
+                "Completely ignore 'Opponent's guesses at your number' because the opponent is guessing at your secret, not theirs. "
+                "Never repeat any previously made guess."
+            ),
         }
 
     elif family == "cards_hidden":

@@ -168,6 +168,84 @@ class TestSynthesis(unittest.TestCase):
         parsed_state = sim.parse(obs, 0)
         self.assertTrue(sim.has_chance(parsed_state))
 
+    def test_deduction_simulator_ignores_opponent_guesses(self):
+        cls_info = GameClassification(
+            family="deduction",
+            confidence=0.95,
+            is_deterministic=True,
+            has_hidden_information=True,
+            is_simultaneous=False,
+            turn_structure="alternating",
+        )
+        grammar = ActionGrammar(
+            kind="numeric_range",
+            numeric_min=1,
+            numeric_max=100,
+            numeric_prefix="guess ",
+        )
+        code = synthesize_simulator_code(cls_info, grammar, "guess_test")
+        sim = load_simulator_source(code)
+
+        # Observation where opponent guessed 62 at our number, but our own guesses were 50 and 75
+        obs = (
+            "GUESS THE NUMBER (1-100). You are Player 1.\n"
+            "Your secret number (the opponent is looking for it): 53\n"
+            "Round 3 of 12.\n\n"
+            "Your guesses at the opponent's number:\n"
+            "  Round 1: you guessed 50 -> higher (their number is above 50)\n"
+            "  Round 2: you guessed 75 -> lower (their number is below 75)\n"
+            "Opponent's guesses at your number:\n"
+            "  Round 1: opponent guessed 50 -> higher\n"
+            "  Round 2: opponent guessed 75 -> lower\n"
+            "  Round 3: opponent guessed 62 -> lower\n\n"
+            'It is YOUR turn: "guess <n>" with n from 1 to 100.'
+        )
+
+        state = sim.parse(obs, 1)
+        # Target secret is 65. Our guesses are 50 (higher) and 75 (lower).
+        # Interval must be [51, 74]. It must NOT be poisoned by opponent's guess of 62 (which would collapse it to [51, 61]).
+        self.assertEqual(state.lo, 51)
+        self.assertEqual(state.hi, 74)
+
+        # Midpoint of [51, 74] is (51 + 74) // 2 = 62
+        rec_actions = state.legal_actions()
+        self.assertEqual(rec_actions[0], "guess 62")
+
+        # Step with "guess 62", verify it is tracked in tried and never repeated
+        state2 = state.step("guess 62")
+        self.assertIn("guess 62", state2.tried)
+        self.assertNotEqual(state2.legal_actions()[0], "guess 62")
+
+    def test_deduction_simulator_verification_and_playouts(self):
+        cls_info = GameClassification(
+            family="deduction",
+            confidence=0.95,
+            is_deterministic=True,
+            has_hidden_information=True,
+            is_simultaneous=False,
+            turn_structure="alternating",
+        )
+        grammar = ActionGrammar(
+            kind="numeric_range",
+            numeric_min=1,
+            numeric_max=100,
+            numeric_prefix="guess ",
+        )
+        code = synthesize_simulator_code(cls_info, grammar, "guess_verify")
+        sim = load_simulator_source(code)
+
+        obs = (
+            "GUESS THE NUMBER (1-100). You are Player 0.\n"
+            "Your secret number: 17\n"
+            "Round 1 of 12.\n"
+            "Your guesses at the opponent's number:\n  (none yet)\n"
+            "Opponent's guesses at your number:\n  (none yet)\n"
+            'It is YOUR turn: "guess <n>" with n from 1 to 100.'
+        )
+        variant = {"sample_turn": {"observation": obs, "legal_actions": None, "seat": 0}}
+        ok, reason = verify_report(sim, variant)
+        self.assertTrue(ok, f"Verification failed: {reason}")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -89,7 +89,7 @@ class PrepEngine:
             # 6. Synthesize per-variant simulator (Issue #26)
             sim_path = None
             sim_calib = {}
-            if classification.family in ("grid_board", "dice_push"):
+            if classification.family in ("grid_board", "dice_push", "deduction"):
                 sim_filename = f"simulator_{idx}.py"
                 sim_path, sim_calib = save_synthesized_simulator(
                     dest_dir, classification, grammar, f"{game_id}_{idx}", filename=sim_filename

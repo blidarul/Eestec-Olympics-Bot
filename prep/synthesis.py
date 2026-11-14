@@ -247,41 +247,91 @@ def parse(observation: str, seat: int = 0) -> State:
     return s
 '''
 
-    elif family == "deduction":
-        lo = grammar.numeric_min or 1
-        hi = grammar.numeric_max or 100
+    elif family in ("deduction", "guessing"):
+        lo = grammar.numeric_min if grammar.numeric_min is not None else 1
+        hi = grammar.numeric_max if grammar.numeric_max is not None else 100
         prefix = grammar.numeric_prefix or "guess "
         return f'''"""Adaptive Deduction & Interval Search Simulator for {game_id} (range: {lo}-{hi})."""
 
 class State:
-    def __init__(self, lo={lo}, hi={hi}):
+    def __init__(self, lo={lo}, hi={hi}, tried=None):
         self.lo = lo
         self.hi = hi
         self.prefix = "{prefix}"
         self.current = 0
+        self.tried = set(tried or [])
 
     def legal_actions(self):
-        mid = (self.lo + self.hi) // 2
-        return [f"{{self.prefix}}{{mid}}"]
+        lo, hi = self.lo, self.hi
+        if lo <= hi:
+            mid = (lo + hi) // 2
+            cand = f"{{self.prefix}}{{mid}}".strip()
+            if cand not in self.tried:
+                return [cand]
+            # Search nearest untried candidate within current interval
+            for offset in range(1, max(hi - mid, mid - lo) + 1):
+                for g in (mid + offset, mid - offset):
+                    if lo <= g <= hi:
+                        c = f"{{self.prefix}}{{g}}".strip()
+                        if c not in self.tried:
+                            return [c]
+        # Fallback to any untried candidate in full range {lo}..{hi}
+        for n in range({lo}, {hi} + 1):
+            c = f"{{self.prefix}}{{n}}".strip()
+            if c not in self.tried:
+                return [c]
+        return [f"{{self.prefix}}{{lo}}".strip()]
 
     def step(self, action):
-        return self
+        new_tried = set(self.tried)
+        new_tried.add(str(action).strip())
+        s = State(self.lo, self.hi, new_tried)
+        s.current = 1 - self.current
+        return s
 
     def is_terminal(self):
-        return self.lo >= self.hi
+        return self.lo >= self.hi or len(self.tried) >= min(30, max(1, {hi} - {lo} + 1))
 
     def evaluate(self, seat):
-        return 0.0
+        return 1.0 if self.lo == self.hi else 0.0
+
+    def key(self):
+        return hash((self.lo, self.hi, frozenset(self.tried), self.current))
 
 
 def parse(observation: str, seat: int = 0) -> State:
     import re
-    s = State()
+    lo, hi = {lo}, {hi}
+    tried = set()
+
+    # 1. Parse initial range from header if present, e.g. "(1-100)" or "range 1-100"
+    m_head = re.search(r"\\((\\d+)\\s*-\\s*(\\d+)\\)", observation) or re.search(r"range\\s+(\\d+)\\s*-\\s*(\\d+)", observation, re.IGNORECASE)
+    if m_head:
+        lo, hi = int(m_head.group(1)), int(m_head.group(2))
+
+    # 2. Extract strictly OUR guesses section, ignoring the opponent's guesses at our secret
+    my_section = observation
+    if "Your guesses" in observation:
+        parts = observation.split("Opponent's guesses")
+        my_section = parts[0]
+        if "Your guesses" in my_section:
+            my_section = my_section.split("Your guesses", 1)[1]
+
+    # 3. Parse all of our guesses and referee feedback
+    for m in re.finditer(r"(?:you guessed|\\bguess)\\s+(\\d+)\\s*->\\s*(higher|lower|correct|above|below)", my_section, re.IGNORECASE):
+        n = int(m.group(1))
+        fb = m.group(2).lower()
+        tried.add(f"{prefix}{{n}}".strip())
+        tried.add(str(n))
+        if "higher" in fb or "above" in fb:
+            lo = max(lo, n + 1)
+        elif "lower" in fb or "below" in fb:
+            hi = min(hi, n - 1)
+        elif "correct" in fb:
+            lo = hi = n
+
+    s = State(lo, hi, tried)
     s.current = int(seat)
-    m_range = re.search(r"between\\s+(\\d+)\\s+and\\s+(\\d+)", observation, re.IGNORECASE)
-    if m_range:
-        s.lo = int(m_range.group(1))
-        s.hi = int(m_range.group(2))
     return s
 '''
 

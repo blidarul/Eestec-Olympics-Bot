@@ -306,6 +306,50 @@ def _update_search_interval_handler(
     }
 
 
+def _extract_deduction_state_handler(observation: str, min_val: int = 1, max_val: int = 100) -> dict[str, Any]:
+    low = int(min_val)
+    high = int(max_val)
+    tried = set()
+
+    # 1. Parse range from header if present
+    m_head = re.search(r"\((\d+)\s*-\s*(\d+)\)", observation) or re.search(r"range\s+(\d+)\s*-\s*(\d+)", observation, re.IGNORECASE)
+    if m_head:
+        low, high = int(m_head.group(1)), int(m_head.group(2))
+
+    # 2. Extract strictly OUR guesses section, ignoring the opponent's guesses at our secret
+    my_section = observation
+    if "Your guesses" in observation:
+        parts = observation.split("Opponent's guesses")
+        my_section = parts[0]
+        if "Your guesses" in my_section:
+            my_section = my_section.split("Your guesses", 1)[1]
+
+    # 3. Parse our own guesses and feedback
+    for m in re.finditer(r"(?:you guessed|\bguess)\s+(\d+)\s*->\s*(higher|lower|correct|above|below)", my_section, re.IGNORECASE):
+        n = int(m.group(1))
+        fb = m.group(2).lower()
+        tried.add(n)
+        if "higher" in fb or "above" in fb:
+            low = max(low, n + 1)
+        elif "lower" in fb or "below" in fb:
+            high = min(high, n - 1)
+        elif "correct" in fb:
+            low = high = n
+
+    candidates = [x for x in range(low, high + 1) if x not in tried] if low <= high else []
+    mid = (low + high) // 2 if low <= high else low
+    rec = mid if mid not in tried else (candidates[len(candidates) // 2] if candidates else mid)
+
+    return {
+        "current_min": low,
+        "current_max": high,
+        "recommended_guess": rec,
+        "tried_guesses": sorted(list(tried)),
+        "remaining_candidate_count": len(candidates),
+        "note": "Guaranteed to parse ONLY your guesses at the opponent's number. Opponent guesses at your number are completely excluded.",
+    }
+
+
 # ---------------------------------------------------------------------------
 # Cards / Hidden Information / Bluff Handlers
 # ---------------------------------------------------------------------------
@@ -713,6 +757,32 @@ def synthesize_tools(
                     "additionalProperties": False,
                 },
                 handler=_update_search_interval_handler,
+            )
+        )
+        registry.register(
+            ToolDefinition(
+                name="extract_deduction_state",
+                description="Extract current hypothesis range [min, max] and recommended guess from observation text, strictly excluding opponent guesses.",
+                parameters={
+                    "type": "object",
+                    "properties": {
+                        "observation": {
+                          "type": "string",
+                          "description": "Full observation text for the turn",
+                        },
+                        "min_val": {
+                          "type": "integer",
+                          "description": "Default base minimum value if not in header",
+                        },
+                        "max_val": {
+                          "type": "integer",
+                          "description": "Default base maximum value if not in header",
+                        },
+                    },
+                    "required": ["observation"],
+                    "additionalProperties": False,
+                },
+                handler=_extract_deduction_state_handler,
             )
         )
 
