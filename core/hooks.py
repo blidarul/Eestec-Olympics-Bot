@@ -469,8 +469,30 @@ def _engine_dir(base, game_id):
 
 
 def load_artifacts(game_id: str, rules: str, base: str | None = None) -> dict:
+    base = base or memory.BASE
+    # 1. Try exact rules hash
     d = _load_json(os.path.join(memory.game_dir(game_id, rules, base), "artifacts.json"), None)
-    return d if isinstance(d, dict) else {}
+    if isinstance(d, dict) and d:
+        return d
+    # 2. Try normalized rules (stripped CRLF and whitespace)
+    norm_rules = "\n".join(line.strip() for line in (rules or "").splitlines() if line.strip())
+    h_norm = hashlib.sha1(norm_rules.encode("utf-8", "replace")).hexdigest()[:12]
+    d2 = _load_json(os.path.join(base, f"{game_id}_{h_norm}", "artifacts.json"), None)
+    if isinstance(d2, dict) and d2:
+        return d2
+    # 3. Try engine dir manifest: /memory/<game_id>/manifest.json
+    ed = _engine_dir(base, game_id)
+    manifest = _load_json(os.path.join(ed, "manifest.json"), None)
+    if isinstance(manifest, dict):
+        variants = manifest.get("variants") or []
+        for vd in variants:
+            if isinstance(vd, dict):
+                v_label = str(vd.get("label", ""))
+                if v_label and (v_label in rules or v_label.lower() in rules.lower()):
+                    return map_engine_variant(vd)
+        if variants and isinstance(variants[0], dict):
+            return map_engine_variant(variants[0])
+    return {}
 
 
 # --- chat hooks (chat/ if it exposes them, else core/chatsafe.py) ---

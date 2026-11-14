@@ -352,7 +352,7 @@ def infer_observation_schema(sample_obs: str) -> ObservationSchema:
 
 def _extract_action_section(rules_text: str) -> str:
     """Extract ACTION FORMAT section or similar instruction blocks from rules text."""
-    pattern = re.compile(r"ACTION\s+FORMAT\s*:?\s*(.*?)(?=\n[A-Z\s]{4,}|\Z)", re.DOTALL | re.IGNORECASE)
+    pattern = re.compile(r"(?i:ACTION\s+FORMAT)\s*:?\s*(.*?)(?=\n[A-Z][A-Z0-9\s_]{2,}(?:\([^\)]*\))?\s*\n|\Z)", re.DOTALL)
     match = pattern.search(rules_text)
     if match:
         return match.group(1).strip()
@@ -368,14 +368,18 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
     params = extract_game_parameters(rules_text)
 
     grid_dim = re.search(r"(\d+)\s*x\s*(\d+)\s*(?:grid|board)", combined_text, re.IGNORECASE)
-    has_coord = bool(re.search(r"[A-Z]\d+", action_section) or re.search(r"column letter \+ row number", action_section, re.IGNORECASE))
+    extracted_examples = [q.strip() for q in re.findall(r'["\']([^"\']+)["\']', action_section) if q.strip() and len(q) < 40 and '<' not in q]
+    has_coord = bool(
+        re.search(r"column letter \+ row number", action_section, re.IGNORECASE)
+        or (grid_dim and re.search(r"\b[A-Za-z]\d+\b", action_section))
+        or (extracted_examples and any(re.match(r"^[A-Za-z]\d+$", e) for e in extracted_examples))
+    )
     num_range = re.search(r"(?:range|between)\s+(\d+)\s*(?:and|-|to)\s*(\d+)", combined_text, re.IGNORECASE)
     has_guess_prefix = bool(re.search(r"guess\s+<n>", action_section, re.IGNORECASE) or re.search(r'"guess\s+\d+"', action_section, re.IGNORECASE))
-    extracted_examples = [q.strip() for q in re.findall(r'["\']([^"\']+)["\']', action_section) if q.strip() and len(q) < 40]
 
     word_len_m = re.search(r"\b(\d+)[-\s]letters?\b", combined_text, re.IGNORECASE)
     if not word_len_m:
-        word_len_m = re.search(r"\b(?:length|size)\s*(?:of|=|:)?\s*(\d+)\b", combined_text, re.IGNORECASE)
+        word_len_m = re.search(r"\b(?:word\s+length|word\s+size|letter\s+count|length\s+of\s+(?:the\s+)?word)\s*(?:of|=|:)?\s*(\d+)\b", combined_text, re.IGNORECASE)
     w_words = {"three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
     parsed_word_len = None
     if word_len_m:
@@ -387,14 +391,14 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
                 break
     has_word_clues = bool(re.search(r"\b(?:wordle|secret word|letters?|hangman|anagram)\b", combined_text, re.IGNORECASE))
     guess_word_m = bool(re.search(r"guess\s+(?:a\s+)?word", action_section, re.IGNORECASE) or re.search(r"guess\s+[a-zA-Z]+", action_section, re.IGNORECASE))
-    word_game = (parsed_word_len is not None) or (has_word_clues and (guess_word_m or "word" in action_section.lower()))
+    word_game = (parsed_word_len is not None and has_word_clues) or (has_word_clues and (guess_word_m or "guess <word>" in action_section.lower() or "word" in action_section.lower()))
 
     grammar: ActionGrammar
 
     # 1. Check for discrete action keywords (e.g. roll | hold, pass, defect | cooperate)
-    discrete_match = re.search(r"Reply with one word:\s*([a-zA-Z0-9_\s\|/]+)", action_section, re.IGNORECASE)
+    discrete_match = re.search(r"Reply with (?:exactly )?one word:\s*([^\n\r]+)", action_section, re.IGNORECASE)
     if not discrete_match:
-        discrete_match = re.search(r"choose:\s*([a-zA-Z0-9_\s\|/]+)", action_section, re.IGNORECASE)
+        discrete_match = re.search(r"choose:\s*([^\n\r]+)", action_section, re.IGNORECASE)
 
     if discrete_match and not word_game:
         raw_opts = re.split(r"[\s\|/]+", discrete_match.group(1).strip())

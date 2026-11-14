@@ -74,13 +74,28 @@ def on_prep(msg, wk):
 def pick_artifacts(msg, wk):
     game_id = str(msg.get("game_id", ""))
     rules = str(msg.get("rules", ""))
-    label = str((msg.get("variant") or {}).get("label", "")) if isinstance(msg.get("variant"), dict) else ""
+    raw_var = msg.get("variant")
+    if isinstance(raw_var, dict):
+        label = str(raw_var.get("label", ""))
+    elif isinstance(raw_var, str):
+        label = raw_var
+    else:
+        label = ""
+
     prep = STATE.get("prep") or {}
     same_game = bool(prep.get("game_id") and prep.get("game_id") == game_id)
     by = prep.get("by_label") or {} if same_game else {}
 
     # 1. Exact variant match from prep
     art = by.get(label) if (label and by) else None
+
+    # 1b. Case-insensitive / normalized variant match from prep
+    if not art and by and label:
+        norm_l = label.strip().lower()
+        for k, v in by.items():
+            if k.strip().lower() == norm_l or norm_l in k.strip().lower():
+                art = v
+                break
 
     # 2. If not found in in-memory prep, try /memory by game_id and rules
     if not art:
@@ -90,6 +105,23 @@ def pick_artifacts(msg, wk):
     # 3. If still not found, only default to prep's first variant IF it was the same game
     if not art and same_game and by:
         art = by.get(prep.get("first", ""))
+
+    # 4. If STILL not found (e.g. cold container), build lightweight artifacts on the fly from rules
+    if not art and rules:
+        try:
+            from prep.action_parser import parse_action_grammar
+            from prep.classifier import classify_rules
+            from core.hooks import map_engine_variant
+            cls = classify_rules(rules)
+            gr = parse_action_grammar(rules)
+            art = map_engine_variant({
+                "label": label or "default",
+                "classification": cls.to_dict(),
+                "grammar": gr.to_dict(),
+                "heuristics": {"family": cls.family},
+            })
+        except Exception:
+            traceback.print_exc()
 
     return art if isinstance(art, dict) else {}
 
@@ -220,10 +252,11 @@ def on_turn(msg, wk):
     guessing = (legal is None) or art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")
     previous = list(mine) if guessing else []  # guessing / word games: never send the same action twice (safety net)
     obs = str(msg.get("observation", ""))
+    rules_text = str(STATE["game"].get("rules", ""))
     # fallback FIRST, from the message alone
     use_fmt = not (isinstance(legal, list) and legal)  # legal_actions null/empty: the rules' template is the only guard
     fmt = actionfmt.from_artifacts(art, warning) if use_fmt else None
-    fb_action, fb_chat = fallback.fallback_decision(msg, art, previous)
+    fb_action, fb_chat = fallback.fallback_decision(msg, art, previous, rules=rules_text)
     action, chat = fb_action, fb_chat
     try:
         limit = min(TURN_DEADLINE, 0.6 * float(msg.get("seconds") or 20))
@@ -269,7 +302,7 @@ def on_turn(msg, wk):
         rej = str(warning.get("rejected", ""))
         if rej and (action == rej or fallback.norm(action) == fallback.norm(rej)):
             protocol.log(f"CRITICAL: action '{action}' matches rejected '{rej}', forcing fresh non-repeating fallback!")
-            action = fallback.fallback_action(legal, art, rejected=rej, conservative=True, avoid_also=list(mine) + [rej])
+            action = fallback.fallback_action(legal, art, rejected=rej, conservative=True, avoid_also=list(mine) + [rej], rules=rules_text)
             source = "fallback"
             meta["tool"] = "fallback"
             meta["reason"] = f"override rejected action '{rej}' with emergency fallback"

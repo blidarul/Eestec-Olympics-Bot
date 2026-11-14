@@ -115,8 +115,18 @@ def unused_word(artifacts: dict | None, avoid) -> str | None:
     return None
 
 
+def _extract_rules_examples(rules: str) -> list[str]:
+    if not rules:
+        return []
+    import re
+    pattern = re.compile(r"(?i:ACTION\s+FORMAT)\s*:?\s*(.*?)(?=\n[A-Z][A-Z0-9\s_]{2,}(?:\([^\)]*\))?\s*\n|\Z)", re.DOTALL)
+    m = pattern.search(rules)
+    sec = m.group(1).strip() if m else rules
+    return [q.strip() for q in re.findall(r'["\']([^"\']+)["\']', sec) if q.strip() and len(q) < 40 and '<' not in q]
+
+
 def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, conservative: bool = False,
-                    avoid_also=(), observation: str = "", warning: dict | None = None) -> str:
+                    avoid_also=(), observation: str = "", warning: dict | None = None, rules: str = "") -> str:
     """Always-legal move. `avoid_also`: actions already sent in this game (guessing games must not repeat)."""
     art = artifacts or {}
     policy = art.get("fallback_policy") if isinstance(art.get("fallback_policy"), dict) else {}
@@ -145,7 +155,10 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
             return filled
     fmt = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
     # 1. Action format examples not in avoid
-    for ex in _as_list(fmt.get("examples")):
+    examples = _as_list(fmt.get("examples"))
+    if not examples and rules:
+        examples = _extract_rules_examples(rules)
+    for ex in examples:
         if ex.strip() and ex not in avoid and norm(ex) not in taken_norms:
             return ex
     # 2. Grammar-specific fallback
@@ -176,8 +189,8 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
     return "pass_alt"
 
 
-def fallback_decision(msg: dict, artifacts: dict | None, previous=()) -> tuple[str, str]:
+def fallback_decision(msg: dict, artifacts: dict | None, previous=(), rules: str = "") -> tuple[str, str]:
     warning = msg.get("warning") if isinstance(msg.get("warning"), dict) else {}
     action = fallback_action(msg.get("legal_actions"), artifacts, warning.get("rejected"), avoid_also=previous,
-                             observation=str(msg.get("observation", "")), warning=warning)
+                             observation=str(msg.get("observation", "")), warning=warning, rules=rules)
     return action, fallback_chat(artifacts)
