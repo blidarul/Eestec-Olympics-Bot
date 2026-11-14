@@ -176,5 +176,5 @@ Run the rule 14.7 checklist on the IMAGE. Merge the PR. `git tag t1 && git push 
 - P1: DONE. 7 tests pass; sleep-30 test (BOT_TEST_SLEEP) all turns fallback in 11.5 s, 0 warnings; image mybot:dev built, tic_tac_toe + pig best-of-3 run clean. Human pushes image + t1.
 - P2: DONE. core/{llm,chatsafe,memory,hooks,generic,registry}.py; prep runs in worker (540 s), PrepEngine mapped to artifacts, stub-LLM tests 16 pass, arena practice tic_tac_toe --prep clean. Real-model match not run (ask human).
 - P3: DONE (branch alex/core, PR pending). core/validate.py (exact/normalized/fuzzy 0.85, null-list regex/example), warning -> conservative fallback, budget guard 0.40/match, memory.append_log + log.jsonl on `end`, env fallback in llm.py. 26 tests pass, stub arena practice 2-1 clean. No real-model run.
-- P4:
+- P3b/P4: DONE (PR #17 merged). Decision log (game,turn,source,answer_ms,model_error) -> stderr + log.jsonl; BOT_STUB_LLM(_REPLY). Image checks: bad key, illegal-move stub, pig bo3: 0 warnings, 0 timeouts. solvers/search.py + deduction.py + tests/alex (7 pass) NOT wired: no verified simulator in artifacts (prep writes simulator.py + calibration only). Real-model match not run (no hidden-info game besides pig/guess_number).
 - P5:
