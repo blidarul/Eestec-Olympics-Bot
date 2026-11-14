@@ -107,3 +107,16 @@ solver counts only when `detect(rules)` finds parameters and `verify` accepts th
 | `dice_race_solve` | any | roll/hold race to a target | exact table `solvers/data/dice_race_t100_d6_b1.json` (made by `python -m solvers.classic.dice_table 100 6 1`, 20 s); other parameters: hold at 20 or the target, keep rolling when the opponent is close (facts only) |
 | `range_guess_solve` | guessing | numeric higher/lower guessing | binary search wrapper; skipped when `_guessing` already fired |
 
+
+### Opponent reading (layer 3, M3; `solvers/opponent.py`)
+
+| Tool | Families | When to use | Notes |
+|---|---|---|---|
+| `opponent_predictor` | read_opponent, any (model-callable) | simultaneous-move games with a payoff matrix or a "beats" relation | ensemble (frequency, last 1-4 moves, Markov on the last pair) x 2 meta levels (counter, counter's counter), scored by decayed utility; weak score or < 3 rounds -> `matrix_nash` mix, sampled with a seed |
+| `reciprocity_policy` | read_opponent, any (model-callable) | repeated cooperate/defect | start cooperative, reciprocate, forgive (seeded), defect vs persistent exploiters and on a known last round (`rounds_left == 1`) |
+| `profile_store` | read_opponent (harness-only) | `/memory/opponents/<team>.json` | ops `load` / `update`; lock file + merge from disk + temp file + `os.replace`; counters only (games, rounds, coop_rounds, showdowns, bluff_shows, actions, aggressive_actions, per family); `profile_summary()` gives one fact line |
+
+Detector `_opponent` in `precompute`: facts only, never a certain move. Reads `artifacts["opponent"]` (team id) for the profile line;
+simultaneous rules + legal actions + history (`artifacts["opponent_history"]`/`["my_history"]`, else parsed with `extract_history`) give
+the predictor; cooperate/defect rules give the reciprocity line. Beats relation is read from "X beats Y" sentences or `artifacts["payoff"]`.
+Writing profiles after a game is bld's call: `solvers.opponent.update_profile(team, {"games": 1, "rounds": n, ...}, family)`.

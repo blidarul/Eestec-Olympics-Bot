@@ -543,7 +543,94 @@ def _classic(observation, legal, artifacts, rules, deadline, facts):
             _set_certain(facts, r["move"], r.get("why") or name, name + "_solve")
 
 
-_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim, _classic)
+# ------------------------------------------------------------------ opponent reading (layer 3, M3)
+
+_BEATS = re.compile(r"([A-Za-z][\w-]{1,20})\s+(?:beats|defeats|crushes|covers|cuts|smashes|wins against|wins over)\s+"
+                    r"([A-Za-z][\w-]{1,20})", re.I)
+_SIMUL = re.compile(r"simultaneous|at the same time|both (?:players )?(?:choose|pick|play|submit|reveal)|"
+                    r"without (?:knowing|seeing)|(?:then|are) revealed", re.I)
+_COOP = re.compile(r"cooperat|defect|betray|prisoner", re.I)
+
+
+def _histories(observation, artifacts, legal, deadline):
+    opp = artifacts.get("opponent_history")
+    mine = artifacts.get("my_history")
+    if isinstance(opp, list) and isinstance(mine, list):
+        return [str(x) for x in opp], [str(x) for x in mine]
+    res = _call("extract_history", {"text": observation}, deadline)
+    opp, mine = [], []
+    for e in (res or {}).get("history") or []:
+        v = str(e.get("value") or "").strip()
+        if e.get("actor") == "opponent":
+            opp.append(v)
+        elif e.get("actor") == "you":
+            mine.append(v)
+    return opp, mine
+
+
+def _opponent(observation, legal, artifacts, rules, deadline, facts):
+    team = artifacts.get("opponent") or artifacts.get("opponent_id")
+    if isinstance(team, str) and team:
+        try:
+            from solvers import opponent as _op
+            line = _op.profile_summary(_op.load_profile(team))
+            if line:
+                facts.lines.append(line)
+                facts.used.append("profile_store")
+        except Exception as exc:  # noqa: BLE001
+            _log("profile failed: %s" % exc)
+    if not _SIMUL.search(rules or "") and not _COOP.search(rules or ""):
+        return
+    if not legal or not 2 <= len(legal) <= 12:
+        return
+    opp, mine = _histories(observation, artifacts, legal, deadline)
+    lmap = {_norm(a): a for a in legal}
+    if _COOP.search(rules or ""):
+        names = [a for a in legal if re.match(r"(?i)(coop|defect|betray|cheat|share|trust|c$|d$)", a.strip())]
+        if len(names) == 2 and opp:
+            cl = next((a for a in names if re.match(r"(?i)(coop|share|trust|c$)", a.strip())), None)
+            dl = next((a for a in names if a is not cl), None)
+            if cl and dl:
+                args = {"opponent_history": opp, "my_history": mine, "cooperate_label": cl, "defect_label": dl}
+                lm = re.search(r"(\d{1,3})\s+rounds", rules or "", re.I)
+                if lm and len(opp) + 1 <= int(lm.group(1)):
+                    args["rounds_left"] = int(lm.group(1)) - len(opp)
+                res = _call("reciprocity_policy", args, deadline)
+                if res and res.get("action") in legal:
+                    facts.used.append("reciprocity_policy")
+                    facts.lines.append("Opponent cooperated %.0f%% so far; suggested: %s (%s)." % (
+                        100 * res.get("opponent_cooperation_rate", 1.0), res["action"], res.get("reason")))
+        return
+    if not opp:
+        return
+    args = {"actions": list(legal), "opponent_history": opp, "my_history": mine}
+    mat = None
+    for key in ("payoff", "payoff_matrix", "matrix"):
+        if isinstance(artifacts.get(key), list):
+            mat = artifacts[key]
+            break
+    if mat:
+        args["payoff"] = mat
+    else:
+        beats = {}
+        for a, b in _BEATS.findall(rules or ""):
+            if _norm(a) in lmap and _norm(b) in lmap:
+                beats.setdefault(lmap[_norm(a)], []).append(lmap[_norm(b)])
+        if not beats:
+            return
+        args["beats"] = beats
+    res = _call("opponent_predictor", args, deadline)
+    if not res or res.get("action") not in legal:
+        return
+    facts.used.append("opponent_predictor")
+    if res.get("predicted_opponent"):
+        facts.lines.append("Opponent looks like %s (confidence %.2f); best response: %s." % (
+            res["predicted_opponent"], res.get("confidence", 0), res["action"]))
+    else:
+        facts.lines.append("Opponent looks random after %d rounds; equilibrium sample: %s." % (len(opp), res["action"]))
+
+
+_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim, _classic, _opponent)
 
 
 def precompute(observation, legal_actions, artifacts, rules, deadline):

@@ -222,7 +222,8 @@ only `solvers/` and `tests/alex/` changed; HANDOFF_bld.md matches what is on mai
 - M1: DONE. solvers/deduce.py (best_guess, 4 models, deduce_next registered, 33 tools); detector _deduce in precompute, hints in select; tests/alex/test_deduce_solvers.py; 260 tests pass. Not used: prep's exec'd Haiku model code (strategies/guessing/deduce keeps that); only a duck-typed artifacts["feedback_model"].
 - M2: DONE. solvers/classic/ (kinrow, subtraction, dice_race, range_guess + tools.py; 37 tools, 4 harness-only `*_solve`); detector _classic in precompute; tests/alex/test_classic.py; exact pig table (target 100, d6, p_first 0.5306) in solvers/data/.
   Not done: dice_race exact only for target 100/d6/bust 1; kinrow heuristic (>12 empty) is never certain except win/block; classic range_guess is skipped when _guessing fired; not yet checked on arena-lite sample_turn observations (no practice run needed no model).
-- M3:
+- M3: DONE. solvers/opponent.py (opponent_predictor, reciprocity_policy model-callable; profile_store harness-only; 40 tools); detector _opponent in precompute (facts only), hints in select; tests/alex/test_opponent.py; 290 tests pass.
+  Not done: nothing writes profiles yet (bld must call update_profile after a game); predictor needs a payoff matrix or 'X beats Y' sentences, otherwise no fact; zero-sum assumed for the counter-of-counter level.
 - M4:
 - M5:
 - M6:

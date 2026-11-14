@@ -26,6 +26,8 @@ HINTS = (
     (r"\b(graph|node|edge|path|route|maze)\b", ("graph_shortest_path", "grid_bfs")),
     (r"\b(grid|board|cell|row|column)\b", ("extract_grid", "grid_bfs")),
     (r"\b(payoff|simultaneous|matrix)\b", ("matrix_nash", "best_response")),
+    (r"\b(simultaneous(ly)?|at the same time|rock|paper|scissors)\b", ("opponent_predictor",)),
+    (r"\b(cooperat\w*|defect\w*|betray\w*|prisoner)", ("reciprocity_policy",)),
     (r"\b(heap|pile|nim)\b", ("nim_analysis",)),
     (r"\b(guess|higher|lower|secret)\b", ("binary_search_next", "deduce_next", "extract_history")),
     (r"\b(pegs?|bulls?|cows?|mastermind|wordle|green|yellow|digits?|letters?)\b", ("deduce_next", "extract_history")),
@@ -34,7 +36,7 @@ HINTS = (
 GENERAL_ORDER = ("expected_value", "best_option", "combinatorics", "bayes_update", "extract_numbers",
                  "binomial_tail", "hypergeometric", "dice_sum_distribution", "matrix_nash", "best_response",
                  "graph_shortest_path", "extract_grid", "extract_history", "extract_cards", "nim_analysis",
-                 "sample_action", "count_hands", "abstain_threshold", "graph_reachable", "graph_topo_sort",
+                 "opponent_predictor", "reciprocity_policy", "sample_action", "count_hands", "abstain_threshold", "graph_reachable", "graph_topo_sort",
                  "graph_components", "graph_dfs_order", "deduce_next")
 
 
