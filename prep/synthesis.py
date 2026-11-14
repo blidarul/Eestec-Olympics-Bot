@@ -1,5 +1,6 @@
 """Automated, Parameter-Driven Simulator Synthesis for 10-Minute Prep.
 Synthesizes lightweight, fast Python game simulators dynamically adapted to the discovered game mechanics.
+Supports state reconstruction via parse(observation, seat) for verification and search.
 Fully game-agnostic (Rules 10.7, 12.1).
 Owned by agent `bld`.
 """
@@ -94,6 +95,74 @@ class State:
         if self.has_line(1 - seat):
             return -1.0
         return 0.0
+
+    def key(self):
+        val = 0
+        for i, cell in enumerate(self.board):
+            if cell is not None:
+                val ^= ((cell + 1) * 0x9E3779B97F4A7C15 + i * 0xBF58476D1CE4E5B9) & 0xFFFFFFFFFFFFFFFF
+        if self.current == 1:
+            val ^= 0x94D049BB133111EB
+        return val
+
+
+def parse(observation: str, seat: int = 0) -> State:
+    """Parse text observation into a State object matching current turn and board layout."""
+    import re
+    s = State()
+    s.current = int(seat)
+
+    mark_0 = "X"
+    mark_1 = "O"
+    m_marks = re.search(r"seat\\s+(\\d+)\\s+(?:and\\s+)?plays?\\s+([A-Za-z0-9])", observation, re.IGNORECASE)
+    if m_marks:
+        st = int(m_marks.group(1))
+        mk = m_marks.group(2).upper()
+        if st == 0:
+            mark_0 = mk
+            mark_1 = "O" if mk == "X" else "X"
+        else:
+            mark_1 = mk
+            mark_0 = "X" if mk == "O" else "O"
+
+    row_count = 0
+    for line in observation.splitlines():
+        line = line.strip()
+        m_num = re.match(r"^(\\d{{1,2}})\\s+([A-Za-z0-9.\\s]+)$", line)
+        if m_num:
+            r = int(m_num.group(1)) - 1
+            if 0 <= r < s.rows:
+                tokens = [t for t in re.split(r"\\s+", m_num.group(2).strip()) if t in (mark_0, mark_1, ".", "-", "_")]
+                if len(tokens) == s.cols:
+                    for c in range(s.cols):
+                        tok = tokens[c]
+                        if tok == mark_0:
+                            s.board[r * s.cols + c] = 0
+                        elif tok == mark_1:
+                            s.board[r * s.cols + c] = 1
+                        else:
+                            s.board[r * s.cols + c] = None
+                    row_count += 1
+        else:
+            m_let = re.match(r"^([A-Za-z])[:\\s]+([A-Za-z0-9.\\s]+)$", line)
+            if m_let:
+                r = ord(m_let.group(1).upper()) - ord("A")
+                if 0 <= r < s.rows:
+                    tokens = [t for t in re.split(r"\\s+", m_let.group(2).strip()) if t in (mark_0, mark_1, ".", "-", "_")]
+                    if len(tokens) == s.cols:
+                        for c in range(s.cols):
+                            tok = tokens[c]
+                            if tok == mark_0:
+                                s.board[r * s.cols + c] = 0
+                            elif tok == mark_1:
+                                s.board[r * s.cols + c] = 1
+                            else:
+                                s.board[r * s.cols + c] = None
+                        row_count += 1
+
+    if row_count == 0:
+        raise ValueError("Could not parse grid board from observation")
+    return s
 '''
 
     elif family == "dice_push":
@@ -120,6 +189,7 @@ class State:
         return [self.continue_action, self.stop_action]
 
     def step(self, action):
+        import random
         new_state = State(self.target)
         new_state.banked = list(self.banked)
         new_state.turn_total = self.turn_total
@@ -130,8 +200,13 @@ class State:
             new_state.turn_total = 0
             new_state.current = 1 - self.current
         else:
-            # Continuing adds expected marginal gain
-            new_state.turn_total += 4
+            # Sample random six-sided die roll (chance outcome)
+            roll = random.randint(1, 6)
+            if roll == 1:
+                new_state.turn_total = 0
+                new_state.current = 1 - self.current
+            else:
+                new_state.turn_total += roll
         return new_state
 
     def is_terminal(self):
@@ -139,6 +214,30 @@ class State:
 
     def evaluate(self, seat):
         return float(self.banked[seat] - self.banked[1 - seat])
+
+    def key(self):
+        return (self.banked[0] << 32) ^ (self.banked[1] << 16) ^ (self.turn_total << 2) ^ self.current
+
+
+def parse(observation: str, seat: int = 0) -> State:
+    """Parse accumulator observation into a State object."""
+    import re
+    s = State()
+    s.current = int(seat)
+    m_bank = re.search(r"Banked:\\s*you\\s*(\\d+),\\s*opponent\\s*(\\d+)", observation, re.IGNORECASE)
+    if m_bank:
+        you_b = int(m_bank.group(1))
+        opp_b = int(m_bank.group(2))
+        s.banked = [you_b if i == seat else opp_b for i in range(2)]
+    else:
+        m_list = re.search(r"banked[:\\s]+\\[?(\\d+)[,\\s]+(\\d+)\\]?", observation, re.IGNORECASE)
+        if m_list:
+            s.banked = [int(m_list.group(1)), int(m_list.group(2))]
+
+    m_turn = re.search(r"Turn total:\\s*(\\d+)", observation, re.IGNORECASE)
+    if m_turn:
+        s.turn_total = int(m_turn.group(1))
+    return s
 '''
 
     elif family == "deduction":
@@ -166,6 +265,17 @@ class State:
 
     def evaluate(self, seat):
         return 0.0
+
+
+def parse(observation: str, seat: int = 0) -> State:
+    import re
+    s = State()
+    s.current = int(seat)
+    m_range = re.search(r"between\\s+(\\d+)\\s+and\\s+(\\d+)", observation, re.IGNORECASE)
+    if m_range:
+        s.lo = int(m_range.group(1))
+        s.hi = int(m_range.group(2))
+    return s
 '''
 
     # Discrete / Matrix simultaneous or generic game
@@ -190,6 +300,12 @@ class State:
 
     def evaluate(self, seat):
         return 0.0
+
+
+def parse(observation: str, seat: int = 0) -> State:
+    s = State()
+    s.current = int(seat)
+    return s
 '''
 
 
@@ -221,6 +337,7 @@ def calibrate_simulator(
 
         return {
             "calibrated": True,
+            "usable": True,
             "steps_executed": steps_executed,
             "initial_actions_count": len(initial_actions),
             "transitions_per_sec": round(rate, 1),
@@ -229,6 +346,7 @@ def calibrate_simulator(
     except Exception as exc:
         return {
             "calibrated": False,
+            "usable": False,
             "error": str(exc),
         }
 
@@ -250,6 +368,6 @@ def save_synthesized_simulator(
         exec(code, namespace)
         calibration = calibrate_simulator(namespace.get("State"), max_steps=2)
     except Exception as exc:
-        calibration = {"calibrated": False, "error": str(exc)}
+        calibration = {"calibrated": False, "usable": False, "error": str(exc)}
 
     return path, calibration
