@@ -66,3 +66,29 @@ Verified end to end by `python tests/alex/smoke_tools.py` (pass/fail table on st
 
 Harness-only tools take Python callables, so `openai_tools()` never lists them and the model cannot call them.
 Tool families filter `list_tools(family=...)`; `any` tools match every family.
+
+## Layer 2: `assist_turn` (one call per turn)
+
+```
+turn -> precompute (facts, certain move, <300 ms, no model)
+     -> certain move? return it (source=tool, no model call)
+     -> select_tools (<=6 names) -> run_tool_loop (native or text, <=2 rounds)
+     -> suggestion {"action","chat","source","why"} or None
+```
+
+Library only: it never imports `core/`, `prep/`, `chat/`, `strategies/`. The caller passes the
+model call, artifacts, rules, observation and a `time.monotonic()` deadline, then validates the suggestion
+(None or invalid -> its own fallback). Opponent chat never goes in; keep it in the caller's untrusted block.
+
+```python
+import time
+from solvers.assist import assist_turn
+a = assist_turn(obs, legal, artifacts, rules, llm_call, system, user,
+                deadline=time.monotonic() + 12, native=True)
+if a.suggestion and a.suggestion["action"] in (legal or [a.suggestion["action"]]):
+    move, chat = a.suggestion["action"], a.suggestion["chat"]
+# log: a.facts.used, [t["tool"] for t in a.loop.trace] if a.loop else [], a.suggestion["source"], a.facts.ms
+```
+
+Limits: facts block <= 600 chars, tool instructions <= 400, <= 6 tool schemas, <= 3 tool calls per round,
+tool results cut to 1 KB, chat <= 200. `llm_call` signature and `make_openai_llm_call(client, model)` are in `solvers/toolloop.py`.
