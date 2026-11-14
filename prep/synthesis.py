@@ -392,13 +392,29 @@ def calibrate_simulator(
         elapsed = time.perf_counter() - start_time
         rate = (steps_executed / elapsed) if elapsed > 0 else 50000.0
 
+        # Check if terminal state can be verified via a simulated game playout
+        terminal_reached = current_state.is_terminal()
+        playout_s = current_state
+        import random
+        rng = random.Random(42)
+        for _ in range(100):
+            if playout_s.is_terminal():
+                terminal_reached = True
+                break
+            p_acts = playout_s.legal_actions()
+            if not p_acts:
+                break
+            playout_s = playout_s.step(rng.choice(p_acts))
+        if playout_s.is_terminal():
+            terminal_reached = True
+
         return {
             "calibrated": True,
             "usable": True,
             "steps_executed": steps_executed,
             "initial_actions_count": len(initial_actions),
             "transitions_per_sec": round(rate, 1),
-            "is_terminal_verified": current_state.is_terminal(),
+            "is_terminal_verified": terminal_reached,
         }
     except Exception as exc:
         return {

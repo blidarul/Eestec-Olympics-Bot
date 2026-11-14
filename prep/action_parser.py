@@ -34,6 +34,7 @@ class ActionGrammar:
     word_length: int | None = None
     word_prefix: str = ""
     examples: list[str] = field(default_factory=list)
+    case: str = "lower"
     case_sensitive: bool = False
     aliases: dict[str, str] = field(default_factory=dict)
     forbidden_keywords: list[str] = field(default_factory=list)
@@ -151,7 +152,7 @@ class ActionGrammar:
             else:
                 m = re.match(r"^(?:guess\s+)?([A-Za-z]+)$", clean, re.IGNORECASE)
                 w = m.group(1) if m else clean
-            case = "upper" if self.case_sensitive else "lower"
+            case = getattr(self, "case", None) or ("upper" if self.case_sensitive else "lower")
             w_out = w.upper() if case == "upper" else w.lower()
             return f"{self.word_prefix}{w_out}" if self.word_prefix else w_out
 
@@ -192,6 +193,7 @@ class ActionGrammar:
             "word_length": self.word_length,
             "word_prefix": self.word_prefix,
             "examples": self.examples,
+            "case": getattr(self, "case", "upper" if self.case_sensitive else "lower"),
             "case_sensitive": self.case_sensitive,
             "aliases": self.aliases,
             "forbidden_keywords": self.forbidden_keywords,
@@ -212,7 +214,8 @@ class ActionGrammar:
             word_length=data.get("word_length"),
             word_prefix=data.get("word_prefix", ""),
             examples=data.get("examples", []),
-            case_sensitive=data.get("case_sensitive", False),
+            case=data.get("case", "upper" if data.get("case_sensitive") else "lower"),
+            case_sensitive=bool(data.get("case_sensitive", False) or data.get("case") == "upper"),
             aliases=data.get("aliases", {}),
             forbidden_keywords=data.get("forbidden_keywords", []),
             parameters=data.get("parameters", {}),
@@ -393,7 +396,7 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
     if not discrete_match:
         discrete_match = re.search(r"choose:\s*([a-zA-Z0-9_\s\|/]+)", action_section, re.IGNORECASE)
 
-    if discrete_match:
+    if discrete_match and not word_game:
         raw_opts = re.split(r"[\s\|/]+", discrete_match.group(1).strip())
         opts = [o.lower() for o in raw_opts if o and o.isalpha()]
         if opts:
@@ -455,11 +458,21 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
             word_examples = [f"{w_pre}{w}" for w in WORDS_BY_LENGTH[w_len][:5]]
         elif not word_examples:
             word_examples = [f"{w_pre}{w}" for w in ["play", "game", "word", "slate", "planet"]]
+        is_upper = bool(
+            re.search(r"\b(?:upper\s*case|all\s*caps|capital\s*letters?)\b", combined_text, re.IGNORECASE)
+            or (sample_legal and any(str(a).isupper() and len(str(a)) > 1 for a in sample_legal))
+            or (extracted_examples and any(e.isupper() and len(e) > 1 for e in extracted_examples))
+        )
+        case = "upper" if is_upper else "lower"
+        if is_upper:
+            word_examples = [e.upper() for e in word_examples]
         grammar = ActionGrammar(
             kind="word",
             word_length=w_len,
             word_prefix=w_pre,
             examples=word_examples,
+            case=case,
+            case_sensitive=is_upper,
         )
 
     # 4. Check for Numeric range (e.g. "guess <n>", "between 1 and 100", "range 1-100")
