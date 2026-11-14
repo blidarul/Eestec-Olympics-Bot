@@ -224,7 +224,8 @@ only `solvers/` and `tests/alex/` changed; HANDOFF_bld.md matches what is on mai
   Not done: dice_race exact only for target 100/d6/bust 1; kinrow heuristic (>12 empty) is never certain except win/block; classic range_guess is skipped when _guessing fired; not yet checked on arena-lite sample_turn observations (no practice run needed no model).
 - M3: DONE. solvers/opponent.py (opponent_predictor, reciprocity_policy model-callable; profile_store harness-only; 40 tools); detector _opponent in precompute (facts only), hints in select; tests/alex/test_opponent.py; 290 tests pass.
   Not done: nothing writes profiles yet (bld must call update_profile after a game); predictor needs a payoff matrix or 'X beats Y' sentences, otherwise no fact; zero-sum assumed for the counter-of-counter level.
-- M4:
+- M4: DONE. solvers/chance.py (call_ev, bluff_frequency, claim_probability, card_equity; 44 tools, all model-callable); detector _chance in precompute (facts only), hints in select; tests/alex/test_chance.py; 301 tests pass.
+  Not done: no comparator for non-52-card decks (deck arg exists in monte_carlo_equity only), detector parses only hold'em-style and 'Your dice / Current bid' text formats (else pass artifacts), no Kuhn/Leduc tables (M8).
 - M5:
 - M6:
 - M7:

@@ -15,6 +15,7 @@ _TOOL_MODULES = (
     "solvers.deduce",
     "solvers.classic.tools",
     "solvers.opponent",
+    "solvers.chance",
 )
 
 for _name in _TOOL_MODULES:

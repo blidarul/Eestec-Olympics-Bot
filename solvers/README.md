@@ -120,3 +120,16 @@ Detector `_opponent` in `precompute`: facts only, never a certain move. Reads `a
 simultaneous rules + legal actions + history (`artifacts["opponent_history"]`/`["my_history"]`, else parsed with `extract_history`) give
 the predictor; cooperate/defect rules give the reciprocity line. Beats relation is read from "X beats Y" sentences or `artifacts["payoff"]`.
 Writing profiles after a game is bld's call: `solvers.opponent.update_profile(team, {"games": 1, "rounds": n, ...}, family)`.
+
+### Bluff and chance (layer 3, M4; `solvers/chance.py`)
+
+| Tool | Families | When to use | Notes |
+|---|---|---|---|
+| `call_ev` | bluff, any (model-callable) | facing a bet | pot (incl. their bet), to_call, win_prob (+tie_prob) -> EV call vs fold, required equity, decision |
+| `bluff_frequency` | bluff, any (model-callable) | betting games | bluff ratio bet/(pot+2*bet), opponent defend freq; with `hand_strength` a seeded bet / bluff / give-up decision made by code |
+| `claim_probability` | bluff, any (model-callable) | dice bidding | binomial P(claim true) from our dice, hidden dice, wild faces; raise/challenge, biggest still-likely claims |
+| `card_equity` | bluff, any (model-callable; core `monte_carlo_equity` usable by the harness) | card games, 52-card deck | Monte Carlo win/tie until the deadline; comparators `poker5` (best 5 of 7), `high_card`, `sum_closest_to` |
+
+Detector `_chance` in `precompute`: facts only, never a certain move. Hold'em-like rules: cards parsed from "your hand"/"board" lines -> equity,
+then call EV (pot and to-call from the text or `artifacts["pot"]`, `["to_call"]`, `["win_prob"]`) or a bluff suggestion when no bet is faced
+(`artifacts["bet_size"]`, else half the pot). Dice rules: `artifacts["dice"]`, `["total_dice"]`, `["claim"]` or "Your dice:", "Total dice in play:", "Current bid: 6 3s".

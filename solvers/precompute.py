@@ -630,7 +630,99 @@ def _opponent(observation, legal, artifacts, rules, deadline, facts):
         facts.lines.append("Opponent looks random after %d rounds; equilibrium sample: %s." % (len(opp), res["action"]))
 
 
-_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim, _classic, _opponent)
+# ------------------------------------------------------------------ bluff and chance (layer 3, M4)
+
+_BLUFFY = re.compile(r"bluff|poker|\bpot\b|\bfold\b|\braise\b|liar|challenge|\bbid\b|\bwager|\bante\b", re.I)
+_HOLDEM = re.compile(r"hold.?em|community|\bflop\b|\briver\b|5-card|five-card|poker", re.I)
+_POT = re.compile(r"\bpot\b\D{0,15}?(\d+(?:\.\d+)?)", re.I)
+_TOCALL = re.compile(r"(?:to call|cost to call|call (?:costs|amount)|amount to call)\D{0,10}?(\d+(?:\.\d+)?)|"
+                     r"(?:opponent|they|player \d)\s+(?:bets?|raises?)\s+(?:to\s+)?(\d+(?:\.\d+)?)", re.I)
+_OURS = re.compile(r"your (?:hand|cards?)|you (?:hold|have|were dealt)|hole cards?|you are holding", re.I)
+_TABLE = re.compile(r"board|community|flop|turn|river|table", re.I)
+_YDICE = re.compile(r"(?:your|you rolled|you have)\W+(?:dice|rolled)?\W*:?\s*((?:[1-9]\s*[, ]\s*)*[1-9])\b", re.I)
+_TDICE = re.compile(r"(?:total dice|dice in play|dice remaining)\D{0,6}(\d+)|(\d+)\s+dice\s+(?:in play|total|remaining|left)", re.I)
+_BID = re.compile(r"(?:current\s+)?(?:bid|claim)\w*\D{0,10}?(\d+)\s*(?:x|\u00d7|of|\s)\s*(?:\w+\s)?([1-9])s?\b", re.I)
+
+
+def _num_of(m):
+    g = next((x for x in (m.groups() if m else ()) if x), None)
+    return float(g) if g else None
+
+
+def _chance(observation, legal, artifacts, rules, deadline, facts):
+    import zlib
+    if not (_BLUFFY.search(rules or "") or _BLUFFY.search(observation)):
+        return
+    seed = zlib.crc32(observation.encode("utf-8", "ignore")) & 0x7FFFFFFF
+    pot = artifacts.get("pot")
+    to_call = artifacts.get("to_call")
+    if not isinstance(pot, (int, float)):
+        pot = _num_of(_POT.search(observation))
+    if not isinstance(to_call, (int, float)):
+        to_call = _num_of(_TOCALL.search(observation))
+    win = artifacts.get("win_prob") if isinstance(artifacts.get("win_prob"), (int, float)) else None
+    tie = 0.0
+    # Texas-hold'em-like: our cards and the table from the observation text -> Monte Carlo equity.
+    if win is None and _HOLDEM.search(rules or ""):
+        ours, table = [], []
+        for line in observation.split("\n")[:60]:
+            if _OURS.search(line) or _TABLE.search(line):
+                res = _call("extract_cards", {"text": line}, deadline)
+                cards = ["%s%s" % (c["rank"], c["suit"]) for c in (res or {}).get("cards", [])]
+                (ours if _OURS.search(line) and not _TABLE.search(line) else table).extend(cards)
+        ours, table = list(dict.fromkeys(ours)), [c for c in dict.fromkeys(table) if c not in ours]
+        if len(ours) == 2 and len(table) <= 5:
+            res = _call("card_equity", {"our_cards": ours, "visible_cards": table, "seed": seed,
+                                        "opponents": int(artifacts.get("n_opponents") or 1), "max_samples": 3000}, deadline)
+            if res:
+                win, tie = res["win"], res["tie"]
+                facts.used.append("card_equity")
+                facts.lines.append("Win probability %.0f%% (tie %.0f%%) with %s on %s." % (
+                    100 * win, 100 * tie, " ".join(ours), " ".join(table) or "an empty board"))
+    # Dice-bidding claims.
+    dice = artifacts.get("dice") if isinstance(artifacts.get("dice"), list) else None
+    total = artifacts.get("total_dice")
+    claim = artifacts.get("claim") if isinstance(artifacts.get("claim"), dict) else None
+    if dice is None and re.search(r"\bdice\b", rules or "", re.I):
+        m = _YDICE.search(observation)
+        if m:
+            dice = [int(x) for x in re.findall(r"[1-9]", m.group(1))]
+    if total is None:
+        m = _TDICE.search(observation)
+        total = int(next(g for g in m.groups() if g)) if m else None
+    if claim is None and dice is not None:
+        m = _BID.search(observation)
+        if m:
+            claim = {"count": int(m.group(1)), "face": int(m.group(2))}
+    if dice is not None and isinstance(total, int) and claim:
+        wild = [1] if re.search(r"\b(?:ones?|1s)\b[^.\n]{0,30}\bwild|wild[^.\n]{0,30}\b(?:ones?|1s)\b", rules or "", re.I) else []
+        args = {"total_dice": total, "our_dice": dice, "claim_count": claim.get("count", 0), "claim_face": claim.get("face", 1),
+                "wild_faces": wild}
+        res = _call("claim_probability", args, deadline)
+        if res:
+            facts.used.append("claim_probability")
+            facts.lines.append("The claim %sx%s is true with probability %.0f%% (we hold %d matching): %s." % (
+                claim.get("count"), claim.get("face"), 100 * res["p_true"], res["our_matching"], res["recommendation"]))
+    if win is None:
+        return
+    if isinstance(pot, (int, float)) and isinstance(to_call, (int, float)) and to_call > 0:
+        res = _call("call_ev", {"pot": pot, "to_call": to_call, "win_prob": win, "tie_prob": tie}, deadline)
+        if res:
+            facts.used.append("call_ev")
+            facts.lines.append("Calling needs %.0f%% equity, we have %.0f%%: EV of call %.2f -> %s." % (
+                100 * res["required_equity"], 100 * res["equity"], res["ev_call"], res["decision"]))
+    bet = artifacts.get("bet_size") if isinstance(artifacts.get("bet_size"), (int, float)) else None
+    if bet is None and isinstance(pot, (int, float)) and pot > 0 and not to_call:
+        bet = pot / 2.0
+    if isinstance(pot, (int, float)) and bet and bet > 0 and not to_call:
+        res = _call("bluff_frequency", {"bet": bet, "pot": pot, "hand_strength": win + tie / 2.0, "seed": seed}, deadline)
+        if res and res.get("action"):
+            facts.used.append("bluff_frequency")
+            facts.lines.append("Bluff ratio %.0f%% for a bet of %g into %g; code suggests: %s (%s)." % (
+                100 * res["bluff_ratio"], bet, pot, res["action"], res["why"]))
+
+
+_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim, _classic, _opponent, _chance)
 
 
 def precompute(observation, legal_actions, artifacts, rules, deadline):
