@@ -11,7 +11,7 @@ import sys
 import time
 import traceback
 
-from core import chatsafe, memory
+from core import chatsafe, memory, registry
 from core.llm import LLM
 
 PREP_DEADLINE = 540.0
@@ -54,8 +54,12 @@ def map_engine_variant(vd: dict) -> dict:
     hints = heur.get("strategy_hints") or {}
     hint_txt = "; ".join(f"{k}: {v}" for k, v in hints.items() if isinstance(v, (str, int, float)))[:600]
     art = _default_artifacts(vd.get("label", ""))
+    raw_family = cls.get("family") or heur.get("family") or "generic"
     art.update({
-        "family": cls.get("family") or heur.get("family") or "generic",
+        "family": registry.FAMILY_ALIASES.get(raw_family, raw_family),  # strategy family name (core/registry.py)
+        "prep_family": raw_family,
+        "classification": {k: cls.get(k) for k in ("confidence", "is_deterministic", "has_hidden_information",
+                                                   "is_simultaneous", "turn_structure")},
         "playbook": (f"Game family: {cls.get('family', 'generic')}. {hint_txt}").strip()[:900],
         "action_format": {"kind": gr.get("kind", ""), "regex": None, "examples": examples},
         "fallback_policy": {"prefer": opening, "avoid": []},
@@ -75,7 +79,8 @@ def _core_prep_variant(llm: LLM, variant: dict) -> dict:
     obj = llm.ask_json(sys_p, str(variant.get("rules", ""))[:12000], prep=True, timeout=60)
     if obj:
         try:
-            art["family"] = str(obj.get("family") or "generic")
+            fam = str(obj.get("family") or "generic").strip().lower()
+            art["family"] = registry.FAMILY_ALIASES.get(fam, fam)
             art["playbook"] = str(obj.get("playbook") or "")[:900]
             af = obj.get("action_format") if isinstance(obj.get("action_format"), dict) else {}
             art["action_format"] = {"kind": "", "regex": af.get("regex") or None,
@@ -93,6 +98,7 @@ def _core_prep_variant(llm: LLM, variant: dict) -> dict:
 
 def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
     """Return {"by_label": {label: artifacts}, "first": label}. Never raises."""
+    t_start = time.monotonic()
     base = memory_dir or memory.BASE
     variants = [v for v in (msg.get("variants") or []) if isinstance(v, dict)]
     by_label = {}
@@ -117,11 +123,110 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
                 traceback.print_exc()
     for v in variants:  # ensure every variant has an entry
         by_label.setdefault(str(v.get("label", "")), _default_artifacts(str(v.get("label", ""))))
+    try:
+        _verify_simulators(msg, by_label, base, t_start)
+    except BaseException:
+        traceback.print_exc()
+    try:
+        _prepare_strategies(msg, by_label, base, t_start)
+    except BaseException:
+        traceback.print_exc()
+    for v in variants:
         by_label[str(v.get("label", ""))]["rules_text_hash_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
         memory.save_json(os.path.join(memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base), "artifacts.json"),
                          by_label[str(v.get("label", ""))])
     first = str(variants[0].get("label", "")) if variants else ""
     return {"by_label": by_label, "first": first}
+
+
+def _simulator_for(base, game_id, manifest, idx, variant):
+    """Path of the simulator built for THIS variant. prep/ writes one simulator.py from the FIRST variant only, so it is
+    offered to variant 0 only; a per-variant file (manifest variant "simulator_path", or simulator_<idx>.py) is used when
+    it exists. Returns (path | None, reason)."""
+    d = _engine_dir(base, game_id)
+    mv = (manifest.get("variants") or []) if isinstance(manifest, dict) else []
+    p = mv[idx].get("simulator_path") if idx < len(mv) and isinstance(mv[idx], dict) else None
+    for cand in (p, os.path.join(d, f"simulator_{idx}.py"), os.path.join(d, "simulator.py") if idx == 0 else None):
+        if cand and os.path.isfile(cand):
+            return cand, ""
+    if os.path.isfile(os.path.join(d, "simulator.py")):
+        return None, "simulator.py was built from the first variant only"
+    return None, "no simulator.py"
+
+
+def _verify_simulators(msg, by_label, base, t_start):
+    """artifacts["simulator"] = {path, verified, has_chance, reason, calibration} per variant (solvers/verify.py)."""
+    game_id = msg.get("game_id", "unknown_game")
+    manifest = _load_json(os.path.join(_engine_dir(base, game_id), "manifest.json"), {})
+    calib = manifest.get("simulator_calibration") if isinstance(manifest, dict) else None
+    for idx, v in enumerate(msg.get("variants") or []):
+        if not isinstance(v, dict):
+            continue
+        art = by_label.get(str(v.get("label", "")))
+        if art is None:
+            continue
+        path, why = _simulator_for(base, game_id, manifest, idx, v)
+        res = {"path": path, "verified": False, "has_chance": False, "reason": why, "calibration": calib}
+        try:
+            if path:
+                left = PREP_DEADLINE - 60 - (time.monotonic() - t_start)
+                if left < 5:
+                    res["reason"] = "no prep time left"
+                else:
+                    from solvers.verify import verify_isolated
+                    out = verify_isolated(path, v, timeout=min(25.0, left))
+                    res.update({k: out.get(k) for k in ("verified", "reason", "has_chance")})
+        except BaseException as e:
+            traceback.print_exc()
+            res["reason"] = f"verify error {type(e).__name__}"
+        art["simulator"] = res
+        _log(f"[prep] simulator {v.get('label')!r}: verified={res['verified']} ({res['reason']})")
+
+
+def _prepare_strategies(msg, by_label, base, t_start):
+    """Optional Strategy.prepare(rules, variant, llm, deadline) of the strategies in the family's folder
+    (strategies/<family>/*). Results go to artifacts["prepared"][<strategy name>]."""
+    entries = registry.load_entries()
+    llm = None
+    try:
+        llm = LLM(msg.get("llm"))
+    except Exception:
+        traceback.print_exc()
+    deadline = t_start + PREP_DEADLINE - 90  # monotonic-based: this process started the prep clock
+    for v in (msg.get("variants") or []):
+        if not isinstance(v, dict):
+            continue
+        art = by_label.get(str(v.get("label", "")))
+        if art is None:
+            continue
+        for fam_dir, strat in entries:
+            fn = getattr(strat, "prepare", None)
+            if not callable(fn) or fam_dir != art.get("family"):
+                continue
+            if time.monotonic() > deadline - 10:
+                _log(f"[prep] no time left for {strat.name}.prepare")
+                break
+            try:
+                variant = dict(v)
+                variant["memory_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
+                res = fn(str(v.get("rules", "")), variant, llm, deadline)
+                if isinstance(res, dict):
+                    art.setdefault("prepared", {})[getattr(strat, "name", fam_dir)] = res
+                    _log(f"[prep] {strat.name}.prepare: verified={res.get('verified')} ({res.get('reason')})")
+            except BaseException:
+                traceback.print_exc()
+
+
+def ready_line(rules, forbidden, seed) -> str:
+    """The `ready` chat (6.8): chat.pipeline.ready_line (pure code, filtered, never empty) or the core's neutral line."""
+    try:
+        from chat.pipeline import ready_line as rl
+        out = rl(rules, list(forbidden or []), str(seed))
+        if isinstance(out, str) and out.strip():
+            return out.strip()[:200]
+    except BaseException:
+        traceback.print_exc()
+    return filter_out("Good luck, have fun!", forbidden)
 
 
 def _engine_dir(base, game_id):

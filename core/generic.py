@@ -44,7 +44,8 @@ class Generic:
         if legal and len(legal) == 1:
             return Decision(legal[0], hooks.filter_out(fallback.fallback_chat(art), forbidden), "strategy")
         warned = isinstance(state.warning, dict) and bool(state.warning)
-        fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned)
+        no_repeat = list(state.my_actions or []) if art.get("family") == "guessing" else []
+        fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat)
         fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
         llm = state.llm
         if llm is None or not llm.available() or llm.over_budget() or time.monotonic() > state.deadline - 1.0:
@@ -59,7 +60,7 @@ class Generic:
         if not obj:
             return Decision(fb_a, fb_c, "fallback")
         a = obj.get("a")
-        move = validate.validate(a, legal, art, rejected)
+        move = validate.validate(a, legal, art, rejected, no_repeat)
         if move is None:  # after a warning this is the second try: most conservative rung (8.1)
             return Decision(fb_a, fb_c, "fallback")
         chat = hooks.filter_out(obj.get("c") or fb_c, forbidden)
@@ -77,6 +78,8 @@ class Generic:
             parts.append(f"Action format examples: {fmt.get('examples') or ''} (follow the rules' format exactly)")
         if isinstance(state.warning, dict) and state.warning.get("reason"):
             parts.append("Your previous answer was rejected: " + str(state.warning["reason"])[:200])
+        if art.get("family") == "guessing" and state.my_actions:
+            parts.append("Never repeat a guess you already made; use the feedback to narrow the possibilities.")
         parts.append(hooks.wrap_untrusted(state.opponent_chat))
         return "\n\n".join(parts)
 

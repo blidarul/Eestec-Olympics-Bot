@@ -12,6 +12,26 @@ import traceback
 _ctx = mp.get_context("spawn")
 
 
+def _generic_strategy():
+    try:
+        from core.generic import STRATEGY
+        return STRATEGY
+    except BaseException:
+        traceback.print_exc()
+        return None
+
+
+def _generic_decide(state, last_resort):
+    """A strategy raised: core/generic (model + playbook, validated fallback inside); then the random legal move."""
+    g = _generic_strategy()
+    if g is not None:
+        try:
+            return g.decide(state)
+        except BaseException:
+            traceback.print_exc()
+    return last_resort.decide(state)
+
+
 def _worker_main(conn):
     # fd 1 may be the protocol pipe in a naive setup: never let the child write to it.
     try:
@@ -37,10 +57,12 @@ def _worker_main(conn):
             if kind == "ping":
                 conn.send({"pong": True})
                 continue
-            if kind in ("prep", "load"):
+            if kind in ("prep", "load", "ready_line"):
                 from core import hooks
                 if kind == "prep":
                     conn.send({"prep": hooks.run_prep(req["msg"])})
+                elif kind == "ready_line":
+                    conn.send({"line": hooks.ready_line(req.get("rules", ""), req.get("forbidden") or [], req.get("seed", ""))})
                 else:
                     conn.send({"artifacts": hooks.load_artifacts(req.get("game_id", ""), req.get("rules", ""))})
                 continue
@@ -63,19 +85,31 @@ def _worker_main(conn):
             fields["deadline"] = time.monotonic() + float(req.get("budget", 8.0))
             fields["llm"] = llm
             state = TurnState(**fields)
-            strategy = fallback_strategy
+            strategy, reason, family = fallback_strategy, "router failed", ""
             try:
                 from core import registry
-                strategy = registry.pick(state.rules, state.artifacts)
+                r = registry.route(state.rules, state.artifacts)
+                strategy, reason, family = r.strategy, r.reason, r.family
             except BaseException:
                 traceback.print_exc()
+            d, why = None, ""
             try:
                 d = strategy.decide(state)
+                if not isinstance(getattr(d, "action", None), str):
+                    raise TypeError("strategy returned no action")
             except BaseException:
                 traceback.print_exc()
-                d = fallback_strategy.decide(state)
-            conn.send({"action": d.action, "chat": d.chat, "source": d.source,
-                       "model_error": getattr(llm, "last_error", None) if llm is not None else "no_llm"})
+                why = f"{getattr(strategy, 'name', '?')} raised -> generic"
+                d = _generic_decide(state, fallback_strategy)
+                strategy = _generic_strategy() or fallback_strategy
+            info = dict(getattr(d, "info", None) or {})
+            src = d.source if d.source in ("strategy", "model", "fallback") else "fallback"
+            tool = info.get("tool") or {"model": "model", "strategy": "strategy", "fallback": "fallback"}[src]
+            full_reason = "; ".join(x for x in (why, info.get("reason"), reason) if x)
+            conn.send({"action": d.action, "chat": d.chat, "source": src,
+                       "model_error": getattr(llm, "last_error", None) if llm is not None else "no_llm",
+                       "family": family, "strategy": getattr(strategy, "name", "?"), "tool": tool,
+                       "reason": full_reason[:200], "candidates_left": info.get("candidates_left")})
         except BaseException:
             traceback.print_exc()
             try:

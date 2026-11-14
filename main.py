@@ -15,7 +15,7 @@ START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
 TURN_DEADLINE = 12.0  # arena gives 20 s
 START_CHAT = "Good luck, have fun!"
 
-STATE = {"llm": None, "game": {}, "artifacts": {}, "prep": None}
+STATE = {"llm": None, "game": {}, "artifacts": {}, "prep": None, "my_actions": [], "prev_obs": ""}
 
 
 def use_llm(msg):
@@ -30,6 +30,21 @@ def chat_texts(chat):
         if isinstance(c, dict) and c.get("text") and c.get("from") != "you":
             out.append(str(c["text"]))
     return out
+
+
+def chat_full(chat):
+    """[{"from", "text"}] of the chat of the turn, untrusted, latest last (strings only, bounded)."""
+    out = []
+    for c in chat or []:
+        if isinstance(c, dict) and c.get("text"):
+            out.append({"from": str(c.get("from", "?"))[:20], "text": str(c["text"])[:300]})
+    return out[-20:]
+
+
+def new_lines(obs, prev):
+    """Observation lines that were not in the previous observation (what happened since our last action)."""
+    seen = set(prev.splitlines())
+    return [l.strip()[:200] for l in obs.splitlines() if l.strip() and l not in seen][:12]
 
 
 def on_prep(msg, wk):
@@ -56,6 +71,7 @@ def pick_artifacts(msg, wk):
 
 
 def on_start(msg, wk):
+    t0 = time.monotonic()
     use_llm(msg)
     STATE["game"] = msg
     try:
@@ -63,9 +79,19 @@ def on_start(msg, wk):
     except Exception:
         traceback.print_exc()
         STATE["artifacts"] = {}
+    STATE["my_actions"], STATE["prev_obs"] = [], ""
     forbidden = STATE["artifacts"].get("forbidden_terms") or []
-    chat = fallback.fallback_chat(STATE["artifacts"]) if STATE["artifacts"].get("chat_bank") else START_CHAT
-    chat = wk_filter(chat, forbidden)
+    chat = None
+    try:  # chat.pipeline.ready_line in the worker (pure code, filtered, never empty); main keeps the 2 s start clock
+        ans = wk.ask({"kind": "ready_line", "rules": msg.get("rules", ""), "forbidden": forbidden,
+                      "seed": str(msg.get("match_id", ""))}, max(0.2, START_DEADLINE - 0.3 - (time.monotonic() - t0)))
+        line = ans.get("line") if isinstance(ans, dict) else None
+        chat = line if isinstance(line, str) and line.strip() else None
+    except Exception:
+        traceback.print_exc()
+    if chat is None:
+        chat = fallback.fallback_chat(STATE["artifacts"]) if STATE["artifacts"].get("chat_bank") else START_CHAT
+        chat = wk_filter(chat, forbidden)
     protocol.send({"type": "ready", "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
 
 
@@ -80,11 +106,18 @@ def wk_filter(text, forbidden):
 
 def on_turn(msg, wk):
     t0 = time.monotonic()
-    source, model_error = "fallback", None
+    source, model_error, meta = "fallback", None, {}
     art = STATE["artifacts"]
     legal = msg.get("legal_actions")
+    warning = msg.get("warning") if isinstance(msg.get("warning"), dict) else None
+    mine = STATE["my_actions"]
+    if warning and mine:
+        mine.pop()  # the turn is re-sent after a rejected answer: that answer does not count as played
+    guessing = art.get("family") == "guessing"
+    previous = list(mine) if guessing else []  # guessing games: never send the same action twice (safety net)
+    obs = str(msg.get("observation", ""))
     # fallback FIRST, from the message alone
-    fb_action, fb_chat = fallback.fallback_decision(msg, art)
+    fb_action, fb_chat = fallback.fallback_decision(msg, art, previous)
     action, chat = fb_action, fb_chat
     try:
         limit = min(TURN_DEADLINE, 0.6 * float(msg.get("seconds") or 20))
@@ -92,10 +125,13 @@ def on_turn(msg, wk):
         req = {"state": {
             "game_id": str(game.get("game_id", "")), "rules": str(game.get("rules", "")),
             "variant": game.get("variant") or {}, "seat": int(game.get("seat", 0) or 0),
-            "observation": str(msg.get("observation", "")),
+            "observation": obs,
             "legal_actions": [str(a) for a in legal] if isinstance(legal, list) else None,
             "turn": int(msg.get("turn", 0) or 0), "warning": msg.get("warning"),
-            "opponent_chat": chat_texts(msg.get("chat")), "artifacts": art},
+            "opponent_chat": chat_texts(msg.get("chat")), "artifacts": art,
+            "chat_full": chat_full(msg.get("chat")), "my_actions": list(mine),
+            "new_feedback": new_lines(obs, STATE["prev_obs"]),
+            "match_id": str(game.get("match_id", "") or ""), "game_index": int(msg.get("game_index", 0) or 0)},
             "llm": STATE["llm"], "match_id": game.get("match_id"), "budget": max(0.5, limit - 2.0)}
         ans = wk.ask(req, limit - (time.monotonic() - t0) - 0.5)
         if not ans:
@@ -103,25 +139,38 @@ def on_turn(msg, wk):
         if ans:
             a, c = ans.get("action"), ans.get("chat")
             a = a if isinstance(a, str) else ""
-            rejected = (msg.get("warning") or {}).get("rejected") if isinstance(msg.get("warning"), dict) else None
-            v = validate.validate(a, legal, art, rejected)
+            rejected = warning.get("rejected") if warning else None
+            v = validate.validate(a, legal, art, rejected, previous)
             model_error = ans.get("model_error")
+            meta = {k: ans.get(k) for k in ("family", "strategy", "tool", "reason", "candidates_left")}
             if v is not None:
                 action = v
                 source = ans.get("source") if ans.get("source") in ("model", "strategy", "fallback") else "fallback"
                 chat = protocol.clean_chat(c) or fb_chat
+            else:
+                meta["tool"] = "fallback"
+                meta["reason"] = "answer rejected by validator (illegal, repeated or malformed): " + str(meta.get("reason") or "")
     except Exception:
         traceback.print_exc()
     chat = wk_filter(protocol.clean_chat(chat), art.get("forbidden_terms") or [])
     protocol.send({"type": "action", "action": action, "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
-    log_decision(msg, source, time.monotonic() - t0, model_error)
+    mine.append(action)
+    STATE["prev_obs"] = obs
+    meta.setdefault("family", art.get("family"))
+    meta["action"] = action
+    log_decision(msg, source, time.monotonic() - t0, model_error, meta)
 
 
-def log_decision(msg, source, secs, model_error):
-    """One line per decision on stderr and in log.jsonl: game, turn, source, answer_ms, model_error."""
+def log_decision(msg, source, secs, model_error, meta=None):
+    """One line per decision on stderr and in log.jsonl: game, turn, family, strategy, tool, reason, candidates_left,
+    source (tool|model|fallback), answer_ms, model_error. Stdout stays protocol-only."""
     g = STATE["game"]
+    meta = meta or {}
+    src = {"strategy": "tool"}.get(source, source)  # a strategy's own computation is a "tool" decision
     rec = {"kind": "decision", "game": g.get("game_id"), "game_index": msg.get("game_index"), "turn": msg.get("turn"),
-           "source": source, "answer_ms": int(secs * 1000), "model_error": model_error}
+           "family": meta.get("family"), "strategy": meta.get("strategy"), "tool": meta.get("tool"),
+           "action": meta.get("action"), "reason": meta.get("reason"), "candidates_left": meta.get("candidates_left"),
+           "source": src, "answer_ms": int(secs * 1000), "model_error": model_error}
     protocol.log("decision " + json.dumps(rec, default=str))
     try:
         memory.append_log(memory.game_dir(g.get("game_id", ""), g.get("rules", "")), rec)
