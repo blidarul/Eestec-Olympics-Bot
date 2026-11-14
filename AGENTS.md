@@ -21,6 +21,10 @@ id. If the file is missing or holds anything else, stop and ask the human.
 The repo currently holds the starter kit only; this is the target layout. Create your folders
 when you first need them.
 
+> **Strategy Roadmap & Ideas:** Read [`strategy.md`](strategy.md) for the full catalog of
+> strategy algorithms (minimax, MCTS, probability, deduction, opponent reading, guardrails),
+> game families, and prioritized milestones.
+
 | Agent | Role | Owns (edit only these) |
 |---|---|---|
 | `alex` | core owner | `main.py`, `Dockerfile`, `requirements.txt`, `core/` (protocol loop, clocks and fallback, Haiku client, safe `/memory` access, strategy registry and interfaces), `tests/core/` |
@@ -29,7 +33,7 @@ when you first need them.
 
 **Shared paths (core owner's; change only through a `type:contract` issue and a PR):**
 `main.py`, `Dockerfile`, `requirements.txt`, `core/`, `strategies/__init__.py`, `strategies/base.py`,
-`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.agent/`, `.gitea/`, `.gitignore`, `docs/`, `starter/`,
+`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `strategy.md`, `.agent/`, `.gitea/`, `.gitignore`, `docs/`, `starter/`,
 `arena-lite/`, `PROTOCOL.md`, `README.md`, `CHANGELOG.md`.
 
 Ownership rules:
@@ -145,11 +149,12 @@ Checkable conditions (a test that passes, a command whose output you can compare
   you are the only writer.
 - **Budget and limits (5.12 to 5.14):** 2 CPUs, 2 GB RAM, 256 processes, `linux/amd64`, $0.75
   per match shared by all our containers. Do not spend model calls where code can compute.
-- **Adding a strategy or plugin:** create a new folder under `strategies/<family>/<name>/` (your
-  family only) with an `__init__.py` exposing `STRATEGY` as defined in `strategies/base.py`
-  (matches the rules text, optional prep step, `decide(state)` returning move and chat
-  together, plus a fallback). Add tests under your `tests/<me>/`. The core discovers it; do not
-  edit the core. General mechanisms beat game-specific code (10.7, 12.1).
+- **Adding a strategy or plugin:** consult [`strategy.md`](strategy.md) for strategy design ideas
+  and architectures. Create a new folder under `strategies/<family>/<name>/` (your family only)
+  with an `__init__.py` exposing `STRATEGY` as defined in `strategies/base.py` (matches the rules
+  text, optional prep step, `decide(state)` returning move and chat together, plus a fallback).
+  Add tests under your `tests/<me>/`. The core discovers it; do not edit the core. General
+  mechanisms beat game-specific code (10.7, 12.1).
 - If a change might touch a forbidden item above, stop and name the rule number. If the
   rulebook does not cover it, say so: the mentors decide (15.4). Never guess.
 
