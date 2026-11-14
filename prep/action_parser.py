@@ -171,7 +171,7 @@ def extract_forbidden_keywords(rules_text: str) -> list[str]:
     """Extract forbidden words or forbidden topic keywords from rules text (Rules 6.8, 6.9)."""
     keywords: set[str] = set()
     section = re.search(
-        r"(?:FORBIDDEN|BANNED|PROHIBITED)\s*(?:WORDS?|TOPICS?|CONTENT)?\s*[:\-]\s*(.*?)(?=\n[A-Z\s]{4,}|\Z)",
+        r"(?:FORBIDDEN|BANNED|PROHIBITED)\s*(?:WORDS?|TOPICS?|CONTENT|KEYWORDS?|PHRASES?)?\s*[:\-]\s*(.*?)(?=\n[A-Z\s]{4,}|\Z)",
         rules_text,
         re.DOTALL | re.IGNORECASE,
     )
