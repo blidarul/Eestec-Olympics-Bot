@@ -21,6 +21,8 @@ class ActionGrammar:
     numeric_prefix: str = ""
     case_sensitive: bool = False
     aliases: dict[str, str] = field(default_factory=dict)
+    forbidden_keywords: list[str] = field(default_factory=list)
+    parameters: dict[str, Any] = field(default_factory=dict)
 
     def validate(self, action: str, legal_actions: list[str] | None = None) -> bool:
         """Validate if an action conforms to legal_actions or grammar rules."""
@@ -143,6 +145,8 @@ class ActionGrammar:
             "numeric_prefix": self.numeric_prefix,
             "case_sensitive": self.case_sensitive,
             "aliases": self.aliases,
+            "forbidden_keywords": self.forbidden_keywords,
+            "parameters": self.parameters,
         }
 
     @classmethod
@@ -158,7 +162,59 @@ class ActionGrammar:
             numeric_prefix=data.get("numeric_prefix", ""),
             case_sensitive=data.get("case_sensitive", False),
             aliases=data.get("aliases", {}),
+            forbidden_keywords=data.get("forbidden_keywords", []),
+            parameters=data.get("parameters", {}),
         )
+
+
+def extract_forbidden_keywords(rules_text: str) -> list[str]:
+    """Extract forbidden words or forbidden topic keywords from rules text (Rules 6.8, 6.9)."""
+    keywords: set[str] = set()
+    section = re.search(
+        r"(?:FORBIDDEN|BANNED|PROHIBITED)\s*(?:WORDS?|TOPICS?|CONTENT)?\s*[:\-]\s*(.*?)(?=\n[A-Z\s]{4,}|\Z)",
+        rules_text,
+        re.DOTALL | re.IGNORECASE,
+    )
+    if section:
+        raw = section.group(1).strip()
+        for q in re.findall(r'["\']([^"\']+)["\']', raw):
+            keywords.add(q.lower().strip())
+        unquoted = re.sub(r'["\'][^"\']+["\']', ' ', raw)
+        for item in re.split(r"[,;\n]+", unquoted):
+            clean_item = item.strip().strip("-*• ")
+            if clean_item and len(clean_item) < 40:
+                keywords.add(clean_item.lower())
+
+    patterns = [
+        r'(?:do not|never|cannot|forbidden to)\s+(?:say|mention|use|write)\s+["\']([^"\']+)["\']',
+        r'penalty\s+for\s+(?:saying|mentioning)\s+["\']([^"\']+)["\']',
+    ]
+    for pat in patterns:
+        for m in re.finditer(pat, rules_text, re.IGNORECASE):
+            keywords.add(m.group(1).lower().strip())
+
+    return sorted(list(keywords))
+
+
+def extract_game_parameters(rules_text: str) -> dict[str, Any]:
+    """Extract key game thresholds, caps, and parameters from rules text."""
+    params: dict[str, Any] = {}
+
+    target_match = re.search(r"(?:first to|reach|target(?: score)? of|score of)\s+(\d+)\s*(?:points|banked)?", rules_text, re.IGNORECASE)
+    if target_match:
+        params["target_score"] = int(target_match.group(1))
+
+    cap_match = re.search(r"(?:move cap|max(?:imum)? (?:decisions|moves|turns)|cannot last more than)\s*:?\s*(?:after )?(\d+)", rules_text, re.IGNORECASE)
+    if cap_match:
+        params["move_cap"] = int(cap_match.group(1))
+
+    connect_match = re.search(r"(?:get|connect)\s+(\d+)\s*(?:of your marks)?\s*in an?\s+(?:unbroken\s+)?(?:straight\s+)?line", rules_text, re.IGNORECASE)
+    if not connect_match:
+        connect_match = re.search(r"(\d+)-in-a-row", rules_text, re.IGNORECASE)
+    if connect_match:
+        params["connect_k"] = int(connect_match.group(1))
+
+    return params
 
 
 def _extract_action_section(rules_text: str) -> str:
@@ -175,6 +231,15 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
     action_section = _extract_action_section(rules_text)
     combined_text = f"{rules_text}\n{action_section}"
     sample_legal = (sample_turn or {}).get("legal_actions")
+    forbidden = extract_forbidden_keywords(rules_text)
+    params = extract_game_parameters(rules_text)
+
+    grid_dim = re.search(r"(\d+)\s*x\s*(\d+)\s*(?:grid|board)", combined_text, re.IGNORECASE)
+    has_coord = bool(re.search(r"[A-Z]\d+", action_section) or re.search(r"column letter \+ row number", action_section, re.IGNORECASE))
+    num_range = re.search(r"(?:range|between)\s+(\d+)\s*(?:and|-|to)\s*(\d+)", combined_text, re.IGNORECASE)
+    has_guess_prefix = bool(re.search(r"guess\s+<n>", action_section, re.IGNORECASE) or re.search(r'"guess\s+\d+"', action_section, re.IGNORECASE))
+
+    grammar: ActionGrammar
 
     # 1. Check for discrete action keywords (e.g. roll | hold, pass, defect | cooperate)
     discrete_match = re.search(r"Reply with one word:\s*([a-zA-Z0-9_\s\|/]+)", action_section, re.IGNORECASE)
@@ -189,28 +254,27 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
             for o in opts:
                 aliases[o.upper()] = o
                 aliases[o.capitalize()] = o
-            return ActionGrammar(
+            grammar = ActionGrammar(
                 kind="discrete",
                 discrete_actions=opts,
                 aliases=aliases,
             )
+        else:
+            grammar = ActionGrammar(kind="generic")
 
     # If sample_turn has small finite list of string words (e.g. ["roll", "hold"])
-    if sample_legal and len(sample_legal) <= 10 and all(a.isalpha() for a in sample_legal):
+    elif sample_legal and len(sample_legal) <= 10 and all(a.isalpha() for a in sample_legal):
         opts = [a.lower() for a in sample_legal]
         aliases = {a.upper(): a for a in opts}
         aliases.update({a.capitalize(): a for a in opts})
-        return ActionGrammar(kind="discrete", discrete_actions=opts, aliases=aliases)
+        grammar = ActionGrammar(kind="discrete", discrete_actions=opts, aliases=aliases)
 
     # 2. Check for Grid / Board games (e.g. "A 3x3 grid", "A1", columns A-C, rows 1-3)
-    grid_dim = re.search(r"(\d+)\s*x\s*(\d+)\s*(?:grid|board)", combined_text, re.IGNORECASE)
-    has_coord = bool(re.search(r"[A-Z]\d+", action_section) or re.search(r"column letter \+ row number", action_section, re.IGNORECASE))
-
-    if grid_dim or has_coord:
+    elif grid_dim or has_coord:
         cols = int(grid_dim.group(1)) if grid_dim else 3
         rows = int(grid_dim.group(2)) if grid_dim else cols
         col_letters = [chr(ord("A") + i) for i in range(cols)]
-        return ActionGrammar(
+        grammar = ActionGrammar(
             kind="grid",
             grid_cols=cols,
             grid_rows=rows,
@@ -218,7 +282,7 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
         )
 
     # If sample_turn has grid-like actions (e.g. ["A1", "B2", ...])
-    if sample_legal and any(re.match(r"^[A-Z]\d+$", str(a)) for a in sample_legal):
+    elif sample_legal and any(re.match(r"^[A-Z]\d+$", str(a)) for a in sample_legal):
         cols_seen = set()
         rows_seen = set()
         for a in sample_legal:
@@ -228,7 +292,7 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
                 rows_seen.add(int(m.group(2)))
         cols = max(cols_seen) if cols_seen else 3
         rows = max(rows_seen) if rows_seen else cols
-        return ActionGrammar(
+        grammar = ActionGrammar(
             kind="grid",
             grid_cols=cols,
             grid_rows=rows,
@@ -236,14 +300,11 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
         )
 
     # 3. Check for Numeric range (e.g. "guess <n>", "between 1 and 100", "range 1-100")
-    num_range = re.search(r"(?:range|between)\s+(\d+)\s*(?:and|-|to)\s*(\d+)", combined_text, re.IGNORECASE)
-    has_guess_prefix = bool(re.search(r"guess\s+<n>", action_section, re.IGNORECASE) or re.search(r'"guess\s+\d+"', action_section, re.IGNORECASE))
-
-    if num_range:
+    elif num_range:
         lo = int(num_range.group(1))
         hi = int(num_range.group(2))
         prefix = "guess " if has_guess_prefix else ""
-        return ActionGrammar(
+        grammar = ActionGrammar(
             kind="numeric_range",
             numeric_min=lo,
             numeric_max=hi,
@@ -251,7 +312,12 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
         )
 
     # 4. Default generic text
-    return ActionGrammar(kind="generic")
+    else:
+        grammar = ActionGrammar(kind="generic")
+
+    grammar.forbidden_keywords = forbidden
+    grammar.parameters = params
+    return grammar
 
 
 def parse_observation_layout(obs_text: str) -> dict[str, Any]:
