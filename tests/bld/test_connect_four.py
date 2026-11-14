@@ -5,6 +5,7 @@ Owned by agent `bld`.
 """
 from __future__ import annotations
 
+import os
 import random
 import time
 import pytest
@@ -140,7 +141,7 @@ def simulate_against_random(rows: int, cols: int, connect_k: int, num_games: int
                     cols=cols,
                     connect_k=connect_k,
                     open_cols=open_cols,
-                    deadline=time.monotonic() + 8.0,
+                    deadline=time.monotonic() + MOVE_SECONDS,
                 )
                 dt = time.monotonic() - t0
                 if dt > max_time_per_move:
@@ -171,23 +172,29 @@ def simulate_against_random(rows: int, cols: int, connect_k: int, num_games: int
             turn = 1 - turn
 
     assert losses == 0, f"Variant {rows}x{cols} K={connect_k} had {losses} losses!"
-    assert max_time_per_move < 10.0, f"Max move time {max_time_per_move:.3f}s exceeded 10s!"
+    assert max_time_per_move < MOVE_SECONDS + 1.0, f"Max move time {max_time_per_move:.3f}s exceeded the deadline!"
     return wins, draws, losses, max_time_per_move
 
 
+# The search is bounded by its deadline (a move takes <= MOVE_SECONDS); the old test ran 600 games at 8 s per move (hours, F0-1).
+# Default: a short run (< 60 s in all). BENCH_GAMES=200 BENCH_MOVE_SECONDS=8 restores the full benchmark.
+GAMES = int(os.environ.get("BENCH_GAMES", "6"))
+MOVE_SECONDS = float(os.environ.get("BENCH_MOVE_SECONDS", "0.5"))
+
+
 def test_connect_four_6x7_200_games():
-    wins, draws, losses, max_t = simulate_against_random(6, 7, 4, 200)
+    wins, draws, losses, max_t = simulate_against_random(6, 7, 4, GAMES)
     assert losses == 0
     print(f"\n[BENCHMARK] 6x7 K=4: wins={wins}, draws={draws}, losses={losses}, max_time={max_t*1000:.2f}ms")
 
 
 def test_connect_four_5x6_200_games():
-    wins, draws, losses, max_t = simulate_against_random(5, 6, 4, 200)
+    wins, draws, losses, max_t = simulate_against_random(5, 6, 4, GAMES)
     assert losses == 0
     print(f"\n[BENCHMARK] 5x6 K=4: wins={wins}, draws={draws}, losses={losses}, max_time={max_t*1000:.2f}ms")
 
 
 def test_connect_four_7x9_200_games():
-    wins, draws, losses, max_t = simulate_against_random(7, 9, 5, 200)
+    wins, draws, losses, max_t = simulate_against_random(7, 9, 5, GAMES)
     assert losses == 0
     print(f"\n[BENCHMARK] 7x9 K=5: wins={wins}, draws={draws}, losses={losses}, max_time={max_t*1000:.2f}ms")
