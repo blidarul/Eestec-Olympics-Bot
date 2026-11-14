@@ -136,3 +136,13 @@ Writing profiles after a game is bld's call: `solvers.opponent.update_profile(te
 Detector `_chance` in `precompute`: facts only, never a certain move. Hold'em-like rules: cards parsed from "your hand"/"board" lines -> equity,
 then call EV (pot and to-call from the text or `artifacts["pot"]`, `["to_call"]`, `["win_prob"]`) or a bluff suggestion when no bet is faced
 (`artifacts["bet_size"]`, else half the pot). Dice rules: `artifacts["dice"]`, `["total_dice"]`, `["claim"]` or "Your dice:", "Total dice in play:", "Current bid: 6 3s".
+
+### Deals (layer 3, M7; `solvers/deals.py`)
+
+| Tool | Families | When to use | Notes |
+|---|---|---|---|
+| `auction_bid` | deals, any (model-callable) | sealed-bid auctions | `second_price`: bid the value; `first_price`: lo+(v-lo)(n-1)/n; `all_pay`: (n-1)/n v^n on the unit scale (uniform values); returns win probability and expected surplus |
+| `split_offer` | deals, any (model-callable) | dividing items or an ultimatum | items with our/opponent per-unit values -> top 5 allocations by expected utility (logistic acceptance estimate); with only `total` + `history [{offer, accepted}]` -> smallest ultimatum offer likely accepted |
+| `reservation_estimate` | deals, any (model-callable) | haggling | opponent offer amounts -> estimated limit by geometric extrapolation of shrinking concessions, with range and confidence |
+
+Detector `_deals` in `precompute`: facts only, never a certain move. Auction format from the rules text (or `artifacts["auction_format"]`); value from "Your value: N" or `artifacts["value"]`; bidders and range from the text or `artifacts`. Splits: `artifacts["items"]` or `["total"]`+`["history"]` (ultimatum rules). `artifacts["opponent_offers"]` (engine-reported amounts, never chat) gives the reservation line.

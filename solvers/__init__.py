@@ -16,6 +16,7 @@ _TOOL_MODULES = (
     "solvers.classic.tools",
     "solvers.opponent",
     "solvers.chance",
+    "solvers.deals",
     "solvers.evidence",
     "solvers.guard",
     "solvers.simsearch",

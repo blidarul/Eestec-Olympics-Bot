@@ -722,6 +722,71 @@ def _chance(observation, legal, artifacts, rules, deadline, facts):
                 100 * res["bluff_ratio"], bet, pot, res["action"], res["why"]))
 
 
+# ------------------------------------------------------------------ deals (layer 3, M7)
+
+_DEALY = re.compile(r"auction|sealed.bid|second.price|first.price|all.pay|negotiat|ultimatum|haggl|reservation|"
+                    r"counter.?offer|\bsplit\b|\bdivide\b", re.I)
+_AUCTION_FMT = (("all_pay", re.compile(r"all.pay", re.I)), ("second_price", re.compile(r"second.price|vickrey", re.I)),
+                ("first_price", re.compile(r"first.price|highest bid(?:der)? pays|pays? (?:their|its|your) own bid", re.I)))
+_MYVAL = re.compile(r"(?:your|our)\s+(?:private\s+)?(?:value|valuation)\D{0,12}?(\d+(?:\.\d+)?)", re.I)
+_NBID = re.compile(r"(\d+)\s+(?:bidders|players|participants)|(?:bidders|players)\D{0,6}(\d+)", re.I)
+_VRANGE = re.compile(r"(?:between|from|in)\s+\[?(\d+(?:\.\d+)?)\s*(?:and|to|,|-)\s*(\d+(?:\.\d+)?)", re.I)
+
+
+def _deals(observation, legal, artifacts, rules, deadline, facts):
+    if not _DEALY.search(rules or ""):
+        return
+    nums = lambda *ks: next((artifacts[k] for k in ks if isinstance(artifacts.get(k), (int, float))
+                             and not isinstance(artifacts.get(k), bool)), None)
+    fmt = artifacts.get("auction_format") if artifacts.get("auction_format") in ("first_price", "second_price", "all_pay") else None
+    if fmt is None:
+        fmt = next((name for name, rx in _AUCTION_FMT if rx.search(rules or "")), None)
+    if fmt:
+        val = nums("value", "my_value")
+        if val is None:
+            val = _num_of(_MYVAL.search(observation))
+        if val is not None:
+            m = _NBID.search(rules or "") or _NBID.search(observation)
+            n = nums("bidders") or (int(next(g for g in m.groups() if g)) if m else 2)
+            lo, hi = nums("value_min"), nums("value_max")
+            if lo is None or hi is None:
+                m = _VRANGE.search(rules or "")
+                if m:
+                    lo, hi = float(m.group(1)), float(m.group(2))
+            args = {"format": fmt, "value": val, "bidders": int(n)}
+            if lo is not None and hi is not None and hi > lo:
+                args.update(value_min=lo, value_max=hi)
+            res = _call("auction_bid", args, deadline)
+            if res:
+                facts.used.append("auction_bid")
+                facts.lines.append("Auction (%s, %d bidders): recommended bid %g for value %g; win chance ~%.0f%%." % (
+                    fmt, n, res["bid"], val, 100 * res["win_probability"]))
+    items = artifacts.get("items") if isinstance(artifacts.get("items"), list) else None
+    total = nums("total")
+    hist = artifacts.get("history") if isinstance(artifacts.get("history"), list) else []
+    if items or (total and hist is not None and re.search(r"ultimatum|propos|responder", rules or "", re.I)):
+        args = {"items": items} if items else {"total": total, "history": hist}
+        for k in ("our_fallback", "opp_reservation"):
+            if isinstance(artifacts.get(k), (int, float)):
+                args[k] = artifacts[k]
+        res = _call("split_offer", args, deadline)
+        if res and res.get("mode") == "ultimatum":
+            facts.used.append("split_offer")
+            facts.lines.append("Ultimatum of %g: offer the other side about %.2f and keep %.2f (%s)." % (
+                total, res["offer_to_opponent"], res["we_keep"], res["basis"]))
+        elif res and res.get("best"):
+            facts.used.append("split_offer")
+            facts.lines.append("Best split: we keep %s, they get %s (acceptance ~%.0f%%)." % (
+                res["best"]["we_keep"], res["best"]["they_get"], 100 * res["best"]["acceptance_estimate"]))
+    offers = artifacts.get("opponent_offers")
+    if isinstance(offers, list) and offers and all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in offers):
+        res = _call("reservation_estimate", {"offers": offers}, deadline)
+        if res:
+            facts.used.append("reservation_estimate")
+            facts.lines.append("Opponent reservation value looks like %.2f (range %s to %s, confidence %.1f)." % (
+                res["estimate"], res["low"], res["high"], res["confidence"]))
+
+
 # ------------------------------------------------------------------ search on a verified simulator (layer 3, M6)
 
 SEARCH_S = 6.0
@@ -746,7 +811,7 @@ def _search(observation, legal, artifacts, rules, deadline, facts):
         _set_certain(facts, r["move"], r["why"], "sim_search")
 
 
-_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim, _classic, _opponent, _chance)
+_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim, _classic, _opponent, _chance, _deals)
 
 
 def precompute(observation, legal_actions, artifacts, rules, deadline, search_deadline=None):

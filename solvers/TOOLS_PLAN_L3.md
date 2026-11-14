@@ -230,6 +230,7 @@ only `solvers/` and `tests/alex/` changed; HANDOFF_bld.md matches what is on mai
   Not done: issue for mbappe offering guard.py (open it with gt); truth path needs an "unknown" form in the rules text, scoring parsed best-effort (default +1/-1/0); verify is lexical (no paraphrase/semantic match), yes/no answers are not checked.
 - M6: DONE. M0 found a verify path, so built: solvers/simsearch.py (search_move, tools sim_search + mdp_solve, harness-only), solvers/mdp.py, determinization in mcts.py/adapter.py (State.sample_hidden); detector _search in precompute (own 6 s budget via search_deadline, assist_turn passes it); tests/alex/test_simsearch.py; 320 tests pass.
   Not done: no real prep-written simulator tried (only test sims; faithful only for grid_board templates); MCTS fact is never certain; mdp_solve needs an explicit table (no prep-built MDP yet); sim_search path arg is trusted (harness-only, not model-callable).
-- M7:
+- M7: DONE. solvers/deals.py (auction_bid, split_offer incl. ultimatum, reservation_estimate; model-callable; 52 tools registered); detector _deals in precompute (facts only), hints in select; tests/alex/test_deals.py; 328 tests pass.
+  Not done: auction formulas assume uniform independent values; acceptance estimate is a fixed logistic (no learning); nothing is parsed from chat (offers only via artifacts), so text-only negotiation games get no reservation fact.
 - M8:
 - H:

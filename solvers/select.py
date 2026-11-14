@@ -30,6 +30,8 @@ HINTS = (
     (r"\b(cooperat\w*|defect\w*|betray\w*|prisoner)", ("reciprocity_policy",)),
     (r"\b(bluff\w*|pot|fold|raise|poker|wager)\b", ("call_ev", "bluff_frequency", "card_equity")),
     (r"\b(liar|challenge|bid|claim)\w*", ("claim_probability",)),
+    (r"\b(auction|sealed|second.price|first.price|all.pay)", ("auction_bid",)),
+    (r"\b(negotiat\w*|ultimatum|haggl\w*|split|divide|reservation|counter.?offer)", ("split_offer", "reservation_estimate")),
     (r"\b(heap|pile|nim)\b", ("nim_analysis",)),
     (r"\b(guess|higher|lower|secret)\b", ("binary_search_next", "deduce_next", "extract_history")),
     (r"\b(pegs?|bulls?|cows?|mastermind|wordle|green|yellow|digits?|letters?)\b", ("deduce_next", "extract_history")),
@@ -40,7 +42,7 @@ GENERAL_ORDER = ("expected_value", "best_option", "combinatorics", "bayes_update
                  "graph_shortest_path", "extract_grid", "extract_history", "extract_cards", "nim_analysis",
                  "opponent_predictor", "reciprocity_policy", "sample_action", "count_hands", "abstain_threshold", "graph_reachable", "graph_topo_sort",
                  "graph_components", "graph_dfs_order", "deduce_next", "call_ev", "bluff_frequency", "claim_probability",
-                 "card_equity")
+                 "card_equity", "auction_bid", "split_offer", "reservation_estimate")
 
 
 def _log(msg):
