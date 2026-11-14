@@ -51,10 +51,17 @@ def unused_numeric(artifacts: dict | None, avoid) -> str | None:
     return None
 
 
-WORDLE_OPENERS = [
-    "slate", "crane", "audio", "raise", "stare", "roast", "adieu", "trace",
-    "brick", "glint", "jumpy", "waltz", "climb", "frown", "spoke"
-]
+WORDS_BY_LENGTH = {
+    3: ["cat", "dog", "run", "sun", "sky", "red", "big", "top", "air", "box", "car", "sea", "cup", "pen"],
+    4: ["play", "game", "time", "word", "star", "open", "line", "plan", "real", "gold", "tree", "bird", "rain", "fire"],
+    5: ["slate", "crane", "audio", "raise", "stare", "roast", "adieu", "trace", "brick", "glint", "jumpy", "waltz", "climb"],
+    6: ["planet", "stream", "spring", "silver", "golden", "simple", "ground", "master", "forest", "winter", "bridge", "castle"],
+    7: ["balance", "playing", "explore", "freedom", "journey", "mystery", "dynamic", "plastic", "silence", "crystal", "diamond"],
+    8: ["building", "strength", "computer", "universe", "mountain", "solution", "football", "triangle", "sunshine", "treasure"],
+    9: ["knowledge", "algorithm", "discovery", "champion", "landscape", "beautiful", "structure", "operation", "adventure"],
+    10: ["basketball", "everything", "understand", "friendship", "foundation", "generation", "mysterious", "successful"],
+}
+WORDLE_OPENERS = WORDS_BY_LENGTH[5]
 
 
 def unused_word(artifacts: dict | None, avoid) -> str | None:
@@ -72,14 +79,33 @@ def unused_word(artifacts: dict | None, avoid) -> str | None:
     length = int(g.get("word_length") or 5)
     case = "upper" if g.get("case") == "upper" else "lower"
     taken = {norm(a) for a in avoid}
-    for w in WORDLE_OPENERS:
-        if len(w) == length:
+
+    # 1. First try words from grammar / format examples matching length
+    fmt = (artifacts or {}).get("action_format") if isinstance(artifacts, dict) else {}
+    fmt_examples = _as_list(fmt.get("examples")) if isinstance(fmt, dict) else []
+    grammar_examples = _as_list(g.get("examples"))
+    for cand in grammar_examples + fmt_examples:
+        cand_str = str(cand).strip()
+        w_part = cand_str[len(pre):].strip() if pre and cand_str.lower().startswith(pre.lower()) else cand_str
+        if w_part.isalpha() and (len(w_part) == length or not length):
+            c_out = f"{pre}{w_part.upper() if case == 'upper' else w_part.lower()}"
+            if norm(c_out) not in taken and c_out not in avoid:
+                return c_out
+
+    # 2. Try standard dictionary for this exact word length
+    words = WORDS_BY_LENGTH.get(length)
+    if words:
+        for w in words:
             w_str = w.upper() if case == "upper" else w.lower()
             cand = f"{pre}{w_str}"
             if norm(cand) not in taken and cand not in avoid:
                 return cand
-    for w in WORDLE_OPENERS:
-        cand = f"{pre}{w[:length]}" if len(w) >= length else f"{pre}{w}"
+
+    # 3. If unusual length (>10 or <3), construct from words pool
+    fallback_pool = [w for w_list in WORDS_BY_LENGTH.values() for w in w_list]
+    for w in fallback_pool:
+        cand_w = w[:length] if len(w) >= length else (w * ((length // len(w)) + 1))[:length]
+        cand = f"{pre}{cand_w.upper() if case == 'upper' else cand_w.lower()}"
         if norm(cand) not in taken and cand not in avoid:
             return cand
     return None

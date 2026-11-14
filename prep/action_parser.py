@@ -9,6 +9,18 @@ from dataclasses import dataclass, field
 from typing import Any
 
 
+WORDS_BY_LENGTH = {
+    3: ["cat", "dog", "run", "sun", "sky", "red", "big", "top", "air", "box"],
+    4: ["play", "game", "time", "word", "star", "open", "line", "plan", "real", "gold"],
+    5: ["slate", "crane", "audio", "raise", "stare", "roast", "adieu", "trace", "brick"],
+    6: ["planet", "stream", "spring", "silver", "golden", "simple", "ground", "master"],
+    7: ["balance", "playing", "explore", "freedom", "journey", "mystery", "dynamic", "plastic"],
+    8: ["building", "strength", "computer", "universe", "mountain", "solution", "football"],
+    9: ["knowledge", "algorithm", "discovery", "champion", "landscape", "beautiful"],
+    10: ["basketball", "everything", "understand", "friendship", "foundation", "generation"],
+}
+
+
 @dataclass
 class ActionGrammar:
     kind: str  # "grid" | "discrete" | "numeric_range" | "word" | "generic"
@@ -161,11 +173,10 @@ class ActionGrammar:
         if self.kind == "word":
             length = self.word_length or 5
             pre = self.word_prefix or ""
-            openers = ["slate", "crane", "audio", "raise", "stare"]
-            for o in openers:
-                if len(o) == length:
-                    return f"{pre}{o}"
-            return f"{pre}words"[:length]
+            cands = WORDS_BY_LENGTH.get(length, [])
+            if cands:
+                return f"{pre}{cands[0]}"
+            return f"{pre}{'words'[:length]}" if length <= 5 else f"{pre}{'word' * 3}"[:length]
         return "pass"
 
     def to_dict(self) -> dict[str, Any]:
@@ -359,10 +370,21 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
     has_guess_prefix = bool(re.search(r"guess\s+<n>", action_section, re.IGNORECASE) or re.search(r'"guess\s+\d+"', action_section, re.IGNORECASE))
     extracted_examples = [q.strip() for q in re.findall(r'["\']([^"\']+)["\']', action_section) if q.strip() and len(q) < 40]
 
-    word_len_m = re.search(r"\b(\d+)[-\s]letter\b", combined_text, re.IGNORECASE)
+    word_len_m = re.search(r"\b(\d+)[-\s]letters?\b", combined_text, re.IGNORECASE)
+    if not word_len_m:
+        word_len_m = re.search(r"\b(?:length|size)\s*(?:of|=|:)?\s*(\d+)\b", combined_text, re.IGNORECASE)
+    w_words = {"three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+    parsed_word_len = None
+    if word_len_m:
+        parsed_word_len = int(word_len_m.group(1))
+    else:
+        for name, val in w_words.items():
+            if re.search(rf"\b{name}[-\s]letters?\b", combined_text, re.IGNORECASE):
+                parsed_word_len = val
+                break
     has_word_clues = bool(re.search(r"\b(?:wordle|secret word|letters?|hangman|anagram)\b", combined_text, re.IGNORECASE))
     guess_word_m = bool(re.search(r"guess\s+(?:a\s+)?word", action_section, re.IGNORECASE) or re.search(r"guess\s+[a-zA-Z]+", action_section, re.IGNORECASE))
-    word_game = (word_len_m is not None) or (has_word_clues and (guess_word_m or "word" in action_section.lower()))
+    word_game = (parsed_word_len is not None) or (has_word_clues and (guess_word_m or "word" in action_section.lower()))
 
     grammar: ActionGrammar
 
@@ -426,11 +448,13 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
 
     # 3. Check for Word / Wordle games (e.g. 5-letter word, guess word, wordle)
     elif word_game:
-        w_len = int(word_len_m.group(1)) if word_len_m else 5
+        w_len = parsed_word_len or (5 if "wordle" in combined_text.lower() else None)
         w_pre = "guess " if re.search(r"guess\s+", action_section, re.IGNORECASE) else ""
         word_examples = [e for e in extracted_examples if any(c.isalpha() for c in e) and "<" not in e]
-        if not word_examples:
-            word_examples = [f"{w_pre}{w}" for w in ["slate", "crane", "audio", "raise", "stare"]]
+        if not word_examples and w_len and w_len in WORDS_BY_LENGTH:
+            word_examples = [f"{w_pre}{w}" for w in WORDS_BY_LENGTH[w_len][:5]]
+        elif not word_examples:
+            word_examples = [f"{w_pre}{w}" for w in ["play", "game", "word", "slate", "planet"]]
         grammar = ActionGrammar(
             kind="word",
             word_length=w_len,

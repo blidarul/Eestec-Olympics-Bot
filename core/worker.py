@@ -121,10 +121,14 @@ def _worker_main(conn):
             src = d.source if d.source in ("strategy", "model", "fallback") else "fallback"
             tool = info.get("tool") or {"model": "model", "strategy": "strategy", "fallback": "fallback"}[src]
             full_reason = "; ".join(x for x in (why, info.get("reason"), reason) if x)
-            conn.send({"action": d.action, "chat": d.chat, "source": src,
-                       "model_error": getattr(llm, "last_error", None) if llm is not None else "no_llm",
-                       "family": family, "strategy": getattr(strategy, "name", "?"), "tool": tool,
-                       "reason": full_reason[:200], "candidates_left": info.get("candidates_left")})
+            resp = {"action": d.action, "chat": d.chat, "source": src,
+                    "model_error": getattr(llm, "last_error", None) if llm is not None else "no_llm",
+                    "family": family, "strategy": getattr(strategy, "name", "?"), "tool": tool,
+                    "reason": full_reason[:200], "candidates_left": info.get("candidates_left")}
+            for k in ("facts_used", "tools_called", "assist_source", "assist_ms"):
+                if k in info:
+                    resp[k] = info[k]
+            conn.send(resp)
         except BaseException:
             traceback.print_exc()
             try:

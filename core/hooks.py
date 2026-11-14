@@ -55,11 +55,12 @@ def map_engine_variant(vd: dict) -> dict:
     regex = None
     if gr.get("kind") == "word":
         import re as _re
-        w_len = gr.get("word_length") or 5
+        w_len = gr.get("word_length")
         w_pre = _re.escape(str(gr.get("word_prefix") or ""))
-        regex = rf"^(?:{w_pre})?[A-Za-z]{{{w_len}}}$"
+        regex = rf"^(?:{w_pre})?[A-Za-z]{{{w_len}}}$" if w_len else rf"^(?:{w_pre})?[A-Za-z]+$"
         if not examples:
-            examples = ["slate", "crane", "audio", "raise", "stare"]
+            from core.fallback import WORDS_BY_LENGTH
+            examples = [f"{gr.get('word_prefix') or ''}{w}" for w in WORDS_BY_LENGTH.get(w_len or 5, ["play", "game", "word"])][:5]
     hints = heur.get("strategy_hints") or {}
     hint_txt = "; ".join(f"{k}: {v}" for k, v in hints.items() if isinstance(v, (str, int, float)))[:600]
     art = _default_artifacts(vd.get("label", ""))

@@ -330,3 +330,72 @@ def test_generic_prompt_includes_rules_when_legal_actions_null():
     assert "CRITICAL WARNING" in prompt
     assert "slate" in prompt
 
+
+def test_multi_length_word_grammar_and_fallback():
+    from prep.action_parser import parse_action_grammar
+    # 4-letter word game
+    rules_4 = "Word game: guess the secret four-letter word.\nACTION FORMAT: 'play', 'game', 'word'."
+    g4 = parse_action_grammar(rules_4)
+    assert g4.kind == "word" and g4.word_length == 4
+    art4 = {"grammar": g4.to_dict(), "family": "deduction"}
+    assert validate.validate("play", None, art4) == "play"
+    assert validate.validate("crane", None, art4) is None
+    w4 = fallback.fallback_action(None, art4)
+    assert len(w4) == 4
+
+    # 6-letter word game
+    rules_6 = "Word game: guess the 6-letter word.\nACTION FORMAT: 'planet', 'stream'."
+    g6 = parse_action_grammar(rules_6)
+    assert g6.kind == "word" and g6.word_length == 6
+    art6 = {"grammar": g6.to_dict(), "family": "deduction"}
+    assert validate.validate("planet", None, art6) == "planet"
+    assert validate.validate("game", None, art6) is None
+    w6 = fallback.fallback_action(None, art6)
+    assert len(w6) == 6
+
+    # 7-letter word game
+    rules_7 = "Word game: seven-letter secret word.\nACTION FORMAT: 'balance', 'playing'."
+    g7 = parse_action_grammar(rules_7)
+    assert g7.kind == "word" and g7.word_length == 7
+    art7 = {"grammar": g7.to_dict(), "family": "deduction"}
+    assert validate.validate("freedom", None, art7) == "freedom"
+    w7 = fallback.fallback_action(None, art7)
+    assert len(w7) == 7
+
+
+def test_generic_uses_assist_certain_move_with_zero_model_calls():
+    from core.generic import STRATEGY as generic
+    # Board with immediate winning move at C3
+    board = "You are X.\n  A B C\n1 X O .\n2 . X .\n3 . O .\nYour move."
+    legal = ["C1", "A2", "C2", "A3", "C3"]
+    rules = "Tic-tac-toe on a 3x3 board. Get three in a row to win. You are X."
+    art = {"family": "generic"}
+    state = TurnState("ttt_test", rules, {}, 0, board, legal, 3, None, [], art, time.monotonic() + 10.0, None)
+    decision = generic.decide(state)
+    assert decision.action == "C3"
+    assert decision.source == "strategy"
+    assert "facts_used" in decision.info
+    assert "assist_source" in decision.info
+    assert decision.info["assist_source"] == "tool"
+
+
+def test_end_to_end_generic_assist_certain_move(tmp_path):
+    b = Bot(tmp_path, '{"a": "C1", "c": "chat"}')
+    rules = "Tic-tac-toe on a 3x3 board. Get three in a row to win. You are X."
+    try:
+        p = {"type": "prep", "game_id": "simple_grid", "game_name": "SimpleGrid", "seconds": 60, "llm": LLM,
+             "variants": [{"label": "v1", "rules": rules, "sample_turn": None}]}
+        b.send(p)
+        b.send({"type": "start", "match_id": "m1", "game_index": 1, "game_id": "simple_grid",
+                "variant": {"label": "v1"}, "rules": rules, "seat": 0, "llm": LLM})
+        board = "You are X.\n  A B C\n1 X O .\n2 . X .\n3 . O .\nYour move."
+        legal = ["C1", "A2", "C2", "A3", "C3"]
+        m = {"type": "turn", "game_index": 1, "turn": 1, "observation": board, "legal_actions": legal, "seconds": 20, "chat": []}
+        t = b.send(m)
+        # Even though stub says "C1", precompute certain move C3 overrides with 0 model calls!
+        assert t["action"] == "C3"
+    finally:
+        b.close()
+
+
+

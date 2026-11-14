@@ -49,6 +49,39 @@ class Generic:
         fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat)
         fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
         llm = state.llm
+        # Layer 2 assist: facts, certain moves (0 model calls), model-called tools
+        t_assist = time.monotonic()
+        try:
+            from solvers.assist import assist_turn
+            user = self._prompt(state, art)
+            assist_deadline = min(state.deadline - 1.5, t_assist + 12.0)
+            llm_call = self._build_llm_call(llm)
+            a = assist_turn(state.observation, legal, art, state.rules,
+                            llm_call, SYSTEM, user, deadline=assist_deadline, native=True)
+            s = getattr(a, "suggestion", None)
+            if s and isinstance(s, dict) and s.get("action"):
+                move = validate.validate(s["action"], legal, art, rejected, no_repeat)
+                if move is not None:
+                    chat = hooks.filter_out(s.get("chat") or fb_c, forbidden)
+                    src = "strategy" if s.get("source") == "tool" else "model"
+                    loop = getattr(a, "loop", None)
+                    trace = getattr(loop, "trace", []) if loop else []
+                    tools_called = [t.get("tool") for t in trace if isinstance(t, dict) and t.get("tool")]
+                    facts = getattr(a, "facts", None)
+                    facts_used = getattr(facts, "used", []) if facts else []
+                    ms = getattr(loop, "ms", None) or int((time.monotonic() - t_assist) * 1000)
+                    info = {
+                        "tool": s.get("why") or ("precompute" if s.get("source") == "tool" else "toolloop"),
+                        "reason": s.get("why") or "assist_turn",
+                        "facts_used": facts_used,
+                        "tools_called": tools_called,
+                        "assist_source": s.get("source"),
+                        "assist_ms": ms,
+                    }
+                    return Decision(move, chat, src, info)
+        except Exception:
+            traceback.print_exc()
+
         if llm is None or not llm.available() or llm.over_budget() or time.monotonic() > state.deadline - 1.0:
             return Decision(fb_a, fb_c, "fallback")
         try:
@@ -66,6 +99,28 @@ class Generic:
             return Decision(fb_a, fb_c, "fallback")
         chat = hooks.filter_out(obj.get("c") or fb_c, forbidden)
         return Decision(move, chat, "model")
+
+    def _build_llm_call(self, llm):
+        if llm is None or not llm.available() or llm.over_budget():
+            return None
+        if getattr(llm, "stub", False):
+            import os
+            reply = os.environ.get("BOT_STUB_LLM_REPLY") or os.environ.get("STUB_LLM_REPLY") or '{"a": "", "c": "Good game."}'
+            return lambda messages, tools, timeout_s, max_tokens: {"content": reply, "tool_calls": [], "error": None}
+        try:
+            if getattr(llm, "_client", None) is None:
+                from openai import OpenAI
+                llm._client = OpenAI(base_url=llm.info.get("base_url"), api_key=llm.info.get("api_key"), max_retries=0)
+            from solvers.toolloop import make_openai_llm_call
+            base_call = make_openai_llm_call(llm._client, llm.model)
+            def wrapped_call(messages, tools, timeout_s, max_tokens):
+                res = base_call(messages, tools, timeout_s, max_tokens)
+                llm.spend += 0.0005
+                return res
+            return wrapped_call
+        except Exception:
+            traceback.print_exc()
+            return None
 
     def _prompt(self, state, art):
         fmt = art.get("action_format") or {}

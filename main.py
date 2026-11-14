@@ -143,7 +143,8 @@ def on_turn(msg, wk):
             rejected = warning.get("rejected") if warning else None
             v = validate.validate(a, legal, art, rejected, previous)
             model_error = ans.get("model_error")
-            meta = {k: ans.get(k) for k in ("family", "strategy", "tool", "reason", "candidates_left")}
+            meta = {k: ans.get(k) for k in ("family", "strategy", "tool", "reason", "candidates_left",
+                                             "facts_used", "tools_called", "assist_source", "assist_ms")}
             if v is not None:
                 action = v
                 source = ans.get("source") if ans.get("source") in ("model", "strategy", "fallback") else "fallback"
@@ -181,6 +182,9 @@ def log_decision(msg, source, secs, model_error, meta=None):
            "family": meta.get("family"), "strategy": meta.get("strategy"), "tool": meta.get("tool"),
            "action": meta.get("action"), "reason": meta.get("reason"), "candidates_left": meta.get("candidates_left"),
            "source": src, "answer_ms": int(secs * 1000), "model_error": model_error}
+    for k in ("facts_used", "tools_called", "assist_source", "assist_ms"):
+        if k in meta and meta[k] is not None:
+            rec[k] = meta[k]
     protocol.log("decision " + json.dumps(rec, default=str))
     try:
         memory.append_log(memory.game_dir(g.get("game_id", ""), g.get("rules", "")), rec)
