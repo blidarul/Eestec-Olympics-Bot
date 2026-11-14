@@ -722,10 +722,34 @@ def _chance(observation, legal, artifacts, rules, deadline, facts):
                 100 * res["bluff_ratio"], bet, pot, res["action"], res["why"]))
 
 
+# ------------------------------------------------------------------ search on a verified simulator (layer 3, M6)
+
+SEARCH_S = 6.0
+
+
+def _search(observation, legal, artifacts, rules, deadline, facts):
+    """artifacts["simulator"]["verified"] -> alpha-beta (small) or MCTS until `deadline` (its own, longer budget)."""
+    spec = artifacts.get("simulator")
+    if not (isinstance(spec, dict) and spec.get("verified") and spec.get("path")):
+        return
+    from solvers import simsearch
+    seat = artifacts.get("seat")
+    r = simsearch.search_move(spec, observation, legal, seat, deadline)
+    if not r or not r.get("move"):
+        return
+    facts.used.append("sim_search")
+    if r["tool"] == "mcts":
+        facts.lines.append("Search recommends %s (share %.2f; %s)." % (r["move"], r["share"], r["why"]))
+    else:
+        facts.lines.append("Search recommends %s (%s)." % (r["move"], r["why"]))
+    if r.get("proven") and legal and r["move"] in legal:
+        _set_certain(facts, r["move"], r["why"], "sim_search")
+
+
 _DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim, _classic, _opponent, _chance)
 
 
-def precompute(observation, legal_actions, artifacts, rules, deadline):
+def precompute(observation, legal_actions, artifacts, rules, deadline, search_deadline=None):
     """Run the cheap detectors. Never raises; returns Facts."""
     t0 = time.monotonic()
     facts = Facts()
@@ -745,6 +769,12 @@ def precompute(observation, legal_actions, artifacts, rules, deadline):
                 det(obs, legal, art, rl, end, facts)
             except Exception as exc:  # noqa: BLE001
                 _log("%s failed: %s: %s" % (det.__name__, type(exc).__name__, exc))
+        if (facts.certain is None and isinstance(search_deadline, (int, float))
+                and search_deadline - time.monotonic() > 0.2):
+            try:
+                _search(obs, legal, art, rl, search_deadline, facts)
+            except Exception as exc:  # noqa: BLE001
+                _log("_search failed: %s: %s" % (type(exc).__name__, exc))
         facts.used = list(dict.fromkeys(facts.used))
     except Exception as exc:  # noqa: BLE001
         _log("precompute failed: %s: %s" % (type(exc).__name__, exc))

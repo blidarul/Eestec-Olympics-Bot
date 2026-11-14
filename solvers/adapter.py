@@ -60,6 +60,8 @@ class SimGame:
         self._turn_attr = next((n for n in ("current", "to_move", "player") if hasattr(init, n)), None)
         if self._turn_attr is not None:
             self.to_move = self._to_move          # only offered when the state tells whose turn it is
+        if callable(getattr(init, "sample_hidden", None)):
+            self.determinize = lambda s, rng: s.sample_hidden(rng)   # optional hidden-information sampler (M6)
         self._hasher = None
         self._inplace = self._detect_inplace(init)
 

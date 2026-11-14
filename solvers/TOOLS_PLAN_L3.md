@@ -228,7 +228,8 @@ only `solvers/` and `tests/alex/` changed; HANDOFF_bld.md matches what is on mai
   Not done: no comparator for non-52-card decks (deck arg exists in monte_carlo_equity only), detector parses only hold'em-style and 'Your dice / Current bid' text formats (else pass artifacts), no Kuhn/Leduc tables (M8).
 - M5: DONE. solvers/evidence.py (retrieve, verify_answer, abstain_decision, truth_check; harness-only tools) + solvers/guard.py (forbidden_variants, forbidden_check); assist_turn adds evidence block + truth_check (Assist.truth_check); tests/alex/test_evidence.py; 311 tests pass.
   Not done: issue for mbappe offering guard.py (open it with gt); truth path needs an "unknown" form in the rules text, scoring parsed best-effort (default +1/-1/0); verify is lexical (no paraphrase/semantic match), yes/no answers are not checked.
-- M6:
+- M6: DONE. M0 found a verify path, so built: solvers/simsearch.py (search_move, tools sim_search + mdp_solve, harness-only), solvers/mdp.py, determinization in mcts.py/adapter.py (State.sample_hidden); detector _search in precompute (own 6 s budget via search_deadline, assist_turn passes it); tests/alex/test_simsearch.py; 320 tests pass.
+  Not done: no real prep-written simulator tried (only test sims; faithful only for grid_board templates); MCTS fact is never certain; mdp_solve needs an explicit table (no prep-built MDP yet); sim_search path arg is trusted (harness-only, not model-callable).
 - M7:
 - M8:
 - H:

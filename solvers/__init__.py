@@ -18,6 +18,7 @@ _TOOL_MODULES = (
     "solvers.chance",
     "solvers.evidence",
     "solvers.guard",
+    "solvers.simsearch",
 )
 
 for _name in _TOOL_MODULES:

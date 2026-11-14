@@ -5,6 +5,8 @@ Chance: `apply` may return a SAMPLED next state. The tree is "open loop": nodes 
 path from the root and every simulation re-applies the actions from the root state, so each visit samples fresh
 chance outcomes.
 Two-player zero-sum: the player to move maximises its own score; scores are normalised with running bounds.
+Hidden information: when `game.determinize(state, rng)` exists (adapter: State.sample_hidden(rng)) every simulation
+starts from a freshly re-sampled hidden state (determinization), so the root visits average over the possible worlds.
 Returns the most visited root move; stops early once at least `min_sims` simulations agree (the most visited root move
 leads the runner-up by `decisive` in normalised mean score, both with 50+ visits; close decisions use the whole time), so easy decisions do not burn the clock. Calibration (manifest simulator_calibration.transitions_per_sec) only
 bounds the simulation count, the deadline always wins.
@@ -59,7 +61,7 @@ def search(game, state, seat, deadline, c=C_UCB, max_playout=500, rng=None, max_
     has_to_move = callable(getattr(game, "to_move", None))
     forced = None
     hc = getattr(game, "has_chance", None)
-    if (not callable(hc) or not hc(state)) and (not callable(getattr(game, "to_move", None)) or game.to_move(state) == seat):
+    if not callable(getattr(game, "determinize", None)) and (not callable(hc) or not hc(state)) and (not callable(getattr(game, "to_move", None)) or game.to_move(state) == seat):
         for m in moves:                  # a 1-ply win is always preferred over sampled estimates
             try:
                 nxt = game.apply(state, m)
@@ -72,6 +74,8 @@ def search(game, state, seat, deadline, c=C_UCB, max_playout=500, rng=None, max_
     def mover_is_me(s, default):
         return (game.to_move(s) == seat) if has_to_move else default
 
+    det = getattr(game, "determinize", None)
+    det = det if callable(det) else None
     root = _Node(mover_is_me(state, True))
     lo, hi = [float("inf")], [float("-inf")]
     sims = 0
@@ -114,7 +118,13 @@ def search(game, state, seat, deadline, c=C_UCB, max_playout=500, rng=None, max_
             span = (hi[0] - lo[0]) or 1.0
             if top2[1].n >= 50 and ((top2[0].w / top2[0].n) - (top2[1].w / top2[1].n)) / span >= decisive:
                 break
-        node, s, path = root, state, [root]
+        s0 = state
+        if det is not None:
+            try:
+                s0 = det(state, rng) or state
+            except Exception:
+                det, s0 = None, state
+        node, s, path = root, s0, [root]
         while True:
             if game.is_terminal(s):
                 break

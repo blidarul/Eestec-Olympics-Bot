@@ -23,6 +23,8 @@ from solvers.select import select_tools
 from solvers.toolloop import LoopResult, run_tool_loop
 
 PRECOMPUTE_S = 0.3
+SEARCH_S = 6.0          # budget of the simulator search (M6)
+MODEL_RESERVE_S = 8.0   # always left for the model call after the search
 CHAT_MAX = 200
 
 
@@ -103,8 +105,10 @@ def assist_turn(observation, legal_actions, artifacts, rules, llm_call, base_sys
     try:
         artifacts = artifacts if isinstance(artifacts, dict) else {}
         try:
+            now = time.monotonic()
             facts = precompute(str(observation or ""), legal_actions, artifacts, str(rules or ""),
-                               min(float(deadline), time.monotonic() + PRECOMPUTE_S))
+                               min(float(deadline), now + PRECOMPUTE_S),
+                               search_deadline=min(now + SEARCH_S, float(deadline) - MODEL_RESERVE_S))
         except Exception as exc:  # noqa: BLE001
             _log("precompute failed: %s" % exc)
         c = facts.certain
