@@ -50,6 +50,21 @@ SAMPLES: dict[str, dict] = {
     "sample_action": {"probs": [0.5, 0.3, 0.2], "labels": ["a", "b", "c"], "seed": 7},
     "best_response": {"matrix": PAYOFF, "opponent_freq": [6, 2, 2], "row_labels": ["rock", "paper", "scissors"]},
     "nim_analysis": {"heaps": [3, 4, 5]},
+    "kinrow_solve": {"rules": "Tic-tac-toe on a 3x3 board. Three in a row wins. You are X.",
+                     "observation": "You are X.
+  A B C
+1 X O .
+2 . X .
+3 . O .
+", "legal_actions": ["C1", "A2", "C2", "A3", "C3"]},
+    "subtraction_solve": {"rules": "A heap of stones. Remove 1, 2 or 3 stones. The player who takes the last stone wins.",
+                          "observation": "Stones left: 21.", "legal_actions": ["1", "2", "3"]},
+    "dice_race_solve": {"rules": "Roll one six-sided die; a 1 loses the turn total. Hold to bank. First to reach 100 points wins.",
+                        "observation": "Your score: 0
+Opponent score: 0
+Turn total: 30", "legal_actions": ["roll", "hold"]},
+    "range_guess_solve": {"rules": "Guess the number between 1 and 100; you hear higher or lower.",
+                          "observation": "No guesses yet.", "legal_actions": None},
     "extract_numbers": {"text": "Round 3 of 10. You have 42 points, opponent 37.5."},
     "extract_grid": {"text": "Board:\n  A B C\n1 X . O\n2 . X .\n3 O . .\nYour move."},
     "extract_cards": {"text": "Your hand: Ace of Spades, 10h, KD"},

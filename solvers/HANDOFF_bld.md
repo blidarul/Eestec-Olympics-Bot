@@ -10,3 +10,5 @@ Kept up to date after every tools phase. Skeleton: sections are filled in phase 
 ## 5. Limits
 ## 6. Log fields
 ## 7. Not done yet
+- `kinrow_solve`, `subtraction_solve`, `dice_race_solve`, `range_guess_solve` (classic solvers, M2; harness-only, model_callable: no). They run inside `precompute` (detector `_classic`): `classic.run(obs, legal, rules, artifacts, deadline)` detects the game from the rules text, verifies the model against the real legal actions, then solves. Facts always; certain move only when proven (exact search, exact table, forced block, Grundy win). Direct call: `catalog.call("kinrow_solve", {"rules": ..., "observation": ..., "legal_actions": [...]}, deadline)` -> `{params, move, value, why, proven}`. Needs no core change.
+

@@ -526,7 +526,24 @@ def _nim(observation, legal, artifacts, rules, deadline, facts):
 
 # ------------------------------------------------------------------ entry point
 
-_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim)
+# ------------------------------------------------------------------ classic solvers (layer 3, M2)
+
+def _classic(observation, legal, artifacts, rules, deadline, facts):
+    from solvers import classic
+    skip = []
+    if "nim_analysis" in facts.used:
+        skip.append("subtraction")
+    if "binary_search_next" in facts.used:
+        skip.append("range_guess")
+    for r in classic.run(observation, legal, rules, artifacts, deadline, skip=skip):
+        name = r["solver"]
+        facts.used.append(name + "_solve")
+        facts.lines.append("%s (%s)%s." % (r.get("why"), name, " -> " + str(r["move"]) if r.get("move") else ""))
+        if r.get("move") and r.get("proven") and r.get("value") in (1, 0, None):
+            _set_certain(facts, r["move"], r.get("why") or name, name + "_solve")
+
+
+_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim, _classic)
 
 
 def precompute(observation, legal_actions, artifacts, rules, deadline):

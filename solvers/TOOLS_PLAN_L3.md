@@ -220,7 +220,8 @@ only `solvers/` and `tests/alex/` changed; HANDOFF_bld.md matches what is on mai
 - M0: DONE. Inbox empty. Catalog: 32 tools registered. solvers/assist.py committed (2e6a4ac); solvers/verify.py exists (verify_report/verify_isolated); solvers/mcts.py + adapter.py already exist.
   bld prep writes simulator_<i>.py per variant (+parse(obs,seat), chance sampling, key()) to /memory/<game_id>/, manifest has simulator_path + calibration; templates only faithful for grid_board -> M6 viable only when verify passes. HANDOFF_bld.md skeleton created; issue #37 opened for bld (GEMINI.md line).
 - M1: DONE. solvers/deduce.py (best_guess, 4 models, deduce_next registered, 33 tools); detector _deduce in precompute, hints in select; tests/alex/test_deduce_solvers.py; 260 tests pass. Not used: prep's exec'd Haiku model code (strategies/guessing/deduce keeps that); only a duck-typed artifacts["feedback_model"].
-- M2:
+- M2: DONE. solvers/classic/ (kinrow, subtraction, dice_race, range_guess + tools.py; 37 tools, 4 harness-only `*_solve`); detector _classic in precompute; tests/alex/test_classic.py; exact pig table (target 100, d6, p_first 0.5306) in solvers/data/.
+  Not done: dice_race exact only for target 100/d6/bust 1; kinrow heuristic (>12 empty) is never certain except win/block; classic range_guess is skipped when _guessing fired; not yet checked on arena-lite sample_turn observations (no practice run needed no model).
 - M3:
 - M4:
 - M5:

@@ -93,3 +93,17 @@ if a.suggestion and a.suggestion["action"] in (legal or [a.suggestion["action"]]
 
 Limits: facts block <= 600 chars, tool instructions <= 400, <= 6 tool schemas, <= 3 tool calls per round,
 tool results cut to 1 KB, chat <= 200. `llm_call` signature and `make_openai_llm_call(client, model)` are in `solvers/toolloop.py`.
+
+### Classic solvers (layer 3, M2; harness-only, catalog names `<solver>_solve`)
+
+Contract in `solvers/classic/__init__.py` (`ClassicSolver`: detect, verify, solve). `precompute` runs them last: a
+solver counts only when `detect(rules)` finds parameters and `verify` accepts the real observation + legal actions
+(result cached per rules hash). Certain move only when proven (exact search, exact table, Grundy win, forced block).
+
+| Tool | Families | When to use | Notes |
+|---|---|---|---|
+| `kinrow_solve` | think_ahead | k-in-a-row, any board, optional gravity (drop into a column) | exact alpha-beta when <= 12 empty cells, else win > block > double threat > line score; cells/columns mapped to legal actions by a naming style that must match the legal set exactly |
+| `subtraction_solve` | think_ahead | heaps with allowed-removal set (`1, 3 or 4`, `1 to 3`, `at most N`, any), normal or misere | Grundy xor; misere by exact memo search; skipped when `nim_analysis` already answered |
+| `dice_race_solve` | any | roll/hold race to a target | exact table `solvers/data/dice_race_t100_d6_b1.json` (made by `python -m solvers.classic.dice_table 100 6 1`, 20 s); other parameters: hold at 20 or the target, keep rolling when the opponent is close (facts only) |
+| `range_guess_solve` | guessing | numeric higher/lower guessing | binary search wrapper; skipped when `_guessing` already fired |
+
