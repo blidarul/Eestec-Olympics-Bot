@@ -32,6 +32,60 @@ def _generic_decide(state, last_resort):
     return last_resort.decide(state)
 
 
+def resolve_turn_chat(d, state, art):
+    """Chat handling (Issues #41 & #42, Rule 6.4):
+    If strategy co-generated chat (bluff, deals, guardrails, model) or marked info["chat_final"]=True,
+    preserve strategy chat. Only generate reply_line when d.chat is empty or a generic neutral/bank line.
+    Passes decision, chat_full, and game to chat.reply_line.
+    """
+    info = dict(getattr(d, "info", None) or {})
+    from core import fallback
+    bank = set(fallback._as_list(art.get("chat_bank"))) | {fallback.NEUTRAL_CHAT, "Your move.", "Good game."}
+    cur_chat = str(d.chat).strip() if d.chat is not None else ""
+    is_neutral_or_bank = (not cur_chat) or (d.chat in bank) or (cur_chat in bank)
+    is_chat_final = bool(info.get("chat_final")) or (info.get("chat_override") is False)
+
+    if is_neutral_or_bank and not is_chat_final:
+        try:
+            import chat
+            try:
+                r_line = chat.reply_line(
+                    state.opponent_chat,
+                    state.turn,
+                    state.rules,
+                    art.get("forbidden_terms"),
+                    art.get("family", ""),
+                    decision=d,
+                    chat_full=getattr(state, "chat_full", []),
+                    game=getattr(state, "game_index", 0),
+                )
+            except TypeError:
+                r_line = chat.reply_line(
+                    state.opponent_chat,
+                    state.turn,
+                    state.rules,
+                    art.get("forbidden_terms"),
+                    art.get("family", ""),
+                )
+            if r_line and isinstance(r_line, str) and r_line.strip():
+                d.chat = r_line
+        except Exception:
+            pass
+
+    if not (d.chat and str(d.chat).strip()):
+        d.chat = fallback.fallback_chat(art)
+
+    # Safety filter: ensure final chat adheres to speech rules & forbidden terms
+    try:
+        import chat
+        filtered = chat.filter_out(d.chat, art.get("forbidden_terms"))
+        if filtered and isinstance(filtered, str) and filtered.strip():
+            d.chat = filtered
+    except Exception:
+        pass
+    return d.chat
+
+
 def _worker_main(conn):
     # fd 1 may be the protocol pipe in a naive setup: never let the child write to it.
     try:
@@ -104,41 +158,7 @@ def _worker_main(conn):
                 strategy = _generic_strategy() or fallback_strategy
             info = dict(getattr(d, "info", None) or {})
             art = state.artifacts if isinstance(state.artifacts, dict) else {}
-            from core import fallback
-            # Chat handling (Issue #41, Rule 6.4):
-            # If strategy co-generated chat (bluff, deals, guardrails, model) or marked info["chat_final"]=True,
-            # preserve strategy chat. Only generate reply_line when d.chat is empty or a generic neutral/bank line.
-            bank = set(fallback._as_list(art.get("chat_bank"))) | {fallback.NEUTRAL_CHAT, "Your move.", "Good game."}
-            cur_chat = str(d.chat).strip() if d.chat is not None else ""
-            is_neutral_or_bank = (not cur_chat) or (d.chat in bank) or (cur_chat in bank)
-            is_chat_final = bool(info.get("chat_final")) or (info.get("chat_override") is False)
-
-            if is_neutral_or_bank and not is_chat_final:
-                try:
-                    import chat
-                    r_line = chat.reply_line(
-                        state.opponent_chat,
-                        state.turn,
-                        state.rules,
-                        art.get("forbidden_terms"),
-                        art.get("family", "")
-                    )
-                    if r_line and isinstance(r_line, str) and r_line.strip():
-                        d.chat = r_line
-                except Exception:
-                    pass
-
-            if not (d.chat and str(d.chat).strip()):
-                d.chat = fallback.fallback_chat(art)
-
-            # Safety filter: ensure final chat adheres to speech rules & forbidden terms
-            try:
-                import chat
-                filtered = chat.filter_out(d.chat, art.get("forbidden_terms"))
-                if filtered and isinstance(filtered, str) and filtered.strip():
-                    d.chat = filtered
-            except Exception:
-                pass
+            d.chat = resolve_turn_chat(d, state, art)
             src = d.source if d.source in ("strategy", "model", "fallback") else "fallback"
             tool = info.get("tool") or {"model": "model", "strategy": "strategy", "fallback": "fallback"}[src]
             full_reason = "; ".join(x for x in (why, info.get("reason"), reason) if x)

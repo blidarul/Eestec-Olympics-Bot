@@ -149,3 +149,85 @@ def test_prep_warm_chat():
     }
     by_label = {"v0": {"family": "bluff", "forbidden_terms": ["cheat"]}}
     hooks._warm_chat(msg, by_label)
+
+
+def test_chat_full_includes_game_and_kind():
+    """Issue #42 Contract 2: chat_full() copies 'game' and 'kind' into output dicts."""
+    raw_chat = [
+        {"from": "seat_1", "text": "let's play", "game": 2, "kind": "chat"},
+        {"from": "seat_0", "text": "move 1", "game": 2, "type": "move"},
+        {"from": "seat_1", "text": "good luck"},
+    ]
+    cf = main.chat_full(raw_chat)
+    assert len(cf) == 3
+    assert cf[0]["game"] == 2
+    assert cf[0]["kind"] == "chat"
+    assert cf[1]["game"] == 2
+    assert cf[1]["kind"] == "move"
+    assert "game" not in cf[2]
+    assert "kind" not in cf[2]
+
+
+def test_reply_line_called_with_decision_and_metadata(monkeypatch):
+    """Issue #42 Contract 1: worker calls reply_line with decision, chat_full, and game."""
+    captured = {}
+    import chat
+
+    def mock_reply_line(opp_chat, turn, rules, forbidden, family, **kwargs):
+        captured["opp_chat"] = opp_chat
+        captured["turn"] = turn
+        captured["rules"] = rules
+        captured["forbidden"] = forbidden
+        captured["family"] = family
+        captured["decision"] = kwargs.get("decision")
+        captured["chat_full"] = kwargs.get("chat_full")
+        captured["game"] = kwargs.get("game")
+        return "Custom reply based on move."
+
+    monkeypatch.setattr(chat, "reply_line", mock_reply_line)
+
+    state = TurnState(
+        game_id="g1",
+        rules="Rules",
+        variant={},
+        seat=0,
+        observation="",
+        legal_actions=["B2"],
+        turn=3,
+        warning=None,
+        opponent_chat=["play B2 now"],
+        artifacts={"chat_bank": ["Your move."]},
+        chat_full=[{"from": "opp", "text": "play B2 now", "game": 1}],
+        game_index=1,
+    )
+
+    strat = DummyNeutralChatStrategy()
+    d = strat.decide(state)
+    from core import worker
+    worker.resolve_turn_chat(d, state, state.artifacts)
+    assert captured.get("decision") is not None
+    assert captured.get("chat_full") == [{"from": "opp", "text": "play B2 now", "game": 1}]
+    assert captured.get("game") == 1
+    assert d.chat == "Custom reply based on move."
+
+
+def test_extract_speech_extra_creates_file(tmp_path):
+    """Issue #42 Contract 3: _extract_speech_extra writes speech_extra_<h>.json."""
+    import hashlib
+    rules = "Game rules with speech restrictions: FORBIDDEN TOPICS: weather, temperature, rain."
+    h = hashlib.sha256(rules.encode("utf-8")).hexdigest()[:12]
+    msg = {
+        "game_id": "speech_game_123",
+        "variants": [{"label": "v0", "rules": rules}],
+    }
+    base_dir = str(tmp_path)
+    hooks._extract_speech_extra(msg, {}, base_dir)
+
+    expected_path = tmp_path / "speech_game_123" / f"speech_extra_{h}.json"
+    assert expected_path.exists()
+    import json
+    with open(expected_path, "r", encoding="utf-8") as f:
+        terms = json.load(f)
+    assert isinstance(terms, list)
+    assert any("weather" in t or "rain" in t or "temperature" in t for t in terms)
+

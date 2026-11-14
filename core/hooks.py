@@ -6,6 +6,7 @@ core minimal prep. Artifacts shape (what TurnState.artifacts holds, one dict per
    chat_bank[], forbidden_terms[], grammar{...}, label}
 """
 import contextlib
+import hashlib
 import os
 import sys
 import time
@@ -147,6 +148,10 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
         _warm_chat(msg, by_label)
     except BaseException:
         traceback.print_exc()
+    try:
+        _extract_speech_extra(msg, by_label, base)
+    except BaseException:
+        traceback.print_exc()
     for v in variants:
         by_label[str(v.get("label", ""))]["rules_text_hash_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
         memory.save_json(os.path.join(memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base), "artifacts.json"),
@@ -251,6 +256,61 @@ def _warm_chat(msg: dict, by_label: dict) -> None:
             chat.reply_line([], 0, "", [], "")
     except Exception:
         pass
+
+
+def _extract_speech_extra(msg: dict, by_label: dict, base: str) -> None:
+    """For rules describing forbidden subjects, write JSON extra forbidden words to
+    /memory/<game_id>/speech_extra_<sha256(rules)[:12]>.json (Issue #42, contract with mbappe).
+    """
+    try:
+        variants = [v for v in (msg.get("variants") or []) if isinstance(v, dict)]
+        if not variants:
+            return
+        gid = msg.get("game_id", "unknown_game")
+        safe_gid = "".join(c if c.isalnum() or c in "_-" else "_" for c in str(gid))[:80] or "game"
+        target_dir = os.path.join(base, safe_gid)
+
+        llm = None
+        for v in variants:
+            rules = str(v.get("rules", ""))
+            if not rules:
+                continue
+            rules_l = rules.lower()
+            has_forbidden = any(kw in rules_l for kw in ("forbidden", "banned", "prohibited", "do not mention", "do not talk", "speech rule"))
+            if not has_forbidden:
+                continue
+            h = hashlib.sha256(rules.encode("utf-8", "replace")).hexdigest()[:12]
+            target_path = os.path.join(target_dir, f"speech_extra_{h}.json")
+            if os.path.exists(target_path):
+                continue
+
+            extra_terms = []
+            if msg.get("llm"):
+                try:
+                    if llm is None:
+                        llm = LLM(msg.get("llm"))
+                    if llm.available():
+                        prompt = (
+                            "Extract or generate a JSON array of 5-20 prohibited words and synonyms that should not be said, "
+                            "based on the forbidden subjects in the rules. Respond with JSON array only: [\"word1\", \"word2\", ...]"
+                        )
+                        res = llm.ask_json(prompt, rules[:4000], prep=True, timeout=15)
+                        if isinstance(res, list):
+                            extra_terms = [str(x).strip().lower() for x in res if str(x).strip()]
+                        elif isinstance(res, dict) and "forbidden" in res and isinstance(res["forbidden"], list):
+                            extra_terms = [str(x).strip().lower() for x in res["forbidden"] if str(x).strip()]
+                except Exception:
+                    pass
+
+            if not extra_terms:
+                from prep.action_parser import extract_forbidden_keywords
+                extra_terms = extract_forbidden_keywords(rules)
+
+            if extra_terms:
+                memory.save_json(target_path, extra_terms)
+                _log(f"[prep] saved extra speech terms to {target_path}: {len(extra_terms)} terms")
+    except Exception:
+        traceback.print_exc()
 
 
 def ready_line(rules, forbidden, seed) -> str:

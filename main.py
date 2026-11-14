@@ -33,11 +33,18 @@ def chat_texts(chat):
 
 
 def chat_full(chat):
-    """[{"from", "text"}] of the chat of the turn, untrusted, latest last (strings only, bounded)."""
+    """[{"from", "text", "game", "kind"}] of the chat of the turn, untrusted, latest last (strings only, bounded)."""
     out = []
     for c in chat or []:
         if isinstance(c, dict) and c.get("text"):
-            out.append({"from": str(c.get("from", "?"))[:20], "text": str(c["text"])[:300]})
+            item = {"from": str(c.get("from", "?"))[:20], "text": str(c["text"])[:300]}
+            if "game" in c and isinstance(c["game"], int):
+                item["game"] = c["game"]
+            if "kind" in c:
+                item["kind"] = str(c.get("kind", "chat"))[:20]
+            elif "type" in c:
+                item["kind"] = str(c.get("type", "chat"))[:20]
+            out.append(item)
     return out[-20:]
 
 
