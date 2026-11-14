@@ -23,21 +23,22 @@ This document outlines the strategy catalog, algorithmic ideas, and architecture
 
 ```mermaid
 graph TD
-    subgraph Alex [alex: Solvers & Deterministic Strategies + Core]
+    subgraph Bld [bld: Core Harness, Prep Time & Optimization]
         PL[Protocol Loop & Fallback]
         LLM[Haiku Gateway Client]
         MEM[Safe /memory Writer]
         REG[Strategy Registry]
-        SOLV[Solvers: Minimax / MCTS / Prob]
-        TA[think_ahead: Board Games]
-        GUESS[guessing: Deduction]
-    end
-
-    subgraph Bld [bld: Prep Time & Optimization]
         PREP[10-min Prep Engine]
         PARSE[Rules & Action Grammar Parser]
         SIM[Automated Simulator Synthesis]
         OPT[Runtime & Memory Profiling / Speedups]
+    end
+
+    subgraph Alex [alex: Solvers, Tools & Deterministic Strategies]
+        SOLV[Solvers: Minimax / MCTS / Prob]
+        TOOLS[Solver Tools & LLM Calling]
+        TA[think_ahead: Board Games]
+        GUESS[guessing: Deduction]
     end
 
     subgraph Mbappe [mbappe: Chat & Untrusted Data Strategies]
@@ -61,22 +62,31 @@ graph TD
 
 ---
 
-### A. Core, Solvers & Deterministic Strategies (`alex`)
+### A. Core Harness (`bld`)
 
 | Component | Path | Key Ideas & Responsibilities |
 |---|---|---|
-| **Protocol Loop** | `core/protocol.py` | Robust JSON-lines loop on stdin/stdout, logs strictly on stderr. Must handle `prep`, `start`, `turn`, `end`, and `shutdown`. |
+| **Protocol Loop** | `core/protocol.py`, `main.py` | Robust JSON-lines loop on stdin/stdout, logs strictly on stderr. Must handle `prep`, `start`, `turn`, `end`, and `shutdown`. |
 | **Clock & Deadline Manager** | `core/clocks.py` | Strict timeouts with safety buffers (e.g. 16s timeout for 20s move clock, 25s for 30s study clock). |
-| **Fallback Engine** | `core/fallback.py` | Always maintains an immediate, validated legal move. If the solver or LLM times out or fails, returns the fallback instantly. |
-| **Haiku Gateway Client** | `core/haiku.py` | Clean wrapper for Claude Haiku via the tournament gateway. Supports thinking budget control (`budget_tokens >= 1024`, `max_tokens >= budget + 1500`), retry logic, and empty response guards. |
+| **Fallback Engine** | `core/fallback.py`, `core/validate.py` | Always maintains an immediate, validated legal move. If the solver or LLM times out or fails, returns the fallback instantly. Anti-repeat safety net. |
+| **Haiku Gateway Client** | `core/haiku.py`, `core/llm.py` | Clean wrapper for Claude Haiku via the tournament gateway. Supports thinking budget control (`budget_tokens >= 1024`, `max_tokens >= budget + 1500`), retry logic, and empty response guards. |
 | **Atomic `/memory` Writer** | `core/memory.py` | Thread-safe, cross-container safe atomic writes (write to temp file in same directory then `os.replace`). Keyed by rules hash. |
 | **Strategy Registry** | `core/registry.py` & `strategies/base.py` | Dynamic discovery of strategies exposed in `strategies/<family>/<name>/` matching the rules text. |
+| **Packaging & Deployment** | `Dockerfile`, `requirements.txt` | Container image builds, limits enforcement (2 CPU / 2 GB RAM), freeze tagging (`t1`, `t2`, `t3`), and Harbor registry pushes. |
+
+---
+
+### B. Solvers, Tools & Deterministic Strategies (`alex`)
+
+| Component | Path | Key Ideas & Responsibilities |
+|---|---|---|
 | **Solvers Library** | `solvers/` | Minimax with alpha-beta and iterative deepening (`minimax.py`), MCTS (`mcts.py`), constraint deduction (`deduction.py`), probability/expected value & DP (`probability.py`). |
+| **Solver Tools** | `solvers/`, `core/` tool interfaces | Pre-computed evaluation tools and simulator search tools callable by LLM during turn execution. |
 | **Deterministic Strategies** | `strategies/think_ahead/`, `strategies/guessing/` | Board games (Tic-Tac-Toe, connect-N, grid games) and deduction from feedback (binary search for `guess_number`, candidate elimination). |
 
 ---
 
-### B. Prep Time & Optimization (`bld`)
+### C. Prep Time & Optimization (`bld`)
 
 #### 1. 10-Minute Prep Engine (`prep/`)
 - **Game Family Classifier:**
@@ -154,20 +164,21 @@ flowchart LR
 ```
 
 ### Milestone 1: Foundations & Core Scaffolding
-- [ ] `alex`: Build `core/protocol.py`, `core/clocks.py`, and `core/fallback.py` to ensure zero timeouts or illegal moves.
-- [ ] `alex`: Set up `core/haiku.py` client with timeout and thinking budget control.
-- [ ] `alex`: Create strategy discovery registry (`core/registry.py`) and base class (`strategies/base.py`).
+- [x] `bld`: Build `core/protocol.py`, `core/clocks.py`, and `core/fallback.py` to ensure zero timeouts or illegal moves.
+- [x] `bld`: Set up `core/haiku.py` client with timeout and thinking budget control.
+- [x] `bld`: Create strategy discovery registry (`core/registry.py`) and base class (`strategies/base.py`).
 
 ### Milestone 2: Practice Games Specialization (T1 Prep)
-- [ ] `alex`: Implement `strategies/think_ahead/tic_tac_toe` (optimal minimax solver).
-- [ ] `alex`: Implement `strategies/guessing/guess_number` (optimal binary search).
-- [ ] `bld`: Implement rules parsing and observation layout extraction in `prep/`.
-- [ ] `mbappe`: Implement `strategies/bluff/pig` (optimal threshold dynamic programming).
-- [ ] `mbappe`: Implement `chat/sanitizer.py` and `chat/composer.py` for compliant chat generation.
+- [x] `alex`: Implement `strategies/think_ahead/tic_tac_toe` (optimal minimax solver).
+- [x] `alex`: Implement `strategies/guessing/guess_number` (optimal binary search).
+- [x] `bld`: Implement rules parsing and observation layout extraction in `prep/`.
+- [x] `mbappe`: Implement `strategies/bluff/pig` (optimal threshold dynamic programming).
+- [x] `mbappe`: Implement `chat/sanitizer.py` and `chat/composer.py` for compliant chat generation.
 
 ### Milestone 3: Generalization & Advanced Solvers (T2 Prep)
 - [ ] `alex`: Generic Alpha-Beta Minimax with iterative deepening in `solvers/minimax.py` and MCTS in `solvers/mcts.py`.
-- [ ] `bld`: Automatic rules classification and simulator synthesis in `prep/`.
+- [ ] `alex`: Expose evaluation and search tools in `solvers/` for LLM tool-calling.
+- [x] `bld`: Automatic rules classification and simulator synthesis in `prep/`.
 - [ ] `mbappe`: Opponent profiling and tracking in `opponent/tracker.py`.
 - [ ] `mbappe`: Negotiation (`strategies/deals/`) and simultaneous prediction (`strategies/read_opponent/`).
 
@@ -175,4 +186,4 @@ flowchart LR
 - [ ] `mbappe`: Truth extraction with hallucination protection in `strategies/truth/`.
 - [ ] `mbappe`: Guardrails leak defense and adversarial chat filter in `strategies/guardrails/`.
 - [ ] `bld`: Runtime execution speedups, simulator inner-loop optimization, memory footprint tuning, and container stress tests under 2 CPU / 2 GB limits.
-- [ ] `alex`: Final image size optimization and Harbor deployment checks.
+- [x] `bld`: Docker image builds, Harbor deployment, and tournament freeze tags (`t1`, `t2`, `t3`).
