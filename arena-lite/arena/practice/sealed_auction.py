@@ -75,7 +75,14 @@ After each round, both bids are revealed along with the winner and price paid.
         return [] if self.over else [0, 1]
 
     def legal_actions(self, seat: int) -> list[str] | None:
-        return None  # continuous bid space
+        if self.over:
+            return []
+        v = self.valuations[seat][self.round - 1]
+        step = max(5, (self.val_max - self.val_min) // 10)
+        bids = [f"bid {b}" for b in range(self.val_min, self.val_max + 1, step)]
+        if f"bid {v}" not in bids:
+            bids.append(f"bid {v}")
+        return sorted(set(bids))
 
     def normalize(self, seat: int, action: str) -> str | None:
         if self.over:

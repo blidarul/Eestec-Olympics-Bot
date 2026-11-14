@@ -81,7 +81,14 @@ The word "say" is optional.
         return [] if self.over else [self.current]
 
     def legal_actions(self, seat: int) -> list[str] | None:
-        return None  # open conversational space
+        if self.over or seat != self.current:
+            return []
+        return [
+            "say the weather is very pleasant today",
+            "say let us proceed with our discussion",
+            "say I am enjoying our friendly match",
+            "say that is an interesting perspective",
+        ]
 
     def said(self, seat: int, action: str) -> str | None:
         return action.replace("say ", "").strip()
