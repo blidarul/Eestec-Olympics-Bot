@@ -167,16 +167,27 @@ class Generic:
                     mem_dir = game_memory_dir(getattr(state, "memory_dir", "/memory"), state.game_id)
                     blotto_book = load_json(os.path.join(mem_dir, "blotto_book.json"))
                 if blotto_book:
-                    m_tot = re.search(r"soldiers this round:\s*(\d+)", state.observation, re.I) or re.search(r"allocation of\s*(\d+)\s*soldiers", state.observation, re.I)
-                    m_f = re.search(r"across\s*(\d+)\s*fields", state.observation, re.I)
-                    m_rnd = re.search(r"round\s*(\d+)/", state.observation, re.I)
+                    m_tot = (
+                        re.search(r"soldiers this round:\s*(\d+)", state.observation, re.I)
+                        or re.search(r"allocation of\s*(\d+)\s*soldiers", state.observation, re.I)
+                        or re.search(r"available:\s*(\d+)\s*soldiers", state.observation, re.I)
+                        or re.search(r"(\d+)\s*soldiers", state.rules, re.I)
+                    )
+                    m_f = (
+                        re.search(r"across\s*(\d+)\s*fields", state.observation, re.I)
+                        or re.search(r"(\d+)\s*fields", state.observation, re.I)
+                        or re.search(r"across\s*(\d+)\s*battlefields", state.rules, re.I)
+                        or re.search(r"(\d+)\s*battlefields", state.rules, re.I)
+                        or re.search(r"(\d+)\s*fields", state.rules, re.I)
+                    )
+                    m_rnd = re.search(r"round\s*(\d+)/", state.observation, re.I) or re.search(r"round\s*(\d+)\s*of", state.observation, re.I)
                     avail = int(m_tot.group(1)) if m_tot else 100
                     num_f = int(m_f.group(1)) if m_f else 5
                     rnd = int(m_rnd.group(1)) if m_rnd else 1
 
                     from optimization.blotto_solver import select_blotto_action
                     b_act = select_blotto_action(blotto_book, available_soldiers=avail, fields=num_f, round_no=rnd)
-                    v_act = validate.validate(b_act, legal, art, rejected, no_repeat)
+                    v_act = validate.validate(b_act, legal, art, rejected, no_repeat, observation=state.observation)
                     if v_act is not None:
                         return Decision(v_act, fb_c, "strategy", {"tool": "blotto_strategic_portfolio", "action": v_act})
             except Exception:

@@ -287,7 +287,7 @@ def on_turn(msg, wk):
             a, c = ans.get("action"), ans.get("chat")
             a = a if isinstance(a, str) else ""
             rejected = warning.get("rejected") if warning else None
-            v = validate.validate(a, legal, art, rejected, previous)
+            v = validate.validate(a, legal, art, rejected, previous, observation=obs)
             if fmt and v is not None and not actionfmt.matches(fmt, v):
                 v = actionfmt.repair(fmt, v)  # near miss (quotes, trailing period) or None -> fallback
             if fmt and v is None and a and actionfmt.matches(fmt, a) and not (rejected and fallback.norm(a) == fallback.norm(rejected)):

@@ -3,6 +3,7 @@
 Imports nothing heavy: the main process uses it before any strategy work.
 """
 import random
+import re
 
 NEUTRAL_CHAT = "Your move."
 
@@ -153,6 +154,58 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
         filled = actionfmt.fill(tfmt, avoid, observation)
         if filled:
             return filled
+
+    # 0.5. Colonel Blotto fallback: allocate exact soldiers across K fields
+    obs_l = (observation or "").lower()
+    rules_l = (rules or "").lower()
+    art_str = str(art).lower()
+    is_blotto = (
+        "blotto" in obs_l
+        or "blotto" in rules_l
+        or "blotto" in art_str
+        or ("soldier" in obs_l and "field" in obs_l)
+        or ("soldier" in rules_l and "field" in rules_l)
+        or ("soldier" in art_str and "field" in art_str)
+    )
+    if is_blotto:
+        m_f = (
+            re.search(r"across\s*(\d+)\s*fields", observation, re.I)
+            or re.search(r"(\d+)\s*fields", observation, re.I)
+            or re.search(r"across\s*(\d+)\s*battlefields", rules, re.I)
+            or re.search(r"(\d+)\s*battlefields", rules, re.I)
+            or re.search(r"(\d+)\s*fields", rules, re.I)
+        )
+        k = int(m_f.group(1)) if m_f else 5
+        m_s = (
+            re.search(r"soldiers this round:\s*(\d+)", observation, re.I)
+            or re.search(r"allocation of\s*(\d+)\s*soldiers", observation, re.I)
+            or re.search(r"available:\s*(\d+)\s*soldiers", observation, re.I)
+            or re.search(r"(\d+)\s*soldiers", rules, re.I)
+        )
+        s = int(m_s.group(1)) if m_s else 100
+        share = s // k
+        rem = s - share * (k - 1)
+        base = [share] * (k - 1) + [rem]
+        cand = " ".join(str(x) for x in base)
+        if cand not in avoid and norm(cand) not in taken_norms:
+            return cand
+        for p_idx in range(k - 1):
+            if base[p_idx] > 0:
+                perturbed = list(base)
+                perturbed[p_idx] -= 1
+                perturbed[-1] += 1
+                cand = " ".join(str(x) for x in perturbed)
+                if cand not in avoid and norm(cand) not in taken_norms:
+                    return cand
+        for p_idx in range(k - 1):
+            if base[-1] > 0:
+                perturbed = list(base)
+                perturbed[-1] -= 1
+                perturbed[p_idx] += 1
+                cand = " ".join(str(x) for x in perturbed)
+                if cand not in avoid and norm(cand) not in taken_norms:
+                    return cand
+        return " ".join(str(x) for x in base)
     fmt = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
     # 1. Action format examples not in avoid
     examples = _as_list(fmt.get("examples"))

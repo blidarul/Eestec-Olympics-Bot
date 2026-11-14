@@ -82,30 +82,39 @@ def select_blotto_action(
     fields: int = 5,
     round_no: int = 1,
 ) -> str:
-    """Select a valid action from the precomputed portfolio or scale down if reserve differs."""
-    if not portfolio:
-        share = available_soldiers // fields
-        rem = available_soldiers - share * (fields - 1)
-        res = [share] * (fields - 1) + [rem]
-        return " ".join(str(x) for x in res)
+    """Select a valid action from the precomputed portfolio or scale down if reserve differs.
+    Strictly guarantees exactly `fields` integers summing to `available_soldiers`.
+    """
+    fields = max(1, min(fields, 12))
+    if available_soldiers <= 0:
+        return " ".join(["0"] * fields)
 
-    # Filter or scale portfolio to available_soldiers
-    valid_cands = [a for a in portfolio if sum(a) == available_soldiers and len(a) == fields]
+    # 1. Exact match on both field count and soldier count
+    valid_cands = [a for a in (portfolio or []) if len(a) == fields and sum(a) == available_soldiers]
     if valid_cands:
         chosen = random.choice(valid_cands)
         return " ".join(str(x) for x in chosen)
 
-    # If soldiers differ (e.g. reserve mode), scale chosen portfolio item
-    template = portfolio[(round_no - 1) % len(portfolio)]
-    total_t = sum(template)
-    if total_t > 0:
-        scaled = [int(x * available_soldiers / total_t) for x in template]
-        diff = available_soldiers - sum(scaled)
-        for i in range(diff):
-            scaled[i % fields] += 1
-        return " ".join(str(x) for x in scaled)
+    # 2. Scale an item from portfolio (adapting field count if needed)
+    if portfolio:
+        raw_template = portfolio[(round_no - 1) % len(portfolio)]
+        if len(raw_template) > fields:
+            template = raw_template[:fields]
+        elif len(raw_template) < fields:
+            template = list(raw_template) + [0] * (fields - len(raw_template))
+        else:
+            template = list(raw_template)
+        total_t = sum(template)
+        if total_t > 0:
+            scaled = [int(x * available_soldiers / total_t) for x in template]
+            diff = available_soldiers - sum(scaled)
+            sorted_indices = sorted(range(fields), key=lambda idx: template[idx], reverse=True)
+            for i in range(diff):
+                scaled[sorted_indices[i % fields]] += 1
+            return " ".join(str(x) for x in scaled)
 
+    # 3. Baseline equal split
     share = available_soldiers // fields
-    rem = available_soldiers - share * (fields - 1)
-    res = [share] * (fields - 1) + [rem]
+    rem = available_soldiers - share * fields
+    res = [share + (1 if i < rem else 0) for i in range(fields)]
     return " ".join(str(x) for x in res)

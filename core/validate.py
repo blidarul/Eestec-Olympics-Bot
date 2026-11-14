@@ -21,7 +21,7 @@ def _fuzzy(norms, n):
     return best if score >= FUZZY else None
 
 
-def validate(action, legal, artifacts=None, rejected=None, previous=()):
+def validate(action, legal, artifacts=None, rejected=None, previous=(), observation=""):
     """`previous`: actions already sent in this game that must not be repeated (guessing games): treated like rejected."""
     if not isinstance(action, str) or not action.strip():
         return None
@@ -36,7 +36,7 @@ def validate(action, legal, artifacts=None, rejected=None, previous=()):
             norms = [(l, _norm(l)) for l in legal]
             out = next((l for l, ln in norms if ln == n), None) or _fuzzy(norms, n)
     else:  # legal_actions is null: follow the action format from prep
-        out = _validate_format(action, artifacts)
+        out = _validate_format(action, artifacts, observation=observation)
     if out is None:
         return None
     if rejected is not None:
@@ -104,13 +104,94 @@ def _word(action, artifacts):
     return f"{prefix}{word_out}" if prefix else word_out
 
 
-def _validate_format(action, artifacts):
+def _blotto(action, artifacts, observation=""):
+    """Colonel Blotto allocation validator:
+    Validates K whole numbers >= 0 summing to S (or <= S in reserves mode).
+    Returns formatted action "n1 n2 ... nk", or None if not a blotto action.
+    """
+    if not isinstance(action, str):
+        return None
+    clean = action.replace(",", " ").strip()
+    tokens = clean.split()
+    if len(tokens) < 2 or not all(re.fullmatch(r"\d+", t) for t in tokens):
+        return None
+    nums = [int(t) for t in tokens]
+
+    obs_lower = (observation or "").lower()
+    art_str = str(artifacts or {}).lower()
+    is_blotto = (
+        "blotto" in obs_lower
+        or "blotto" in art_str
+        or ("soldier" in obs_lower and "field" in obs_lower)
+        or ("soldier" in art_str and "field" in art_str)
+    )
+    if not is_blotto:
+        return None
+
+    m_f = (
+        re.search(r"across\s*(\d+)\s*fields", observation, re.I)
+        or re.search(r"(\d+)\s*fields", observation, re.I)
+        or re.search(r"across\s*(\d+)\s*battlefields", art_str, re.I)
+        or re.search(r"(\d+)\s*fields", art_str, re.I)
+    )
+    k = int(m_f.group(1)) if m_f else len(nums)
+
+    m_s = (
+        re.search(r"soldiers this round:\s*(\d+)", observation, re.I)
+        or re.search(r"allocation of\s*(\d+)\s*soldiers", observation, re.I)
+        or re.search(r"available:\s*(\d+)\s*soldiers", observation, re.I)
+        or re.search(r"(\d+)\s*soldiers", art_str, re.I)
+    )
+    s = int(m_s.group(1)) if m_s else 100
+
+    is_reserves = "reserve" in obs_lower or "reserve" in art_str
+
+    if len(nums) != k:
+        return None
+
+    total = sum(nums)
+    if is_reserves:
+        if total <= s:
+            return " ".join(str(x) for x in nums)
+        # Scaled down to at most s
+        if total > 0:
+            scaled = [int(x * s / total) for x in nums]
+            diff = s - sum(scaled)
+            for i in range(diff):
+                scaled[i % k] += 1
+            return " ".join(str(x) for x in scaled)
+    else:
+        if total == s:
+            return " ".join(str(x) for x in nums)
+        # Scale to exact sum s
+        if total > 0:
+            scaled = [int(x * s / total) for x in nums]
+            diff = s - sum(scaled)
+            for i in range(diff):
+                scaled[i % k] += 1
+            return " ".join(str(x) for x in scaled)
+        else:
+            share = s // k
+            rem = s - share * (k - 1)
+            res = [share] * (k - 1) + [rem]
+            return " ".join(str(x) for x in res)
+    return None
+
+
+def _validate_format(action, artifacts, observation=""):
     num = _numeric(action, artifacts)
     if num is not None:
         return num
     w = _word(action, artifacts)
     if w is not None:
         return w
+    bl = _blotto(action, artifacts, observation)
+    if bl is not None:
+        return bl
+    obs_lower = (observation or "").lower()
+    art_str = str(artifacts or {}).lower()
+    if "blotto" in obs_lower or "blotto" in art_str or ("soldier" in obs_lower and "field" in obs_lower):
+        return None
     g = (artifacts or {}).get("grammar") if isinstance(artifacts, dict) else None
     if isinstance(g, dict) and (g.get("kind") in ("word", "numeric_range") or g.get("word_length") or g.get("numeric_min") is not None):
         return None
