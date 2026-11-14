@@ -18,19 +18,22 @@ import re
 import sys
 import time
 import traceback
+import zlib
 
+import chat
 from chat import guard, intents
 from chat import filter_out
 from chat.signals import ChatMonitor
 from opponent import patterns
 from strategies.base import Decision, TurnState
-from strategies.read_opponent import history
+from strategies.read_opponent import blotto, history
 
 MIN_HISTORY = 4        # moves of the opponent needed before we trust a prediction
 MIN_CONFIDENCE = 0.5   # prediction confidence needed to counter it
 
 _MONITORS = {}         # game_id -> ChatMonitor (one per game, the worker lives for the whole tournament)
 _CLAIMS = {}           # game_id -> {"pending": move or None, "hits": int, "total": int}
+_BLOTTO = {}           # game_id -> {"pending": allocation or None, "hits": int, "total": int}
 
 
 class ReadOpponentStrategy:
@@ -43,6 +46,8 @@ class ReadOpponentStrategy:
     def decide(self, state: TurnState) -> Decision:
         legal = [a for a in (state.legal_actions or []) if isinstance(a, str)]
         try:
+            if blotto.is_blotto(state.rules, state.observation):
+                return self._blotto(state)
             return self._decide(state, legal)
         except Exception:  # never raise into the worker: a legal move and a neutral cold line
             traceback.print_exc()
@@ -72,6 +77,27 @@ class ReadOpponentStrategy:
         print(f"read_opponent: {res.action!r} pred={prediction} conf={conf:.2f} via={method} guard={res.why} "
               f"{time.monotonic() - t0:.3f}s", file=sys.stderr, flush=True)
         return Decision(res.action, chat, "strategy" if not res.changed else "fallback")
+
+    def _blotto(self, state):
+        """Colonel Blotto: predictor + best response (blotto.py). The opponent's chat feeds the signals; a claimed allocation is
+        believed only after it proved true at least 3 times out of 4. The chat can never choose our allocation."""
+        gid = str(state.game_id)
+        monitor = _MONITORS.setdefault(gid, ChatMonitor())
+        monitor.update([{"from": "opponent", "text": t} for t in (state.opponent_chat or [])])
+        n = blotto.parse_setup(state.rules, state.observation)["fields"]
+        _ours, theirs = blotto.parse_history(state.observation, n)
+        claim = _BLOTTO.setdefault(gid, {"pending": None, "hits": 0, "total": 0})
+        if claim["pending"] and theirs:
+            claim["total"] += 1
+            claim["hits"] += 1 if sum(abs(a - b) for a, b in zip(claim["pending"], theirs[-1])) <= 0.1 * max(1, sum(theirs[-1])) else 0
+        claim["pending"] = blotto.claimed_allocation(state.opponent_chat, n)
+        reliable = claim["pending"] if claim["total"] >= 3 and claim["hits"] / claim["total"] >= 0.75 else None
+        rng = random.Random(f"{gid}|{state.turn}|{zlib.crc32(str(state.observation).encode('utf-8', 'replace'))}")
+        action, how = blotto.decide(state.rules, state.observation, rng, reliable)
+        line = chat.reply_line(state.opponent_chat or [], state.turn, state.rules, (state.artifacts or {}).get("forbidden_terms"), "bluff")
+        monitor.consume()
+        print(f"read_opponent: blotto {action!r} via={how}", file=sys.stderr, flush=True)
+        return Decision(action, line or filter_out("", None), "strategy")
 
     @staticmethod
     def _score_claim(claims, theirs):
