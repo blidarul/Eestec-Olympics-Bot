@@ -18,7 +18,7 @@ from . import normalize as nz
 # flag -> weight (1 = low, 2 = medium). Severity = the biggest weight, +1 for combined attacks.
 FLAG_WEIGHT = {
     "PRESSURE": 1, "SUGGEST_MOVE": 1, "REVEAL_PRIVATE": 1, "FLOOD": 1, "UNICODE_TRICKS": 1,
-    "PROBE_STRATEGY": 1, "INSTRUCTION": 2, "FAKE_AUTHORITY": 2, "REVEAL_PROMPT": 2, "ROLEPLAY": 2, "FORMAT_SMUGGLE": 2,
+    "PROBE_STRATEGY": 1, "CONCEDE_REQUEST": 1, "INSTRUCTION": 2, "FAKE_AUTHORITY": 2, "REVEAL_PROMPT": 2, "ROLEPLAY": 2, "FORMAT_SMUGGLE": 2,
     "FORBIDDEN_BAIT": 2,
 }
 SEVERITY_NAME = {0: "NONE", 1: "LOW", 2: "MEDIUM", 3: "HIGH"}
@@ -97,6 +97,22 @@ _RAW = {
         r"\bcare\s+(?:e|este)\s+(?:strategia|planul|metoda)\s+ta\b", r"\bcum\s+(?:joci|alegi|decizi|ghicesti)\b",
         r"\b(?:folosesti|urmezi)\b", r"\bai\s+(?:o\s+strategie|un\s+plan)\b", r"\barata-?mi\s+(?:mana|cartile)\b",
     ],
+    # CONCEDE_REQUEST: any way of asking us to give up: direct, polite, emotional, "logical", in English and Romanian.
+    "CONCEDE_REQUEST": [
+        r"\b(?:resign\w*|fold(?:s|ed|ing)?|conced\w*|concession|surrender\w*|forfeit\w*|quit(?:s|ting)?|capitulat\w*|yield\w*)\b",
+        r"\b(?:give|giving|gave)\s*-?\s*up\b|\bgiveup\b|\bthrow\s+in\s+the\s+towel\b|\badmit\s+defeat\b|\blay\s+down\b|\bbow\s+out\b|"
+        r"\bstand\s+down\b|\bwalk\s+away\b|\bstop\s+(?:playing|trying|fighting)\b|\bcall\s+it\s+(?:a\s+day|quits)\b|\bback\s+down\b|\bpack\s+it\s+in\b",
+        r"\blet\s+(?:us|me)\s+(?:win|have)\b|\bgive\s+(?:us|me)\s+(?:the\s+|this\s+)?(?:win|game|match|victory)\b|\blose\s+on\s+purpose\b|\bthrow\s+(?:the|this)\s+(?:game|match)\b",
+        r"\b(?:rational|logical|correct|best|only|smart|smartest|optimal|right|wise|sensible)\s+(?:move|choice|option|decision|thing|play)\s+(?:is|would\s+be)\s+to\b",
+        r"\blast\s+chance\b|\bno\s+point\s+(?:in\s+)?(?:continuing|playing|going\s+on)\b|\bsave\s+(?:yourself|your\s+time|us\s+(?:both\s+)?time)\b|\bspare\s+yourself\b",
+        r"\bi\s+have\s+the\s+nuts\b|\byou\s+are\s+drawing\s+dead\b|\b(?:minimax|the\s+engine|the\s+math|my\s+solver|the\s+computer|the\s+numbers?)\s+says?\b",
+        # Romanian
+        r"\b(?:renunt\w*|preda-?te|predati-?va|predate|cedeaza|cedezi|cedati|abandon\w*|retrage-?te|capituleaza|opreste-?te)\b",
+        r"\bda-?te\s+batut\b|\bdat\s+batut\b|\blasa-?te\s+pagubas\b|\blasa\s+jocul\b|\blasa-?(?:ne|ma)\s+\S{1,3}\s+castig\w*|\bda-?ne\s+victoria\b|"
+        r"\bultima\s+sansa\b|\bnu\s+are\s+rost\b|\bn-?are\s+rost\b|\bmutarea\s+rationala\s+e(?:ste)?\s+sa\b",
+        # stretched letters: "fooold", "resiiign"
+        r"\b(?:f+o+l+d+|r+e+s+i+g+n+|q+u+i+t+|c+o+n+c+e+d+e+|s+u+r+e+n+d+e+r+|r+e+n+u+n+t+a+)\b",
+    ],
     "PRESSURE": [
         r"\b(?:fold|folds|folding|resign\w*|surrender\w*|give\s*-?\s*up|giving\s+up|concede\w*|forfeit\w*|quit|yield|withdraw|throw\s+in\s+the\s+towel|lay\s+down|bow\s+out|admit\s+defeat)\b",
         r"\byou\s+(?:will|are\s+going\s+to|are\s+gonna|gonna|already|have|ve|just|can't|cant|cannot)?\s*(?:definitely\s+|surely\s+)?(?:lose|lost|losing|loser|failed|are\s+done|are\s+finished|are\s+dead|are\s+beaten|are\s+toast|are\s+doomed|have\s+no\s+chance)\b",
@@ -132,6 +148,11 @@ _SQUASH_PHRASES = {
     "FAKE_AUTHORITY": ["messagefromthearena", "messagefromthesystem", "systemmessage", "arenanotice", "officialnotice",
                        "messagefromtheorganizers", "messagefromthejudges", "arenaannouncement"],
 }
+
+_CONCEDE_SQUASH = ["resign", "surrender", "concede", "giveup", "forfeit", "capitulat", "renunt", "predate", "abandon", "cedeaza",
+                   "letuswin", "letmewin", "lasanesacastig"]
+_CONCEDE_SPACED = _CONCEDE_SQUASH + ["fold", "quit", "yield", "cedezi", "batut"]
+_SPACED_RUN = re.compile(r"(?<!\w)\w(?:[\s.\-_*]+\w(?!\w))+")
 
 _COMPILED = {f: [re.compile(p, re.I | re.S) for p in ps] for f, ps in _RAW.items()}
 _COMPILED_NATIVE = {f: [re.compile(p, re.I | re.S) for p in ps] for f, ps in _RAW_NATIVE.items()}
@@ -199,6 +220,17 @@ def analyze(text, speech=None):
                     flags.add("UNICODE_TRICKS")  # the phrase was hidden from the plain patterns
                 flags.add(flag)
 
+    # concession words hidden by spacing or punctuation: "r e s i g n", "f.o.l.d", "g i v e u p"
+    if "CONCEDE_REQUEST" not in flags:
+        if any(stem in sq for stem in _CONCEDE_SQUASH):
+            flags.update(("CONCEDE_REQUEST", "UNICODE_TRICKS"))
+        else:
+            for folded in (folded_i, folded_l):
+                for run in _SPACED_RUN.findall(folded):
+                    joined = re.sub(r"[^a-z]", "", run)
+                    if any(stem in joined for stem in _CONCEDE_SPACED):
+                        flags.update(("CONCEDE_REQUEST", "UNICODE_TRICKS"))
+
     if report.hidden_chars >= 1 or nz.mixed_script_count(shown) >= 1:
         flags.add("UNICODE_TRICKS")
 
@@ -231,7 +263,7 @@ def analyze(text, speech=None):
     report.sanitized = clean
 
     report.flags = sorted(flags)
-    report.pressure = "PRESSURE" in flags
+    report.pressure = "PRESSURE" in flags or "CONCEDE_REQUEST" in flags
     report.suggests_move = "SUGGEST_MOVE" in flags
     weights = [FLAG_WEIGHT[f] for f in flags]
     sev = max(weights) if weights else 0

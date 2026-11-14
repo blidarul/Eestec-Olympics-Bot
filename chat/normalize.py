@@ -52,6 +52,17 @@ def count_hidden_chars(text):
 
 def ascii_fold(d, one="i"):
     """Same-length plain form of a display text: lower case, no accents, look-alikes and leet mapped."""
+    # which characters sit in a "word" (run of letters/digits) that has at least one letter: only there digits are leet
+    in_word = [False] * len(d)
+    start = None
+    for i in range(len(d) + 1):
+        if i < len(d) and d[i].isalnum():
+            start = i if start is None else start
+        elif start is not None:
+            if any(c.isalpha() for c in d[start:i]):
+                for k in range(start, i):
+                    in_word[k] = True
+            start = None
     out = []
     for i, ch in enumerate(d):
         low = ch.lower()
@@ -62,8 +73,8 @@ def ascii_fold(d, one="i"):
         prev_c = d[i - 1] if i > 0 else " "
         next_c = d[i + 1] if i + 1 < len(d) else " "
         # Leet is only decoded INSIDE words, so "rules!" and "3 moves" keep their meaning:
-        # a digit needs a letter next to it, a symbol needs an alphanumeric on both sides.
-        if ch.isdigit() and (prev_c.isalpha() or next_c.isalpha()):
+        # a digit must be in a word that has a letter ("r351gn"), a symbol needs an alphanumeric on both sides.
+        if ch.isdigit() and in_word[i]:
             out.append(one if ch == "1" else LEET.get(ch, ch))
             continue
         if ch in LEET and not ch.isdigit() and prev_c.isalnum() and next_c.isalnum():

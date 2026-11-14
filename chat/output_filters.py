@@ -154,5 +154,10 @@ def check_line(line, speech=None, private_tokens=(), seed=0, canary="", one_side
     if speech is not None and speech.violates(line):
         problems.append("speech:forbidden")
     if problems:
+        if one_sided:  # a failed pressure line is REPLACED by a line of the safe bank, never rewritten
+            from . import concede
+            cand = concede.safe_line(seed)
+            if not check_line(cand, speech, private_tokens, seed, canary, False, private_chunks)[1]                     and no_deal.is_one_sided_pressure(cand)[0]:
+                return cand, problems
         return safe_neutral(speech, private_tokens, seed), problems
     return line, problems

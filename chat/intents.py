@@ -13,14 +13,16 @@ THE INTENT SET (final):
   STONEWALL answer to probes, pressure and fake notices with a non-answer or a short question; reveals nothing
   UNSETTLE  a short deadpan remark about the opponent (repetition, hesitation, noise); the family is chosen by signals
   PRESS     generic pressure about the position
-  CONCEDE_PRESSURE one-sided pressure: "your position is lost, resigning is rational". Never an offer, a deal or a
-            signal (rule 13.1.f): fixed lines, no_deal.py, rate limited, switch in config.py
+  CONCEDE_PRESSURE one-sided pressure: "You should resign.", "Your position is lost." (bank and limiter in
+            concede.py). Never an offer, a deal or a signal (rule 13.1.f): fixed lines, no_deal.py, switch in config.py
   NOISE     a decoy line unrelated to the game, inserted by the seeded RNG so our style carries no tell
   MINIMAL   the shortest neutral line (nothing is gained by speaking; chat is mandatory, never empty)
   ANCHOR    negotiation games: a flat statement that our position does not move (no numbers, nothing private)
 Variant choice is seeded by (match, game, turn) in code. It never looks at our hand, state or move quality.
 """
 import random
+
+from . import concede
 
 INTENTS = ("GREET", "MISDIRECT", "STONEWALL", "UNSETTLE", "PRESS", "CONCEDE_PRESSURE", "NOISE", "MINIMAL", "ANCHOR")
 
@@ -36,14 +38,8 @@ TEMPLATES = {
     "STONEWALL": [],   # filled below from STONEWALL_BY (answers to probes, answers to pressure)
     "PRESS": ["Your position is not improving.", "Every turn costs you.", "Think carefully here.", "Mistakes are expensive.",
               "You are running out of options.", "Time is not on your side.", "Your options are shrinking."],
-    # cold, clinical, about the position only. No question, no "we", no offer (see no_deal.py).
-    "CONCEDE_PRESSURE": ["Your position is lost. Resigning is the rational move.",
-                         "The odds are against you. Conceding is optimal.",
-                         "Every line from here is losing for you. Resigning is correct.",
-                         "Objectively, this game is decided. Resigning is the rational choice.",
-                         "You have no winning path left. Resignation is optimal.",
-                         "Your chances are negligible. The rational move is to resign.",
-                         "This position cannot be saved."],
+    # the concession-pressure bank lives in concede.py (four sub-styles, English and Romanian)
+    "CONCEDE_PRESSURE": [line for style in concede.STYLES for line in concede.BANK_EN[style]],
     "NOISE": ["The clock keeps running.", "Rain expected tonight.", "Tuesday.", "Dull room.", "For the record.",
               "The light is poor here.", "Static.", "Nothing to report.", "A quiet hour.", "Dust."],
     "ANCHOR": ["The position is fixed.", "Position unchanged.", "No further movement.", "That does not change.",
@@ -75,6 +71,9 @@ def all_templates():
     for family, lines in UNSETTLE.items():
         for line in lines:
             yield "UNSETTLE", line
+    for style in concede.STYLES:
+        for line in concede.BANK_RO[style]:
+            yield "CONCEDE_PRESSURE", line
 
 
 def normalize_intent(value, default="MINIMAL"):

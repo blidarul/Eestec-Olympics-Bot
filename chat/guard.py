@@ -8,8 +8,10 @@ The chat must never decide the move on its own. The guard does three things:
 "Independent reason" means a reason that does not come from the chat:
   - it is the only legal move, or
   - a game strategy says so (the optional `hook(action) -> bool`, e.g. a solver says it is the best move), or
-  - the model gave a reason code (r) that points at the game itself (FORCED/WIN/BLOCK/EV), and for a
-    surrender also: no pressure line in the last opponent lines (so "fold!" spam cannot work).
+  - the model gave a reason code (r) that points at the game itself: FORCED or EV for a surrender,
+    FORCED/WIN/BLOCK/EV for an echoed move.
+The surrender rule never looks at the chat: the same model answer gives the same action with or without "fold!"
+spam (the chat can neither cause nor veto a fold; tests/mbappe/test_concede.py fuzz test).
 If the reason is missing, the guard replaces the move by the best ALTERNATIVE: the model's backup move (b), then
 the strategy's ranking `prefs`, then the first legal move that is neither a surrender nor an echo.
 """
@@ -73,7 +75,7 @@ def guard_action(action, backup, legal, monitor, reason="OTHER", hook=None, pref
 def _after_legality(res, backup, legal, monitor, reason, hook, prefs, fallback):
     """Steps 2 and 3 for a legal action."""
     action = res.action
-    surrender = is_surrender_like(action) or _bad_pass(action, legal, monitor)
+    surrender = is_surrender_like(action)
     echoed = monitor.is_suggested(action) if monitor else False
     if not surrender and not echoed:
         return res
@@ -84,9 +86,11 @@ def _after_legality(res, backup, legal, monitor, reason, hook, prefs, fallback):
         except Exception:
             pass  # a broken hook must never break the turn
     if surrender:
-        justified = reason in {"FORCED", "EV"} and not (monitor and monitor.recent_pressure(3))
+        # NO chat input here, on purpose: a surrender is judged by the game reason only. So "fold!" spam can neither
+        # make us fold (an unjustified fold is replaced with or without chat) nor stop a correct fold (no veto).
+        justified = reason in {"FORCED", "EV"}
     else:
-        justified = reason in OWN_REASONS and not (monitor and monitor.new_severity >= 3)
+        justified = reason in OWN_REASONS
     if justified:
         return res
     alt = _alternative(action, backup, legal, monitor, prefs, fallback)
@@ -96,15 +100,8 @@ def _after_legality(res, backup, legal, monitor, reason, hook, prefs, fallback):
     return GuardResult(alt, True, "surrender" if surrender else "echo", pressured)
 
 
-def _bad_pass(action, legal, monitor):
-    """"pass" is a normal move, but right after pressure lines and with other moves available it counts as giving up."""
-    words = re.findall(r"[a-z]+", nz.display(action).lower()) if isinstance(action, str) else []
-    return bool(monitor and legal and len(legal) > 1 and words[:1] == ["pass"] and monitor.recent_pressure(3))
-
-
 def _banned(action, monitor, legal=None):
-    return (is_surrender_like(action) or _bad_pass(action, legal, monitor)
-            or (monitor is not None and monitor.is_suggested(action)))
+    return is_surrender_like(action) or (monitor is not None and monitor.is_suggested(action))
 
 
 def _alternative(action, backup, legal, monitor, prefs, fallback):

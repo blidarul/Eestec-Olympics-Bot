@@ -57,6 +57,32 @@ def run():
                 bad += 1
             out.append(f"| {turn} | {said[:44]} | {info['intent']} | {line} |")
             chat.append({"from": "you", "game": 1, "turn": turn, "text": line})
+    # 40 concession lines (seeded picks, as the bot makes them) and 20 deflection lines
+    from chat import concede, intents
+    out.append("\n## 40 concession-pressure lines (CONCEDE_PRESSURE)\n")
+    out.append("| # | sub-style | line |")
+    out.append("|---|---|---|")
+    used = set()
+    for n in range(40):
+        line, style = concede.pick(f"sample|{n}", used)
+        used.add(line)
+        if output_filters.check_line(line, one_sided=True)[1]:
+            bad += 1
+        out.append(f"| {n + 1} | {style} | {line} |")
+    out.append("\nRomanian set (config.CONCEDE_LANGUAGE = ro or mix): " + " / ".join(l for ls in concede.BANK_RO.values() for l in ls))
+    out.append("\n## 20 deflection lines (STONEWALL: answers to pressure and to probes)\n")
+    out.append("| # | answers | line |")
+    out.append("|---|---|---|")
+    n = 0
+    for family in ("pressure", "probe"):
+        for line in intents.STONEWALL_BY[family]:
+            n += 1
+            if output_filters.check_line(line)[1]:
+                bad += 1
+            out.append(f"| {n} | {family} | {line} |")
+    for line in intents.UNSETTLE["noise"][:2]:
+        n += 1
+        out.append(f"| {n} | pressure (remark) | {line} |")
     out.append(f"\nLines that failed a filter: **{bad}**")
     return "\n".join(out), bad
 

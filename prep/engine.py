@@ -22,6 +22,7 @@ from .action_parser import (
 from .classifier import classify_rules
 from .heuristics import compute_heuristics
 from .synthesis import save_synthesized_simulator
+from .tools import synthesize_tools
 
 
 def compute_fingerprint(variants: list[dict[str, Any]]) -> str:
@@ -81,6 +82,10 @@ class PrepEngine:
                         sample_validation_passed = False
                         break
 
+            # 5. Synthesize game-specialized LLM tools with schemas and handlers
+            tools_registry = synthesize_tools(classification, grammar, heuristics, rules)
+            tool_schemas = tools_registry.get_schemas()
+
             variants_data.append({
                 "label": label,
                 "classification": classification.to_dict(),
@@ -88,6 +93,8 @@ class PrepEngine:
                 "obs_layout": obs_layout,
                 "obs_schema": obs_schema.to_dict(),
                 "heuristics": heuristics,
+                "tools": tool_schemas,
+                "tools_prompt": tools_registry.format_for_prompt(),
                 "sample_validation_passed": sample_validation_passed,
             })
 
@@ -99,6 +106,9 @@ class PrepEngine:
                 first_schema = infer_observation_schema(variants[0]["sample_turn"].get("observation", ""))
                 atomic_save_json(os.path.join(dest_dir, "observation_schema.json"), first_schema.to_dict())
 
+            first_tools = variants_data[0].get("tools", [])
+            atomic_save_json(os.path.join(dest_dir, "tools.json"), first_tools)
+
         # Save prep artifacts atomically to /memory/<game_id>/
         manifest = {
             "game_id": game_id,
@@ -106,6 +116,7 @@ class PrepEngine:
             "fingerprint": fp,
             "family": overall_classification.family if overall_classification else "generic",
             "simulator_calibration": calibration,
+            "tools": variants_data[0].get("tools", []) if variants_data else [],
             "variants": variants_data,
             "prepped_at": time.time(),
             "elapsed_seconds": round(time.time() - start_time, 3),

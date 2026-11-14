@@ -1,7 +1,7 @@
 """Chat-aware default strategy (family guardrails, owner mbappe).
 
-It is the model-based default for games without a specialised solver: score 0.55, just above core/generic.py
-(0.5), below any strategy that really knows the game. It adds, around ONE model call per move:
+It is the strategy for the Guardrails family only (matches() = 0.6 there, 0.0 elsewhere, issue #18); the chat
+hooks protect the chat of every other strategy too. It adds, around ONE model call per move:
   - the opponent chat inside untrusted tags + counters (chat/wrap.py), also with the model missing,
   - the compact answer {"a","b","i","r","s"} and the chat line built by code (chat/intents.py),
   - the action guard (never give up, never echo the chat, always legal: chat/guard.py),
@@ -11,6 +11,7 @@ It runs in the worker process (core/worker.py), which has a hard deadline: the m
 legal fallback move and a neutral chat before the worker is asked.
 """
 import hashlib
+import os
 import sys
 import time
 import traceback
@@ -50,7 +51,13 @@ class ChatDefenseStrategy:
     name = "chat_defense"
 
     def matches(self, rules, artifacts):
-        return 0.55
+        """Only the Guardrails family (a forbidden subject in the rules) is ours: above the router threshold (0.5)
+        there, 0.0 everywhere else, so every other family keeps its own strategy or core/generic (issue #18).
+        The chat hooks (chat.wrap_untrusted, chat.filter_out) still protect and cool the chat of ALL strategies."""
+        family = (artifacts or {}).get("family") if isinstance(artifacts, dict) else None
+        if os.environ.get("BOT_CHAT_DEFENSE_ALL") == "1":
+            return 0.6  # practice only (tests/mbappe battery): the arena never sets BOT_* variables (rule 5.12)
+        return 0.6 if family == "guardrails" else 0.0
 
     def decide(self, state: TurnState) -> Decision:
         t0 = time.monotonic()
@@ -78,7 +85,9 @@ class ChatDefenseStrategy:
                     traceback.print_exc()
             if text and text.strip():
                 action, chat, info = d.finish(text, turn, fb, None, prefs, rejected)
-                source = "model" if info["parsed"] not in ("empty", "no-action") else "fallback"
+                # "model" only when the model's own move was played: if the guard changed or forced the move (any
+                # guard code), or the answer was unusable, the move did not come from the model (the decision log shows the truth)
+                source = "model" if (info["parsed"] not in ("empty", "no-action") and not info["guard"]) else "fallback"
             else:  # no model, no budget, timeout, empty answer: the signals still steer the move
                 action, chat, info = d.model_free(turn, fb, prefs, rejected)
                 source = "fallback"

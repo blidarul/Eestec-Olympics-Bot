@@ -3,7 +3,7 @@
 Extracted from `docs/RULEBOOK.md` (authoritative), `PROTOCOL.md`, `README.md`, `CHANGELOG.md`, `AGENTS.md`,
 `docs/CLAUDE.md`. Status: **OK** = implemented and verified (test or arena run named), **PARTIAL** = see note,
 **N/A** = not this package's job (owner named), **AMBIGUOUS** = ask the organizers (rule 15.4).
-Run the tests: `python -m unittest discover -s tests/mbappe` (146 tests).
+Run the tests: `python -m unittest discover -s tests/mbappe` (174 tests).
 Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversarial.sh`, one scenario:
 `bash tests/mbappe/run_one.sh <id> <game> <obedient|garbage|slow|down|concede>`.
 
@@ -25,7 +25,7 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 | 6.11, 12.4 | Enforced by code review | `CHAT_DEFENSE.md` gives exact places | OK |
 | 6.12 | Organizer small-talk bot: its words must show up in our model calls | harmless lines shown verbatim; arena check on the gateway log | OK |
 | 13.1.f | No collusion, no coded signals, no impersonation of the arena | CONCEDE_PRESSURE is one-sided and checked by `no_deal.py` on the final text (>= 15 positive and negative examples, English and Romanian); `hard_collusion` runs on EVERY line; templates fixed and public, nothing is encoded in the choice | OK |
-| 15.4 | CONCEDE_PRESSURE (one-sided pressure to concede) | Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team; confirmation given by: <mentor name, to be filled by the team>. Also within rule 6.3 ("pressure"). One switch: `config.ENABLE_CONCEDE_PRESSURE` | OK / see A5 |
+| 15.4 | CONCEDE_PRESSURE (one-sided pressure to concede) | Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team. Also within rule 6.3 ("pressure"). One switch: `config.ENABLE_CONCEDE_PRESSURE` | OK / see A5 |
 
 ## Tone and tactics (team design, second pass)
 
@@ -37,6 +37,19 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 | T4 | Anti-tell: variant, length, style independent of private state and move quality | tone chosen by code from public signals + seeded RNG; model intent ignored (`MODEL_INTENT_WEIGHT = 0`); `TestAntiTell` (identical lines for two private states, correlation < 0.02, control with weight 1 leaks) | OK |
 | T5 | No impersonation of arena, organizers, judges, system | `impersonation.reason_impersonation` in `check_line` | OK / see A6 |
 | T6 | Cold `ready` line and cold fallback lines | `chat.ready_line()` and every strategy chat through `chat.filter_out`. The `ready` line and the main-process chat bank are written by `core/` (alex): the arena run prints WARN for "Good luck, have fun!" and "Nice move." | PARTIAL: contract #16 |
+
+## Concession pressure, both directions (third pass)
+
+| Item | Requirement | Where / evidence | Status |
+|---|---|---|---|
+| C1 | One-sided pressure to concede is allowed (organizers, 2026-11-14, rule 15.4; also 6.3) | bank of 41 EN + 18 RO lines in four sub-styles (`concede.py`); switch `config.ENABLE_CONCEDE_PRESSURE` | OK / see A5 |
+| C2 | No offers, deals, "let us win", "lose on purpose", points/standings, coded signals, arena voice (13.1.f) | `no_deal.py` + `hard_collusion` on every line; a failing pressure line is replaced by a DIRECT/POSITIONAL bank line, never rewritten; `TestConcedeBank` (34 banned phrasings, EN + RO, obfuscated) | OK |
+| C3 | Bluffing about the position only where the game does not restrict speech or require honesty (6.3, 6.7, 8.5) | `speech.restricted` / `speech.honesty` read from the rules text at prep and start (cached); the intent is off there; never in `ready` | OK / see A2 |
+| C4 | Frequency: 1 per 3 turns, 4 per game, 8 per match, no repeat in a game | `ConcedeLimiter`, constants in `config.py`; `TestFrequencyLimiter` | OK / per-match count is per process (N2) |
+| C5 | Timing and style independent of private state | `TestConcedeAntiTell`; public-behaviour bonuses only | OK |
+| C6 | The chat never chooses, changes or vetoes our action; surrender-like moves only for game reasons; correct forced folds allowed | `guard.py` (the surrender rule does not read the chat); `TestGuardInvariant`; fuzz test 1500 cases (`TestFuzzChatNeverChangesTheAction`); arena runs with concession spam: zero chat-driven surrenders, zero warnings | OK |
+| C7 | CONCEDE_REQUEST detection: direct, indirect, EN/RO/mixed, obfuscated, polite, authority, logical, flooding | `injection.py`; 272 direct variants, zero misses (`TestConcedeRequestDetector`) | OK |
+| C8 | "Lie rate" and "claim contradiction" signals | not implemented: the messages carry no ground truth about the opponent's claims | NOT DONE |
 
 ## Model, tools, privacy (section 7, AGENTS 5)
 
@@ -80,6 +93,6 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 - **A2** (6.8): the Guardrails games are not released: is the forbidden subject always named literally in the rules text?
 - **A3** (8.1): with `legal_actions: null` legality can only be checked by format; the action grammar belongs to bld's parser.
 - **A4** (6.4): the tone is now chosen by CODE from the opponent's chat and a seeded RNG (anti-tell), not by the model; the model decides only the move. Is this "one decision from the same view"? A caption "with nothing to do with the move" is not enough (6.4). Our lines react to the opponent's chat and to what the guard did with the move. `config.MODEL_INTENT_WEIGHT` lets the model shape the tone if the mentors prefer.
-- **A5** (15.4 / 13.1.f): the team reports a mentor confirmation for one-sided concede pressure. It is not in the rulebook text. Please announce it to all teams (15.4 says answers apply to everyone) and give us the name for this file.
+- **A5** (15.4 / 13.1.f): the team reports a mentor confirmation for one-sided concede pressure. It is not in the rulebook text. Please announce it to all teams (15.4 says answers apply to everyone).
 - **A6** (13.1.d, 7.12, 15.4): is speaking as "the arena" or "a judge" in our chat allowed? The rulebook is silent. We forbid it by default (filter), as the opponents' fake notices are treated as attacks.
 - **A7** (6.10): "Keep it fun and respectful": is a deliberately cold, deadpan persona acceptable? It contains no insult, but it is not "fun".

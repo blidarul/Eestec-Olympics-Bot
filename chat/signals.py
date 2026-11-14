@@ -37,6 +37,7 @@ class ChatMonitor:
         self.bait_count = 0
         self.flood_count = 0
         self.suggest_count = 0
+        self.concede_request_count = 0  # lines that ask us to give up (also counted in pressure_count)
         self.probe_count = 0          # questions about our strategy or our hand
         self.repeat_count = 0         # the opponent said the same thing as in its previous line
         self.last_text = None
@@ -85,6 +86,8 @@ class ChatMonitor:
         self.max_severity = max(self.max_severity, rep.severity)
         if rep.pressure:
             self.pressure_count += 1
+        if "CONCEDE_REQUEST" in rep.flags:
+            self.concede_request_count += 1
         if set(rep.flags) & INJECTION_FLAGS:
             self.injection_count += 1
         if "FORBIDDEN_BAIT" in rep.flags:
@@ -162,7 +165,7 @@ class ChatMonitor:
         return {
             "opp_lines": self.opp_lines, "new_lines": len(self.new_reports),
             "pressure_count": self.pressure_count, "new_pressure": self.new_pressure,
-            "probe_count": self.probe_count, "repeat_count": self.repeat_count,
+            "concede_request_count": self.concede_request_count, "probe_count": self.probe_count, "repeat_count": self.repeat_count,
             "injection_count": self.injection_count, "bait_count": self.bait_count,
             "flood_count": self.flood_count, "suggest_count": self.suggest_count,
             "max_severity": self.max_severity, "severity": injection.SEVERITY_NAME[self.max_severity],
