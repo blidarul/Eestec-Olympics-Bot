@@ -108,5 +108,6 @@ silently.
   Blockers B1,B3 are bld's: X4 needs 'bld agreed'. B2 (nim parse) is alex's. Not fixed in X1.
 - X2:
 - X3:
-- X4:
+- X4: DONE on fix/audit-t2: B1 532b019, B3 7f5948f, B2 855ff15 (ownership lifted for this branch). Suites: tests/bld, mbappe, core, alex all pass.
+  Image mybot:audit, f2_all.py all: inject 16, scen 7, games 48, b3 8 runs: 0 problems, 0 warnings, 0 losses. See BLOCKERS.md fix notes.
 - X5:
