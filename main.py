@@ -106,8 +106,16 @@ def pick_artifacts(msg, wk):
     if not art and same_game and by:
         art = by.get(prep.get("first", ""))
 
-    # 4. If STILL not found (e.g. cold container), build lightweight artifacts on the fly from rules
-    if not art and rules:
+    return art if isinstance(art, dict) else {}
+
+
+def light_artifacts(msg):
+    """Last resort for a cold container when the code-only prep returned nothing: parse family and action grammar from the rules."""
+    rules = str(msg.get("rules", ""))
+    raw_var = msg.get("variant")
+    label = str(raw_var.get("label", "")) if isinstance(raw_var, dict) else (raw_var if isinstance(raw_var, str) else "")
+    art = None
+    if rules:
         try:
             from prep.action_parser import parse_action_grammar
             from prep.classifier import classify_rules
@@ -122,7 +130,6 @@ def pick_artifacts(msg, wk):
             })
         except Exception:
             traceback.print_exc()
-
     return art if isinstance(art, dict) else {}
 
 
@@ -148,7 +155,7 @@ def on_start(msg, wk):
     try:
         STATE["artifacts"] = pick_artifacts(msg, wk)
         if not STATE["artifacts"]:
-            STATE["artifacts"] = cold_prep(msg, wk)
+            STATE["artifacts"] = cold_prep(msg, wk) or light_artifacts(msg)
             t0 = time.monotonic()  # the ready line gets its own fresh budget
     except Exception:
         traceback.print_exc()
@@ -302,7 +309,8 @@ def on_turn(msg, wk):
         rej = str(warning.get("rejected", ""))
         if rej and (action == rej or fallback.norm(action) == fallback.norm(rej)):
             protocol.log(f"CRITICAL: action '{action}' matches rejected '{rej}', forcing fresh non-repeating fallback!")
-            action = fallback.fallback_action(legal, art, rejected=rej, conservative=True, avoid_also=list(mine) + [rej], rules=rules_text)
+            action = fallback.fallback_action(legal, art, rejected=rej, conservative=True, avoid_also=list(mine) + [rej], rules=rules_text,
+                                                observation=obs, warning=warning)
             source = "fallback"
             meta["tool"] = "fallback"
             meta["reason"] = f"override rejected action '{rej}' with emergency fallback"
