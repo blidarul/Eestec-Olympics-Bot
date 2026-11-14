@@ -5,6 +5,7 @@ import time
 import unittest
 
 from optimization.budget import (
+    TimeBudget,
     check_memory_budget,
     get_memory_rss_mb,
     pause_gc,
@@ -17,6 +18,8 @@ from optimization.profiler import (
 from optimization.structures import (
     BitBoard,
     FastGrid,
+    TT_EXACT,
+    TranspositionTable,
 )
 
 
@@ -80,6 +83,39 @@ class TestOptimization(unittest.TestCase):
         res2, delta = profile_memory_delta(sample_work)
         self.assertEqual(res, res2)
         self.assertGreaterEqual(delta, 0.0)
+
+    def test_time_budget(self):
+        budget = TimeBudget(allocated_seconds=1.0, safety_margin=0.2)
+        self.assertFalse(budget.is_expired())
+        self.assertGreater(budget.remaining_seconds(), 0.0)
+        self.assertGreaterEqual(budget.elapsed_seconds(), 0.0)
+
+    def test_bitboard_canonical_mask(self):
+        # A1 is (0, 0), C1 is (0, 2), A3 is (2, 0), C3 is (2, 2)
+        # All 4 individual corners are symmetric and should produce the identical canonical_mask!
+        bb_a1 = BitBoard(size=3)
+        bb_a1.set_cell_inplace(0, 0)
+
+        bb_c1 = BitBoard(size=3)
+        bb_c1.set_cell_inplace(0, 2)
+
+        bb_c3 = BitBoard(size=3)
+        bb_c3.set_cell_inplace(2, 2)
+
+        self.assertEqual(bb_a1.canonical_mask(), bb_c1.canonical_mask())
+        self.assertEqual(bb_a1.canonical_mask(), bb_c3.canonical_mask())
+
+    def test_transposition_table(self):
+        tt = TranspositionTable(capacity=10)
+        tt.store("state_1", depth=4, value=1.0, flag=TT_EXACT, best_action="B2")
+
+        val, move = tt.lookup("state_1", depth=4, alpha=-1.0, beta=2.0)
+        self.assertEqual(val, 1.0)
+        self.assertEqual(move, "B2")
+
+        # Deeper search cannot use shallower cached value
+        val_deep, _ = tt.lookup("state_1", depth=5, alpha=-1.0, beta=2.0)
+        self.assertIsNone(val_deep)
 
 
 if __name__ == "__main__":

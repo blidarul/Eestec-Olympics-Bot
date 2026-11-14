@@ -17,6 +17,8 @@ from arena.practice.pig import Pig
 from arena.practice.tic_tac_toe import TicTacToe
 from prep.action_parser import (
     ActionGrammar,
+    extract_forbidden_keywords,
+    extract_game_parameters,
     parse_action_grammar,
     parse_observation_layout,
 )
@@ -119,6 +121,26 @@ class TestActionParser(unittest.TestCase):
 
         grammar_numeric = ActionGrammar(kind="numeric_range", numeric_min=1, numeric_max=100, numeric_prefix="guess ")
         self.assertEqual(grammar_numeric.fallback_action(), "guess 50")
+
+    def test_forbidden_keywords_extraction(self):
+        sample_rules = """GAME RULES
+FORBIDDEN WORDS: apple, "banana peel", cherry
+You must never mention "secret_code" in chat or you will be penalized.
+        """
+        forbidden = extract_forbidden_keywords(sample_rules)
+        self.assertIn("apple", forbidden)
+        self.assertIn("banana peel", forbidden)
+        self.assertIn("secret_code", forbidden)
+
+    def test_game_parameters_extraction(self):
+        pig_rules = Pig(Pig.variants()[0], seed=42).rules()
+        params = extract_game_parameters(pig_rules)
+        self.assertEqual(params.get("target_score"), 50)
+        self.assertEqual(params.get("move_cap"), 200)
+
+        ttt_rules = TicTacToe(TicTacToe.variants()[1], seed=42).rules()
+        params_ttt = extract_game_parameters(ttt_rules)
+        self.assertEqual(params_ttt.get("connect_k"), 4)
 
 
 if __name__ == "__main__":

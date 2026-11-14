@@ -8,7 +8,45 @@ import contextlib
 import gc
 import os
 import sys
+import time
 from typing import Generator
+
+
+class TimeBudget:
+    """Manages clock budget for turn decisions (Rule 5.5, 20s move clock).
+    Reserves a safety margin to guarantee the bot responds before the clock expires.
+    """
+    __slots__ = ("start", "allocated", "deadline", "safety_margin")
+
+    def __init__(self, allocated_seconds: float = 20.0, safety_margin: float = 2.0):
+        self.start = time.perf_counter()
+        self.allocated = allocated_seconds
+        self.safety_margin = safety_margin
+        # Stop computation safety_margin seconds early to ensure safe serialization and delivery
+        effective = max(0.5, allocated_seconds - safety_margin)
+        self.deadline = self.start + effective
+
+    def is_expired(self) -> bool:
+        """Returns True if the search deadline has passed."""
+        return time.perf_counter() >= self.deadline
+
+    def remaining_seconds(self) -> float:
+        """Seconds remaining until the search deadline."""
+        return max(0.0, self.deadline - time.perf_counter())
+
+    def elapsed_seconds(self) -> float:
+        """Seconds elapsed since budget initialization."""
+        return time.perf_counter() - self.start
+
+
+def get_process_count() -> int:
+    """Return the number of processes currently running (Rule 5.12 limit: 256)."""
+    if os.path.exists("/proc"):
+        try:
+            return sum(1 for entry in os.listdir("/proc") if entry.isdigit())
+        except OSError:
+            pass
+    return 1
 
 
 def get_memory_rss_mb() -> float:
