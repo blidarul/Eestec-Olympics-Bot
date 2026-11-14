@@ -28,7 +28,7 @@ when you first need them.
 | Agent | Role | Owns (edit only these) |
 |---|---|---|
 | `alex` | solvers and deterministic strategies | `main.py`, `Dockerfile`, `requirements.txt`, `core/` (protocol loop, clocks and fallback, Haiku client, safe `/memory` access, strategy registry and interfaces), `solvers/` (minimax, MCTS, deduction, probability), `strategies/think_ahead/`, `strategies/guessing/`, `tests/alex/`, `tests/core/` |
-| `bld` | prep time | `prep/` (rules reading, playbook and simulator building in the 10-minute prep, rules parsing, observation layout, state synthesis), `tests/bld/` |
+| `bld` | prep time and optimization | `prep/` (rules reading, playbook and simulator building in the 10-minute prep, rules parsing, observation layout, state synthesis), `optimization/` (profiling, runtime and search speedups, memory footprint, CPU/RAM budgeting), `tests/bld/` |
 | `mbappe` | chat and untrusted data strategies | `chat/` (opponent chat as untrusted data, chat composition, forbidden-subject filter), `opponent/` (opponent profiles), `strategies/bluff/`, `strategies/deals/`, `strategies/read_opponent/`, `strategies/truth/`, `strategies/guardrails/`, `tests/mbappe/` |
 
 **Shared paths (core owner's; change only through a `type:contract` issue and a PR):**

@@ -33,11 +33,11 @@ graph TD
         GUESS[guessing: Deduction]
     end
 
-    subgraph Bld [bld: Prep Time]
+    subgraph Bld [bld: Prep Time & Optimization]
         PREP[10-min Prep Engine]
         PARSE[Rules & Action Grammar Parser]
         SIM[Automated Simulator Synthesis]
-        BOOK[Precomputed Heuristics & Books]
+        OPT[Runtime & Memory Profiling / Speedups]
     end
 
     subgraph Mbappe [mbappe: Chat & Untrusted Data Strategies]
@@ -76,7 +76,7 @@ graph TD
 
 ---
 
-### B. Prep Time Engine (`bld`)
+### B. Prep Time & Optimization (`bld`)
 
 #### 1. 10-Minute Prep Engine (`prep/`)
 - **Game Family Classifier:**
@@ -89,6 +89,16 @@ graph TD
   - Validates the synthesized simulator against `sample_turn` before saving it to `/memory/<game_id>/simulator.py`.
 - **Precomputed Heuristics & Opening Books:**
   - Computes opening moves or endgame tables during the 10-minute prep window and serializes them to `/memory/`.
+
+#### 2. Performance & Resource Optimization (`optimization/`)
+- **Simulator & Search Loop Profiling:**
+  - Profiles state representation and transition bottlenecks (e.g. state cloning vs. in-place mutation with undo).
+  - Optimizes data structures (bitboards, integer encodings, `__slots__`) allowing minimax and MCTS to evaluate orders of magnitude more nodes per second within the 20s move clock.
+- **CPU & Memory Budget Enforcement (2 CPU / 2 GB RAM):**
+  - Keeps garbage collection overhead minimal to avoid latency spikes during turn execution.
+  - Monitors resident memory (RSS) to guarantee containers stay well within the 2 GB container limit.
+- **Fast Serialization & Cold-Start Caching:**
+  - Streamlines `/memory/` persistence (compact JSON/binary dumps, rapid caching) so cold containers can load prepped state in milliseconds.
 
 ---
 
@@ -164,4 +174,5 @@ flowchart LR
 ### Milestone 4: Defense & Tournament Hardening (T3 Final)
 - [ ] `mbappe`: Truth extraction with hallucination protection in `strategies/truth/`.
 - [ ] `mbappe`: Guardrails leak defense and adversarial chat filter in `strategies/guardrails/`.
-- [ ] `alex` & `bld`: Container performance optimization, memory footprint check, and stress tests under 2 CPU / 2 GB limits.
+- [ ] `bld`: Runtime execution speedups, simulator inner-loop optimization, memory footprint tuning, and container stress tests under 2 CPU / 2 GB limits.
+- [ ] `alex`: Final image size optimization and Harbor deployment checks.
