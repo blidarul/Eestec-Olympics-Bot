@@ -157,6 +157,10 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
             attach_action_template(by_label[str(v.get("label", ""))], str(v.get("rules", "")))
         except BaseException:
             traceback.print_exc()
+        try:
+            attach_forbidden_terms(by_label[str(v.get("label", ""))], str(v.get("rules", "")))
+        except BaseException:
+            traceback.print_exc()
     for v in variants:
         by_label[str(v.get("label", ""))]["rules_text_hash_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
         memory.save_json(os.path.join(memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base), "artifacts.json"),
@@ -177,6 +181,22 @@ def attach_action_template(art: dict, rules: str) -> None:
     af.update({"template": parsed["template"], "regex": parsed["regex"], "placeholders": parsed["placeholders"],
                "templates": parsed["templates"]})
     art["action_format"] = af
+
+
+def attach_forbidden_terms(art: dict, rules: str) -> None:
+    """artifacts["forbidden_terms"] = terms read from the rules by code (core/forbidden.py, not the model) merged with the
+    model's own terms, plus variants (case, diacritics, plurals, spacing, leetspeak; solvers/guard.py when present)."""
+    from core import forbidden
+    model_terms = [str(t) for t in (art.get("forbidden_terms") or [])]
+    extra = []
+    try:
+        from prep.action_parser import extract_forbidden_keywords
+        extra = list(extract_forbidden_keywords(rules))
+    except BaseException:
+        pass
+    base = forbidden.merge(rules, [], [])  # code-side base terms, no variants yet
+    art["forbidden_base"] = [t for t in forbidden.extract_terms(rules)]
+    art["forbidden_terms"] = forbidden.merge(rules, model_terms, extra, use_guard=True)
 
 
 def _simulator_for(base, game_id, manifest, idx, variant):

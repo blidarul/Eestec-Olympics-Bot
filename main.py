@@ -8,7 +8,7 @@ import sys
 import time
 import traceback
 
-from core import actionfmt, fallback, memory, protocol, validate, worker
+from core import actionfmt, fallback, forbidden, memory, protocol, validate, worker
 
 PREP_DEADLINE = 540.0  # arena gives 600 s
 START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
@@ -104,10 +104,11 @@ def on_start(msg, wk):
         STATE["artifacts"] = {}
     STATE["my_actions"], STATE["prev_obs"] = [], ""
     ensure_action_template(STATE["artifacts"], msg)
-    forbidden = STATE["artifacts"].get("forbidden_terms") or []
+    ensure_forbidden_terms(STATE["artifacts"], msg)
+    terms0 = STATE["artifacts"].get("forbidden_terms") or []
     chat = None
     try:  # chat.pipeline.ready_line in the worker (pure code, filtered, never empty); main keeps the 2 s start clock
-        ans = wk.ask({"kind": "ready_line", "rules": msg.get("rules", ""), "forbidden": forbidden,
+        ans = wk.ask({"kind": "ready_line", "rules": msg.get("rules", ""), "forbidden": terms0,
                       "seed": str(msg.get("match_id", ""))}, max(0.2, START_DEADLINE - 0.3 - (time.monotonic() - t0)))
         line = ans.get("line") if isinstance(ans, dict) else None
         chat = line if isinstance(line, str) and line.strip() else None
@@ -115,8 +116,9 @@ def on_start(msg, wk):
         traceback.print_exc()
     if chat is None:
         chat = fallback.fallback_chat(STATE["artifacts"]) if STATE["artifacts"].get("chat_bank") else START_CHAT
-        chat = wk_filter(chat, forbidden)
-    protocol.send({"type": "ready", "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
+        chat = wk_filter(chat, terms0)
+    chat = clean_line(protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT, forbidden_terms_of(STATE["artifacts"]), STATE["artifacts"])
+    protocol.send({"type": "ready", "chat": chat})
 
 
 def ensure_action_template(art, msg):
@@ -132,6 +134,34 @@ def ensure_action_template(art, msg):
                 art["action_format"] = af
     except Exception:
         traceback.print_exc()
+
+
+def forbidden_terms_of(art):
+    return (art or {}).get("forbidden_terms") or []
+
+
+def ensure_forbidden_terms(art, msg):
+    """Terms the rules name (code-side extraction) are always in the artifacts, whatever prep produced (6.8, 6.9)."""
+    try:
+        rules = str(msg.get("rules", ""))
+        have = art.get("forbidden_terms") or []
+        base = forbidden.extract_terms(rules)
+        if base and any(forbidden.contains(t, have) is None for t in base):
+            art["forbidden_base"] = base
+            art["forbidden_terms"] = forbidden.merge(rules, have)
+    except Exception:
+        traceback.print_exc()
+
+
+def clean_line(chat, terms, art=None):
+    """Chat that still hits a forbidden term (leetspeak, plural, spaced letters) is replaced by a clean bank line, never emptied."""
+    try:
+        if not terms or not forbidden.contains(chat, terms):
+            return chat
+        bank = [str(b) for b in ((art or {}).get("chat_bank") or [])] + [fallback.NEUTRAL_CHAT, START_CHAT, "Good luck.", "Go on."]
+        return next((b for b in bank if b.strip() and not forbidden.contains(b, terms)), fallback.NEUTRAL_CHAT)
+    except Exception:
+        return fallback.NEUTRAL_CHAT
 
 
 def wk_filter(text, forbidden):
@@ -224,7 +254,17 @@ def on_turn(msg, wk):
         action, source = fixed, "fallback"
         meta["tool"] = "fallback"
         meta["reason"] = "outgoing action did not fit the action template"
-    chat = wk_filter(protocol.clean_chat(chat), art.get("forbidden_terms") or [])
+    terms = forbidden_terms_of(art)
+    if terms and forbidden.contains(action, terms):  # the action itself says a forbidden term (talking is the move)
+        rej = warning.get("rejected") if warning else None
+        safe = forbidden.safe_action(action, terms, legal=legal, fmt=fmt, art=art, avoid=list(mine) + ([rej] if rej else []),
+                                     observation=obs, warning=warning)
+        protocol.log(f"forbidden-term gate: {action!r} -> {safe!r}")
+        action, source = safe, "fallback"
+        meta["tool"] = "fallback"
+        meta["reason"] = "action contained a forbidden term"
+    chat = wk_filter(protocol.clean_chat(chat), terms)
+    chat = clean_line(chat, terms, art)
     protocol.send({"type": "action", "action": action, "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
     mine.append(action)
     STATE["prev_obs"] = obs
