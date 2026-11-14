@@ -154,11 +154,12 @@ class Forced:
     """Makes the model's intent count and removes noise, so the limiter is tested at its worst case."""
 
     def __enter__(self):
-        self.saved = (config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ENABLE_CONCEDE_PRESSURE)
-        config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ENABLE_CONCEDE_PRESSURE = 1.0, 0.0, True
+        self.saved = (config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ENABLE_CONCEDE_PRESSURE, config.ACTION_LINES)
+        # ACTION_LINES off: these tests check the bank line itself (the action sentence is tested in test_decision_chat.py)
+        config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ENABLE_CONCEDE_PRESSURE, config.ACTION_LINES = 1.0, 0.0, True, False
 
     def __exit__(self, *a):
-        config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ENABLE_CONCEDE_PRESSURE = self.saved
+        config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ENABLE_CONCEDE_PRESSURE, config.ACTION_LINES = self.saved
 
 
 ASK = '{"a":"A1","b":"B2","i":"CONCEDE_PRESSURE","r":"EV"}'

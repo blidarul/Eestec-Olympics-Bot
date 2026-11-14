@@ -25,7 +25,8 @@ import re
 import sys
 from collections import deque
 
-from . import concede, config, final_stage, guard, intents, parse, persona, speech_rules, wrap
+from . import actionlines, concede, config, final_stage, guard, history, intents, parse, persona, speech_rules, wrap
+from . import decision as decision_mod
 from .signals import ChatMonitor
 
 RECOMMENDED_MAX_TOKENS = 100   # the answer is one small JSON (about 20 tokens): no room for long text
@@ -133,7 +134,7 @@ def merge_speech(base, forbidden):
     extra = [str(t) for t in (forbidden or []) if str(t).strip()]
     if not extra:
         return base
-    return speech_rules.SpeechRules(list(base.terms) + extra, True, base.honesty)
+    return speech_rules.SpeechRules(list(base.terms) + extra, True, base.honesty, base.unconfident)
 
 
 def ready_line(rules="", forbidden=(), seed="", cache_dir=None):
@@ -280,12 +281,36 @@ class ChatDefense:
                 res = guard.GuardResult(alt[0], True, "rejected")
         return self._answer(res, "", "model-free", turn)
 
-    def chat_only(self, chat, turn=0):
+    def chat_only(self, chat, turn=0, decision=None, chat_full=None):
         """Only the chat line, for strategies that choose the move themselves (core/, solvers): same persona, same
-        filters, same limits. `chat` = the opponent's chat (texts or full lines). Returns the line."""
+        filters, same limits. `chat` = the opponent's chat (texts or full lines). `decision` = the move actually chosen
+        (DecisionInfo, strategies.base.Decision, dict or action string): the line is then built from it (rule 6.4).
+        `chat_full` = the whole match chat with our own lines: the caps and no-repeat memory come from it (rule 6.1).
+        Returns the line."""
         self.monitor.update(chat)
         self._track({"turn": turn})
-        return self._answer(guard.GuardResult(""), "", "chat-only", {"turn": turn})[1]
+        if chat_full:
+            history.apply_to(self, chat_full, self.game_index if self.game_index else None)
+        return self._answer(guard.GuardResult(""), "", "chat-only", {"turn": turn},
+                            decision=decision_mod.DecisionInfo.coerce(decision, None, ""))[1]
+
+    def sync_history(self, chat_full, game=None):
+        """Recompute the team-level counters (concede caps, spacing, recent lines) from the whole match chat."""
+        return history.apply_to(self, chat_full, game)
+
+    def _with_action(self, base, intent, decision, seed):
+        """Tie the line to the move we chose (6.4): a probe/pressure reply keeps its first part and gets the action
+        line as the second sentence; any other intent is replaced by the action line. Never where the rules restrict or
+        police speech (a short neutral line is sent there)."""
+        if decision is None or not config.ACTION_LINES or self.speech.restricted or self.speech.honesty:
+            return base
+        act = actionlines.pick(decision.action_type, seed, self.recent)
+        combine = intent in ("STONEWALL", "REPLY", "CONCEDE_PRESSURE", "UNSETTLE") and base
+        for text in ([f"{base} {act}", act] if combine else [act]):
+            final, bad = final_stage.finalize_chat(text, self.speech, (), (), self.canary, False, len(self.recent), ())
+            if not bad:
+                return final
+        return base
 
     # ---- the chat line ---------------------------------------------------------------
     def choose_intent(self, model_intent, res, seed):
@@ -304,7 +329,7 @@ class ChatDefense:
         if m.repeated_now and m.opponent_repeats and "UNSETTLE" in allowed:
             return "UNSETTLE", "repeat"
         rng = random.Random(f"{seed}|policy")
-        if rng.random() < config.NOISE_PROBABILITY:
+        if config.ENABLE_NOISE and rng.random() < config.NOISE_PROBABILITY:
             self.stats["noise"] += 1
             return "NOISE", ""                            # a decoy, by chance only
         intent = intents.normalize_intent(model_intent, "") if model_intent else ""
@@ -361,8 +386,10 @@ class ChatDefense:
                 return True
         return False
 
-    def _answer(self, res, model_intent, how, turn, model_chat=""):
+    def _answer(self, res, model_intent, how, turn, model_chat="", decision=None):
         seed = f"{self.match_id}|{self.game_index}|{turn.get('turn', 0)}"
+        if decision is None and res.action:  # finish() / model_free(): the move is res.action
+            decision = decision_mod.DecisionInfo.build(res.action, turn.get("legal_actions"))
         self.limiter.tick()
         own = self._human_line(model_chat, res)
         if own is not None:  # human persona: the model's line passed every wall
@@ -374,12 +401,20 @@ class ChatDefense:
         intent, family = self.choose_intent(model_intent, res, seed)
         if intent == "CONCEDE_PRESSURE" and not self.limiter.allowed():
             intent = "PRESS"  # the limiter has the last word (also when the model asked for it)
-        if config.PERSONA == "human" and (self.speech.restricted or self.speech.honesty):
-            intent, family = "MINIMAL", ""  # short and neutral where the rules restrict speech
+        if (config.PERSONA == "human" and (self.speech.restricted or self.speech.honesty)) or self.speech.unconfident:
+            intent, family = "MINIMAL", ""  # short and neutral where the rules restrict speech; ALWAYS when we are not
+            # sure what is forbidden (minimal safe chat, rule 6.8: one wrong line can end the game)
         chat, problems, intent = self._compose_safe(intent, family, seed)
+        base = chat
+        tied = self._with_action(chat, intent, decision, seed)
+        if tied != chat:
+            if self.recent and self.recent[-1] == chat:
+                self.recent.pop()
+            self.recent.append(tied)
+            chat = tied
         self.said.append(chat)
         if intent == "CONCEDE_PRESSURE":
-            self.limiter.record(chat)
+            self.limiter.record(base)  # the bank line, not the tied text (history.py matches the bank line as a prefix)
             self.stats["concede_used"] += 1
         info = {"parsed": how, "intent": intent, "guard": res.why, "problems": problems,
                 "signals": self.monitor.features()}

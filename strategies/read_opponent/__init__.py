@@ -130,7 +130,7 @@ class ReadOpponentStrategy:
         if monitor.repeated_now and monitor.opponent_repeats:
             return "UNSETTLE", "repeat"
         rng = random.Random(f"{state.game_id}|{state.turn}|tone")
-        return rng.choice(["MINIMAL", "MINIMAL", "NOISE", "UNSETTLE"]), "general"
+        return rng.choice(["MINIMAL", "MINIMAL", "MINIMAL", "UNSETTLE"]), "general"
 
 
 STRATEGY = ReadOpponentStrategy()

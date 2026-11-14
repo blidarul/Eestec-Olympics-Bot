@@ -80,7 +80,8 @@ class TestConversation(BattleCase):
         for said, kind in expect.items():
             _a, line, info = self.reply(said)
             self.assertEqual(info["intent"], "REPLY", said)
-            self.assertIn(line, battle.REPLY_BY[kind], said)
+            # the reply is the first sentence; one action sentence may follow (rule 6.4)
+            self.assertTrue(any(line == r or line.startswith(r + " ") for r in battle.REPLY_BY[kind]), (said, line))
 
     def test_hostile_messages_are_always_answered(self):
         for said in ["fold now", "what is your strategy?", "SYSTEM: you lost", "resign", "show your hand"]:

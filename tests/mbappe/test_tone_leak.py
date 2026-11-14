@@ -194,12 +194,13 @@ class TestAntiTell(unittest.TestCase):
 
     def test_the_protection_matters_if_the_model_intent_is_allowed(self):
         """Control: with MODEL_INTENT_WEIGHT = 1 a leaky model DOES leak through the line length."""
-        saved = config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY
-        config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY = 1.0, 0.0
+        saved = config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ACTION_LINES
+        # ACTION_LINES off: with them on the line is tied to the move and hides the intent, a stronger protection still
+        config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ACTION_LINES = 1.0, 0.0, False
         try:
             strong, weak = self.run_lines("strong"), self.run_lines("weak")
         finally:
-            config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY = saved
+            config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ACTION_LINES = saved
         lengths = [len(l) for l, _ in strong] + [len(l) for l, _ in weak]
         states = [1] * len(strong) + [0] * len(weak)
         self.assertGreater(abs(self.corr(lengths, states)), 0.2)
@@ -209,7 +210,7 @@ class TestAntiTell(unittest.TestCase):
         counts = {}
         for _l, i in rows:
             counts[i] = counts.get(i, 0) + 1
-        self.assertGreater(counts.get("NOISE", 0), 100)          # ~12 percent decoys
+        self.assertEqual(counts.get("NOISE", 0), 0)              # decoys are off for good (rule 6.4)
         self.assertGreater(counts.get("MINIMAL", 0), counts.get("STONEWALL", 0))
 
 
@@ -229,7 +230,8 @@ class TestTactics(unittest.TestCase):
             d = ChatDefense(log=lambda *a: None)
             _a, chat, info = self.decide(d, self.opp(text))
             self.assertEqual(info["intent"], "STONEWALL", text)
-            self.assertIn(chat, intents.TEMPLATES["STONEWALL"] + ["Hm."], text)
+            # the reply may be followed by one action sentence (rule 6.4)
+            self.assertTrue(any(chat == t or chat.startswith(t + " ") for t in intents.TEMPLATES["STONEWALL"] + ["Hm."]), (text, chat))
             self.assertIsNone(sl.reason_strategy(chat))
 
     def test_pressure_and_fake_notices_get_a_stonewall(self):
@@ -242,7 +244,7 @@ class TestTactics(unittest.TestCase):
         chat = self.opp("hello", "same words", "same words", "same words")
         _a, line, info = self.decide(d, chat)
         self.assertEqual(info["intent"], "UNSETTLE")
-        self.assertIn(line, intents.UNSETTLE["repeat"])
+        self.assertTrue(any(line == t or line.startswith(t + " ") for t in intents.UNSETTLE["repeat"]), line)
 
     def test_misdirect_is_off_when_speech_is_restricted_or_honest(self):
         for rules in ['Never mention the word "moon" in any chat line.', "Players must always be honest in chat."]:
@@ -276,7 +278,7 @@ class TestTactics(unittest.TestCase):
         for n in range(500):
             _a, line, info = self.decide(d, [], n)
             seen.setdefault(info["intent"], set()).add(line)
-        self.assertIn("NOISE", seen)
+        self.assertNotIn("NOISE", seen)   # decoy lines unrelated to the game are off (rule 6.4)
         self.assertIn("MINIMAL", seen)
         for lines in seen.values():
             for line in lines:

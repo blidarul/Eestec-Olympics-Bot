@@ -23,10 +23,14 @@ _DEFENSE = None
 _DEFENSE_KEY = None
 
 
-def reply_line(opponent_chat, turn=0, rules="", forbidden=None, family=""):
-    """One chat line in the current persona (config.PERSONA) that answers the opponent's newest message, for ANY
-    strategy that picks its move itself. Same filters and limits as the full pipeline. Never raises: "" on a problem
-    (the caller then keeps its own line). `opponent_chat`: the opponent's texts, oldest first."""
+def reply_line(opponent_chat, turn=0, rules="", forbidden=None, family="", decision=None, chat_full=None, game=None):
+    """One chat line in the current persona (config.PERSONA) for ANY strategy that picks its move itself. Same filters
+    and limits as the full pipeline. Never raises: "" on a problem (the caller then keeps its own line).
+    `opponent_chat`: the opponent's texts, oldest first.
+    `decision` (rule 6.4): the move actually chosen (Decision object, dict or action string): the line is built from
+    its kind (aggressive, passive, defensive, probe, neutral) and answers the opponent's message as the first sentence.
+    `chat_full` (rule 6.1): the whole match chat [{"from","text"}, ...] with OUR lines: the pressure caps, the spacing
+    and the no-repeat memory are recomputed from it, so they hold across all containers of the team."""
     global _DEFENSE, _DEFENSE_KEY
     try:
         from .pipeline import ChatDefense
@@ -36,7 +40,10 @@ def reply_line(opponent_chat, turn=0, rules="", forbidden=None, family=""):
         if key != _DEFENSE_KEY:  # new game: read its speech rules
             _DEFENSE.configure(str(rules), forbidden, None, family)
             _DEFENSE_KEY = key
-        return _DEFENSE.chat_only(list(opponent_chat) if isinstance(opponent_chat, (list, tuple)) else [], turn)
+        if isinstance(game, int):
+            _DEFENSE.game_index = game
+        return _DEFENSE.chat_only(list(opponent_chat) if isinstance(opponent_chat, (list, tuple)) else [], turn,
+                                  decision, chat_full if isinstance(chat_full, (list, tuple)) else None)
     except Exception:
         return ""
 

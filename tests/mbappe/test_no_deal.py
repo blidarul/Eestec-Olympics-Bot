@@ -76,13 +76,14 @@ class TestConcedeIntent(unittest.TestCase):
     MODEL = '{"a":"A1","b":"B2","i":"CONCEDE_PRESSURE","r":"EV","s":"we split points"}'
 
     def setUp(self):
-        self.saved = (config.ENABLE_CONCEDE_PRESSURE, config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY)
+        self.saved = (config.ENABLE_CONCEDE_PRESSURE, config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ACTION_LINES)
         config.ENABLE_CONCEDE_PRESSURE = True
         config.MODEL_INTENT_WEIGHT = 1.0      # use the model's intent every time, so the test is deterministic
         config.NOISE_PROBABILITY = 0.0
+        config.ACTION_LINES = False           # these tests check the bank line itself (action sentence: test_decision_chat.py)
 
     def tearDown(self):
-        config.ENABLE_CONCEDE_PRESSURE, config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY = self.saved
+        (config.ENABLE_CONCEDE_PRESSURE, config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY, config.ACTION_LINES) = self.saved
 
     def line(self, d, turn):
         _a, chat, info = d.finish(self.MODEL, dict(self.TURN, turn=turn))

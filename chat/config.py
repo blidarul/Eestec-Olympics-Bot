@@ -25,7 +25,9 @@ BUDGET_SOFT_USD = 0.30       # spend (this key, this container) after which we p
 
 # ---- tone and tactics (second pass) ----
 TONE_MAX_CHARS = 110         # terse: one short sentence or two
-NOISE_PROBABILITY = 0.12     # a decoy line sometimes, chosen by the seeded RNG only (never by our state)
+NOISE_PROBABILITY = 0.0      # decoy lines are OFF for good: a line unrelated to the game is a bolted-on caption (rule 6.4)
+ENABLE_NOISE = False         # kept only so old tests and code can name it; compose() maps NOISE to MINIMAL while False
+ACTION_LINES = True          # the chat line is tied to the kind of move we chose (chat/decision.py, rule 6.4)
 MODEL_INTENT_WEIGHT = 0.0    # how often the model's intent is used when no signal forces one (0 = never: anti-tell)
 REPEAT_UNSETTLE = 2          # opponent repeated itself this many times: UNSETTLE about repetition
 

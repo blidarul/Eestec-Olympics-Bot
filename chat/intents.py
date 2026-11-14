@@ -93,6 +93,8 @@ def compose(intent, family="", seed="", recent=()):
     """The line for `intent`. `family` picks the UNSETTLE sub-list. `seed` makes the choice repeatable (code only,
     never our state); `recent` are lines to avoid repeating."""
     intent = "REPLY" if intent == "REPLY" else normalize_intent(intent)
+    if intent == "NOISE" and not config.ENABLE_NOISE:
+        intent = "MINIMAL"  # decoys unrelated to the game are off (rule 6.4)
     if intent == "REPLY":  # battle persona: an answer built for the kind of the opponent's message
         options = list(battle.REPLY_BY.get(family) or battle.REPLY_BY["other"])
     elif config.PERSONA in ("battle", "human") and intent in battle.BATTLE and intent != "CONCEDE_PRESSURE":

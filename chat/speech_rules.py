@@ -18,9 +18,12 @@ from . import normalize as nz
 
 # A sentence is a speech rule when it holds a "restriction" word and a "speaking" word...
 _RESTRICT = re.compile(r"\b(?:forbidden|prohibited|banned|taboo|off[- ]limits|must\s+not|must\s+never|may\s+not|"
-                       r"cannot|can't|never|not\s+(?:allowed|permitted)|do\s+not|don't|avoid|restricted|illegal|lose[sd]?|loses)\b", re.I)
+                       r"cannot|can't|never|not\s+(?:allowed|permitted)|do\s+not|don't|avoid|restricted|illegal|lose[sd]?|loses|"
+                       r"eliminat\w*|disqualif\w*|forfeit\w*|penali[sz]\w*|punish\w*|ends?\s+the\s+game|game\s+over|"
+                       r"instantly|immediately|on\s+the\s+spot|no\s+(?:talk|mention)\w*)\b", re.I)
 _SPEAK = re.compile(r"\b(?:mention\w*|say|says|saying|speak\w*|utter\w*|discuss\w*|talk\w*|reveal\w*|write|type|refer\w*|"
-                    r"chat|reply|spell\w*|bring\s+up|allude\w*|word|words|subject|topic|term|terms|name|names)\b", re.I)
+                    r"chat|reply|spell\w*|bring\w*\s+up|allude\w*|word|words|subject|topic|term|terms|name|names|touch\w*\s+on|"
+                    r"hint\w*|imply|implies|implying|message\w*|phrase\w*|sentence\w*|vocabulary|line|lines)\b", re.I)
 # ...or when it names the thing directly.
 _DIRECT = re.compile(r"\b(?:forbidden|banned|taboo|prohibited)\s+(?:subject|word|words|topic|term|terms|phrase|name)s?\b", re.I)
 _QUOTED = re.compile(r"\"([^\"\n]{2,40})\"|“([^”\n]{2,40})”|'([^'\n]{2,40})'|‘([^’\n]{2,40})’|«([^»\n]{2,40})»|`([^`\n]{2,40})`")
@@ -39,7 +42,7 @@ _STOP = {"it", "this", "that", "them", "they", "anything", "everything", "someth
 
 
 class SpeechRules:
-    def __init__(self, terms=None, restricted=False, honesty=False):
+    def __init__(self, terms=None, restricted=False, honesty=False, unconfident=False):
         self.terms = []
         for t in terms or []:
             t = nz.display(t).lower()
@@ -47,6 +50,9 @@ class SpeechRules:
                 self.terms.append(t)
         self.restricted = bool(restricted or self.terms)
         self.honesty = bool(honesty)  # the rules ask for honest speech: no misleading lines
+        # Not sure what exactly is forbidden (a restriction was found but no term, or only a described subject of 3+
+        # words such as "the colour of the cards"): the game gets MINIMAL SAFE CHAT, see pipeline._answer / ready_line.
+        self.unconfident = bool(unconfident or (self.restricted and (not self.terms or any(len(t.split()) >= 3 for t in self.terms))))
         # precomputed matching forms of every term
         self._forms = []
         for t in self.terms:
@@ -113,11 +119,17 @@ class SpeechRules:
 
     # ---- storage ----------------------------------------------------
     def to_dict(self):
-        return {"terms": self.terms, "restricted": self.restricted, "honesty": self.honesty}
+        return {"terms": self.terms, "restricted": self.restricted, "honesty": self.honesty, "unconfident": self.unconfident}
+
+    def with_extra(self, extra):
+        """A copy that also forbids `extra` terms (add-only: prep's model call can never remove a term)."""
+        extra = [t for t in (extra or []) if isinstance(t, str) and t.strip()]
+        return (SpeechRules(list(self.terms) + extra, self.restricted or bool(extra), self.honesty, self.unconfident)
+                if extra else self)
 
     @classmethod
     def from_dict(cls, d):
-        return cls(d.get("terms") or [], d.get("restricted", False), d.get("honesty", False))
+        return cls(d.get("terms") or [], d.get("restricted", False), d.get("honesty", False), d.get("unconfident", False))
 
 
 def _clean_term(raw):
@@ -159,14 +171,15 @@ def extract(rules_text):
             t = _clean_term(raw)
             if t:
                 terms.append(t)
-    return SpeechRules(terms, restricted, _asks_for_honesty(text))
+    return SpeechRules(terms, restricted, _asks_for_honesty(text), unconfident=restricted and not terms)
 
 
 def _looks_like_speech_rule(sentence):
     """A restriction word plus a speaking word is not enough ("you may not move twice"): the sentence must be
     about talking, saying or mentioning something."""
     return bool(re.search(r"\b(?:mention\w*|say|says|saying|speak\w*|utter\w*|discuss\w*|talk\w*|reveal\w*|refer\w*|"
-                          r"chat|forbidden\s+(?:subject|word|topic)|spell\w*|bring\s+up|allude\w*)\b", sentence, re.I))
+                          r"chat|forbidden\s+(?:subject|word|topic)|spell\w*|bring\w*\s+up|allude\w*|touch\w*\s+on|hint\w*|"
+                          r"imply|implies|implying|message\w*|phrase\w*)\b", sentence, re.I))
 
 
 # ---------------------------------------------------------------- cache in /memory (shared by all containers)
@@ -186,10 +199,11 @@ def for_rules(rules_text, cache_dir=None, log=None):
     """SpeechRules for this rules text, cached in `cache_dir` (the game's /memory folder) when given.
     The cache is only a speed-up: a missing, partial or stale file is ignored and the rules are parsed again."""
     path = os.path.join(cache_dir, f"speech2_{rules_hash(rules_text)}.json") if cache_dir else None
+    extra = load_extra_terms(cache_dir, rules_text)
     if path:
         try:
             with open(path, encoding="utf-8") as fh:
-                return SpeechRules.from_dict(json.load(fh))
+                return SpeechRules.from_dict(json.load(fh)).with_extra(extra)
         except (OSError, ValueError, AttributeError, TypeError):
             pass
     rules = extract(rules_text)
@@ -200,7 +214,20 @@ def for_rules(rules_text, cache_dir=None, log=None):
         except OSError as exc:
             if log:
                 log("speech cache write failed:", exc)
-    return rules
+    return rules.with_extra(extra)
+
+
+def load_extra_terms(cache_dir, rules_text):
+    """Forbidden terms that prep added for this rules text (/memory/<game>/speech_extra_<hash>.json: a JSON list of
+    strings, written by prep/ with at most one `haiku` call). Add-only, bounded, any problem = no extra terms."""
+    if not cache_dir:
+        return []
+    try:
+        with open(os.path.join(cache_dir, f"speech_extra_{rules_hash(rules_text)}.json"), encoding="utf-8") as fh:
+            data = json.load(fh)
+        return [nz.display(t).lower() for t in data if isinstance(t, str) and 2 <= len(t.strip()) <= 40][:30]
+    except (OSError, ValueError, TypeError):
+        return []
 
 
 _HONESTY = re.compile(
