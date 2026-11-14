@@ -226,3 +226,29 @@ def test_monte_carlo_not_reachable_from_json():
     # a model can only send JSON: a string is never executed, and the tool is not exported
     r = catalog.call("monte_carlo_estimate", json.dumps({"sampler": "__import__('os').system('echo x')"}))
     assert r["ok"] is False
+
+
+# ---- #25: MDP value iteration (solvers/probability.py) ----
+def test_mdp_gamblers_ruin_and_eu():
+    from solvers.probability import value_iteration, calculate_expected_utility
+    p = 0.4
+    states = list(range(0, 6))
+    actions = ["bet"]
+    tr, rw = {}, {}
+    for s in range(1, 5):
+        tr[(s, "bet")] = [(p, s + 1), (1 - p, s - 1)]
+        rw[(s, "bet")] = 0.0
+    rw[(4, "bet")] = p  # reward on reaching 5 (gamma=1 -> win prob)
+    V, pol = value_iteration(states, actions, tr, rw, gamma=1.0, max_iters=2000, tol=1e-12)
+    q = 1 - p; r = q / p
+    exact = (1 - r ** 2) / (1 - r ** 5)  # win prob from 2 to 5
+    assert abs(V[2] - exact) < 1e-6 and pol[0] is None and V[0] == 0.0
+    # choice: safe vs risky
+    V, pol = value_iteration([0, 1], ["safe", "risk"],
+                             {(0, "safe"): [(1.0, 1)], (0, "risk"): [(0.5, 1), (0.5, 1)]},
+                             {(0, "safe"): 3.0, (0, "risk"): 1.0}, gamma=0.9)
+    assert pol[0] == "safe" and abs(V[0] - 3.0) < 1e-9
+    assert value_iteration([], [], {}, {}) == ({}, {})
+    assert calculate_expected_utility(["a", "b"], {"a": [(0.5, 10), (0.5, 0)], "b": [(1.0, 4)]}) == ("a", 5.0)
+    assert calculate_expected_utility([], {}) == (None, 0.0)
+    assert calculate_expected_utility(["a"], {"a": []}) == (None, 0.0)
