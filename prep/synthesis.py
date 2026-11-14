@@ -37,6 +37,8 @@ class State:
         self.current = 0
 
     def legal_actions(self):
+        if self.has_line(0) or self.has_line(1):
+            return []
         actions = []
         for r in range(self.rows):
             for c in range(self.cols):
@@ -45,10 +47,16 @@ class State:
         return actions
 
     def step(self, action):
+        import re
         clean = action.strip()
-        col = ord(clean[0].upper()) - ord('A')
-        row = int(clean[1:]) - 1
+        m = re.search(r"([A-Za-z])\\s*(\\d+)", clean)
+        if not m:
+            return self
+        col = ord(m.group(1).upper()) - ord('A')
+        row = int(m.group(2)) - 1
         idx = row * self.cols + col
+        if idx < 0 or idx >= len(self.board) or self.board[idx] is not None:
+            return self
 
         new_state = State()
         new_state.board = list(self.board)

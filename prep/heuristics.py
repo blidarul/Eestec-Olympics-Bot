@@ -72,7 +72,7 @@ def compute_grid_symmetries(cols: int, rows: int) -> dict[str, list[str]]:
                     (s - 1 - r, s - 1 - c),  # Rot 180
                     (s - 1 - c, r),  # Rot 270
                     (r, s - 1 - c),  # Flip H
-                    (size - 1 - r, c) if "size" in locals() else (s - 1 - r, c),  # Flip V
+                    (s - 1 - r, c),  # Flip V
                     (c, r),  # Flip Main Diag
                     (s - 1 - c, s - 1 - r),  # Flip Anti Diag
                 ]
