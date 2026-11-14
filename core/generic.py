@@ -44,7 +44,7 @@ class Generic:
         if legal and len(legal) == 1:
             return Decision(legal[0], hooks.filter_out(fallback.fallback_chat(art), forbidden), "strategy")
         warned = isinstance(state.warning, dict) and bool(state.warning)
-        no_repeat = list(state.my_actions or []) if art.get("family") == "guessing" else []
+        no_repeat = list(state.my_actions or []) if (art.get("family") in ("guessing", "deduction") or art.get("prep_family") in ("guessing", "deduction")) else []
         fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat)
         fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
         llm = state.llm
@@ -71,6 +71,8 @@ class Generic:
         parts = []
         if art.get("playbook"):
             parts.append("Playbook:\n" + str(art["playbook"])[:1200])
+        if art.get("tools_prompt"):
+            parts.append("Available tools:\n" + str(art["tools_prompt"])[:1000])
         parts.append("Observation:\n" + str(state.observation)[:6000])
         if state.legal_actions:
             parts.append("Legal moves: " + ", ".join(state.legal_actions[:50]))
@@ -78,7 +80,7 @@ class Generic:
             parts.append(f"Action format examples: {fmt.get('examples') or ''} (follow the rules' format exactly)")
         if isinstance(state.warning, dict) and state.warning.get("reason"):
             parts.append("Your previous answer was rejected: " + str(state.warning["reason"])[:200])
-        if art.get("family") == "guessing" and state.my_actions:
+        if (art.get("family") in ("guessing", "deduction") or art.get("prep_family") in ("guessing", "deduction")) and state.my_actions:
             parts.append("Never repeat a guess you already made; use the feedback to narrow the possibilities.")
         parts.append(hooks.wrap_untrusted(state.opponent_chat))
         return "\n\n".join(parts)

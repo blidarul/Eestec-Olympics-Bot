@@ -113,7 +113,7 @@ def on_turn(msg, wk):
     mine = STATE["my_actions"]
     if warning and mine:
         mine.pop()  # the turn is re-sent after a rejected answer: that answer does not count as played
-    guessing = art.get("family") == "guessing"
+    guessing = art.get("family") in ("guessing", "deduction") or art.get("prep_family") in ("guessing", "deduction")
     previous = list(mine) if guessing else []  # guessing games: never send the same action twice (safety net)
     obs = str(msg.get("observation", ""))
     # fallback FIRST, from the message alone

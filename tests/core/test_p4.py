@@ -224,3 +224,34 @@ def test_turn_state_opponent_field(tmp_path):
         b.close()
 
 
+def test_validate_prevents_repeats_across_numeric_formats():
+    from core import validate, fallback
+    art = {"grammar": {"kind": "numeric_range", "numeric_min": 1, "numeric_max": 100, "numeric_prefix": "guess "}}
+    # bare "54" in previous rejects "guess 54"
+    assert validate.validate("guess 54", None, art, previous=["54"]) is None
+    # "guess 54" in previous rejects bare "54"
+    assert validate.validate("54", None, art, previous=["guess 54"]) is None
+    # untried "guess 55" is valid
+    assert validate.validate("guess 55", None, art, previous=["54"]) == "guess 55"
+
+    # unused_numeric avoids numbers in avoid even if prefix differs
+    for _ in range(20):
+        n = fallback.unused_numeric(art, avoid=["54", "guess 55"])
+        assert n not in ("guess 54", "guess 55", "54", "55")
+
+
+def test_hooks_exposes_tools_in_artifacts():
+    from core.hooks import map_engine_variant
+    vd = {
+        "label": "test_game",
+        "classification": {"family": "deduction"},
+        "grammar": {"kind": "discrete", "discrete_actions": ["pass"]},
+        "tools": [{"type": "function", "function": {"name": "test_tool"}}],
+        "tools_prompt": "test_tool(): a helper tool",
+    }
+    art = map_engine_variant(vd)
+    assert art["tools"] == [{"type": "function", "function": {"name": "test_tool"}}]
+    assert "test_tool(): a helper tool" in art["tools_prompt"]
+
+
+

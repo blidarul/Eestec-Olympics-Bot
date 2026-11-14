@@ -39,8 +39,16 @@ def validate(action, legal, artifacts=None, rejected=None, previous=()):
         out = _validate_format(action, artifacts)
     if out is None or (rejected is not None and out == str(rejected)):
         return None
-    if previous and _norm(out) in {_norm(p) for p in previous}:
-        return None
+    if previous:
+        if _norm(out) in {_norm(p) for p in previous}:
+            return None
+        out_nums = re.findall(r"-?\d+", out)
+        if len(out_nums) == 1:
+            out_val = int(out_nums[0])
+            for p in previous:
+                p_nums = re.findall(r"-?\d+", str(p))
+                if len(p_nums) == 1 and int(p_nums[0]) == out_val:
+                    return None
     return out
 
 

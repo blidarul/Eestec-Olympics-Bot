@@ -64,6 +64,8 @@ def map_engine_variant(vd: dict) -> dict:
         "fallback_policy": {"prefer": opening, "avoid": []},
         "forbidden_terms": [str(x) for x in (gr.get("forbidden_keywords") or [])],
         "grammar": gr,
+        "tools": vd.get("tools") or [],
+        "tools_prompt": vd.get("tools_prompt") or "",
     })
     return art
 

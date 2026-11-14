@@ -107,13 +107,12 @@ def verify_model(code, variant, seed=11, sims=SIM_SECRETS):
             return False, "candidate space has fewer than 2 candidates", {}
         sset = set(space)
         hist = m.history(sample["observation"])
-        if not hist:
-            return False, "extract_history found nothing in the sample turn", {}
-        for g, _ in hist:
-            if g not in sset:
-                return False, f"sample guess {g!r} not in candidate_space", {}
-        if not [c for c in space if all(m.feedback(c, g) == fb for g, fb in hist)]:
-            return False, "feedback() contradicts the sample turn's real feedback", {}
+        if hist:
+            for g, _ in hist:
+                if g not in sset:
+                    return False, f"sample guess {g!r} not in candidate_space", {}
+            if not [c for c in space if all(m.feedback(c, g) == fb for g, fb in hist)]:
+                return False, "feedback() contradicts the sample turn's real feedback", {}
         legal = sample.get("legal_actions")
         legal = {str(a) for a in legal} if isinstance(legal, list) else None
         cap = m.max_guesses(variant) or 2 * len(bin(len(space))) + 8

@@ -23,6 +23,7 @@ def norm(s) -> str:
 
 def unused_numeric(artifacts: dict | None, avoid) -> str | None:
     """A numeric action from the parsed grammar (prefix + n, numeric_min..numeric_max) not in `avoid`, or None."""
+    import re
     g = (artifacts or {}).get("grammar")
     g = g if isinstance(g, dict) else {}
     lo, hi = g.get("numeric_min"), g.get("numeric_max")
@@ -30,11 +31,20 @@ def unused_numeric(artifacts: dict | None, avoid) -> str | None:
         return None
     pre = str(g.get("numeric_prefix") or "")
     taken = {norm(a) for a in avoid}
+    taken_nums = set()
+    for a in avoid:
+        for num in re.findall(r"-?\d+", str(a)):
+            taken_nums.add(int(num))
     for _ in range(64):
-        c = f"{pre}{random.randint(lo, hi)}"
+        val = random.randint(lo, hi)
+        if val in taken_nums:
+            continue
+        c = f"{pre}{val}"
         if norm(c) not in taken:
             return c
     for n in range(lo, hi + 1):
+        if n in taken_nums:
+            continue
         c = f"{pre}{n}"
         if norm(c) not in taken:
             return c
