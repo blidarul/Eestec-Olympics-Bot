@@ -112,13 +112,19 @@ def test_deduce_through_prep_solves_without_repeats_and_logs_decisions(tmp_path)
 
 
 def test_ready_line_comes_from_chat_pipeline(tmp_path):
+    from chat import config
     from chat.pipeline import ready_line
-    b = Bot(tmp_path, '{"a": "", "c": "x"}')
+    saved = config.PERSONA
     try:
-        r = b.send(start_msg("seed-7"))
+        config.PERSONA = "human"
+        b = Bot(tmp_path, '{"a": "", "c": "x"}')
+        try:
+            r = b.send(start_msg("seed-7"))
+        finally:
+            b.close()
+        assert r["type"] == "ready" and r["chat"] and r["chat"] == ready_line(RULES, [], "seed-7")
     finally:
-        b.close()
-    assert r["type"] == "ready" and r["chat"] and r["chat"] == ready_line(RULES, [], "seed-7")
+        config.PERSONA = saved
 
 
 def test_warning_resend_does_not_count_rejected_action_as_played(tmp_path):

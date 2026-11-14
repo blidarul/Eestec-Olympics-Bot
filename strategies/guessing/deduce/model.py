@@ -107,7 +107,12 @@ def verify_model(code, variant, seed=11, sims=SIM_SECRETS):
             return False, "candidate space has fewer than 2 candidates", {}
         sset = set(space)
         hist = m.history(sample["observation"])
-        if hist:
+        obs = sample.get("observation", "")
+        if not hist:
+            obs_lower = obs.lower()
+            if "->" in obs or "you guessed" in obs_lower or ("round 1:" in obs_lower and "(none yet)" not in obs_lower):
+                return False, "extract_history found nothing in the sample turn", {}
+        else:
             for g, _ in hist:
                 if g not in sset:
                     return False, f"sample guess {g!r} not in candidate_space", {}
