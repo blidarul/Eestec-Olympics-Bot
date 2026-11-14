@@ -11,7 +11,7 @@ from core import generic, memory  # noqa: E402
 from core.llm import LLM  # noqa: E402
 from core.validate import validate  # noqa: E402
 from strategies.base import TurnState  # noqa: E402
-from test_p2 import START, TURN, run  # noqa: E402
+from test_core_p2 import START, TURN, run  # noqa: E402
 
 FMT = {"action_format": {"regex": r"move \d \d", "examples": ["move 1 2", "move 3 4"]}}
 
