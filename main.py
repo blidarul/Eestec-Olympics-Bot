@@ -259,7 +259,11 @@ def on_turn(msg, wk):
     obs = str(msg.get("observation", ""))
     rules_text = str(STATE["game"].get("rules", ""))
     is_blotto_game = "blotto" in rules_text.lower() or "battlefield" in rules_text.lower() or "soldiers this round:" in obs.lower()
-    guessing = not is_blotto_game and ((legal is None) or art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle"))
+    guessing = not is_blotto_game and (
+        art.get("family") in ("guessing", "deduction", "word", "wordle")
+        or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")
+        or (art.get("grammar") or {}).get("kind") in ("word", "numeric_range")
+    )
     previous = list(mine) if guessing else []  # guessing / word games: never send the same action twice (safety net)
     # fallback FIRST, from the message alone
     use_fmt = not (isinstance(legal, list) and legal)  # legal_actions null/empty: the rules' template is the only guard

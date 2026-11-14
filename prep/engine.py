@@ -192,7 +192,7 @@ class PrepEngine:
 
             if not playbook_data:
                 from .playbook import synthesize_playbook
-                call_llm = llm if (budget_seconds >= 30.0 and llm and llm.available() and not llm.over_budget()) else None
+                call_llm = llm if (budget_seconds >= 3.0 and llm and llm.available() and not llm.over_budget()) else None
                 playbook_data = synthesize_playbook(rules, call_llm, timeout=min(12.0, budget_seconds / 2.0))
                 atomic_save_json(playbook_path, playbook_data)
                 if idx == 0 or not os.path.exists(playbook_default):

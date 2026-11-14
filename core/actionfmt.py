@@ -87,7 +87,7 @@ def _split_template(tpl: str, rules: str) -> dict | None:
         if kind == "int":
             regex += r"(-?\d+)"
         elif kind == "word":
-            regex += r"([A-Za-z]+)"
+            regex += r"([A-Za-z0-9_-]+)"
         elif kind == "text":
             regex += r"(\S[^\n]{0,%d})" % (MAX_TEXT - 1)
         else:
@@ -125,6 +125,20 @@ def _candidate_templates(rules: str) -> list[str]:
         for t in found:
             if t not in cands:
                 cands.append(t)
+    if not cands:
+        sec = re.search(r"(?i:\b(?:action|move|answer|command|input)s?[ _-]*(?:format|syntax)\b)\s*:?\s*(.*?)(?=\n[A-Z][A-Z0-9\s_]{2,}(?:\([^\)]*\))?\s*\n|\Z)", rules, re.DOTALL)
+        if sec:
+            for line in sec.group(1).splitlines()[:6]:
+                head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|example|where)\b", line)[0]
+                quoted = re.findall(r"[\"“`]([^\"”`\n]{1,80})[\"”`]", head)
+                found = [q.strip() for q in quoted if PLACEHOLDER.search(q)]
+                if not found and PLACEHOLDER.search(head):
+                    m_ph = re.search(r"([A-Za-z0-9_-]+\s+<[^<>\n]+>|<[^<>\n]+>\s+[A-Za-z0-9_-]+|<[^<>\n]+>)", head)
+                    if m_ph:
+                        found = [m_ph.group(1).strip()]
+                for t in found:
+                    if t not in cands:
+                        cands.append(t)
     return cands
 
 

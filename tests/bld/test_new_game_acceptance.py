@@ -201,3 +201,9 @@ def test_elemental_duel_through_harness_prep_and_turns(tmp_path):
     finally:
         p.kill()
 
+
+def test_arena_practice_elemental_duel_with_llm():
+    from tests.bld.run_elemental_arena_match import run_match
+    run_match()
+
+

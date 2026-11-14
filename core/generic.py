@@ -46,9 +46,13 @@ class Generic:
         if legal and len(legal) == 1:
             return Decision(legal[0], hooks.filter_out(fallback.fallback_chat(art), forbidden), "strategy")
         warned = isinstance(state.warning, dict) and bool(state.warning)
-        rules_lower = state.rules.lower()
+        rules_lower = (state.rules or "").lower()
         is_blotto_game = "blotto" in rules_lower or "battlefield" in rules_lower or "soldiers this round:" in str(state.observation or "").lower()
-        is_guess = not is_blotto_game and ((not legal) or (art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")))
+        is_guess = not is_blotto_game and (
+            art.get("family") in ("guessing", "deduction", "word", "wordle")
+            or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")
+            or (art.get("grammar") or {}).get("kind") in ("word", "numeric_range")
+        )
         no_repeat = list(state.my_actions or []) if is_guess else []
         fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat,
                                       observation=str(state.observation or ""), warning=state.warning if warned else None,
@@ -310,7 +314,13 @@ class Generic:
                 f"CRITICAL WARNING: Your previous action '{rej}' was REJECTED as ILLEGAL ({reason}). "
                 f"You MUST NOT choose '{rej}' again! Choose a completely different valid action that adheres to the rules."
             )
-        is_guess = (not state.legal_actions) or (art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle"))
+        rules_lower = (state.rules or "").lower()
+        is_blotto_game = "blotto" in rules_lower or "battlefield" in rules_lower or "soldiers this round:" in str(state.observation or "").lower()
+        is_guess = not is_blotto_game and (
+            art.get("family") in ("guessing", "deduction", "word", "wordle")
+            or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")
+            or (art.get("grammar") or {}).get("kind") in ("word", "numeric_range")
+        )
         if is_guess and state.my_actions:
             past = ", ".join(str(a) for a in state.my_actions[-10:])
             parts.append(f"Past guesses: [{past}]. Never repeat an action you already sent; use the feedback to narrow down.")

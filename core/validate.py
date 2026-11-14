@@ -217,6 +217,14 @@ def _validate_format(action, artifacts, observation="", rules=""):
     fmt = fmt if isinstance(fmt, dict) else {}
     examples = [str(e) for e in (fmt.get("examples") or []) if str(e).strip()]
     rx = fmt.get("regex")
+    if not rx and rules:
+        try:
+            from core import actionfmt
+            parsed = actionfmt.parse_template(rules)
+            if parsed and parsed.get("regex"):
+                rx = parsed["regex"]
+        except Exception:
+            rx = None
     if rx:
         try:
             if re.fullmatch(rx, action):
@@ -225,6 +233,13 @@ def _validate_format(action, artifacts, observation="", rules=""):
             rx = None
     if not rx and not examples:
         return action if len(action) <= 200 and "\n" not in action else None  # nothing to check against
+    # If action shares command verb with examples (e.g. 'CAST FIREBALL' vs 'CAST MEDITATE')
+    act_words = action.split()
+    if act_words and examples:
+        cmd = act_words[0].upper()
+        ex_cmds = {e.split()[0].upper() for e in examples if e.split()}
+        if cmd in ex_cmds and len(action) <= 200 and "\n" not in action:
+            return action
     if not rx and any(difflib.SequenceMatcher(None, _norm(action), _norm(e)).ratio() >= 0.6 for e in examples):
         return action
     if examples:

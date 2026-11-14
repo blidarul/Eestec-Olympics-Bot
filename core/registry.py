@@ -139,6 +139,12 @@ def route(rules, artifacts, entries=None) -> Route:
         if s:
             return Route(s, "guardrails family", fam)
     if fam in FAMILY_DIRS:
+        if fam == "matrix_simultaneous":
+            is_blotto = "blotto" in str(rules).lower() or "battlefield" in str(rules).lower()
+            gr_kind = (art.get("grammar") or {}).get("kind")
+            has_discrete = bool((art.get("grammar") or {}).get("discrete_actions")) or gr_kind == "discrete"
+            if not is_blotto and not has_discrete:
+                return Route(generic, "matrix_simultaneous without discrete matrix actions -> core/generic", fam)
         s = _find(entries, rules, art, fam_dir=FAMILY_DIRS[fam])
         if s:
             return Route(s, f"{fam} family -> strategies/{FAMILY_DIRS[fam]}", fam)
