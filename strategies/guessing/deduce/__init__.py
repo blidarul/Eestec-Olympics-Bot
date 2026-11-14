@@ -14,6 +14,7 @@ import traceback
 from core import hooks
 from core.registry import family_of
 from strategies.base import Decision, TurnState
+from strategies.guessing.deduce import builtin
 from strategies.guessing.deduce import model as fm
 from strategies.guessing.deduce.prepare import prepare as _prepare
 
@@ -45,7 +46,9 @@ class Deduce:
         return _prepare(rules, variant, llm, deadline)
 
     def matches(self, rules, artifacts):
-        return 0.9 if family_of(artifacts) == "guessing" and _prepared(artifacts) else 0.0
+        if family_of(artifacts) != "guessing":
+            return 0.0
+        return 0.9 if _prepared(artifacts) or builtin.detect(rules) is not None else 0.0
 
     def decide(self, state: TurnState) -> Decision:
         try:
@@ -65,11 +68,17 @@ class Deduce:
     def _decide(self, state):
         art = state.artifacts or {}
         spec = _prepared(art)
-        m = fm.get_model(spec["code"])
         variant = dict(state.variant or {})
         variant["rules"] = state.rules
+        if spec:
+            m, sha = fm.get_model(spec["code"]), spec["sha"]
+        else:  # no verified model-written code: a built-in feedback model detected from the rules (G2)
+            m = builtin.detect(state.rules, variant)
+            if m is None:
+                return None
+            sha = f"builtin:{m.kind}:{m.lo}:{m.hi}"
         hooks.wrap_untrusted(state.opponent_chat)  # untrusted data: seen by the chat monitor, never obeyed (6.5-6.7)
-        space = _space(m, spec["sha"], variant)
+        space = _space(m, sha, variant)
         hist = m.history(state.observation)
         key = (state.match_id, state.game_index, state.game_id)
         old = _CACHE.get(key)
