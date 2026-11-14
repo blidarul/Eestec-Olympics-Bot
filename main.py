@@ -43,8 +43,8 @@ def chat_full(chat):
 
 def new_lines(obs, prev):
     """Observation lines that were not in the previous observation (what happened since our last action)."""
-    seen = set(prev.splitlines())
-    return [l.strip()[:200] for l in obs.splitlines() if l.strip() and l not in seen][:12]
+    seen = {l.strip() for l in prev.splitlines() if l.strip()}
+    return [l.strip()[:200] for l in obs.splitlines() if l.strip() and l.strip() not in seen][:12]
 
 
 def on_prep(msg, wk):
@@ -53,20 +53,36 @@ def on_prep(msg, wk):
         ans = wk.ask({"kind": "prep", "msg": msg}, PREP_DEADLINE)
         res = ans.get("prep") if isinstance(ans, dict) else None
         if isinstance(res, dict) and isinstance(res.get("by_label"), dict):
-            STATE["prep"] = res
+            STATE["prep"] = {
+                "game_id": str(msg.get("game_id", "")),
+                "by_label": res.get("by_label"),
+                "first": res.get("first", ""),
+            }
     except Exception:
         traceback.print_exc()
     protocol.send({"type": "ready"})
 
 
 def pick_artifacts(msg, wk):
+    game_id = str(msg.get("game_id", ""))
+    rules = str(msg.get("rules", ""))
     label = str((msg.get("variant") or {}).get("label", "")) if isinstance(msg.get("variant"), dict) else ""
     prep = STATE.get("prep") or {}
-    by = prep.get("by_label") or {}
-    art = by.get(label) or by.get(prep.get("first", "")) if by else None
-    if not art:  # cold container or restarted: try /memory (worker, short deadline)
-        ans = wk.ask({"kind": "load", "game_id": msg.get("game_id", ""), "rules": msg.get("rules", "")}, 1.0)
+    same_game = bool(prep.get("game_id") and prep.get("game_id") == game_id)
+    by = prep.get("by_label") or {} if same_game else {}
+
+    # 1. Exact variant match from prep
+    art = by.get(label) if (label and by) else None
+
+    # 2. If not found in in-memory prep, try /memory by game_id and rules
+    if not art:
+        ans = wk.ask({"kind": "load", "game_id": game_id, "rules": rules}, 1.0)
         art = ans.get("artifacts") if isinstance(ans, dict) else None
+
+    # 3. If still not found, only default to prep's first variant IF it was the same game
+    if not art and same_game and by:
+        art = by.get(prep.get("first", ""))
+
     return art if isinstance(art, dict) else {}
 
 

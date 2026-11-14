@@ -175,6 +175,7 @@ def _verify_simulators(msg, by_label, base, t_start):
     game_id = msg.get("game_id", "unknown_game")
     manifest = _load_json(os.path.join(_engine_dir(base, game_id), "manifest.json"), {})
     calib = manifest.get("simulator_calibration") if isinstance(manifest, dict) else None
+    mv = (manifest.get("variants") or []) if isinstance(manifest, dict) else []
     for idx, v in enumerate(msg.get("variants") or []):
         if not isinstance(v, dict):
             continue
@@ -182,7 +183,8 @@ def _verify_simulators(msg, by_label, base, t_start):
         if art is None:
             continue
         path, why = _simulator_for(base, game_id, manifest, idx, v)
-        res = {"path": path, "verified": False, "has_chance": False, "reason": why, "calibration": calib}
+        v_calib = mv[idx].get("simulator_calibration") if idx < len(mv) and isinstance(mv[idx], dict) and mv[idx].get("simulator_calibration") else calib
+        res = {"path": path, "verified": False, "has_chance": False, "reason": why, "calibration": v_calib}
         try:
             if path:
                 left = PREP_DEADLINE - 60 - (time.monotonic() - t_start)

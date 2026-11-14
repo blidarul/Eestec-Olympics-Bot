@@ -249,3 +249,43 @@ def solve_wordle_duel(
         "ms": int((time.monotonic() - t0) * 1000),
     }
     return action, info
+
+
+def solve_wordle_from_obs(
+    obs_text: str,
+    my_actions: Iterable[str] = (),
+    length: int = 5,
+    prefix: str = "",
+    deadline: float | None = None,
+) -> tuple[str, dict[str, Any]]:
+    """Solve Wordle directly from observation and action history using entropy elimination."""
+    t0 = time.monotonic()
+    solver = WordleDuelSolver(length=length)
+
+    history: list[tuple[str, str]] = []
+    lines = obs_text.splitlines()
+    for act in my_actions:
+        w_act = str(act).strip()
+        if prefix and w_act.lower().startswith(prefix.lower()):
+            w_act = w_act[len(prefix):].strip()
+        if len(w_act) == length and w_act.isalpha():
+            for l in lines:
+                if w_act.lower() in l.lower():
+                    tail = l[l.lower().find(w_act.lower()) + len(w_act):]
+                    fb = parse_feedback_pattern(tail, length)
+                    if fb:
+                        history.append((w_act.lower(), fb))
+                        solver.update_history(w_act.lower(), fb)
+                        break
+
+    avoid = {str(a).lower() for a in my_actions}
+    avoid.update(g.lower() for g, _ in history)
+    best_w = solver.choose_best_guess(avoid=avoid, deadline=deadline)
+
+    action = f"{prefix}{best_w}".strip() if prefix else best_w
+    info = {
+        "tool": "wordle_duel_entropy",
+        "candidates_left": len(solver.candidates),
+        "ms": int((time.monotonic() - t0) * 1000),
+    }
+    return action, info

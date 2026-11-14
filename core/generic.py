@@ -48,6 +48,62 @@ class Generic:
         no_repeat = list(state.my_actions or []) if is_guess else []
         fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat)
         fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
+
+        # Specialized Solver Fast-Paths:
+        # 1. Connect Four Fast-Path: Bitboard alpha-beta solver
+        gr = art.get("grammar") if isinstance(art.get("grammar"), dict) else {}
+        fam = art.get("family") or art.get("prep_family")
+        rules_lower = state.rules.lower()
+        is_c4 = (
+            "connect" in rules_lower
+            or "drop" in rules_lower
+            or (gr.get("parameters") or {}).get("gravity")
+        ) and any(kw in rules_lower or kw in state.observation.lower() for kw in ("connect", "drop", "open columns"))
+        if is_c4:
+            try:
+                from optimization.connect_four import solve_connect_four_from_obs
+                c4_res = solve_connect_four_from_obs(
+                    state.observation,
+                    rows=int(gr.get("grid_rows") or 6),
+                    cols=int(gr.get("grid_cols") or 7),
+                    connect_k=int(gr.get("parameters", {}).get("connect_k") or 4),
+                    open_cols=[int(x) for x in re.findall(r"\d+", " ".join(legal))] if legal else None,
+                    deadline=state.deadline - 1.0,
+                )
+                if c4_res is not None:
+                    col, c4_info = c4_res
+                    cand_act = c4_info["action"]
+                    v_act = validate.validate(cand_act, legal, art, rejected, no_repeat)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", c4_info)
+            except Exception:
+                traceback.print_exc()
+
+        # 2. Wordle Duel Fast-Path: Entropy-based elimination solver
+        is_wordle = (
+            gr.get("kind") == "word"
+            or fam in ("word", "wordle")
+            or "wordle" in rules_lower
+            or "secret word" in rules_lower
+        )
+        if is_wordle and (not legal or len(legal) > 50):
+            try:
+                from optimization.wordle_duel import solve_wordle_from_obs
+                w_len = int(gr.get("word_length") or 5)
+                w_pre = str(gr.get("word_prefix") or "")
+                w_act, w_info = solve_wordle_from_obs(
+                    state.observation,
+                    my_actions=state.my_actions,
+                    length=w_len,
+                    prefix=w_pre,
+                    deadline=state.deadline - 1.0,
+                )
+                v_act = validate.validate(w_act, legal, art, rejected, no_repeat)
+                if v_act is not None:
+                    return Decision(v_act, fb_c, "strategy", w_info)
+            except Exception:
+                traceback.print_exc()
+
         llm = state.llm
         # Layer 2 assist: facts, certain moves (0 model calls), model-called tools
         t_assist = time.monotonic()

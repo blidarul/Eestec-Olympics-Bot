@@ -77,7 +77,11 @@ def unused_word(artifacts: dict | None, avoid) -> str | None:
         return None
     pre = str(g.get("word_prefix") or "")
     length = int(g.get("word_length") or 5)
-    case = "upper" if g.get("case") == "upper" else "lower"
+    case = g.get("case")
+    if not case:
+        examples = (artifacts or {}).get("action_format", {}).get("examples") or g.get("examples") or []
+        upper_ex = [e for e in _as_list(examples) if str(e).strip().isupper() and len(str(e).strip()) > 1]
+        case = "upper" if upper_ex else "lower"
     taken = {norm(a) for a in avoid}
 
     # 1. First try words from grammar / format examples matching length

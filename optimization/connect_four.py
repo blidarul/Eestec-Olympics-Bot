@@ -137,9 +137,6 @@ class PythonBitboardEngine:
         """Solve board given move list. Returns (best_move, score, depth, proven).
         best_move is 1-indexed if one_indexed=True, else 0-indexed.
         """
-        t_start = time.monotonic()
-        deadline = t_start + max(0.05, timeout)
-
         # Replay moves
         p0 = 0
         mask = 0
@@ -156,6 +153,20 @@ class PythonBitboardEngine:
 
         cur_p = p0 if turn == 0 else (mask ^ p0)
         opp_p = mask ^ cur_p
+        return self.solve_board(cur_p, opp_p, mask, one_indexed=one_indexed, max_depth=max_depth, timeout=timeout)
+
+    def solve_board(
+        self,
+        cur_p: int,
+        opp_p: int,
+        mask: int,
+        one_indexed: bool = True,
+        max_depth: int = 12,
+        timeout: float = 8.0,
+    ) -> tuple[int, int, int, bool]:
+        """Solve board given current bitboards. Returns (best_move, score, depth, proven)."""
+        t_start = time.monotonic()
+        deadline = t_start + max(0.05, timeout)
 
         open_c = [c for c in self.center_order if not (mask & self.top_masks[c])]
         if not open_c:
@@ -402,5 +413,89 @@ def solve_connect_four(
         "proven": proven,
         "ms": elapsed_ms,
         "engine": engine_name,
+    }
+    return best_col_1, info
+
+
+def parse_grid_bits(obs_text: str, rows: int, cols: int, my_symbol: str = "X") -> tuple[int, int, int] | None:
+    """Parse text grid into (my_pieces_bitmask, opp_pieces_bitmask, full_mask)."""
+    lines = [l.strip() for l in obs_text.splitlines() if l.strip()]
+    grid_lines = []
+    for l in lines:
+        tokens = l.split()
+        if len(tokens) == cols and all(t in (".", "X", "O", "x", "o") for t in tokens):
+            grid_lines.append(tokens)
+    if len(grid_lines) != rows:
+        return None
+    # grid_lines[0] is top row (rows - 1), grid_lines[-1] is bottom row (0)
+    grid_lines = list(reversed(grid_lines))
+    my_p, mask = 0, 0
+    step = rows + 1
+    my_sym = my_symbol.upper()
+    for r in range(rows):
+        for c in range(cols):
+            token = grid_lines[r][c].upper()
+            if token != ".":
+                bit = 1 << (c * step + r)
+                mask |= bit
+                if token == my_sym:
+                    my_p |= bit
+    opp_p = mask ^ my_p
+    return my_p, opp_p, mask
+
+
+def solve_connect_four_from_obs(
+    obs_text: str,
+    rows: int = 6,
+    cols: int = 7,
+    connect_k: int = 4,
+    open_cols: Sequence[int] | None = None,
+    deadline: float | None = None,
+    max_depth: int = 12,
+) -> tuple[int, dict[str, Any]] | None:
+    """Solve Connect Four directly from grid observation. Returns (best_col_1, info) or None."""
+    t0 = time.monotonic()
+    timeout = (deadline - t0) if deadline is not None else 8.0
+    if timeout <= 0.05:
+        timeout = 0.05
+
+    my_sym = "X"
+    if "you are o" in obs_text.lower():
+        my_sym = "O"
+    bits = parse_grid_bits(obs_text, rows, cols, my_sym)
+    if bits is None:
+        return None
+    cur_p, opp_p, mask = bits
+
+    if max_depth is None or max_depth == 12:
+        if rows * cols <= 30:
+            effective_depth = 16
+        elif rows * cols <= 45:
+            effective_depth = 10
+        else:
+            effective_depth = 6
+    else:
+        effective_depth = max_depth
+
+    py_engine = PythonBitboardEngine(rows=rows, cols=cols, connect_k=connect_k)
+    best_col_1, score, depth_reached, proven = py_engine.solve_board(
+        cur_p, opp_p, mask, one_indexed=True, max_depth=effective_depth, timeout=timeout
+    )
+
+    if open_cols:
+        norm_open = [c if c >= 1 else (c + 1) for c in open_cols]
+        if norm_open and best_col_1 not in norm_open:
+            best_col_1 = norm_open[0]
+
+    elapsed_ms = int((time.monotonic() - t0) * 1000)
+    info = {
+        "col": best_col_1,
+        "col_0": best_col_1 - 1,
+        "action": f"drop {best_col_1}",
+        "score": score,
+        "depth": depth_reached,
+        "proven": proven,
+        "ms": elapsed_ms,
+        "engine": "python_bitboard",
     }
     return best_col_1, info

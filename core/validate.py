@@ -95,7 +95,11 @@ def _word(action, artifacts):
         return None
     if length and len(cand) != int(length):
         return None
-    case = g.get("case", "lower")
+    case = g.get("case")
+    if not case:
+        examples = (artifacts or {}).get("action_format", {}).get("examples") or g.get("examples") or []
+        upper_ex = [e for e in examples if isinstance(e, str) and e.strip().isupper() and len(e.strip()) > 1]
+        case = "upper" if upper_ex else "lower"
     word_out = cand.upper() if case == "upper" else cand.lower()
     return f"{prefix}{word_out}" if prefix else word_out
 
