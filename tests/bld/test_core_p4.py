@@ -4,11 +4,20 @@ import os
 import subprocess
 import sys
 import threading
+import time
+from types import SimpleNamespace as NS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, ROOT)
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
-from tests.alex.games import GUESS_MODEL_CODE, guess_obs, guess_rules  # noqa: E402
+from chat import config  # noqa: E402
+from chat.pipeline import ready_line  # noqa: E402
+from core import fallback, hooks, memory, registry, validate  # noqa: E402
+from core.hooks import map_engine_variant  # noqa: E402
+from core.llm import LLM as LLMClient  # noqa: E402
+from strategies.base import TurnState  # noqa: E402
+from tests.alex.games import GUESS_MODEL_CODE, TTT_SIM, guess_obs, guess_rules, ttt_sample  # noqa: E402
 
 RULES = guess_rules()
 LLM = {"api_key": "k", "base_url": "http://x/v1", "model": "haiku"}
@@ -46,10 +55,11 @@ class Bot:
         self.dog.daemon = True
         self.dog.start()
 
-    def send(self, msg, answer=True):
+    def send(self, msg, answer=True) -> dict:
         self.p.stdin.write(json.dumps(msg) + "\n")
         self.p.stdin.flush()
-        return json.loads(self.p.stdout.readline()) if answer else None
+        line = self.p.stdout.readline()
+        return json.loads(line) if (answer and line) else {}
 
     def close(self):
         self.dog.cancel()
@@ -112,8 +122,6 @@ def test_deduce_through_prep_solves_without_repeats_and_logs_decisions(tmp_path)
 
 
 def test_ready_line_comes_from_chat_pipeline(tmp_path):
-    from chat import config
-    from chat.pipeline import ready_line
     saved = config.PERSONA
     try:
         config.PERSONA = "human"
@@ -140,9 +148,6 @@ def test_warning_resend_does_not_count_rejected_action_as_played(tmp_path):
 
 
 def test_prep_verifies_simulator_per_variant(tmp_path):
-    import time
-    from core import hooks
-    from tests.alex.games import TTT_SIM, ttt_sample
     msg = {"type": "prep", "game_id": "tic_tac_toe", "game_name": "T", "seconds": 600, "llm": None,
            "variants": [{"label": "3x3", "rules": "TIC-TAC-TOE 3x3 grid, columns A-C rows 1-3. Connect 3 marks in a row.",
                          "sample_turn": ttt_sample(list("XO.X....O"))},
@@ -164,8 +169,6 @@ def test_prep_verifies_simulator_per_variant(tmp_path):
 def test_search_strategy_end_to_end_from_cold_memory(tmp_path):
     """A cold container: no prep message, artifacts (with a verified simulator) come from /memory; the router picks
     think_ahead/search and the decision log says alpha-beta."""
-    from core import memory
-    from tests.alex.games import TTT_SIM, ttt_sample
     rules = "TIC-TAC-TOE - 3x3 classic. Cells A1..C3."
     sim = tmp_path / "simulator.py"
     sim.write_text(TTT_SIM, encoding="utf-8")
@@ -190,11 +193,8 @@ def test_search_strategy_end_to_end_from_cold_memory(tmp_path):
 
 
 def test_cut_off_reply_is_used_only_if_it_holds_a_complete_json_object():
-    from types import SimpleNamespace as NS
-    from core.llm import LLM
-
     def llm_with(content, finish):
-        l = LLM({"api_key": "k", "base_url": "http://x/v1", "model": "haiku"})
+        l = LLMClient({"api_key": "k", "base_url": "http://x/v1", "model": "haiku"})
         resp = NS(choices=[NS(message=NS(content=content), finish_reason=finish)], usage=None)
         l._client = NS(chat=NS(completions=NS(create=lambda **kw: resp)))
         return l
@@ -206,14 +206,12 @@ def test_cut_off_reply_is_used_only_if_it_holds_a_complete_json_object():
 
 
 def test_dice_push_routes_to_bluff():
-    from core import registry
     r = registry.route("PIG rules", {"family": "dice_push"})
     assert r.strategy.name == "bluff"
     assert r.family == "bluff"
 
 
 def test_turn_state_opponent_field(tmp_path):
-    from strategies.base import TurnState
     ts = TurnState("g1", "rules", {}, 0, "obs", ["A1"], 1, None, [], opponent="team-beta")
     assert ts.opponent == "team-beta"
 
@@ -231,7 +229,6 @@ def test_turn_state_opponent_field(tmp_path):
 
 
 def test_validate_prevents_repeats_across_numeric_formats():
-    from core import validate, fallback
     art = {"grammar": {"kind": "numeric_range", "numeric_min": 1, "numeric_max": 100, "numeric_prefix": "guess "}}
     # bare "54" in previous rejects "guess 54"
     assert validate.validate("guess 54", None, art, previous=["54"]) is None
@@ -247,7 +244,6 @@ def test_validate_prevents_repeats_across_numeric_formats():
 
 
 def test_hooks_exposes_tools_in_artifacts():
-    from core.hooks import map_engine_variant
     vd = {
         "label": "test_game",
         "classification": {"family": "deduction"},
@@ -258,6 +254,3 @@ def test_hooks_exposes_tools_in_artifacts():
     art = map_engine_variant(vd)
     assert art["tools"] == [{"type": "function", "function": {"name": "test_tool"}}]
     assert "test_tool(): a helper tool" in art["tools_prompt"]
-
-
-
