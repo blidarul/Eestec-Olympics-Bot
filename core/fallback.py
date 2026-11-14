@@ -116,7 +116,7 @@ def unused_word(artifacts: dict | None, avoid) -> str | None:
 
 
 def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, conservative: bool = False,
-                    avoid_also=()) -> str:
+                    avoid_also=(), observation: str = "", warning: dict | None = None) -> str:
     """Always-legal move. `avoid_also`: actions already sent in this game (guessing games must not repeat)."""
     art = artifacts or {}
     policy = art.get("fallback_policy") if isinstance(art.get("fallback_policy"), dict) else {}
@@ -135,6 +135,14 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
         if conservative:  # most deterministic rung: first acceptable legal move
             return ok[0] if ok else legal[0]
         return random.choice(ok) if ok else legal[0]
+    # 0. A template parsed from the rules (core/actionfmt.py): fill it with valid, unused parameters.
+    #    When a template exists the generic lists below (pass, guess N, grid names) are never used (8.1, 9.4).
+    from core import actionfmt
+    tfmt = actionfmt.from_artifacts(art, warning)
+    if tfmt:
+        filled = actionfmt.fill(tfmt, avoid, observation)
+        if filled:
+            return filled
     fmt = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
     # 1. Action format examples not in avoid
     for ex in _as_list(fmt.get("examples")):
@@ -170,5 +178,6 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
 
 def fallback_decision(msg: dict, artifacts: dict | None, previous=()) -> tuple[str, str]:
     warning = msg.get("warning") if isinstance(msg.get("warning"), dict) else {}
-    action = fallback_action(msg.get("legal_actions"), artifacts, warning.get("rejected"), avoid_also=previous)
+    action = fallback_action(msg.get("legal_actions"), artifacts, warning.get("rejected"), avoid_also=previous,
+                             observation=str(msg.get("observation", "")), warning=warning)
     return action, fallback_chat(artifacts)

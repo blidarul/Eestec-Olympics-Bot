@@ -46,7 +46,8 @@ class Generic:
         warned = isinstance(state.warning, dict) and bool(state.warning)
         is_guess = (not legal) or (art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle"))
         no_repeat = list(state.my_actions or []) if is_guess else []
-        fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat)
+        fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat,
+                                      observation=str(state.observation or ""), warning=state.warning if warned else None)
         fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
 
         # Specialized Solver Fast-Paths:
@@ -192,7 +193,9 @@ class Generic:
             parts.append("Legal moves: " + ", ".join(state.legal_actions[:50]))
         else:
             ex_str = ", ".join(fmt.get('examples') or [])
-            parts.append(f"Action format: follow the rules' format exactly. Examples: [{ex_str}]")
+            tpl = fmt.get("template")
+            tpl_txt = f" STRICT template: {tpl} (placeholders in <> are replaced by valid values, nothing else)." if tpl else ""
+            parts.append(f"Action format: follow the rules' format exactly.{tpl_txt} Examples: [{ex_str}]")
         if isinstance(state.warning, dict) and state.warning:
             rej = state.warning.get("rejected")
             reason = state.warning.get("reason", "illegal action")

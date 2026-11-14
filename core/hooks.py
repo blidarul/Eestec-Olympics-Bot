@@ -153,11 +153,30 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
     except BaseException:
         traceback.print_exc()
     for v in variants:
+        try:
+            attach_action_template(by_label[str(v.get("label", ""))], str(v.get("rules", "")))
+        except BaseException:
+            traceback.print_exc()
+    for v in variants:
         by_label[str(v.get("label", ""))]["rules_text_hash_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
         memory.save_json(os.path.join(memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base), "artifacts.json"),
                          by_label[str(v.get("label", ""))])
     first = str(variants[0].get("label", "")) if variants else ""
     return {"by_label": by_label, "first": first}
+
+
+def attach_action_template(art: dict, rules: str) -> None:
+    """artifacts["action_format"] gets template, regex and placeholders parsed from the ACTION FORMAT line (core/actionfmt.py).
+    The template regex replaces a guessed one; examples and kind are kept."""
+    from core import actionfmt
+    parsed = actionfmt.parse_template(rules)
+    if not parsed:
+        return
+    af = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
+    af = dict(af)
+    af.update({"template": parsed["template"], "regex": parsed["regex"], "placeholders": parsed["placeholders"],
+               "templates": parsed["templates"]})
+    art["action_format"] = af
 
 
 def _simulator_for(base, game_id, manifest, idx, variant):

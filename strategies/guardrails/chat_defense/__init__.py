@@ -65,7 +65,8 @@ class ChatDefenseStrategy:
         art = state.artifacts or {}
         legal = state.legal_actions
         rejected = (state.warning or {}).get("rejected") if isinstance(state.warning, dict) else None
-        fb = fallback.fallback_action(legal, art, rejected)  # legal, needs no model
+        fb = fallback.fallback_action(legal, art, rejected, observation=str(state.observation or ""),
+                                  warning=state.warning if isinstance(state.warning, dict) else None)  # legal, needs no model
         d, turn = _defense(state), _turn(state)
         prefs = (art.get("fallback_policy") or {}).get("prefer") or []
         llm = state.llm

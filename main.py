@@ -8,7 +8,7 @@ import sys
 import time
 import traceback
 
-from core import fallback, memory, protocol, validate, worker
+from core import actionfmt, fallback, memory, protocol, validate, worker
 
 PREP_DEADLINE = 540.0  # arena gives 600 s
 START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
@@ -103,6 +103,7 @@ def on_start(msg, wk):
         traceback.print_exc()
         STATE["artifacts"] = {}
     STATE["my_actions"], STATE["prev_obs"] = [], ""
+    ensure_action_template(STATE["artifacts"], msg)
     forbidden = STATE["artifacts"].get("forbidden_terms") or []
     chat = None
     try:  # chat.pipeline.ready_line in the worker (pure code, filtered, never empty); main keeps the 2 s start clock
@@ -116,6 +117,21 @@ def on_start(msg, wk):
         chat = fallback.fallback_chat(STATE["artifacts"]) if STATE["artifacts"].get("chat_bank") else START_CHAT
         chat = wk_filter(chat, forbidden)
     protocol.send({"type": "ready", "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
+
+
+def ensure_action_template(art, msg):
+    """Prep normally stores the template; if it is missing (prep failed, artifacts lost) parse it from the rules now."""
+    try:
+        af = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
+        if not actionfmt.has_template(af):
+            parsed = actionfmt.parse_template(str(msg.get("rules", "")))
+            if parsed:
+                af = dict(af)
+                af.update({"template": parsed["template"], "regex": parsed["regex"],
+                           "placeholders": parsed["placeholders"], "templates": parsed["templates"]})
+                art["action_format"] = af
+    except Exception:
+        traceback.print_exc()
 
 
 def wk_filter(text, forbidden):
@@ -147,6 +163,8 @@ def on_turn(msg, wk):
     previous = list(mine) if guessing else []  # guessing / word games: never send the same action twice (safety net)
     obs = str(msg.get("observation", ""))
     # fallback FIRST, from the message alone
+    use_fmt = not (isinstance(legal, list) and legal)  # legal_actions null/empty: the rules' template is the only guard
+    fmt = actionfmt.from_artifacts(art, warning) if use_fmt else None
     fb_action, fb_chat = fallback.fallback_decision(msg, art, previous)
     action, chat = fb_action, fb_chat
     try:
@@ -172,6 +190,10 @@ def on_turn(msg, wk):
             a = a if isinstance(a, str) else ""
             rejected = warning.get("rejected") if warning else None
             v = validate.validate(a, legal, art, rejected, previous)
+            if fmt and v is not None and not actionfmt.matches(fmt, v):
+                v = actionfmt.repair(fmt, v)  # near miss (quotes, trailing period) or None -> fallback
+            if fmt and v is None and a and actionfmt.matches(fmt, a) and not (rejected and fallback.norm(a) == fallback.norm(rejected)):
+                v = a if a not in previous and fallback.norm(a) not in {fallback.norm(p) for p in previous} else None
             model_error = ans.get("model_error")
             meta = {k: ans.get(k) for k in ("family", "strategy", "tool", "reason", "candidates_left",
                                              "facts_used", "tools_called", "assist_source", "assist_ms")}
@@ -193,6 +215,15 @@ def on_turn(msg, wk):
             source = "fallback"
             meta["tool"] = "fallback"
             meta["reason"] = f"override rejected action '{rej}' with emergency fallback"
+    if fmt and not actionfmt.matches(fmt, action):  # last gate: every outgoing action (model, tool, fallback) fits the template
+        rej = warning.get("rejected") if warning else None
+        fixed = actionfmt.repair(fmt, action) or fallback.fallback_action(
+            legal, art, rejected=rej, conservative=bool(warning), avoid_also=list(mine) + ([rej] if rej else []),
+            observation=obs, warning=warning)
+        protocol.log(f"template gate: {action!r} -> {fixed!r}")
+        action, source = fixed, "fallback"
+        meta["tool"] = "fallback"
+        meta["reason"] = "outgoing action did not fit the action template"
     chat = wk_filter(protocol.clean_chat(chat), art.get("forbidden_terms") or [])
     protocol.send({"type": "action", "action": action, "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
     mine.append(action)
