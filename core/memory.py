@@ -1,4 +1,4 @@
-"""Safe /memory access (5.14). Minimal P2 version: P3 extends (log.jsonl etc.)."""
+"""Safe /memory access (5.14): atomic JSON writes, tolerant reads, append-only log.jsonl."""
 import hashlib
 import json
 import os
@@ -32,3 +32,15 @@ def load_json(path, default=None):
             return json.load(f)
     except Exception:
         return default
+
+
+def append_log(directory, record) -> bool:
+    """Append one JSON line to <directory>/log.jsonl (single small write; safe with several writers)."""
+    try:
+        os.makedirs(directory, exist_ok=True)
+        line = json.dumps(record, default=str) + chr(10)
+        with open(os.path.join(directory, "log.jsonl"), "a", encoding="utf-8") as f:
+            f.write(line)
+        return True
+    except Exception:
+        return False

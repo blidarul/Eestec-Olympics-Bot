@@ -19,7 +19,7 @@ def _worker_main(conn):
         sys.stdout = sys.stderr
     except Exception:
         pass
-    strategies, llm = None, None
+    llm, last_match = None, None
     try:
         from strategies import default_strategy
         from strategies.base import TurnState
@@ -45,7 +45,7 @@ def _worker_main(conn):
                     conn.send({"artifacts": hooks.load_artifacts(req.get("game_id", ""), req.get("rules", ""))})
                 continue
             info = req.get("llm")
-            if llm is None or (isinstance(info, dict) and info != llm.info):
+            if llm is None or (isinstance(info, dict) and info != llm.raw):
                 try:
                     from core.llm import LLM
                     new = LLM(info)
@@ -55,6 +55,9 @@ def _worker_main(conn):
                 except Exception:
                     traceback.print_exc()
             if llm is not None:
+                mid = req.get("match_id")
+                if mid != last_match:  # budget is per match (9.3)
+                    last_match, llm.spend = mid, 0.0
                 llm.tick_turn()
             fields = dict(req["state"])
             fields["deadline"] = time.monotonic() + float(req.get("budget", 8.0))
