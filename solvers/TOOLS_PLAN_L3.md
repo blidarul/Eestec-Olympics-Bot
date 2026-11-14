@@ -232,5 +232,6 @@ only `solvers/` and `tests/alex/` changed; HANDOFF_bld.md matches what is on mai
   Not done: no real prep-written simulator tried (only test sims; faithful only for grid_board templates); MCTS fact is never certain; mdp_solve needs an explicit table (no prep-built MDP yet); sim_search path arg is trusted (harness-only, not model-callable).
 - M7: DONE. solvers/deals.py (auction_bid, split_offer incl. ultimatum, reservation_estimate; model-callable; 52 tools registered); detector _deals in precompute (facts only), hints in select; tests/alex/test_deals.py; 328 tests pass.
   Not done: auction formulas assume uniform independent values; acceptance estimate is a fixed logistic (no learning); nothing is parsed from chat (offers only via artifacts), so text-only negotiation games get no reservation fact.
-- M8:
+- M8: DONE. solvers/classic/battleship.py, kuhn.py, pegs.py (+ tools.py entries: 55 tools; pegs skipped in precompute when _deduce fired); tests/alex/test_classic_m8.py; 338 tests pass.
+  Not done: battleship needs legal actions as cells and shot records as text (`B7 hit`, `r,c miss`), no grid-picture parsing, sunk ships removed from the list by a guess; kuhn only the 3-card one-bet structure (no Leduc), alpha fixed at 1/3; pegs duplicates `_deduce` (fallback only), positional/Wordle not covered.
 - H:

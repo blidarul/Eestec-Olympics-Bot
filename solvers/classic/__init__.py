@@ -65,4 +65,4 @@ def run(observation, legal, rules, variant, deadline, skip=()):
     return out
 
 
-from solvers.classic import kinrow, subtraction, dice_race, range_guess  # noqa: E402,F401
+from solvers.classic import kinrow, subtraction, dice_race, range_guess, battleship, kuhn, pegs  # noqa: E402,F401

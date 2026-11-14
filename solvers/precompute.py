@@ -535,6 +535,8 @@ def _classic(observation, legal, artifacts, rules, deadline, facts):
         skip.append("subtraction")
     if "binary_search_next" in facts.used:
         skip.append("range_guess")
+    if "deduce_next" in facts.used:
+        skip.append("pegs")
     for r in classic.run(observation, legal, rules, artifacts, deadline, skip=skip):
         name = r["solver"]
         facts.used.append(name + "_solve")

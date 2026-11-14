@@ -109,6 +109,9 @@ solver counts only when `detect(rules)` finds parameters and `verify` accepts th
 | `subtraction_solve` | think_ahead | heaps with allowed-removal set (`1, 3 or 4`, `1 to 3`, `at most N`, any), normal or misere | Grundy xor; misere by exact memo search; skipped when `nim_analysis` already answered |
 | `dice_race_solve` | any | roll/hold race to a target | exact table `solvers/data/dice_race_t100_d6_b1.json` (made by `python -m solvers.classic.dice_table 100 6 1`, 20 s); other parameters: hold at 20 or the target, keep rolling when the opponent is close (facts only) |
 | `range_guess_solve` | guessing | numeric higher/lower guessing | binary search wrapper; skipped when `_guessing` already fired |
+| `battleship_solve` | think_ahead, guessing | hidden-ship grid shooting (ship lengths from the rules, cells from the legal actions) | probability density over ship placements; hits not yet sunk force target mode; shots read from `B7 hit/miss/sunk` or `r,c` records; facts only, never certain |
+| `kuhn_solve` | bluff | 3-card, one-bet poker (ante, check/bet, call/fold; no raise or community card) | equilibrium table (alpha 1/3), mixed actions sampled with a seed from the observation; certain only for dominant actions (call with the top card, fold with the bottom one, bet after a check with the top card) |
+| `pegs_solve` | guessing | exact/partial code breaking | M1 `deduce` entropy guess; skipped when `_deduce` already fired; certain with one candidate left |
 
 
 ### Opponent reading (layer 3, M3; `solvers/opponent.py`)

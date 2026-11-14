@@ -6,12 +6,16 @@ from solvers.catalog import ToolError, ToolSpec
 from solvers import classic
 
 _FAMILY = {"kinrow": ("think_ahead",), "subtraction": ("think_ahead",), "dice_race": ("any",),
-           "range_guess": ("guessing",)}
+           "range_guess": ("guessing",), "battleship": ("think_ahead", "guessing"), "kuhn": ("bluff",),
+           "pegs": ("guessing",)}
 _SUMMARY = {
     "kinrow": "k-in-a-row on any board size, optional gravity: exact search when few cells are empty, else win/block/double-threat rules.",
     "subtraction": "Heaps with an allowed-removal set, normal or misere: Grundy values and the winning move.",
     "dice_race": "Roll/hold race to a target: exact table for the common target, rule of thumb otherwise.",
     "range_guess": "Plain numeric guessing with higher/lower feedback: binary search.",
+    "battleship": "Hidden-ship grid shooting: probability density over remaining ship placements, hunt then target.",
+    "kuhn": "3-card one-bet poker: equilibrium action table (mixed actions sampled with a seed, dominant ones proven).",
+    "pegs": "Code-breaking with exact/partial feedback: entropy guess over the consistent candidates.",
 }
 _PARAMS = {"type": "object",
            "properties": {"rules": {"type": "string", "maxLength": 20000},
@@ -36,6 +40,6 @@ def _make(name):
     return fn
 
 
-for _n in ("kinrow", "subtraction", "dice_race", "range_guess"):
+for _n in ("kinrow", "subtraction", "dice_race", "range_guess", "battleship", "kuhn", "pegs"):
     catalog.register(ToolSpec(name=_n + "_solve", summary=_SUMMARY[_n], params=_PARAMS, fn=_make(_n),
                               families=_FAMILY[_n], model_callable=False, max_ms=2000))
