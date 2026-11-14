@@ -211,6 +211,10 @@ model-callable tool; no tool ever raises out of `call()`; no file outside `solve
   abstain_threshold (model_callable) and monte_carlo_estimate (harness-only: sampler(rng) callable, not exported by openai_tools). Exact Fractions + decimals; p accepts 0.25, "0.25" or "1/4".
   Caps: n/deck <= 2000, binomial n <= 500; huge integers returned as strings. abstain_threshold: penalty_wrong is a positive loss size; `confidence` optional gives the decision.
   Tests: tests/alex/test_probability.py (21, checked against enumeration and closed forms); whole tests/alex passes. Inbox untouched: #34 #32 #30 #25 (one phase only).
-- P4:
+- P4: DONE 2026-11-14. solvers/basic/gametheory.py, 6 tools: matrix_nash (exact Fraction simplex + dominance removal, self-checks optimality), sample_action, best_response,
+  nim_analysis (Grundy, normal/misere, "any" or removal set; misere+set solved by search, total <= 60) are model-callable; minimax_small, csp_backtrack are harness-only (callables, not exported).
+  Matrix <= 30x30, heaps <= 12 of <= 1000. Results go through JSON, so tuple moves come back as lists. csp_backtrack also takes all_different groups; both harness tools stop at deadline with complete=false.
+  Tests: tests/alex/test_gametheory.py (21; nash checked exactly on random matrices, nim vs brute force). tests/alex: 168 pass, 1 FAIL not from P4: test_deduce.py::test_model_rejected[...-pass] fails without my files too (area of #32).
+  Inbox untouched: #34 #30 #25.
 - P5:
 - P6:

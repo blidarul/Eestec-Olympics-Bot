@@ -10,6 +10,7 @@ _TOOL_MODULES = (
     "solvers.basic.numbers",
     "solvers.basic.graphs",
     "solvers.basic.probability",
+    "solvers.basic.gametheory",
 )
 
 for _name in _TOOL_MODULES:
