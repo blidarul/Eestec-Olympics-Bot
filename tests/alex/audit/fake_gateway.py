@@ -22,6 +22,8 @@ class GW:
                        "chars": sum(len(json.dumps(m.get("content"))) for m in msgs), "messages": msgs}
                 with open(gw.log_path, "a", encoding="utf8") as f: f.write(json.dumps(rec) + "\n")
                 if gw.delay: time.sleep(gw.delay)
+                if gw.mode.startswith("status:"):
+                    self.send_response(int(gw.mode[7:])); self.end_headers(); self.wfile.write(b'{"error":"budget"}'); return
                 if gw.mode == "500":
                     self.send_response(500); self.end_headers(); self.wfile.write(b'{"error":"boom"}'); return
                 content = gw.reply(req) if callable(gw.reply) else {"empty": "", "garbage": "}{ not json \x00 ???"}.get(gw.mode, gw.reply)

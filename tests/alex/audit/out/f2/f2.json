@@ -1,0 +1,6371 @@
+{
+ "scen": [
+  {
+   "tag": "scen_ttt_win_now",
+   "game": "tic_tac_toe",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.72,
+     "action": "C1",
+     "chat": "Hm.",
+     "gw": 1,
+     "strategy": "search",
+     "source": "tool",
+     "model_error": null,
+     "tool": "alpha-beta"
+    }
+   ],
+   "actions": [
+    "C1"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "prep": {
+    "ok": true,
+    "s": 0.7
+   },
+   "start_s": 0.08,
+   "expected_ok": true,
+   "answer": "C1",
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 1,
+   "opp_marker_in_requests": "1/1",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "en_ttt"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ],
+   "scenario": "ttt_win_now"
+  },
+  {
+   "tag": "scen_ttt_block_now",
+   "game": "tic_tac_toe",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.72,
+     "action": "C1",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 1,
+     "strategy": "search",
+     "source": "tool",
+     "model_error": null,
+     "tool": "alpha-beta"
+    }
+   ],
+   "actions": [
+    "C1"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "prep": {
+    "ok": true,
+    "s": 0.7
+   },
+   "start_s": 0.06,
+   "expected_ok": true,
+   "answer": "C1",
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 1,
+   "opp_marker_in_requests": "1/1",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "en_ttt"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ],
+   "scenario": "ttt_block_now"
+  },
+  {
+   "tag": "scen_nim_win_move",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.64,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    }
+   ],
+   "actions": [
+    "take 3 5"
+   ],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "prep": {
+    "ok": true,
+    "s": 0.5
+   },
+   "start_s": 0.06,
+   "expected_ok": false,
+   "answer": "take 3 5",
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 1,
+   "opp_marker_in_requests": "1/1",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "en_nim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ],
+   "scenario": "nim_win_move"
+  },
+  {
+   "tag": "scen_nim_win_move_v2",
+   "game": "audit_nim",
+   "variant": 1,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.7,
+     "action": "take 4 7",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    }
+   ],
+   "actions": [
+    "take 4 7"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "prep": {
+    "ok": true,
+    "s": 0.4
+   },
+   "start_s": 0.08,
+   "expected_ok": false,
+   "answer": "take 4 7",
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 1,
+   "opp_marker_in_requests": "1/1",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "en_nim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ],
+   "scenario": "nim_win_move_v2"
+  },
+  {
+   "tag": "scen_claim_strict_null_legal",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.76,
+     "action": "CLAIM R12-C12",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "prep": {
+    "ok": true,
+    "s": 0.5
+   },
+   "start_s": 0.08,
+   "expected_ok": true,
+   "answer": "CLAIM R12-C12",
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "en_cla"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ],
+   "scenario": "claim_strict_null_legal"
+  },
+  {
+   "tag": "scen_claim_strict_null_legal_v2",
+   "game": "audit_claim",
+   "variant": 1,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.77,
+     "action": "CLAIM R9-C9",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "claim r9-c9"
+   ],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "prep": {
+    "ok": true,
+    "s": 0.6
+   },
+   "start_s": 0.08,
+   "expected_ok": true,
+   "answer": "CLAIM R9-C9",
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "en_cla"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ],
+   "scenario": "claim_strict_null_legal_v2"
+  },
+  {
+   "tag": "scen_qa_truth_not_in_doc",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.56,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "strategy": "chat_defense",
+     "source": "model",
+     "model_error": null,
+     "tool": "model"
+    }
+   ],
+   "actions": [
+    "answer 40"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "prep": {
+    "ok": true,
+    "s": 0.3
+   },
+   "start_s": 0.12,
+   "expected_ok": false,
+   "answer": "guess 50",
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 1,
+   "opp_marker_in_requests": "1/1",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "en_qa_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ],
+   "scenario": "qa_truth_not_in_doc"
+  }
+ ],
+ "inject": [
+  {
+   "tag": "inj_pig_fixed",
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.7,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "Sure.",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 5,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 6,
+     "lat": 0.01,
+     "action": "hold",
+     "chat": "If you say so.",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    }
+   ],
+   "actions": [
+    "hold",
+    "hold",
+    "hold",
+    "hold",
+    "hold",
+    "hold",
+    "hold"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [0, 63], 'reason': 'seat 1 reached 63 (target 50)'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 7,
+   "opp_marker_in_requests": "7/7",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_pig_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "inj_gue_fixed",
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.67,
+     "action": "guess 50",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "guess 99",
+     "chat": "Right.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.03,
+     "action": "guess 81",
+     "chat": "Mm-hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.03,
+     "action": "guess 51",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "guess 57",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.03,
+     "action": "guess 11",
+     "chat": "Hello. Show me what you've got.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.03,
+     "action": "guess 3",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.03,
+     "action": "guess 4",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.01,
+     "action": "guess 42",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.02,
+     "action": "guess 73",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.03,
+     "action": "guess 34",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "guess 50",
+    "guess 99",
+    "guess 81",
+    "guess 51",
+    "guess 57",
+    "guess 11",
+    "guess 3",
+    "guess 4",
+    "guess 42",
+    "guess 73",
+    "guess 34"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "prep": {
+    "ok": true,
+    "s": 1.1
+   },
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 25,
+   "opp_marker_in_requests": "21/25",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_gue_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 150"
+   ],
+   "max_tokens": [
+    250,
+    400,
+    5000
+   ]
+  },
+  {
+   "tag": "inj_pig_500",
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "500",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.69,
+     "action": "hold",
+     "chat": "Hm.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "Sure.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Interesting.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.0,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 12,
+     "lat": 0.0,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "hold",
+    "hold",
+    "roll",
+    "hold",
+    "hold",
+    "roll",
+    "roll",
+    "hold",
+    "roll",
+    "hold",
+    "roll",
+    "hold"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [20, 67], 'reason': 'seat 1 reached 67 (target 50)'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [
+    "[toolloop] round 1 error: InternalServerError: Error code: 500",
+    "[toolloop] round 2 error: InternalServerError: Error code: 500",
+    "llm error: InternalServerError Error code: 500",
+    "[toolloop] round 1 error: InternalServerError: Error code: 500"
+   ],
+   "gw_requests": 24,
+   "opp_marker_in_requests": "24/24",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_pig_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "inj_gue_500",
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "500",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.72,
+     "action": "guess 50",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.05,
+     "action": "guess 33",
+     "chat": "Luck? Bring more than that.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.01,
+     "action": "guess 45",
+     "chat": "Interesting.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "guess 19",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.05,
+     "action": "guess 46",
+     "chat": "Alright.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.05,
+     "action": "guess 74",
+     "chat": "Hello. Show me what you've got.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.03,
+     "action": "guess 58",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.02,
+     "action": "guess 38",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.06,
+     "action": "guess 64",
+     "chat": "We'll see.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.05,
+     "action": "guess 28",
+     "chat": "Alright.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "InternalServerError: Error code: 500",
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "guess 88",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "guess 50",
+    "guess 33",
+    "guess 45",
+    "guess 19",
+    "guess 46",
+    "guess 74",
+    "guess 58",
+    "guess 38",
+    "guess 64",
+    "guess 28",
+    "guess 88"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "prep": {
+    "ok": true,
+    "s": 1.0
+   },
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [
+    "[toolloop] round 1 error: InternalServerError: Error code: 500",
+    "[toolloop] round 2 error: InternalServerError: Error code: 500",
+    "llm error: InternalServerError Error code: 500",
+    "[toolloop] round 1 error: InternalServerError: Error code: 500"
+   ],
+   "gw_requests": 26,
+   "opp_marker_in_requests": "24/26",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_gue_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 150"
+   ],
+   "max_tokens": [
+    250,
+    400,
+    5000
+   ]
+  },
+  {
+   "tag": "inj_pig_empty",
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "empty",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.77,
+     "action": "roll",
+     "chat": "Hm.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Sure.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "hold",
+     "chat": "Interesting.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.01,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 12,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 13,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 14,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "roll",
+    "roll",
+    "hold",
+    "roll",
+    "roll",
+    "hold",
+    "hold",
+    "roll",
+    "roll",
+    "hold",
+    "hold",
+    "hold",
+    "roll",
+    "roll"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.08,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [
+    "[toolloop] round 1 error: TypeError: 'NoneType' object is not callable",
+    "[toolloop] round 2 error: TypeError: 'NoneType' object is not callable",
+    "[toolloop] round 1 error: TypeError: 'NoneType' object is not callable",
+    "[toolloop] round 2 error: TypeError: 'NoneType' object is not callable"
+   ],
+   "gw_requests": 24,
+   "opp_marker_in_requests": "24/24",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_pig_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "inj_gue_empty",
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "empty",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.72,
+     "action": "guess 50",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.05,
+     "action": "guess 14",
+     "chat": "Luck? Bring more than that.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "guess 11",
+     "chat": "Interesting.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "guess 88",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "guess 23",
+     "chat": "Skip the pleasantries. Play.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.05,
+     "action": "guess 68",
+     "chat": "Hello. Show me what you've got.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "guess 79",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.02,
+     "action": "guess 7",
+     "chat": "Luck won't save you.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.03,
+     "action": "guess 90",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "guess 26",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "empty_or_cut_off",
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "guess 43",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "guess 50",
+    "guess 14",
+    "guess 11",
+    "guess 88",
+    "guess 23",
+    "guess 68",
+    "guess 79",
+    "guess 7",
+    "guess 90",
+    "guess 26",
+    "guess 43"
+   ],
+   "chats": [],
+   "ready_chat": "Round one. Go.",
+   "prep": {
+    "ok": true,
+    "s": 1.2
+   },
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [
+    "[toolloop] round 1 error: TypeError: 'NoneType' object is not callable",
+    "[toolloop] round 2 error: TypeError: 'NoneType' object is not callable",
+    "[toolloop] round 1 error: TypeError: 'NoneType' object is not callable",
+    "[toolloop] round 2 error: TypeError: 'NoneType' object is not callable"
+   ],
+   "gw_requests": 20,
+   "opp_marker_in_requests": "18/20",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_gue_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 150"
+   ],
+   "max_tokens": [
+    250,
+    400,
+    5000
+   ]
+  },
+  {
+   "tag": "inj_pig_garbage",
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "garbage",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.72,
+     "action": "hold",
+     "chat": "Hm.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.01,
+     "action": "roll",
+     "chat": "Sure.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Interesting.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 12,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 13,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 14,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "hold",
+    "roll",
+    "roll",
+    "roll",
+    "roll",
+    "hold",
+    "roll",
+    "roll",
+    "roll",
+    "hold",
+    "hold",
+    "roll",
+    "roll",
+    "hold"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.09,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 42,
+   "opp_marker_in_requests": "42/42",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_pig_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "inj_gue_garbage",
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "garbage",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.69,
+     "action": "guess 50",
+     "chat": "Hm.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "guess 48",
+     "chat": "Luck? Bring more than that.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.03,
+     "action": "guess 75",
+     "chat": "Mm-hm.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "guess 11",
+     "chat": "Skip the pleasantries. Play.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "guess 9",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.03,
+     "action": "guess 14",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "guess 45",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.03,
+     "action": "guess 33",
+     "chat": "Luck won't save you.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.03,
+     "action": "guess 67",
+     "chat": "Hello. Show me what you've got.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "guess 10",
+     "chat": "Run out of ideas yet?",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.03,
+     "action": "guess 92",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "guess 50",
+    "guess 48",
+    "guess 75",
+    "guess 11",
+    "guess 9",
+    "guess 14",
+    "guess 45",
+    "guess 33",
+    "guess 67",
+    "guess 10",
+    "guess 92"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "prep": {
+    "ok": true,
+    "s": 1.2
+   },
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 37,
+   "opp_marker_in_requests": "33/37",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_gue_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 150"
+   ],
+   "max_tokens": [
+    250,
+    400,
+    5000
+   ]
+  },
+  {
+   "tag": "inj_pig_prose",
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "prose",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.66,
+     "action": "roll",
+     "chat": "Hm.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "Sure.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Interesting.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 12,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "roll",
+    "hold",
+    "roll",
+    "roll",
+    "roll",
+    "roll",
+    "hold",
+    "roll",
+    "roll",
+    "hold",
+    "hold",
+    "hold"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [22, 67], 'reason': 'seat 1 reached 67 (target 50)'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 36,
+   "opp_marker_in_requests": "36/36",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_pig_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "inj_gue_prose",
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "prose",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.62,
+     "action": "guess 50",
+     "chat": "Hm.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.03,
+     "action": "guess 96",
+     "chat": "Luck? Bring more than that.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.03,
+     "action": "guess 56",
+     "chat": "Interesting.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.03,
+     "action": "guess 83",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "guess 6",
+     "chat": "Skip the pleasantries. Play.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.03,
+     "action": "guess 12",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "guess 40",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.03,
+     "action": "guess 44",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.03,
+     "action": "guess 43",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "guess 75",
+     "chat": "We'll see.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.01,
+     "action": "guess 88",
+     "chat": "Alright.",
+     "gw": 3,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "guess 50",
+    "guess 96",
+    "guess 56",
+    "guess 83",
+    "guess 6",
+    "guess 12",
+    "guess 40",
+    "guess 44",
+    "guess 43",
+    "guess 75",
+    "guess 88"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "prep": {
+    "ok": true,
+    "s": 1.1
+   },
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 37,
+   "opp_marker_in_requests": "33/37",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_gue_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 150"
+   ],
+   "max_tokens": [
+    250,
+    400,
+    5000
+   ]
+  },
+  {
+   "tag": "inj_pig_illegal",
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "illegal",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.59,
+     "action": "roll",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Sure.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Interesting.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 12,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 13,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 14,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "roll",
+    "roll",
+    "roll",
+    "hold",
+    "hold",
+    "roll",
+    "roll",
+    "roll",
+    "roll",
+    "hold",
+    "hold",
+    "roll",
+    "roll",
+    "roll"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.06,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 28,
+   "opp_marker_in_requests": "28/28",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_pig_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "inj_gue_illegal",
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "illegal",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.59,
+     "action": "guess 50",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "guess 61",
+     "chat": "Sure.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "guess 90",
+     "chat": "Mm-hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "guess 9",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.02,
+     "action": "guess 81",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.02,
+     "action": "guess 11",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.03,
+     "action": "guess 71",
+     "chat": "Skip the pleasantries. Play.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.03,
+     "action": "guess 44",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.03,
+     "action": "guess 48",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "guess 25",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.01,
+     "action": "guess 84",
+     "chat": "Hello. Show me what you've got.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "guess 50",
+    "guess 61",
+    "guess 90",
+    "guess 9",
+    "guess 81",
+    "guess 11",
+    "guess 71",
+    "guess 44",
+    "guess 48",
+    "guess 25",
+    "guess 84"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "prep": {
+    "ok": true,
+    "s": 1.0
+   },
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 26,
+   "opp_marker_in_requests": "22/26",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_gue_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 150"
+   ],
+   "max_tokens": [
+    250,
+    400,
+    5000
+   ]
+  },
+  {
+   "tag": "inj_pig_status429",
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "status:429",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.67,
+     "action": "hold",
+     "chat": "Hm.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.03,
+     "action": "roll",
+     "chat": "Sure.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.01,
+     "action": "hold",
+     "chat": "Interesting.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.03,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.0,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.0,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.05,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.05,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 12,
+     "lat": 0.02,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "hold",
+    "roll",
+    "hold",
+    "hold",
+    "hold",
+    "hold",
+    "roll",
+    "roll",
+    "roll",
+    "roll",
+    "hold",
+    "hold"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [15, 72], 'reason': 'seat 1 reached 72 (target 50)'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [
+    "[toolloop] round 1 error: RateLimitError: Error code: 429",
+    "[toolloop] round 2 error: RateLimitError: Error code: 429",
+    "llm error: RateLimitError Error code: 429",
+    "[toolloop] round 1 error: RateLimitError: Error code: 429"
+   ],
+   "gw_requests": 24,
+   "opp_marker_in_requests": "24/24",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_pig_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "inj_gue_status429",
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "status:429",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.66,
+     "action": "guess 50",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.03,
+     "action": "guess 18",
+     "chat": "Sure.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "guess 79",
+     "chat": "Mm-hm.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "guess 93",
+     "chat": "Luck? Bring more than that.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 0.02,
+     "action": "guess 53",
+     "chat": "We'll see.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 6,
+     "lat": 0.03,
+     "action": "guess 57",
+     "chat": "Hello. Show me what you've got.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 7,
+     "lat": 0.0,
+     "action": "guess 34",
+     "chat": "Skip the pleasantries. Play.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 8,
+     "lat": 0.0,
+     "action": "guess 19",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 9,
+     "lat": 0.03,
+     "action": "guess 74",
+     "chat": "Luck won't save you.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 10,
+     "lat": 0.03,
+     "action": "guess 83",
+     "chat": "We'll see.",
+     "gw": 4,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "RateLimitError: Error code: 429",
+     "tool": "fallback"
+    },
+    {
+     "turn": 11,
+     "lat": 0.01,
+     "action": "guess 95",
+     "chat": "Alright.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "guess 50",
+    "guess 18",
+    "guess 79",
+    "guess 93",
+    "guess 53",
+    "guess 57",
+    "guess 34",
+    "guess 19",
+    "guess 74",
+    "guess 83",
+    "guess 95"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "prep": {
+    "ok": true,
+    "s": 1.0
+   },
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 11\"",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [
+    "[toolloop] round 1 error: RateLimitError: Error code: 429",
+    "[toolloop] round 2 error: RateLimitError: Error code: 429",
+    "llm error: RateLimitError Error code: 429",
+    "[toolloop] round 1 error: RateLimitError: Error code: 429"
+   ],
+   "gw_requests": 26,
+   "opp_marker_in_requests": "24/26",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_gue_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 150"
+   ],
+   "max_tokens": [
+    250,
+    400,
+    5000
+   ]
+  },
+  {
+   "tag": "inj_pig_fixed_d30",
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 10.03,
+     "action": "roll",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "APITimeoutError: Request timed out.",
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 9.98,
+     "action": "roll",
+     "chat": "Sure.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "APITimeoutError: Request timed out.",
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "roll",
+     "chat": "Interesting.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 9.98,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "APITimeoutError: Request timed out.",
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "roll",
+    "roll",
+    "roll",
+    "roll",
+    "hold"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.08,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [
+    "llm error: APITimeoutError Request timed out.",
+    "llm error: APITimeoutError Request timed out.",
+    "[toolloop] round 1 error: TypeError: 'NoneType' object is not callable",
+    "[toolloop] round 2 error: TypeError: 'NoneType' object is not callable"
+   ],
+   "gw_requests": 6,
+   "opp_marker_in_requests": "6/6",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_pig_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "inj_gue_fixed_d30",
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "seed": 3,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 10.03,
+     "action": "guess 50",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "APITimeoutError: Request timed out.",
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 9.98,
+     "action": "guess 47",
+     "chat": "Luck? Bring more than that.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "APITimeoutError: Request timed out.",
+     "tool": "fallback"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "guess 44",
+     "chat": "Interesting.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "guess 97",
+     "chat": "Skip the pleasantries. Play.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "skipped",
+     "tool": "fallback"
+    },
+    {
+     "turn": 5,
+     "lat": 9.98,
+     "action": "guess 4",
+     "chat": "We'll see.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": "APITimeoutError: Request timed out.",
+     "tool": "fallback"
+    }
+   ],
+   "actions": [
+    "guess 50",
+    "guess 47",
+    "guess 44",
+    "guess 97",
+    "guess 4"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "prep": {
+    "ok": true,
+    "s": 121.0
+   },
+   "start_s": 0.06,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [
+    "llm error: APITimeoutError Request timed out.",
+    "llm error: APITimeoutError Request timed out.",
+    "[toolloop] round 1 error: TypeError: 'NoneType' object is not callable",
+    "[toolloop] round 2 error: TypeError: 'NoneType' object is not callable"
+   ],
+   "gw_requests": 10,
+   "opp_marker_in_requests": "6/10",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "j_gue_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}",
+    "{'type': 'enabled', 'budget_tokens': 150"
+   ],
+   "max_tokens": [
+    250,
+    400,
+    5000
+   ]
+  }
+ ],
+ "keywarn": {
+  "key_tails_by_phase": [
+   "AAAA11",
+   "BBBB22"
+  ],
+  "warning_answer": {
+   "type": "action",
+   "action": "roll",
+   "chat": "We'll see."
+  },
+  "warning_legal": true,
+  "warning_latency": 0.01,
+  "start2_ready": {
+   "type": "ready",
+   "chat": "Let's do this."
+  },
+  "turn2": {
+   "type": "action",
+   "action": "hold",
+   "chat": "stub chat"
+  }
+ },
+ "preps": {
+  "audit_nim": {
+   "ok": true,
+   "s": 0.5
+  },
+  "audit_claim": {
+   "ok": true,
+   "s": 0.5
+  },
+  "audit_bet": {
+   "ok": true,
+   "s": 0.3
+  },
+  "audit_simul": {
+   "ok": true,
+   "s": 0.3
+  },
+  "audit_nego": {
+   "ok": true,
+   "s": 0.3
+  },
+  "audit_qa": {
+   "ok": true,
+   "s": 0.3
+  }
+ },
+ "games": [
+  {
+   "tag": "ug_nim_0_1_random",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.64,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "take 2 4",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    }
+   ],
+   "actions": [
+    "take 3 5",
+    "take 2 4"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_nim_0"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "ug_nim_0_1_nasty",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.64,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "take 2 4",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    }
+   ],
+   "actions": [
+    "take 3 5",
+    "take 2 4"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "1/2",
+   "key_tails": [
+    "_nim_0"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "ug_nim_0_2_random",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.69,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "take 2 4",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "take 1 1",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "take 3 5",
+    "take 2 4",
+    "take 1 1"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_nim_0"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "ug_nim_0_2_nasty",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.7,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "take 2 4",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "take 1 1",
+     "chat": "Secrets stay secrets.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "take 3 5",
+    "take 2 4",
+    "take 1 1"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "1/2",
+   "key_tails": [
+    "_nim_0"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "ug_nim_1_1_random",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.64,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.01,
+     "action": "take 2 1",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "take 1 1",
+     "chat": "Mm-hm.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "take 3 5",
+    "take 2 1",
+    "take 1 1"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_nim_1"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "ug_nim_1_1_nasty",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.66,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "take 2 1",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "take 1 1",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "generic",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "take 3 5",
+    "take 2 1",
+    "take 1 1"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "2/2",
+   "key_tails": [
+    "_nim_1"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "ug_nim_1_2_random",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.69,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "take 2 4",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    }
+   ],
+   "actions": [
+    "take 3 5",
+    "take 2 4"
+   ],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_nim_1"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "ug_nim_1_2_nasty",
+   "game": "audit_nim",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.64,
+     "action": "take 3 5",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "take 2 4",
+     "chat": "stub chat",
+     "gw": 1,
+     "strategy": "generic",
+     "source": "model",
+     "model_error": null,
+     "tool": "model (tools: )"
+    }
+   ],
+   "actions": [
+    "take 3 5",
+    "take 2 4"
+   ],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "2/2",
+   "key_tails": [
+    "_nim_1"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    400
+   ]
+  },
+  {
+   "tag": "ug_claim_0_1_random",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 2 ILLEGAL 'F6'",
+    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.67,
+     "action": "CLAIM R12-C12",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "F6",
+     "chat": "Okay then.",
+     "gw": 2,
+     "illegal": true,
+     "retry": "G6",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.08,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 6,
+   "opp_marker_in_requests": "6/6",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_claim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "ug_claim_0_1_nasty",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [
+    "turn 2 ILLEGAL 'F6'",
+    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.66,
+     "action": "CLAIM R12-C12",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "F6",
+     "chat": "Playing.",
+     "gw": 2,
+     "illegal": true,
+     "retry": "G6",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "start_s": 0.06,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 6,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "4/6",
+   "key_tails": [
+    "_claim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "ug_claim_0_2_random",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 2 ILLEGAL 'F6'",
+    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.66,
+     "action": "CLAIM R12-C12",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.03,
+     "action": "F6",
+     "chat": "Ready.",
+     "gw": 2,
+     "illegal": true,
+     "retry": "G6",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.08,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 6,
+   "opp_marker_in_requests": "6/6",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_claim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "ug_claim_0_2_nasty",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [
+    "turn 2 ILLEGAL 'F6'",
+    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.73,
+     "action": "CLAIM R12-C12",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "F6",
+     "chat": "Playing.",
+     "gw": 2,
+     "illegal": true,
+     "retry": "G6",
+     "retry_lat": 0.03
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.06,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 6,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "4/6",
+   "key_tails": [
+    "_claim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "ug_claim_1_1_random",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 2 ILLEGAL 'F6'",
+    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.66,
+     "action": "CLAIM R12-C12",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "F6",
+     "chat": "Okay then.",
+     "gw": 2,
+     "illegal": true,
+     "retry": "G6",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.06,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 6,
+   "opp_marker_in_requests": "6/6",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_claim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "ug_claim_1_1_nasty",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [
+    "turn 2 ILLEGAL 'F6'",
+    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.62,
+     "action": "CLAIM R12-C12",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "F6",
+     "chat": "Okay then.",
+     "gw": 2,
+     "illegal": true,
+     "retry": "G6",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.06,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 6,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "6/6",
+   "key_tails": [
+    "_claim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "ug_claim_1_2_random",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 2 ILLEGAL 'F6'",
+    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.73,
+     "action": "CLAIM R12-C12",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.01,
+     "action": "F6",
+     "chat": "Okay then.",
+     "gw": 2,
+     "illegal": true,
+     "retry": "G6",
+     "retry_lat": 0.03
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.08,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 6,
+   "opp_marker_in_requests": "6/6",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_claim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "ug_claim_1_2_nasty",
+   "game": "audit_claim",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [
+    "turn 2 ILLEGAL 'F6'",
+    "turn 2 SECOND BAD ANSWER 'G6' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.59,
+     "action": "CLAIM R12-C12",
+     "chat": "Hm.",
+     "gw": 2,
+     "strategy": "generic",
+     "source": "fallback",
+     "model_error": null,
+     "tool": "fallback"
+    },
+    {
+     "turn": 2,
+     "lat": 0.03,
+     "action": "F6",
+     "chat": "Playing.",
+     "gw": 2,
+     "illegal": true,
+     "retry": "G6",
+     "retry_lat": 0.01
+    }
+   ],
+   "actions": [
+    "claim r12-c12"
+   ],
+   "chats": [],
+   "ready_chat": "Round one. Go.",
+   "start_s": 0.08,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 6,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "6/6",
+   "key_tails": [
+    "_claim"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250,
+    400
+   ]
+  },
+  {
+   "tag": "ug_bet_0_1_random",
+   "game": "audit_bet",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.09,
+     "action": "check",
+     "chat": "Sure.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "bet",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "check",
+    "bet"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.12,
+   "result": "{'winner': 0, 'scores': [2, -2], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_bet_0_1_nasty",
+   "game": "audit_bet",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.09,
+     "action": "check",
+     "chat": "Sure.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "bet",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "check",
+    "bet"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.16,
+   "result": "{'winner': 0, 'scores': [2, -2], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_bet_0_2_random",
+   "game": "audit_bet",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.08,
+     "action": "check",
+     "chat": "Sure.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "fold",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "check",
+     "chat": "Mm-hm.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "check",
+    "fold",
+    "check"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.14,
+   "result": "{'winner': 1, 'scores': [-3, 3], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_bet_0_2_nasty",
+   "game": "audit_bet",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.08,
+     "action": "check",
+     "chat": "Sure.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "fold",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "check",
+     "chat": "Mm-hm.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "check",
+    "fold",
+    "check"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.12,
+   "result": "{'winner': 1, 'scores': [-3, 3], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_bet_1_1_random",
+   "game": "audit_bet",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.11,
+     "action": "check",
+     "chat": "Sure.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "fold",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "check",
+    "fold"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.14,
+   "result": "{'winner': 0, 'scores': [3, -3], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_bet_1_1_nasty",
+   "game": "audit_bet",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.09,
+     "action": "check",
+     "chat": "Sure.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "fold",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "check",
+    "fold"
+   ],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "start_s": 0.16,
+   "result": "{'winner': 0, 'scores': [3, -3], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_bet_1_2_random",
+   "game": "audit_bet",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.09,
+     "action": "fold",
+     "chat": "Sure.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "bet",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "fold",
+    "bet"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.14,
+   "result": "{'winner': 1, 'scores': [-2, 4], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_bet_1_2_nasty",
+   "game": "audit_bet",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.09,
+     "action": "fold",
+     "chat": "Sure.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "bet",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "bluff",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "fold",
+    "bet"
+   ],
+   "chats": [],
+   "ready_chat": "Round one. Go.",
+   "start_s": 0.16,
+   "result": "{'winner': 1, 'scores': [-2, 4], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_simul_0_1_random",
+   "game": "audit_simul",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.12,
+     "action": "C",
+     "chat": "Long day.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Getting jumpy.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 5,
+     "lat": 0.0,
+     "action": "A",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 6,
+     "lat": 0.02,
+     "action": "B",
+     "chat": "Over to you.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 7,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 8,
+     "lat": 0.01,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "C",
+    "B",
+    "B",
+    "C",
+    "A",
+    "B",
+    "C",
+    "B"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [7, 9], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_simul_0_1_nasty",
+   "game": "audit_simul",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.16,
+     "action": "C",
+     "chat": "Long day.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Cute. Try again.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Ask the board.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 5,
+     "lat": 0.0,
+     "action": "A",
+     "chat": "Keep guessing.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 6,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Nice try.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 7,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "Over to you.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 8,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "C",
+    "B",
+    "B",
+    "C",
+    "A",
+    "B",
+    "C",
+    "B"
+   ],
+   "chats": [],
+   "ready_chat": "Round one. Go.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [7, 9], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_simul_0_2_random",
+   "game": "audit_simul",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.14,
+     "action": "C",
+     "chat": "Long day.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Getting jumpy.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 5,
+     "lat": 0.0,
+     "action": "A",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 6,
+     "lat": 0.02,
+     "action": "B",
+     "chat": "Over to you.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 7,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 8,
+     "lat": 0.02,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "C",
+    "B",
+    "B",
+    "C",
+    "A",
+    "B",
+    "C",
+    "B"
+   ],
+   "chats": [],
+   "ready_chat": "Round one. Go.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [7, 9], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_simul_0_2_nasty",
+   "game": "audit_simul",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.16,
+     "action": "C",
+     "chat": "Cute. Try again.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Nice try.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "B",
+     "chat": "Not telling.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 5,
+     "lat": 0.02,
+     "action": "A",
+     "chat": "Keep guessing.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 6,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Over to you.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 8,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Cute. Try again.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "C",
+    "B",
+    "B",
+    "C",
+    "A",
+    "B",
+    "C",
+    "B"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [7, 9], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_simul_1_1_random",
+   "game": "audit_simul",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.19,
+     "action": "C",
+     "chat": "Long day.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Getting jumpy.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 5,
+     "lat": 0.0,
+     "action": "A",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 6,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Over to you.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 8,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "C",
+    "B",
+    "B",
+    "C",
+    "A",
+    "B",
+    "C",
+    "B"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.08,
+   "result": "{'winner': 0, 'scores': [9, 7], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_simul_1_1_nasty",
+   "game": "audit_simul",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.19,
+     "action": "C",
+     "chat": "Long day.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "B",
+     "chat": "Cute. Try again.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Ask the board.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 4,
+     "lat": 0.02,
+     "action": "C",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 5,
+     "lat": 0.0,
+     "action": "A",
+     "chat": "Keep guessing.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 6,
+     "lat": 0.01,
+     "action": "B",
+     "chat": "Nice try.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 7,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "Over to you.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 8,
+     "lat": 0.02,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "C",
+    "B",
+    "B",
+    "C",
+    "A",
+    "B",
+    "C",
+    "B"
+   ],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.08,
+   "result": "{'winner': 0, 'scores': [9, 7], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_simul_1_2_random",
+   "game": "audit_simul",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.14,
+     "action": "C",
+     "chat": "Long day.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Getting jumpy.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 5,
+     "lat": 0.0,
+     "action": "A",
+     "chat": "Right.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 6,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Over to you.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 7,
+     "lat": 0.02,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 8,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "C",
+    "B",
+    "B",
+    "C",
+    "A",
+    "B",
+    "C",
+    "B"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.08,
+   "result": "{'winner': 0, 'scores': [9, 7], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_simul_1_2_nasty",
+   "game": "audit_simul",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.16,
+     "action": "C",
+     "chat": "Cute. Try again.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Nice try.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Not telling.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 4,
+     "lat": 0.0,
+     "action": "C",
+     "chat": "Okay.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 5,
+     "lat": 0.02,
+     "action": "A",
+     "chat": "Keep guessing.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 6,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Over to you.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 7,
+     "lat": 0.01,
+     "action": "C",
+     "chat": "We'll see.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 8,
+     "lat": 0.0,
+     "action": "B",
+     "chat": "Cute. Try again.",
+     "gw": 0,
+     "strategy": "read_opponent",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "C",
+    "B",
+    "B",
+    "C",
+    "A",
+    "B",
+    "C",
+    "B"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.08,
+   "result": "{'winner': 0, 'scores': [9, 7], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_nego_0_1_random",
+   "game": "audit_nego",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.16,
+     "action": "offer 2 0",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "reject",
+     "chat": "Luck? Bring more than that.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.02,
+     "action": "offer 2 0",
+     "chat": "Easy so far.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "offer 2 0",
+    "reject",
+    "offer 2 0"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [6, 18], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_nego_0_1_nasty",
+   "game": "audit_nego",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.14,
+     "action": "offer 2 0",
+     "chat": "Same as before.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.02,
+     "action": "reject",
+     "chat": "Not falling for it.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 3,
+     "lat": 0.0,
+     "action": "offer 2 0",
+     "chat": "Easy so far.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "offer 2 0",
+    "reject",
+    "offer 2 0"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [6, 18], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_nego_0_2_random",
+   "game": "audit_nego",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.16,
+     "action": "offer 2 0",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "offer 2 0"
+   ],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "start_s": 0.08,
+   "result": "{'winner': 1, 'scores': [6, 18], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_nego_0_2_nasty",
+   "game": "audit_nego",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.17,
+     "action": "offer 2 0",
+     "chat": "Same as before.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "offer 2 0"
+   ],
+   "chats": [],
+   "ready_chat": "Bring it on.",
+   "start_s": 0.06,
+   "result": "{'winner': 1, 'scores': [6, 18], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_nego_1_1_random",
+   "game": "audit_nego",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.14,
+     "action": "reject",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "offer 2 0",
+     "chat": "Luck? Bring more than that.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "reject",
+    "offer 2 0"
+   ],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [14, 2], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_nego_1_1_nasty",
+   "game": "audit_nego",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.14,
+     "action": "reject",
+     "chat": "Okay. And?",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "offer 2 0",
+     "chat": "Nervous hands?",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "reject",
+    "offer 2 0"
+   ],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.08,
+   "result": "{'winner': 0, 'scores': [14, 2], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_nego_1_2_random",
+   "game": "audit_nego",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.16,
+     "action": "reject",
+     "chat": "Evening. Let's see how you actually play.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "offer 2 0",
+     "chat": "Luck? Bring more than that.",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "reject",
+    "offer 2 0"
+   ],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.08,
+   "result": "{'winner': 0, 'scores': [14, 2], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": "0/0",
+   "nasty_block_in_requests": null,
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_nego_1_2_nasty",
+   "game": "audit_nego",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.16,
+     "action": "reject",
+     "chat": "Curious, aren't you?",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    },
+    {
+     "turn": 2,
+     "lat": 0.0,
+     "action": "offer 2 0",
+     "chat": "Nervous hands?",
+     "gw": 0,
+     "strategy": "deals",
+     "source": "tool",
+     "model_error": null,
+     "tool": "strategy"
+    }
+   ],
+   "actions": [
+    "reject",
+    "offer 2 0"
+   ],
+   "chats": [],
+   "ready_chat": "Round one. Go.",
+   "start_s": 0.06,
+   "result": "{'winner': 0, 'scores': [14, 2], 'reason': 'end'}",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 0,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "0/0",
+   "key_tails": [],
+   "thinking_modes": [],
+   "max_tokens": []
+  },
+  {
+   "tag": "ug_qa_0_1_random",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'",
+    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.61,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "retry": "pass",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.14,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_qa_0_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ]
+  },
+  {
+   "tag": "ug_qa_0_1_nasty",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 0,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'",
+    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.61,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "retry": "pass",
+     "retry_lat": 0.01
+    }
+   ],
+   "actions": [],
+   "chats": [],
+   "ready_chat": "Let's do this.",
+   "start_s": 0.14,
+   "lost_by_second_bad": true,
+   "result": "{'winner': None, 'scores': [0, 0], 'reason': 'end'}",
+   "broke_speech_rule": [
+    1
+   ],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "2/2",
+   "key_tails": [
+    "_qa_0_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ]
+  },
+  {
+   "tag": "ug_qa_0_2_random",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'",
+    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.55,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "retry": "pass",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.17,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_qa_0_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ]
+  },
+  {
+   "tag": "ug_qa_0_2_nasty",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 0,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'",
+    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.64,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "retry": "pass",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "start_s": 0.12,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "2/2",
+   "key_tails": [
+    "_qa_0_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ]
+  },
+  {
+   "tag": "ug_qa_1_1_random",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'",
+    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.64,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "retry": "pass",
+     "retry_lat": 0.01
+    }
+   ],
+   "actions": [],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.14,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_qa_1_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ]
+  },
+  {
+   "tag": "ug_qa_1_1_nasty",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 1,
+   "seed": 1,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'",
+    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.53,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "retry": "pass",
+     "retry_lat": 0.0
+    }
+   ],
+   "actions": [],
+   "chats": [],
+   "ready_chat": "Warm-up's over.",
+   "start_s": 0.14,
+   "lost_by_second_bad": true,
+   "result": "{'winner': None, 'scores': [0, 0], 'reason': 'end'}",
+   "broke_speech_rule": [
+    0
+   ],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "2/2",
+   "key_tails": [
+    "_qa_1_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ]
+  },
+  {
+   "tag": "ug_qa_1_2_random",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "random",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'",
+    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.64,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "retry": "pass",
+     "retry_lat": 0.01
+    }
+   ],
+   "actions": [],
+   "chats": [],
+   "ready_chat": "Ready when you are.",
+   "start_s": 0.12,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": "2/2",
+   "nasty_block_in_requests": null,
+   "key_tails": [
+    "_qa_1_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ]
+  },
+  {
+   "tag": "ug_qa_1_2_nasty",
+   "game": "audit_qa",
+   "variant": 0,
+   "seat": 1,
+   "seed": 2,
+   "opp": "nasty",
+   "gw": "fixed",
+   "problems": [
+    "turn 1 ILLEGAL 'guess 50'",
+    "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+   ],
+   "turns": [
+    {
+     "turn": 1,
+     "lat": 0.59,
+     "action": "guess 50",
+     "chat": "Sure.",
+     "gw": 1,
+     "illegal": true,
+     "retry": "pass",
+     "retry_lat": 0.02
+    }
+   ],
+   "actions": [],
+   "chats": [],
+   "ready_chat": "Alright, let's fight.",
+   "start_s": 0.14,
+   "lost_by_second_bad": true,
+   "result": "not over",
+   "broke_speech_rule": [],
+   "stray": 0,
+   "early": 0,
+   "stderr_odd": [],
+   "gw_requests": 2,
+   "opp_marker_in_requests": null,
+   "nasty_block_in_requests": "2/2",
+   "key_tails": [
+    "_qa_1_"
+   ],
+   "thinking_modes": [
+    "{'type': 'disabled'}"
+   ],
+   "max_tokens": [
+    250
+   ]
+  }
+ ]
+}

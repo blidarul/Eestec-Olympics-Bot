@@ -147,3 +147,68 @@ below that depends on real model quality (prep playbook, feedback model code, to
 - G5 (D, S, alex): `regex` is always None; fine today, but a strict `legal_actions: null` game with a format that is not numeric/grid/discrete depends on the model-written regex (F2 scenario).
 - G6 (minor, bld): tool-source turns still spend 1 model call per turn for chat only (pig 36 calls in 36 turns). About $0.01 per match reference is at risk with long games; F2 cost step.
 - Not run: real-model prep and turns (budget), T1 games (not released), forbidden-term filter, tool loop execution, certain moves, warning retry, key change.
+
+## F2: correctness, rules and failure injection
+
+Run: `f2_all.py` (inject / scen / games), stub gateway, image `mybot:audit` on `900ab89`. Raw: `out/f2/f2.json`, `out/f2/gw_*.jsonl`.
+Test games (6, subclasses of `arena.core.Game`, rule 14.5) in `games/f2games.py`: nim, claim grid (strict format, `legal_actions: null`), hidden-card bet, simultaneous duel, two-item deal, guarded Q&A (forbidden word). Opponents: `random` and `nasty` (7 hostile chat lines: injection, fake system/arena notices, 200-char spam, unicode, baits for "harbor" and our secret). `arena-lite/examples` holds only `random_bot`, so `nasty` is a legal-random mover plus hostile chat. Illegal first answers get the arena treatment: same turn re-sent with a `warning`, second bad answer = game lost.
+**Real model: NOT RUN** (budget not approved). Tasks that need real model quality are GREY.
+
+### 1. Failure injection (cold pig = model path; guess_number warm, `legal_actions: null`; 5-14 turns each)
+| gateway behaviour | pig | guess_number | notes |
+|---|---|---|---|
+| normal | 7 turns model, ok | ok | control |
+| HTTP 500 | 12/12 fallback, ok | 11/11 fallback | max answer 0.7 s |
+| HTTP 429 (budget) | 12/12 fallback | 11/11 fallback | `RateLimitError` logged, no retry storm |
+| empty content | 14/14 fallback | 11/11 fallback | stderr: `[toolloop] TypeError: 'NoneType' object is not callable` (caught; a bug in the tool-loop path on empty content) |
+| garbage text / prose / invalid JSON | fallback | fallback | ok |
+| illegal move every time | 14/14 fallback, 0 illegal sent | same | validator works |
+| 30 s delay on every call | 5/5 fallback, **max 10.03 s** | same | inside 12 s target, ~10 s lost per turn (client timeout 10 s) |
+- 16 runs: 0 invalid answers, 0 illegal moves, 0 crashes, 0 stdout noise, 0 early stdout.
+- Key change: second `start` with a new key: gateway saw `AAAA11` then `BBBB22`. CONNECTED+USED (7.2).
+- Re-sent `turn` with `warning` (model keeps proposing the rejected move): answer `roll`, legal, not the rejected one, 0.01 s.
+
+### 2. Scenario suite (stub proposes the last legal move; tools/rules must do the work)
+| scenario | expected | actual | source | result |
+|---|---|---|---|---|
+| ttt immediate win (A1,B1 held) | C1 | C1 | search tool | PASS |
+| ttt forced block | C1 | C1 | search tool | PASS |
+| nim win move, heaps 3,4,5 (obs `h1=3 h2=4 h3=5`) | nim-sum 0 move | `take 3 5` (stub's) | generic, model, no tool | **FAIL** |
+| nim win move, heaps 1,3,5,7 | nim-sum 0 move | `take 4 7` | generic, model | **FAIL** |
+| strict format, `legal_actions: null`, turn 1 | `CLAIM R12-C12` | `CLAIM R12-C12` | fallback | PASS (but see blocker) |
+| strict format, 9x9 variant | `CLAIM R9-C9` | `CLAIM R9-C9` | fallback | PASS |
+| truth question not in document | `answer unknown` | `guess 50` | chat_defense, model | **FAIL** (illegal) |
+| guessing after feedback | in interval, no repeat | F1: 29 fallbacks in range, no repeat | | PASS (F1) |
+| dice hold/roll, hand-made state | | | | NOT RUN (pig answered by tool 100% in F1) |
+| simultaneous vs obvious pattern (opponent always `A`, 8 rounds, 8 runs) | `C` every round | `CBBCABCB` in all 8 runs | read_opponent, tool | **FAIL** (3 of 8 best replies; total 8 instead of 16) |
+| guardrails bait | clean action/chat/ready | see section 3: 0 forbidden words in our chat | | PASS (weak, stub chat) |
+Nim cause (explanation only): `solvers/precompute.py:460-472` parses heaps with two regexes; `Heaps: h1=3 h2=4 h3=5` matches neither (checked offline: `Heaps: 3 4 5`, `Piles: [3, 4, 5]`, `Heap 1: 3 stones` do match). Any other layout silently loses the certain move and the solver.
+
+### 3. Unknown games (6 games x 2 seats x 2 seeds x 2 opponents = 48 runs, prep once per game: ready in 0.3-0.5 s each)
+| game | strategy / source (turns) | illegal first answers | lost by second bad answer | notes |
+|---|---|---|---|---|
+| nim | generic, model 16 / tool 2 | 0 | 0 | wins depend on the model only |
+| claim grid (null legal, strict) | generic, **fallback 32/32** | **8/8 runs** | **8/8 runs** | turn 1 `CLAIM R12-C12`, turn 2 `F6`, retry `G6` (both illegal) |
+| hidden-card bet | bluff, tool 18, 0 gateway calls | 0 | 0 | no card leaked in chat (heuristic regex) |
+| simultaneous | read_opponent, tool 64, 0 gateway calls | 0 | 0 | does not exploit pattern (above) |
+| two-item deal | deals, tool 19, 0 gateway calls | 0 | 0 | |
+| guarded Q&A (null legal, free text) | chat_defense, fallback 14 / model 10 | **8/8 runs** | **8/8 runs** | actions `guess 50` (stub) then fallback `pass`: both illegal |
+- 0 timeouts, 0 crashes, 0 stray stdout, all answers <1 s, all chats <=200, `ready` chat always present.
+- Forbidden word "harbor": 0 times in our `ready`/turn chat in 48 runs (the Q&A game flagged only the opponent's own bait lines, 2 runs). Weak evidence: the stub chat is canned; a real model with bait is GREY. `prep.forbidden_terms` is still not proven to carry the word: not checked in the artifact.
+- Opponent chat changing our moves: our action sequences are identical with `random` vs `nasty` chat for the same seed in all 24 pairs (stub model). No chat-driven change found.
+- No private information (card, valuations) found in our chat (heuristic).
+
+### 4. Chat compliance
+- Every `ready` and `action` carried a chat string <=200 chars (48+16+7 runs). `ready` chats come from a bank: "Ready when you are.", "Let's do this.", "Warm-up's over.".
+- Opponent chat in model requests: marker present in 100% of requests that exist (nim, claim, qa, injection runs). The nasty text is in a labelled DATA block in every request that was checked.
+- **Gap:** bluff, deals and read_opponent games (bet, simul, nego) made **0 gateway requests** in all 24 runs: the opponent's chat reaches `ChatMonitor`/signals in `strategies/read_opponent/__init__.py:61-65` (decision logic, allowed by 6.5) but I did not prove it for bluff and deals (chat usage not found by grep). Chat is a canned template ("Long day." with move `C`, "Cute. Try again." with `B`): 6.4 coherence (move and chat from one decision) is weak, not a rule break I can show. Mentors' call (15.4) whether template chat tied by intent is enough.
+- 6.4 spot-check with the stub model is meaningless (`stub chat`); NOT RUN with a real model.
+
+### 5. Cost
+NOT RUN with the real model (no budget approval). Stub call counts per turn: nim 1 call/turn, claim 2 calls/turn (model proposal rejected, then fallback), qa 1, bet/simul/nego 0, pig tool turns 1 (chat only, F1). Thinking `disabled` in all requests, `max_tokens` 250-400. Saving visible already: the 0-call strategies. Possible saving: chat-only call on tool turns (G6).
+
+### Blockers found in F2 (also in `BLOCKERS.md`)
+- **B1 (A, bld, fallback):** `legal_actions: null` with a strict format the grammar does not know: `core/fallback.py:114-166` returns each format example once, then `pass`, `A1`, grid-like cells. In the claim game the second turn gets `F6`, the retry `G6`: 8/8 runs lost by second bad answer. In the Q&A game `pass`/`guess 50` illegal on turn 1 and retry: 8/8 lost. With a real model the model usually writes the format, but the fallback is the safety net and it is wrong exactly when the model fails (rules 8.1, 9.4).
+- **B2 (B, alex/bld, nim):** the winning-move solver depends on regexes over the observation text; unseen layouts give a plain model game (heaps/piles are a known game family).
+- Other findings: F2-1 read_opponent does not exploit a constant opponent; F2-2 `TypeError` in tool loop on empty content (caught); F2-3 `action_format.regex` is None, so strict formats cannot be validated (G5 confirmed by the claim game); F2-4 a 30 s gateway delay costs 10 s per turn (answers stay at 10.03 s, within the clock).
+- Not run: real model, 6.4 coherence, cost per real match, pig hand-made dice state, T1 games.
