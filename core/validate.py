@@ -21,7 +21,7 @@ def _fuzzy(norms, n):
     return best if score >= FUZZY else None
 
 
-def validate(action, legal, artifacts=None, rejected=None, previous=(), observation=""):
+def validate(action, legal, artifacts=None, rejected=None, previous=(), observation="", rules=""):
     """`previous`: actions already sent in this game that must not be repeated (guessing games): treated like rejected."""
     if not isinstance(action, str) or not action.strip():
         return None
@@ -36,13 +36,13 @@ def validate(action, legal, artifacts=None, rejected=None, previous=(), observat
             norms = [(l, _norm(l)) for l in legal]
             out = next((l for l, ln in norms if ln == n), None) or _fuzzy(norms, n)
     else:  # legal_actions is null: follow the action format from prep
-        out = _validate_format(action, artifacts, observation=observation)
+        out = _validate_format(action, artifacts, observation=observation, rules=rules)
     if out is None:
         return None
     if rejected is not None:
         if str(out) == str(rejected) or _norm(out) == _norm(rejected):
             return None
-    if previous:
+    if previous and not _is_blotto(artifacts, observation=observation, rules=rules):
         prev_norms = {_norm(p) for p in previous}
         if _norm(out) in prev_norms or str(out) in previous:
             return None
@@ -104,7 +104,20 @@ def _word(action, artifacts):
     return f"{prefix}{word_out}" if prefix else word_out
 
 
-def _blotto(action, artifacts, observation=""):
+def _is_blotto(artifacts=None, observation="", rules=""):
+    obs_lower = (observation or "").lower()
+    rules_lower = (rules or "").lower()
+    return (
+        "blotto" in obs_lower
+        or "blotto" in rules_lower
+        or ("soldier" in obs_lower and ("field" in obs_lower or "battlefield" in obs_lower))
+        or ("soldier" in rules_lower and ("field" in rules_lower or "battlefield" in rules_lower))
+        or "soldiers this round:" in obs_lower
+        or "allocation of" in obs_lower
+    )
+
+
+def _blotto(action, artifacts, observation="", rules=""):
     """Colonel Blotto allocation validator:
     Validates K whole numbers >= 0 summing to S (or <= S in reserves mode).
     Returns formatted action "n1 n2 ... nk", or None if not a blotto action.
@@ -113,85 +126,90 @@ def _blotto(action, artifacts, observation=""):
         return None
     clean = action.replace(",", " ").strip()
     tokens = clean.split()
-    if len(tokens) < 2 or not all(re.fullmatch(r"\d+", t) for t in tokens):
+    if not tokens or not all(re.fullmatch(r"\d+", t) for t in tokens):
         return None
     nums = [int(t) for t in tokens]
 
-    obs_lower = (observation or "").lower()
-    art_str = str(artifacts or {}).lower()
-    is_blotto = (
-        "blotto" in obs_lower
-        or "blotto" in art_str
-        or ("soldier" in obs_lower and "field" in obs_lower)
-        or ("soldier" in art_str and "field" in art_str)
-    )
-    if not is_blotto:
+    if not _is_blotto(artifacts, observation, rules):
         return None
 
-    m_f = (
-        re.search(r"across\s*(\d+)\s*fields", observation, re.I)
-        or re.search(r"(\d+)\s*fields", observation, re.I)
-        or re.search(r"across\s*(\d+)\s*battlefields", art_str, re.I)
-        or re.search(r"(\d+)\s*fields", art_str, re.I)
-    )
-    k = int(m_f.group(1)) if m_f else len(nums)
+    obs_lower = (observation or "").lower()
+    rules_lower = (rules or "").lower()
 
+    # Determine K
+    f_matches = re.findall(r"\bF(\d+)\b", observation)
+    k = max(int(x) for x in f_matches) if f_matches else None
+    if not k:
+        f_matches_r = re.findall(r"\bF(\d+)\b", rules)
+        k = max(int(x) for x in f_matches_r) if f_matches_r else None
+    if not k:
+        m_f = (
+            re.search(r"across\s*(\d+)\s*fields", observation, re.I)
+            or re.search(r"(\d+)\s*fields", observation, re.I)
+            or re.search(r"across\s*(\d+)\s*battlefields", rules, re.I)
+            or re.search(r"(\d+)\s*battlefields", rules, re.I)
+            or re.search(r"(\d+)\s*fields", rules, re.I)
+        )
+        k = int(m_f.group(1)) if m_f else len(nums)
+    k = max(1, min(k, 12))
+
+    # Determine S
     m_s = (
-        re.search(r"soldiers this round:\s*(\d+)", observation, re.I)
+        re.search(r"your\s+soldiers\s+this\s+round:\s*(\d+)", observation, re.I)
+        or re.search(r"soldiers this round:\s*(\d+)", observation, re.I)
         or re.search(r"allocation of\s*(\d+)\s*soldiers", observation, re.I)
+        or re.search(r"reserves?:?\s*you\s*(\d+)", observation, re.I)
         or re.search(r"available:\s*(\d+)\s*soldiers", observation, re.I)
-        or re.search(r"(\d+)\s*soldiers", art_str, re.I)
+        or re.search(r"(\d+)\s+soldiers", rules, re.I)
+        or re.search(r"add\s+up\s+to\s+EXACTLY\s+(\d+)", rules, re.I)
+        or re.search(r"\+\s*(\d+)\s*(?:soldiers\s*)?per\s*round", rules, re.I)
     )
     s = int(m_s.group(1)) if m_s else 100
 
-    is_reserves = "reserve" in obs_lower or "reserve" in art_str
+    is_reserves = "reserve" in obs_lower or "reserve" in rules_lower
 
-    if len(nums) != k:
-        return None
+    # If length matches exactly and sum matches criteria
+    if len(nums) == k:
+        total = sum(nums)
+        if is_reserves and total <= s:
+            return " ".join(str(x) for x in nums)
+        elif not is_reserves and total == s:
+            return " ".join(str(x) for x in nums)
+
+    # Need repair: adapt length to k
+    if len(nums) > k:
+        nums = nums[:k]
+    elif len(nums) < k:
+        nums = nums + [0] * (k - len(nums))
 
     total = sum(nums)
-    if is_reserves:
-        if total <= s:
-            return " ".join(str(x) for x in nums)
-        # Scaled down to at most s
-        if total > 0:
-            scaled = [int(x * s / total) for x in nums]
-            diff = s - sum(scaled)
-            for i in range(diff):
-                scaled[i % k] += 1
-            return " ".join(str(x) for x in scaled)
+    target = s if (not is_reserves or total > s) else total
+    if total > 0:
+        scaled = [int(x * target / total) for x in nums]
+        diff = target - sum(scaled)
+        sorted_indices = sorted(range(k), key=lambda idx: nums[idx], reverse=True)
+        for i in range(diff):
+            scaled[sorted_indices[i % k]] += 1
+        return " ".join(str(x) for x in scaled)
     else:
-        if total == s:
-            return " ".join(str(x) for x in nums)
-        # Scale to exact sum s
-        if total > 0:
-            scaled = [int(x * s / total) for x in nums]
-            diff = s - sum(scaled)
-            for i in range(diff):
-                scaled[i % k] += 1
+        target = s if not is_reserves else 0
+        if target > 0:
+            share = target // k
+            rem = target - share * k
+            scaled = [share + (1 if i < rem else 0) for i in range(k)]
             return " ".join(str(x) for x in scaled)
-        else:
-            share = s // k
-            rem = s - share * (k - 1)
-            res = [share] * (k - 1) + [rem]
-            return " ".join(str(x) for x in res)
-    return None
+        return " ".join(["0"] * k)
 
 
-def _validate_format(action, artifacts, observation=""):
+def _validate_format(action, artifacts, observation="", rules=""):
+    if _is_blotto(artifacts, observation, rules):
+        return _blotto(action, artifacts, observation, rules)
     num = _numeric(action, artifacts)
     if num is not None:
         return num
     w = _word(action, artifacts)
     if w is not None:
         return w
-    bl = _blotto(action, artifacts, observation)
-    if bl is not None:
-        return bl
-    obs_lower = (observation or "").lower()
-    art_str = str(artifacts or {}).lower()
-    if "blotto" in obs_lower or "blotto" in art_str or ("soldier" in obs_lower and "field" in obs_lower):
-        return None
     g = (artifacts or {}).get("grammar") if isinstance(artifacts, dict) else None
     if isinstance(g, dict) and (g.get("kind") in ("word", "numeric_range") or g.get("word_length") or g.get("numeric_min") is not None):
         return None

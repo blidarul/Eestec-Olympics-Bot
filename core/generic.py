@@ -46,10 +46,13 @@ class Generic:
         if legal and len(legal) == 1:
             return Decision(legal[0], hooks.filter_out(fallback.fallback_chat(art), forbidden), "strategy")
         warned = isinstance(state.warning, dict) and bool(state.warning)
-        is_guess = (not legal) or (art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle"))
+        rules_lower = state.rules.lower()
+        is_blotto_game = "blotto" in rules_lower or "battlefield" in rules_lower or "soldiers this round:" in str(state.observation or "").lower()
+        is_guess = not is_blotto_game and ((not legal) or (art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")))
         no_repeat = list(state.my_actions or []) if is_guess else []
         fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat,
-                                      observation=str(state.observation or ""), warning=state.warning if warned else None)
+                                      observation=str(state.observation or ""), warning=state.warning if warned else None,
+                                      rules=state.rules)
         fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
 
         # Specialized Solver Fast-Paths:
@@ -168,26 +171,37 @@ class Generic:
                     blotto_book = load_json(os.path.join(mem_dir, "blotto_book.json"))
                 if blotto_book:
                     m_tot = (
-                        re.search(r"soldiers this round:\s*(\d+)", state.observation, re.I)
+                        re.search(r"your\s+soldiers\s+this\s+round:\s*(\d+)", state.observation, re.I)
+                        or re.search(r"soldiers this round:\s*(\d+)", state.observation, re.I)
                         or re.search(r"allocation of\s*(\d+)\s*soldiers", state.observation, re.I)
+                        or re.search(r"reserves?:?\s*you\s*(\d+)", state.observation, re.I)
                         or re.search(r"available:\s*(\d+)\s*soldiers", state.observation, re.I)
-                        or re.search(r"(\d+)\s*soldiers", state.rules, re.I)
+                        or re.search(r"(\d+)\s+soldiers", state.rules, re.I)
+                        or re.search(r"add\s+up\s+to\s+EXACTLY\s+(\d+)", state.rules, re.I)
+                        or re.search(r"\+\s*(\d+)\s*(?:soldiers\s*)?per\s*round", state.rules, re.I)
                     )
-                    m_f = (
-                        re.search(r"across\s*(\d+)\s*fields", state.observation, re.I)
-                        or re.search(r"(\d+)\s*fields", state.observation, re.I)
-                        or re.search(r"across\s*(\d+)\s*battlefields", state.rules, re.I)
-                        or re.search(r"(\d+)\s*battlefields", state.rules, re.I)
-                        or re.search(r"(\d+)\s*fields", state.rules, re.I)
-                    )
+                    f_matches = re.findall(r"\bF(\d+)\b", state.observation)
+                    num_f = max(int(x) for x in f_matches) if f_matches else None
+                    if not num_f:
+                        f_matches_r = re.findall(r"\bF(\d+)\b", state.rules)
+                        num_f = max(int(x) for x in f_matches_r) if f_matches_r else None
+                    if not num_f:
+                        m_f = (
+                            re.search(r"across\s*(\d+)\s*fields", state.observation, re.I)
+                            or re.search(r"(\d+)\s*fields", state.observation, re.I)
+                            or re.search(r"across\s*(\d+)\s*battlefields", state.rules, re.I)
+                            or re.search(r"(\d+)\s*battlefields", state.rules, re.I)
+                            or re.search(r"(\d+)\s*fields", state.rules, re.I)
+                        )
+                        num_f = int(m_f.group(1)) if m_f else 5
+                    num_f = max(1, min(num_f, 12))
                     m_rnd = re.search(r"round\s*(\d+)/", state.observation, re.I) or re.search(r"round\s*(\d+)\s*of", state.observation, re.I)
                     avail = int(m_tot.group(1)) if m_tot else 100
-                    num_f = int(m_f.group(1)) if m_f else 5
                     rnd = int(m_rnd.group(1)) if m_rnd else 1
 
                     from optimization.blotto_solver import select_blotto_action
                     b_act = select_blotto_action(blotto_book, available_soldiers=avail, fields=num_f, round_no=rnd)
-                    v_act = validate.validate(b_act, legal, art, rejected, no_repeat, observation=state.observation)
+                    v_act = validate.validate(b_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
                     if v_act is not None:
                         return Decision(v_act, fb_c, "strategy", {"tool": "blotto_strategic_portfolio", "action": v_act})
             except Exception:

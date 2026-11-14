@@ -158,53 +158,73 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
     # 0.5. Colonel Blotto fallback: allocate exact soldiers across K fields
     obs_l = (observation or "").lower()
     rules_l = (rules or "").lower()
-    art_str = str(art).lower()
     is_blotto = (
         "blotto" in obs_l
         or "blotto" in rules_l
-        or "blotto" in art_str
-        or ("soldier" in obs_l and "field" in obs_l)
-        or ("soldier" in rules_l and "field" in rules_l)
-        or ("soldier" in art_str and "field" in art_str)
+        or ("soldier" in obs_l and ("field" in obs_l or "battlefield" in obs_l))
+        or ("soldier" in rules_l and ("field" in rules_l or "battlefield" in rules_l))
+        or "soldiers this round:" in obs_l
+        or "allocation of" in obs_l
     )
     if is_blotto:
-        m_f = (
-            re.search(r"across\s*(\d+)\s*fields", observation, re.I)
-            or re.search(r"(\d+)\s*fields", observation, re.I)
-            or re.search(r"across\s*(\d+)\s*battlefields", rules, re.I)
-            or re.search(r"(\d+)\s*battlefields", rules, re.I)
-            or re.search(r"(\d+)\s*fields", rules, re.I)
-        )
-        k = int(m_f.group(1)) if m_f else 5
+        f_matches = re.findall(r"\bF(\d+)\b", observation)
+        k = max(int(x) for x in f_matches) if f_matches else None
+        if not k:
+            f_matches_r = re.findall(r"\bF(\d+)\b", rules)
+            k = max(int(x) for x in f_matches_r) if f_matches_r else None
+        if not k:
+            m_f = (
+                re.search(r"across\s*(\d+)\s*fields", observation, re.I)
+                or re.search(r"(\d+)\s*fields", observation, re.I)
+                or re.search(r"across\s*(\d+)\s*battlefields", rules, re.I)
+                or re.search(r"(\d+)\s*battlefields", rules, re.I)
+                or re.search(r"(\d+)\s*fields", rules, re.I)
+            )
+            k = int(m_f.group(1)) if m_f else 5
+        k = max(1, min(k, 12))
+
         m_s = (
-            re.search(r"soldiers this round:\s*(\d+)", observation, re.I)
+            re.search(r"your\s+soldiers\s+this\s+round:\s*(\d+)", observation, re.I)
+            or re.search(r"soldiers\s+this\s+round:\s*(\d+)", observation, re.I)
             or re.search(r"allocation of\s*(\d+)\s*soldiers", observation, re.I)
+            or re.search(r"reserves?:?\s*you\s*(\d+)", observation, re.I)
             or re.search(r"available:\s*(\d+)\s*soldiers", observation, re.I)
-            or re.search(r"(\d+)\s*soldiers", rules, re.I)
+            or re.search(r"(\d+)\s+soldiers", rules, re.I)
+            or re.search(r"add\s+up\s+to\s+EXACTLY\s+(\d+)", rules, re.I)
+            or re.search(r"\+\s*(\d+)\s*(?:soldiers\s*)?per\s*round", rules, re.I)
         )
         s = int(m_s.group(1)) if m_s else 100
+
         share = s // k
-        rem = s - share * (k - 1)
-        base = [share] * (k - 1) + [rem]
+        rem = s - share * k
+        base = [share + (1 if i < rem else 0) for i in range(k)]
         cand = " ".join(str(x) for x in base)
         if cand not in avoid and norm(cand) not in taken_norms:
             return cand
-        for p_idx in range(k - 1):
-            if base[p_idx] > 0:
-                perturbed = list(base)
-                perturbed[p_idx] -= 1
-                perturbed[-1] += 1
-                cand = " ".join(str(x) for x in perturbed)
-                if cand not in avoid and norm(cand) not in taken_norms:
-                    return cand
-        for p_idx in range(k - 1):
-            if base[-1] > 0:
-                perturbed = list(base)
-                perturbed[-1] -= 1
-                perturbed[p_idx] += 1
-                cand = " ".join(str(x) for x in perturbed)
-                if cand not in avoid and norm(cand) not in taken_norms:
-                    return cand
+
+        # Perturbed partitions summing strictly to s
+        rng_fb = random.Random(k * 7919 + s * 31 + len(avoid))
+        for _ in range(50):
+            cuts = sorted([rng_fb.randint(0, s) for _ in range(k - 1)])
+            alloc = []
+            prev_c = 0
+            for c in cuts:
+                alloc.append(c - prev_c)
+                prev_c = c
+            alloc.append(s - prev_c)
+            cand_p = " ".join(str(x) for x in alloc)
+            if cand_p not in avoid and norm(cand_p) not in taken_norms:
+                return cand_p
+
+        # Concession profile: give up last field
+        if k > 1:
+            share_c = s // (k - 1)
+            rem_c = s - share_c * (k - 1)
+            concede_alloc = [share_c + (1 if i < rem_c else 0) for i in range(k - 1)] + [0]
+            cand_c = " ".join(str(x) for x in concede_alloc)
+            if cand_c not in avoid and norm(cand_c) not in taken_norms:
+                return cand_c
+
         return " ".join(str(x) for x in base)
     fmt = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
     # 1. Action format examples not in avoid

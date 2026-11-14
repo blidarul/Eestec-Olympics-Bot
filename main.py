@@ -256,10 +256,11 @@ def on_turn(msg, wk):
     mine = STATE["my_actions"]
     if warning and mine:
         mine.pop()  # the turn is re-sent after a rejected answer: that answer does not count as played
-    guessing = (legal is None) or art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")
-    previous = list(mine) if guessing else []  # guessing / word games: never send the same action twice (safety net)
     obs = str(msg.get("observation", ""))
     rules_text = str(STATE["game"].get("rules", ""))
+    is_blotto_game = "blotto" in rules_text.lower() or "battlefield" in rules_text.lower() or "soldiers this round:" in obs.lower()
+    guessing = not is_blotto_game and ((legal is None) or art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle"))
+    previous = list(mine) if guessing else []  # guessing / word games: never send the same action twice (safety net)
     # fallback FIRST, from the message alone
     use_fmt = not (isinstance(legal, list) and legal)  # legal_actions null/empty: the rules' template is the only guard
     fmt = actionfmt.from_artifacts(art, warning) if use_fmt else None
@@ -287,7 +288,7 @@ def on_turn(msg, wk):
             a, c = ans.get("action"), ans.get("chat")
             a = a if isinstance(a, str) else ""
             rejected = warning.get("rejected") if warning else None
-            v = validate.validate(a, legal, art, rejected, previous, observation=obs)
+            v = validate.validate(a, legal, art, rejected, previous, observation=obs, rules=rules_text)
             if fmt and v is not None and not actionfmt.matches(fmt, v):
                 v = actionfmt.repair(fmt, v)  # near miss (quotes, trailing period) or None -> fallback
             if fmt and v is None and a and actionfmt.matches(fmt, a) and not (rejected and fallback.norm(a) == fallback.norm(rejected)):
@@ -318,7 +319,7 @@ def on_turn(msg, wk):
         rej = warning.get("rejected") if warning else None
         fixed = actionfmt.repair(fmt, action) or fallback.fallback_action(
             legal, art, rejected=rej, conservative=bool(warning), avoid_also=list(mine) + ([rej] if rej else []),
-            observation=obs, warning=warning)
+            observation=obs, warning=warning, rules=rules_text)
         protocol.log(f"template gate: {action!r} -> {fixed!r}")
         action, source = fixed, "fallback"
         meta["tool"] = "fallback"

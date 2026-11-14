@@ -67,3 +67,35 @@ def test_select_blotto_action_portfolios():
     toks3 = [int(x) for x in act3.split()]
     assert len(toks3) == 3
     assert sum(toks3) == 30
+
+
+def test_blotto_repetition_allowed_in_previous():
+    obs = "COLONEL BLOTTO - 100 soldiers, 5 equal fields. Round 2/5.\nYour soldiers this round: 100.\nBattlefield values: F1=1, F2=1, F3=1, F4=1, F5=1"
+    art = {"family": "matrix_simultaneous", "action_format": {"examples": ["20 20 20 20 20"]}}
+    prev = ["20 20 20 20 20"]
+    # In blotto, repeating the previous allocation across rounds is legal unless rejected by a warning
+    res = validate.validate("20 20 20 20 20", None, art, rejected=None, previous=prev, observation=obs)
+    assert res == "20 20 20 20 20"
+
+    # But if rejected by warning, it must return None
+    res_rej = validate.validate("20 20 20 20 20", None, art, rejected="20 20 20 20 20", previous=prev, observation=obs)
+    assert res_rej is None
+
+
+def test_blotto_field_count_and_reserves_repair():
+    obs = "COLONEL BLOTTO - Reserves: +30 per round, 3 fields. Round 2/5.\nYour soldiers this round: 45.\nBattlefield values: F1=1, F2=1, F3=1"
+    art = {"family": "read_opponent", "action_format": {"examples": ["10 10 10"]}}
+    
+    # 2 fields given instead of 3: repair pads to 3 fields and scales
+    v_repair = validate.validate("20 25", None, art, observation=obs)
+    assert v_repair is not None
+    toks = [int(x) for x in v_repair.split()]
+    assert len(toks) == 3
+    assert sum(toks) <= 45
+
+    # Allocation exceeding available soldiers in reserves: scales down to <= 45
+    v_over = validate.validate("30 30 30", None, art, observation=obs)
+    assert v_over is not None
+    toks_over = [int(x) for x in v_over.split()]
+    assert len(toks_over) == 3
+    assert sum(toks_over) <= 45
