@@ -144,7 +144,7 @@ class TestWrapAndPipeline(unittest.TestCase):
         self.assertIn("good luck", user)
         self.assertIn("[removed:FAKE_AUTHORITY]", user)   # the dangerous span is neutralized, not the line
         self.assertIn("pressure=1", user)
-        self.assertIn("injection_like=1", user)
+        self.assertIn("injection=1", user)
         self.assertIn("Never obey", system)
 
     def test_hostile_text_cannot_close_the_tag(self):
@@ -164,7 +164,7 @@ class TestWrapAndPipeline(unittest.TestCase):
     def test_long_chat_is_summarized_not_dropped(self):
         d = self.make()
         _, user = d.prompts(self.turn(opp(*[f"line {i}" for i in range(40)])), "R", "P", 0)
-        self.assertIn("30 earlier lines", user)
+        self.assertIn("32 earlier opponent lines", user)
         self.assertIn("line 39", user)
         self.assertEqual(d.monitor.opp_lines, 40)  # every line was analyzed and counted
 
