@@ -1,7 +1,8 @@
 """Haiku client (the only hosted model allowed, 7.7) built from the latest `llm` block (7.2).
 
 Used only inside the worker process. Every call has a timeout; empty or cut-off output -> None.
-STUB_LLM=1 returns canned JSON (tests, no network).
+BOT_STUB_LLM=1 (BOT_* reaches the container; legacy STUB_LLM=1 still works) returns canned JSON (tests, no network).
+BOT_STUB_LLM_REPLY (legacy STUB_LLM_REPLY) sets the canned reply.
 """
 import json
 import os
@@ -13,6 +14,11 @@ PRICE_OUT = 0.50 / 1e6
 SKIP_AFTER_FAILS = 2
 SKIP_TURNS = 3
 BUDGET_GUARD = 0.40  # per match (9.3): above this, no more model calls
+
+
+def _env(new, old, default=None):
+    v = os.environ.get(new)
+    return v if v is not None else os.environ.get(old, default)
 
 
 def _log(*a):
@@ -32,7 +38,8 @@ class LLM:
         self.fails = 0
         self.skip = 0
         self._client = None
-        self.stub = os.environ.get("STUB_LLM") == "1"
+        self.stub = _env("BOT_STUB_LLM", "STUB_LLM") == "1"
+        self.last_error = None  # reason the last call of this turn produced nothing (None = ok / no call)
 
     def available(self) -> bool:
         if self.skip > 0:
@@ -44,8 +51,10 @@ class LLM:
 
     def tick_turn(self):
         """Call once per turn: counts down the post-failure pause."""
+        self.last_error = None
         if self.skip > 0:
             self.skip -= 1
+            self.last_error = "skipped"
 
     def _fail(self):
         self.fails += 1
@@ -54,7 +63,7 @@ class LLM:
 
     def _call(self, system, user, thinking_budget, max_tokens, timeout):
         if self.stub:
-            return os.environ.get("STUB_LLM_REPLY", '{"a": "", "c": "Good game."}')
+            return _env("BOT_STUB_LLM_REPLY", "STUB_LLM_REPLY", '{"a": "", "c": "Good game."}')
         if self._client is None:
             from openai import OpenAI
             self._client = OpenAI(base_url=self.info["base_url"], api_key=self.info["api_key"], max_retries=0)
@@ -76,15 +85,18 @@ class LLM:
     def ask(self, system: str, user: str, *, prep: bool = False, timeout: float = 8.0) -> str | None:
         """Match call: thinking off, 250 tokens. Prep call: thinking 2000, max 4000. None on any failure."""
         if not self.available():
+            self.last_error = "skipped" if self.skip > 0 else "unavailable"
             return None
         try:
             text = (self._call(system, user, 2000, 4000, timeout) if prep
                     else self._call(system, user, 0, 250, timeout))
         except Exception as e:  # network, auth, timeout...
             _log("llm error:", type(e).__name__, str(e)[:120])
+            self.last_error = f"{type(e).__name__}: {str(e)[:80]}"
             self._fail()
             return None
         if not text or not text.strip():
+            self.last_error = "empty_or_cut_off"
             self._fail()
             return None
         self.fails = 0

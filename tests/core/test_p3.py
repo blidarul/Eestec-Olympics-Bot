@@ -99,4 +99,7 @@ def test_end_writes_log(tmp_path):
     end = {"type": "end", "game_index": 1, "result": "win", "reason": "x", "match_over": False}
     out, _ = run([START, TURN, end, {"type": "shutdown"}], {"MEMORY_DIR": str(tmp_path)})
     logs = [os.path.join(r, f) for r, _, fs in os.walk(tmp_path) for f in fs if f == "log.jsonl"]
-    assert logs and json.loads(open(logs[0]).readline())["result"] == "win"
+    recs = [json.loads(l) for l in open(logs[0])]
+    assert any(r.get("result") == "win" for r in recs)
+    dec = [r for r in recs if r.get("kind") == "decision"]
+    assert dec and {"game", "turn", "source", "answer_ms", "model_error"} <= set(dec[0])

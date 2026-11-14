@@ -80,6 +80,7 @@ def wk_filter(text, forbidden):
 
 def on_turn(msg, wk):
     t0 = time.monotonic()
+    source, model_error = "fallback", None
     art = STATE["artifacts"]
     legal = msg.get("legal_actions")
     # fallback FIRST, from the message alone
@@ -97,19 +98,35 @@ def on_turn(msg, wk):
             "opponent_chat": chat_texts(msg.get("chat")), "artifacts": art},
             "llm": STATE["llm"], "match_id": game.get("match_id"), "budget": max(0.5, limit - 2.0)}
         ans = wk.ask(req, limit - (time.monotonic() - t0) - 0.5)
+        if not ans:
+            model_error = "worker_timeout_or_error"
         if ans:
             a, c = ans.get("action"), ans.get("chat")
             a = a if isinstance(a, str) else ""
             rejected = (msg.get("warning") or {}).get("rejected") if isinstance(msg.get("warning"), dict) else None
             v = validate.validate(a, legal, art, rejected)
+            model_error = ans.get("model_error")
             if v is not None:
                 action = v
+                source = ans.get("source") if ans.get("source") in ("model", "strategy", "fallback") else "fallback"
                 chat = protocol.clean_chat(c) or fb_chat
     except Exception:
         traceback.print_exc()
     chat = wk_filter(protocol.clean_chat(chat), art.get("forbidden_terms") or [])
     protocol.send({"type": "action", "action": action, "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
-    protocol.log(f"turn {msg.get('turn')}: {action!r} in {time.monotonic() - t0:.2f}s")
+    log_decision(msg, source, time.monotonic() - t0, model_error)
+
+
+def log_decision(msg, source, secs, model_error):
+    """One line per decision on stderr and in log.jsonl: game, turn, source, answer_ms, model_error."""
+    g = STATE["game"]
+    rec = {"kind": "decision", "game": g.get("game_id"), "game_index": msg.get("game_index"), "turn": msg.get("turn"),
+           "source": source, "answer_ms": int(secs * 1000), "model_error": model_error}
+    protocol.log("decision " + json.dumps(rec, default=str))
+    try:
+        memory.append_log(memory.game_dir(g.get("game_id", ""), g.get("rules", "")), rec)
+    except Exception:
+        traceback.print_exc()
 
 
 def on_end(msg):
