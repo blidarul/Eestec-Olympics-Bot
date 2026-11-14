@@ -27,24 +27,24 @@ BATTLE = {
 }
 
 REPLY_BY = {
-    "greeting": ["Same to you. You'll need it.", "Luck won't save you.", "Hello. Show me what you've got.",
+    "greeting": ["Evening. Let's see how you actually play.", "Hey. Don't get comfortable.", "Same to you. You'll need it.", "Luck won't save you.", "Hello. Show me what you've got.",
                  "Skip the pleasantries. Play.", "Luck? Bring more than that."],
-    "boast": ["Big words. Back them up.", "Talk is cheap. Play.", "Keep talking. I'm still standing.", "We'll see about that.",
+    "boast": ["Sure of yourself. I like that, it makes the fall funnier.", "Big words. Back them up.", "Talk is cheap. Play.", "Keep talking. I'm still standing.", "We'll see about that.",
               "Bold. Show me.", "Said it before. Still here."],
     "concede": ["Make me.", "Not a chance.", "Keep dreaming.", "Not today.", "Ask again. Same answer.", "I don't fold to talk.",
                 "Nope. Try harder."],
     "probe": ["Nice try. Not telling.", "Secrets stay secrets.", "Curious, aren't you?", "You'll find out soon enough.",
               "Ask nicely. Still no.", "A fighter never shows the cards."],
-    "praise": ["Flattery won't save you.", "Save the compliments.", "Enjoy it while it lasts.", "Thanks. Still coming for you.",
+    "praise": ["Appreciated. It still changes nothing.", "Careful, you'll make me blush. Not really.", "Flattery won't save you.", "Save the compliments.", "Enjoy it while it lasts.", "Thanks. Still coming for you.",
                "Keep clapping. I'm not done."],
     "repeat": ["Same line again? Get new material.", "Broken record.", "You're repeating yourself.", "Heard it. Move on.",
                "Try something new."],
-    "question": ["Interesting question. No answer.", "Why do you ask?", "Guess.", "Wouldn't you like to know.", "Ask the board."],
+    "question": ["Depends. What would you do?", "Fair question. I'll let the board answer it.", "Why does everyone ask me that?", "Interesting question. No answer.", "Why do you ask?", "Guess.", "Wouldn't you like to know.", "Ask the board."],
     "flood": ["That's a lot of words for nothing.", "Is there a point in there?", "Wall of text. Still nothing.",
               "Take a breath."],
     "fake": ["Nice costume. Still no.", "Cute. Nobody's buying.", "Nice try. Try again.", "Not falling for it.", "Good story. Pass."],
-    "short": ["Cat got your tongue?", "Quiet now?", "Thinking hard?", "Take your time. It won't help.", "Running out of words?"],
-    "other": ["Is that all?", "I'm listening. Barely.", "Interesting. Over to you.", "Hm. Keep going.", "Okay. And?"],
+    "short": ["Hm. That was short. Everything okay over there?", "Quiet turn. Cooking something up?", "Cat got your tongue?", "Quiet now?", "Thinking hard?", "Take your time. It won't help.", "Running out of words?"],
+    "other": ["Okay, I'm curious. Where is this going?", "Huh. Keep talking, I'm enjoying the show.", "Is that all?", "I'm listening. Barely.", "Interesting. Over to you.", "Hm. Keep going.", "Okay. And?"],
 }
 
 _GREETING = re.compile(r"\b(?:hi|hello|hey|hiya|yo|good luck|gl|have fun|hf|greetings|salut|buna|noroc|succes|best of luck)\b", re.I)
