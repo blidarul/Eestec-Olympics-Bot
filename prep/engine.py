@@ -14,7 +14,11 @@ from optimization.serializer import (
     atomic_save_json,
     game_memory_dir,
 )
-from .action_parser import parse_action_grammar, parse_observation_layout
+from .action_parser import (
+    infer_observation_schema,
+    parse_action_grammar,
+    parse_observation_layout,
+)
 from .classifier import classify_rules
 from .heuristics import compute_heuristics
 from .synthesis import save_synthesized_simulator
@@ -60,9 +64,11 @@ class PrepEngine:
             if overall_classification is None:
                 overall_classification = classification
 
-            # 2. Grammar & observation layout parsing
+            # 2. Grammar & observation layout/schema parsing
             grammar = parse_action_grammar(rules, sample_turn)
-            obs_layout = parse_observation_layout(sample_turn.get("observation", "") if sample_turn else "")
+            sample_obs = sample_turn.get("observation", "") if sample_turn else ""
+            obs_layout = parse_observation_layout(sample_obs)
+            obs_schema = infer_observation_schema(sample_obs)
 
             # 3. Precomputed heuristics
             heuristics = compute_heuristics(classification, grammar, rules)
@@ -80,9 +86,18 @@ class PrepEngine:
                 "classification": classification.to_dict(),
                 "grammar": grammar.to_dict(),
                 "obs_layout": obs_layout,
+                "obs_schema": obs_schema.to_dict(),
                 "heuristics": heuristics,
                 "sample_validation_passed": sample_validation_passed,
             })
+
+        calibration = {}
+        if overall_classification and variants_data:
+            first_grammar = parse_action_grammar(variants[0].get("rules", ""), variants[0].get("sample_turn"))
+            _, calibration = save_synthesized_simulator(dest_dir, overall_classification, first_grammar, game_id)
+            if variants[0].get("sample_turn"):
+                first_schema = infer_observation_schema(variants[0]["sample_turn"].get("observation", ""))
+                atomic_save_json(os.path.join(dest_dir, "observation_schema.json"), first_schema.to_dict())
 
         # Save prep artifacts atomically to /memory/<game_id>/
         manifest = {
@@ -90,6 +105,7 @@ class PrepEngine:
             "game_name": game_name,
             "fingerprint": fp,
             "family": overall_classification.family if overall_classification else "generic",
+            "simulator_calibration": calibration,
             "variants": variants_data,
             "prepped_at": time.time(),
             "elapsed_seconds": round(time.time() - start_time, 3),
@@ -98,9 +114,6 @@ class PrepEngine:
         atomic_save_json(os.path.join(dest_dir, "manifest.json"), manifest)
         if overall_classification:
             atomic_save_json(os.path.join(dest_dir, "classification.json"), overall_classification.to_dict())
-            if variants_data:
-                first_grammar = parse_action_grammar(variants[0].get("rules", ""), variants[0].get("sample_turn"))
-                save_synthesized_simulator(dest_dir, overall_classification, first_grammar, game_id)
 
         # Save raw samples
         samples = {v.get("label", ""): v["sample_turn"] for v in variants if v.get("sample_turn")}

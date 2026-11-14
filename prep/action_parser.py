@@ -217,6 +217,75 @@ def extract_game_parameters(rules_text: str) -> dict[str, Any]:
     return params
 
 
+@dataclass
+class ObservationSchema:
+    has_grid: bool = False
+    grid_rows: int = 0
+    grid_cols: int = 0
+    patterns: dict[str, str] = field(default_factory=dict)
+
+    def extract(self, obs_text: str) -> dict[str, Any]:
+        result = parse_observation_layout(obs_text)
+        for key, pat in self.patterns.items():
+            if key not in result:
+                m = re.search(pat, obs_text, re.IGNORECASE)
+                if m:
+                    try:
+                        result[key] = int(m.group(1))
+                    except ValueError:
+                        result[key] = m.group(1).strip()
+        return result
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "has_grid": self.has_grid,
+            "grid_rows": self.grid_rows,
+            "grid_cols": self.grid_cols,
+            "patterns": self.patterns,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> ObservationSchema:
+        return cls(
+            has_grid=bool(data.get("has_grid", False)),
+            grid_rows=int(data.get("grid_rows", 0)),
+            grid_cols=int(data.get("grid_cols", 0)),
+            patterns=data.get("patterns", {}),
+        )
+
+
+def infer_observation_schema(sample_obs: str) -> ObservationSchema:
+    """Infer field extraction regexes and layout structure from a real sample observation."""
+    if not sample_obs:
+        return ObservationSchema()
+
+    patterns: dict[str, str] = {}
+    candidate_keys = [
+        ("round", r"round\s+(\d+)"),
+        ("turn", r"turn\s+(\d+)"),
+        ("seat", r"(?:player|seat)\s+(\d+)"),
+        ("score", r"(?:score|points)[^:\d]*[:\s]+(\d+)"),
+        ("secret", r"(?:secret(?: number)?|hidden)[^:\d]*[:\s]+(\d+)"),
+        ("banked", r"banked[^:\d]*[:\s]+(\d+)"),
+        ("turn_total", r"turn total[^:\d]*[:\s]+(\d+)"),
+    ]
+
+    for key, pat in candidate_keys:
+        if re.search(pat, sample_obs, re.IGNORECASE):
+            patterns[key] = pat
+
+    layout = parse_observation_layout(sample_obs)
+    has_grid = bool(layout.get("grid"))
+    grid_size = layout.get("grid_size", (0, 0))
+
+    return ObservationSchema(
+        has_grid=has_grid,
+        grid_rows=grid_size[0],
+        grid_cols=grid_size[1],
+        patterns=patterns,
+    )
+
+
 def _extract_action_section(rules_text: str) -> str:
     """Extract ACTION FORMAT section or similar instruction blocks from rules text."""
     pattern = re.compile(r"ACTION\s+FORMAT\s*:?\s*(.*?)(?=\n[A-Z\s]{4,}|\Z)", re.DOTALL | re.IGNORECASE)

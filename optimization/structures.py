@@ -116,13 +116,15 @@ class BitBoard:
 
 
 class FastGrid:
-    """Zero-allocation grid with in-place move/undo and history stack for minimax search."""
-    __slots__ = ("size", "cells", "history")
+    """Zero-allocation grid with in-place move/undo and incremental Zobrist hash tracking."""
+    __slots__ = ("size", "cells", "history", "zobrist_hash", "hasher")
 
-    def __init__(self, size: int = 3):
+    def __init__(self, size: int = 3, hasher: Any = None):
         self.size = size
         self.cells: list[int | None] = [None] * (size * size)
-        self.history: list[int] = []
+        self.history: list[tuple[int, int]] = []  # (idx, player)
+        self.hasher = hasher
+        self.zobrist_hash = hasher.turn_keys[0] if hasher else 0
 
     def get(self, r: int, c: int) -> int | None:
         return self.cells[r * self.size + c]
@@ -133,13 +135,19 @@ class FastGrid:
     def make_move(self, r: int, c: int, player: int) -> None:
         idx = r * self.size + c
         self.cells[idx] = player
-        self.history.append(idx)
+        self.history.append((idx, player))
+        if self.hasher:
+            self.zobrist_hash ^= self.hasher.hash_cell(idx, player)
+            self.zobrist_hash = self.hasher.toggle_turn(self.zobrist_hash)
 
     def undo_move(self) -> int | None:
         if not self.history:
             return None
-        idx = self.history.pop()
+        idx, player = self.history.pop()
         self.cells[idx] = None
+        if self.hasher:
+            self.zobrist_hash ^= self.hasher.hash_cell(idx, player)
+            self.zobrist_hash = self.hasher.toggle_turn(self.zobrist_hash)
         return idx
 
     def empty_cells(self) -> list[tuple[int, int]]:

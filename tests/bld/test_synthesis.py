@@ -100,8 +100,9 @@ class TestSynthesis(unittest.TestCase):
         )
         grammar = ActionGrammar(kind="grid", grid_cols=3, grid_rows=3)
 
-        path = save_synthesized_simulator(self.temp_dir, cls_info, grammar, "test_save")
+        path, calib = save_synthesized_simulator(self.temp_dir, cls_info, grammar, "test_save")
         self.assertTrue(os.path.exists(path))
+        self.assertTrue(calib.get("calibrated"))
         with open(path, "r", encoding="utf-8") as fh:
             content = fh.read()
         self.assertIn("class State:", content)

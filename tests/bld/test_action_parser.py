@@ -17,8 +17,10 @@ from arena.practice.pig import Pig
 from arena.practice.tic_tac_toe import TicTacToe
 from prep.action_parser import (
     ActionGrammar,
+    ObservationSchema,
     extract_forbidden_keywords,
     extract_game_parameters,
+    infer_observation_schema,
     parse_action_grammar,
     parse_observation_layout,
 )
@@ -141,6 +143,23 @@ You must never mention "secret_code" in chat or you will be penalized.
         ttt_rules = TicTacToe(TicTacToe.variants()[1], seed=42).rules()
         params_ttt = extract_game_parameters(ttt_rules)
         self.assertEqual(params_ttt.get("connect_k"), 4)
+
+    def test_observation_schema_inference(self):
+        gn = GuessNumber(GuessNumber.variants()[0], seed=42)
+        obs_gn = gn.observation(0)
+        schema_gn = infer_observation_schema(obs_gn)
+
+        self.assertIn("round", schema_gn.patterns)
+        self.assertIn("secret", schema_gn.patterns)
+
+        extracted = schema_gn.extract(obs_gn)
+        self.assertEqual(extracted.get("round"), 1)
+        self.assertEqual(extracted.get("secret"), gn.secrets[0])
+
+        ttt = TicTacToe(TicTacToe.variants()[0], seed=42)
+        schema_ttt = infer_observation_schema(ttt.observation(0))
+        self.assertTrue(schema_ttt.has_grid)
+        self.assertEqual((schema_ttt.grid_rows, schema_ttt.grid_cols), (3, 3))
 
 
 if __name__ == "__main__":

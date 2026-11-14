@@ -6,6 +6,7 @@ Owned by agent `bld`.
 from __future__ import annotations
 
 import os
+import time
 from typing import Any
 
 from optimization.serializer import atomic_write_bytes
@@ -192,14 +193,63 @@ class State:
 '''
 
 
+def calibrate_simulator(
+    StateClass: Any,
+    sample_turn: dict | None = None,
+    max_steps: int = 2,
+) -> dict[str, Any]:
+    """Micro-benchmark the synthesized simulator (up to 2 turns/steps) to verify step() and legal_actions()."""
+    try:
+        state = StateClass()
+        initial_actions = state.legal_actions()
+
+        current_state = state
+        steps_executed = 0
+        start_time = time.perf_counter()
+
+        for _ in range(max_steps):
+            if current_state.is_terminal():
+                break
+            acts = current_state.legal_actions()
+            if not acts:
+                break
+            current_state = current_state.step(acts[0])
+            steps_executed += 1
+
+        elapsed = time.perf_counter() - start_time
+        rate = (steps_executed / elapsed) if elapsed > 0 else 50000.0
+
+        return {
+            "calibrated": True,
+            "steps_executed": steps_executed,
+            "initial_actions_count": len(initial_actions),
+            "transitions_per_sec": round(rate, 1),
+            "is_terminal_verified": current_state.is_terminal(),
+        }
+    except Exception as exc:
+        return {
+            "calibrated": False,
+            "error": str(exc),
+        }
+
+
 def save_synthesized_simulator(
     destination_dir: str,
     classification: GameClassification,
     grammar: ActionGrammar,
     game_id: str,
-) -> str:
-    """Generate and write synthesized simulator to destination directory."""
+) -> tuple[str, dict[str, Any]]:
+    """Generate, write, and calibrate synthesized simulator to destination directory."""
     code = synthesize_simulator_code(classification, grammar, game_id)
     path = os.path.join(destination_dir, "simulator.py")
     atomic_write_bytes(path, code.encode("utf-8"))
-    return path
+
+    # Compile and calibrate (max 2 steps)
+    namespace: dict[str, Any] = {}
+    try:
+        exec(code, namespace)
+        calibration = calibrate_simulator(namespace.get("State"), max_steps=2)
+    except Exception as exc:
+        calibration = {"calibrated": False, "error": str(exc)}
+
+    return path, calibration

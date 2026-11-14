@@ -164,7 +164,8 @@ def compute_heuristics(
             stop_action=stop_act,
         )
 
-        heuristics["opening_moves"] = [continue_act]
+        # Leave opening_moves empty for discrete accumulator games to avoid locking fallback policy to continue_act forever
+        heuristics["opening_moves"] = []
         heuristics["strategy_hints"] = stopping_policy
 
     elif family == "deduction":
