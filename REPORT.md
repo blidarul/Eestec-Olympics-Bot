@@ -7,7 +7,7 @@ This report verifies every item in Rule 14.7 of `docs/RULEBOOK.md` before the `t
 - **Release Tag**: `t2`
 - **Container Registry**: `harbor.hackaton-2026.dvloper.io/linux-pioneers/bot`
 - **Image Tags**: `:t2`, `:latest`, `:dev`
-- **Image Digest**: `sha256:c827e2639eddae1d0729d9f22ab4efa9b98e67aea15b05eb9ef272e6b7b22067`
+- **Image Digest**: `sha256:e38c25ffecbc11dd03a8fd073ef6bd2c75bbaa7d530e964d5ab93eefae9807c6`
 
 ---
 
