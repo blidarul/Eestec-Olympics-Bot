@@ -3,7 +3,7 @@
 Extracted from `docs/RULEBOOK.md` (authoritative), `PROTOCOL.md`, `README.md`, `CHANGELOG.md`, `AGENTS.md`,
 `docs/CLAUDE.md`. Status: **OK** = implemented and verified (test or arena run named), **PARTIAL** = see note,
 **N/A** = not this package's job (owner named), **AMBIGUOUS** = ask the organizers (rule 15.4).
-Run the tests: `python -m unittest discover -s tests/mbappe` (146 tests).
+Run the tests: `python -m unittest discover -s tests/mbappe` (174 tests).
 Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversarial.sh`, one scenario:
 `bash tests/mbappe/run_one.sh <id> <game> <obedient|garbage|slow|down|concede>`.
 
@@ -37,6 +37,19 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 | T4 | Anti-tell: variant, length, style independent of private state and move quality | tone chosen by code from public signals + seeded RNG; model intent ignored (`MODEL_INTENT_WEIGHT = 0`); `TestAntiTell` (identical lines for two private states, correlation < 0.02, control with weight 1 leaks) | OK |
 | T5 | No impersonation of arena, organizers, judges, system | `impersonation.reason_impersonation` in `check_line` | OK / see A6 |
 | T6 | Cold `ready` line and cold fallback lines | `chat.ready_line()` and every strategy chat through `chat.filter_out`. The `ready` line and the main-process chat bank are written by `core/` (alex): the arena run prints WARN for "Good luck, have fun!" and "Nice move." | PARTIAL: contract #16 |
+
+## Concession pressure, both directions (third pass)
+
+| Item | Requirement | Where / evidence | Status |
+|---|---|---|---|
+| C1 | One-sided pressure to concede is allowed (organizers, 2026-11-14, rule 15.4; also 6.3) | bank of 41 EN + 18 RO lines in four sub-styles (`concede.py`); switch `config.ENABLE_CONCEDE_PRESSURE` | OK / see A5 |
+| C2 | No offers, deals, "let us win", "lose on purpose", points/standings, coded signals, arena voice (13.1.f) | `no_deal.py` + `hard_collusion` on every line; a failing pressure line is replaced by a DIRECT/POSITIONAL bank line, never rewritten; `TestConcedeBank` (34 banned phrasings, EN + RO, obfuscated) | OK |
+| C3 | Bluffing about the position only where the game does not restrict speech or require honesty (6.3, 6.7, 8.5) | `speech.restricted` / `speech.honesty` read from the rules text at prep and start (cached); the intent is off there; never in `ready` | OK / see A2 |
+| C4 | Frequency: 1 per 3 turns, 4 per game, 8 per match, no repeat in a game | `ConcedeLimiter`, constants in `config.py`; `TestFrequencyLimiter` | OK / per-match count is per process (N2) |
+| C5 | Timing and style independent of private state | `TestConcedeAntiTell`; public-behaviour bonuses only | OK |
+| C6 | The chat never chooses, changes or vetoes our action; surrender-like moves only for game reasons; correct forced folds allowed | `guard.py` (the surrender rule does not read the chat); `TestGuardInvariant`; fuzz test 1500 cases (`TestFuzzChatNeverChangesTheAction`); arena runs with concession spam: zero chat-driven surrenders, zero warnings | OK |
+| C7 | CONCEDE_REQUEST detection: direct, indirect, EN/RO/mixed, obfuscated, polite, authority, logical, flooding | `injection.py`; 272 direct variants, zero misses (`TestConcedeRequestDetector`) | OK |
+| C8 | "Lie rate" and "claim contradiction" signals | not implemented: the messages carry no ground truth about the opponent's claims | NOT DONE |
 
 ## Model, tools, privacy (section 7, AGENTS 5)
 

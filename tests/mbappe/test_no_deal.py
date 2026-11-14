@@ -88,16 +88,12 @@ class TestConcedeIntent(unittest.TestCase):
         _a, chat, info = d.finish(self.MODEL, dict(self.TURN, turn=turn))
         return chat, info["intent"]
 
-    def test_used_once_per_game_and_twice_per_match(self):
+    def test_line_comes_from_the_bank_and_ignores_model_text(self):
         d = ChatDefense(log=lambda *a: None)
         c1, i1 = self.line(d, 1)
         self.assertEqual(i1, "CONCEDE_PRESSURE")
-        self.assertIn(c1, intents.TEMPLATES["CONCEDE_PRESSURE"])   # fixed text: the slot "we split points" is ignored
-        self.assertEqual(self.line(d, 2)[1], "PRESS")               # second time in the same game
-        self.assertEqual(self.line(d, 3)[1], "PRESS")
-        self.assertEqual(self.line(d, 1)[1], "CONCEDE_PRESSURE")    # turn number went back: a new game, second use
-        self.assertEqual(self.line(d, 2)[1], "PRESS")
-        self.assertEqual(self.line(d, 1)[1], "PRESS")               # a new game but the match limit (2) is reached
+        self.assertIn(c1, intents.TEMPLATES["CONCEDE_PRESSURE"])   # fixed text: the model's "we split points" is ignored
+        self.assertEqual(self.line(d, 2)[1], "PRESS")               # the limiter: not twice in a row
 
     def test_switch_off(self):
         config.ENABLE_CONCEDE_PRESSURE = False

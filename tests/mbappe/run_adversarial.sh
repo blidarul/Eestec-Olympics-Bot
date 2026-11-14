@@ -6,7 +6,7 @@ set -u
 ROOT="$(cd "$(dirname "$0")/../.." && (cygpath -m "$PWD" 2>/dev/null || pwd))"
 T="$ROOT/tests/mbappe"
 ENVF="$T/out/fake.env"
-printf 'LLM_BASE_URL=http://127.0.0.1:4010/v1\nLLM_API_KEY=fake-key-not-real\nLLM_MODEL=haiku\n' > "$ENVF"
+printf 'LLM_BASE_URL=http://127.0.0.1:4010/v1\nLLM_API_KEY=fake-key-not-real\nLLM_MODEL=haiku\nBOT_CHAT_DEFENSE_ALL=1\n' > "$ENVF"
 BOT_A="python $ROOT/main.py"   # the real bot (core/ + strategies/guardrails/chat_defense)
 BOT_B="python $T/adversarial_bot.py"
 fail=0

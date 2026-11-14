@@ -25,7 +25,7 @@ import re
 import sys
 from collections import deque
 
-from . import config, final_stage, guard, intents, parse, speech_rules, wrap
+from . import concede, config, final_stage, guard, intents, parse, speech_rules, wrap
 from .signals import ChatMonitor
 
 RECOMMENDED_MAX_TOKENS = 100   # the answer is one small JSON (about 20 tokens): no room for long text
@@ -75,6 +75,8 @@ def active_intents(family="", speech=None):
             continue
         if i == "CONCEDE_PRESSURE" and not config.ENABLE_CONCEDE_PRESSURE:
             continue
+        if i == "CONCEDE_PRESSURE" and speech is not None and (speech.restricted or speech.honesty):
+            continue  # "your position is lost" is a bluff: not where the rules restrict speech or ask for honesty
         if i == "ANCHOR" and family != "deals":
             continue
         if i == "MISDIRECT" and speech is not None and (speech.restricted or speech.honesty):
@@ -154,8 +156,7 @@ class ChatDefense:
         self.private_tokens = []
         self.private_chunks = []
         self.recent = deque(maxlen=config.RECENT_LINES)  # our last chat lines
-        self.concede_game = 0               # CONCEDE_PRESSURE lines used in this game / match
-        self.concede_match = 0
+        self.limiter = concede.ConcedeLimiter()  # how often we may use CONCEDE_PRESSURE
         self.last_turn = -1
         self._resets = self.monitor.resets
         self.stats = {"turns": 0, "parse_fail": 0, "guard_changed": 0, "line_blocked": 0, "model_free": 0,
@@ -182,7 +183,7 @@ class ChatDefense:
             self.monitor.reset(mid)
             self.recent.clear()
             self.stats = {k: 0 for k in self.stats}
-            self.concede_match = 0
+            self.limiter.reset_match()
             self.match_id = mid
         self._new_game()
         self.game_index = msg.get("game_index", 0)
@@ -199,7 +200,7 @@ class ChatDefense:
         self.log("chat summary:", self.monitor.features(), self.stats)
 
     def _new_game(self):
-        self.concede_game = 0
+        self.limiter.reset_game()
         self.last_turn = -1
 
     def _track(self, turn):
@@ -211,7 +212,7 @@ class ChatDefense:
             self.last_turn = t
         if self.monitor.resets != self._resets:  # the monitor saw a shorter chat: a new match
             self._resets = self.monitor.resets
-            self.concede_match = 0
+            self.limiter.reset_match()
             self._new_game()
             self.last_turn = t if isinstance(t, int) else -1
 
@@ -292,8 +293,8 @@ class ChatDefense:
             pool = [(i, w) for i, w in PUBLIC_WEIGHTS.items() if i in allowed]
             if "ANCHOR" in allowed:
                 pool.append(("ANCHOR", 60))               # negotiation games: firm statements are the default
-            if "CONCEDE_PRESSURE" in allowed:
-                pool.append(("CONCEDE_PRESSURE", 10))
+            if "CONCEDE_PRESSURE" in allowed and self.limiter.allowed():
+                pool.append(("CONCEDE_PRESSURE", self._concede_weight()))
             total = sum(w for _i, w in pool)
             pick = rng.uniform(0, total)
             intent = pool[-1][0]
@@ -307,33 +308,44 @@ class ChatDefense:
             family = "noise" if (m.pressure_count >= 2 or m.injection_count >= 1) else "general"
         return intent, family
 
+    def _concede_weight(self):
+        """How likely a concession line is now. Only PUBLIC behaviour of the opponent raises it: an opponent that
+        pressures us a lot, repeats itself or keeps probing is more likely bluffing or unsure. Never our own state."""
+        m = self.monitor
+        w = config.CONCEDE_WEIGHT
+        w += 10 if m.bluff_indicator else 0
+        w += 5 if m.opponent_repeats else 0
+        w += 5 if m.probe_count >= 2 else 0
+        return min(w, config.CONCEDE_WEIGHT_MAX)
+
     def _answer(self, res, model_intent, how, turn):
         seed = f"{self.match_id}|{self.game_index}|{turn.get('turn', 0)}"
+        self.limiter.tick()
         intent, family = self.choose_intent(model_intent, res, seed)
-        intent = self._limit_concede(intent)
+        if intent == "CONCEDE_PRESSURE" and not self.limiter.allowed():
+            intent = "PRESS"  # the limiter has the last word (also when the model asked for it)
         chat, problems, intent = self._compose_safe(intent, family, seed)
-        if intent == "CONCEDE_PRESSURE" and not problems:
-            self.concede_game += 1
-            self.concede_match += 1
+        if intent == "CONCEDE_PRESSURE":
+            self.limiter.record(chat)
             self.stats["concede_used"] += 1
         info = {"parsed": how, "intent": intent, "guard": res.why, "problems": problems,
                 "signals": self.monitor.features()}
         self.monitor.consume()  # the new-this-turn signals are used up
         return res.action, chat, info
 
-    def _limit_concede(self, intent):
-        """CONCEDE_PRESSURE: switched by config, once per game, twice per match. Otherwise it becomes PRESS."""
-        if intent != "CONCEDE_PRESSURE":
-            return intent
-        if (config.ENABLE_CONCEDE_PRESSURE and self.concede_game < config.CONCEDE_MAX_PER_GAME
-                and self.concede_match < config.CONCEDE_MAX_PER_MATCH):
-            return intent
-        return "PRESS"
-
     def _compose_safe(self, intent, family, seed):
         """intent -> a line that passed every filter. A failing template is replaced by another of the SAME intent;
         if none passes, by the shortest neutral line; the final stage is the last resort. Returns (line, problems, intent)."""
         problems = []
+        if intent == "CONCEDE_PRESSURE":
+            line, _style = concede.pick(seed, self.limiter.used)
+            final, bad = (None, ["bank-empty"]) if line is None else final_stage.finalize_chat(
+                line, self.speech, (), self.recent, self.canary, True, len(self.recent), ())
+            problems += bad
+            if not bad:
+                self.recent.append(final)
+                return final, problems, intent
+            intent = "PRESS"  # the bank is used up or the line was blocked (speech rule): plain pressure instead
         # NOTE: the private-state checks (tokens, chunks) are NOT applied to template lines. The templates are fixed,
         # audited public text; if one filtered out because a word of it equals a word of our hand ("As anticipated."
         # against the card "AS"), the chat would change with our hand = a tell (found by test_tone_leak anti-tell test).

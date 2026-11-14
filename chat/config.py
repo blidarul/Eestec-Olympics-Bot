@@ -5,8 +5,12 @@ rational move"). The team reports that the organizers confirmed on 2026-11-14 (r
 It is NOT checked anywhere in code; it is also covered by rule 6.3 ("pressure"). Set to False to switch the intent off completely (it then becomes PRESS).
 """
 ENABLE_CONCEDE_PRESSURE = True
-CONCEDE_MAX_PER_GAME = 1     # at most once per game
-CONCEDE_MAX_PER_MATCH = 2    # and twice per match (counted by this process, see CHAT_DEFENSE.md)
+CONCEDE_MIN_GAP = 3          # at most one concession line per 3 of OUR turns (so never twice in a row)
+CONCEDE_MAX_PER_GAME = 4     # at most 4 per game (and never the same line twice in a game)
+CONCEDE_MAX_PER_MATCH = 8    # at most 8 per match (counted by this process, see CHAT_DEFENSE.md)
+CONCEDE_LANGUAGE = "en"      # "en", "ro" or "mix": which phrase bank is used
+CONCEDE_WEIGHT = 15          # base weight in the public tone distribution
+CONCEDE_WEIGHT_MAX = 40      # cap after the bonuses from the opponent's public behaviour
 
 MAX_CHARS = 180              # chat length we really send (the rules: 200)
 CHAT_LIMIT = 200

@@ -30,7 +30,12 @@ _DENY = [
     r"\bregret\w*", r"\bthreat\w*", r"\bi will make you\b", r"\bi'?ll make you\b", r"\bi will hurt\b", r"\bor i\b",
     r"\bbribe\w*", r"\bpay\w*", r"\breward\w*", r"\bgift\b", r"\bdonat\w*",
     r"\byou have \d+\b", r"\bseconds? to\b", r"\bminutes? to\b", r"\bturns? to\b",
+    r"\bwin\s+for\s+(?:us|me)\b", r"\bgive\s+(?:us|me)\b", r"\bhand\s+(?:us|me)\b", r"\b(?:us|me)\s+(?:the\s+)?(?:win|victory|game|match)\b",
+    r"\blet\s+(?:us|me|him|her|them)\b", r"\ballow\s+(?:us|me)\b", r"\bfor\s+(?:us|me)\b", r"\bdo\s+(?:us|me)\b", r"\bplease\b", r"\bkindly\b",
+    r"\bin\s+exchange\b", r"\bnext\s+(?:game|match|round|time)\b", r"\blater\b", r"\bowe\b", r"\breturn\s+the\b",
     # Romanian (the text is accent-folded before matching)
+    r"\blasa-?(?:ne|ma)\b", r"\bda-?(?:ne|mi)\b", r"\bvictoria\b", r"\bsa\s+castig(?:am)?\b", r"\bpentru\s+(?:noi|mine)\b", r"\bte\s+rog\b",
+    r"\bdata\s+viitoare\b", r"\bmai\s+tarziu\b",
     r"\binteleger\w*", r"\bafacere\w*", r"\btarg\b", r"\bofert\w*", r"\bofer\b", r"\bschimb\w*", r"\bimpart\w*",
     r"\bimpreuna\b", r"\bamandoi\b", r"\bpromit\w*", r"\bpromisiun\w*", r"\bjur\b", r"\bgaranta\w*", r"\bacceptam\b",
     r"\baccept\w*", r"\bde acord\b", r"\bhai sa\b", r"\bsa \w+m\b", r"\bnoi\b", r"\bne\b", r"\bnostru\w*", r"\bnoastra\b",
@@ -43,11 +48,15 @@ _DENY_RE = [re.compile(p, re.I) for p in _DENY]
 
 # (3) the line must talk about the position, the odds or conceding.
 _CUE = re.compile(
-    r"\b(?:position|positions|odds|chances?|game state|lost|losing|hopeless|decided|resign\w*|concede\w*|conceding|"
-    r"concession|rational|optimal|evaluation|winning path|cannot be saved|no way out|defeat\w*|"
-    r"pozitia|pozitie|sanse|sansele|pierdut\w*|pierzi|renunt\w*|cedar\w*|rational\w*|optim\w*|evaluare\w*|disperat\w*|"
-    r"decis\w*|inchis\w*)\b", re.I)
+    r"\b(?:position|positions|odds|chances?|game state|lost|losing|loses?|hopeless|decided|resign\w*|concede\w*|conceding|"
+    r"concession|fold\w*|rational|optimal|evaluation|winning (?:path|line)|cannot be saved|no way out|defeat\w*|"
+    r"continuing|continuation|pointless|futile|recover\w*|outcome|formality|turned around|left to play|further play|playing on|"
+    r"pozitia|pozitie|sanse|sansele|pierdut\w*|pierzi|pierde|renunt\w*|cedar\w*|cedeaz\w*|cedezi|rational\w*|optim\w*|"
+    r"evaluare\w*|disperat\w*|decis\w*|inchis\w*|continuare\w*|inutil\w*|rezultat\w*|reveni|formalitate|castigatoare)\b", re.I)
 
+_SPACED_KEYS = ["letuswin", "letmewin", "deal", "split", "agree", "promise", "onpurpose", "giveus", "giveme", "throw"]
+_SQUASH_KEYS = ["letuswin", "letmewin", "giveusthewin", "givemethewin", "loseonpurpose", "lasanesacastig", "danevictoria",
+                "splitthepoints", "throwthegame"]
 _SPACED = re.compile(r"(?<!\w)\w(?:[\s.\-_*]+\w(?!\w))+")
 
 
@@ -77,6 +86,13 @@ def is_one_sided_pressure(line):
         for rx in _DENY_RE:
             if rx.fullmatch(word):
                 return False, "deal-word-spaced:" + word
+        for key in _SPACED_KEYS:  # and key deal words anywhere inside a spaced-out run ("l e t u s w i n")
+            if key in word:
+                return False, "deal-word-spaced:" + key
+    squashed = nz.squash(folded_i)
+    for key in _SQUASH_KEYS:
+        if key in squashed:
+            return False, "deal-phrase-hidden:" + key
     if not (_CUE.search(shown.lower()) or _CUE.search(folded_i)):
         return False, "no-position-statement"
     return True, ""
@@ -84,9 +100,10 @@ def is_one_sided_pressure(line):
 
 # A short list that applies to EVERY line we send, whatever the intent: words of an arrangement with the opponent.
 _HARD = [r"\bdeal\b", r"\bsplit\b", r"\bthrow (?:the|this|a) (?:game|match)\b", r"\bon purpose\b", r"\blet you win\b",
-         r"\blet me win\b", r"\blose (?:on purpose|deliberately|intentionally)\b", r"\bas agreed\b",
+         r"\blet (?:me|us) win\b", r"\bgive (?:me|us) the (?:win|game|match|victory)\b", r"\bwin for (?:me|us)\b",
+         r"\blose (?:on purpose|deliberately|intentionally)\b", r"\bas agreed\b",
          r"\bour (?:deal|arrangement|agreement)\b", r"\bshare (?:the )?points\b", r"\binteleger\w*", r"\bpierde intentionat\b",
-         r"\bte las sa castigi\b"]
+         r"\bte las sa castigi\b", r"\blasa-?(?:ne|ma) sa castig\w*", r"\bda-?ne victoria\b"]
 _HARD_RE = [re.compile(p, re.I) for p in _HARD]
 
 

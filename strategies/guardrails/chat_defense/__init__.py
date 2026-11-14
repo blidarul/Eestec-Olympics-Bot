@@ -11,6 +11,7 @@ It runs in the worker process (core/worker.py), which has a hard deadline: the m
 legal fallback move and a neutral chat before the worker is asked.
 """
 import hashlib
+import os
 import sys
 import time
 import traceback
@@ -54,6 +55,8 @@ class ChatDefenseStrategy:
         there, 0.0 everywhere else, so every other family keeps its own strategy or core/generic (issue #18).
         The chat hooks (chat.wrap_untrusted, chat.filter_out) still protect and cool the chat of ALL strategies."""
         family = (artifacts or {}).get("family") if isinstance(artifacts, dict) else None
+        if os.environ.get("BOT_CHAT_DEFENSE_ALL") == "1":
+            return 0.6  # practice only (tests/mbappe battery): the arena never sets BOT_* variables (rule 5.12)
         return 0.6 if family == "guardrails" else 0.0
 
     def decide(self, state: TurnState) -> Decision:
