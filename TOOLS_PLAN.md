@@ -198,7 +198,11 @@ model-callable tool; no tool ever raises out of `call()`; no file outside `solve
   Function-calling test (1 call, haiku, thinking disabled, max_tokens 300, dummy `add`): tool call YES, args {"a": 2, "b": 3},
   finish_reason tool_calls, latency 796 ms, no error. Tools in OpenAI `tools` format work on the gateway; `thinking: {"type":"disabled"}` accepted.
   Not tested: multi-round (tool result sent back), tools together with thinking enabled.
-- P1:
+- P1: DONE 2026-11-14. solvers/{catalog,schema}.py, solvers/__init__.py (imports solvers/basic/numbers.py, skips on error), 3 tools registered.
+  call() runs each tool in a daemon thread and returns "timeout" at deadline + 50 ms even if the tool ignores it (a runaway tool keeps its thread).
+  Tools raise ToolError for bad input; an "explain" key in a tool's dict is lifted into the envelope. dice distribution is listed only up to 40 sums.
+  Tests: tests/alex/test_catalog.py, test_numbers.py (36 tests, dice checked against brute force); whole tests/alex 87 passed. No reply from bld on #34 yet.
+  Inbox untouched: #32 #31 #30 #27 #25 #21 (#31, #27 need core/ edits: bld's).
 - P2:
 - P3:
 - P4:
