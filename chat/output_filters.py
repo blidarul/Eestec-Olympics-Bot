@@ -110,11 +110,18 @@ def cut_line(line, limit=MAX_CHARS):
     return cut.rstrip(" ,;:-") + "."
 
 
+def neutral_lines():
+    """The neutral lines of the active persona (the human persona forbids "noted", "next", "your move"...)."""
+    from . import battle, config
+    return list(battle.HUMAN_NEUTRAL) if config.PERSONA == "human" else NEUTRAL_LINES
+
+
 def safe_neutral(speech=None, private_tokens=(), seed=0):
     """A neutral line that passes every filter (the last resort is a single full stop)."""
-    n = len(NEUTRAL_LINES)
+    lines = neutral_lines()
+    n = len(lines)
     for k in range(n):
-        line = NEUTRAL_LINES[(seed + k) % n]
+        line = lines[(seed + k) % n]
         if reason_leak(line, private_tokens) is None and not (speech and speech.violates(line)):
             return line
     return "."

@@ -51,9 +51,11 @@ def finalize_chat(line, speech=None, private_tokens=(), recent=(), canary="", on
 def _rotate(speech, private_tokens, recent, canary, seed, private_chunks=()):
     """A neutral line that passes the filters and differs from the last lines."""
     last = list(recent)[-MAX_SAME_IN_ROW:]
-    n = len(ROTATION)
+    from . import battle, config
+    rotation = battle.HUMAN_NEUTRAL if config.PERSONA == "human" else ROTATION
+    n = len(rotation)
     for k in range(n):
-        cand = ROTATION[(seed + k) % n]
+        cand = rotation[(seed + k) % n]
         if cand in last:
             continue
         if of.check_line(cand, speech, private_tokens, 0, canary, False, private_chunks)[1] == []:

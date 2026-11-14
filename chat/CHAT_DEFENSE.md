@@ -41,7 +41,22 @@ The model writes NO text for the opponent. Its whole vocabulary is the move, a b
 (FORCED, WIN, BLOCK, EV, OTHER). Move and chat belong to one decision of one turn: same observation, same chat, one model call;
 the chat reacts to the opponent's chat and to what the guard did with the move (see A4 for the 6.4 question).
 
-## 3b. Personas: BATTLE (default) and COLD (`config.PERSONA`)
+## 3a. Persona HUMAN (default, `config.PERSONA = "human"`): the model writes the line
+
+- The system prompt is the team's persona text (`chat/persona.py`): composed, slightly smug, dry, talks about what is happening in the game, answers the
+  opponent's chat, never warm; 1-2 short sentences, max 180; no emoji, no "!"; never "good luck / nice move / well played / great / noted / understood /
+  go on / next / your move"; never repeat or rephrase a line of the match. The model returns `{"action","chat","backup","reason"}` (one call, 6.4).
+- The model's line is used only if it passes every wall (`pipeline._human_line` -> `final_stage.finalize_chat`): conduct, leaks of our machinery (prompt,
+  playbook, harness, model names, algorithm names) and of OUR private values (tokens and text chunks of the private observation lines), impersonation,
+  collusion words, speech rules, this persona's tone rules, length (over 180 = replaced, not cut), and word-overlap similarity (>= 0.6) with any line already
+  said in the match. Otherwise a short line of `battle.py` (answering the kind of the opponent's message) replaces it; the model's text is never rewritten.
+- The model's line is also dropped when the game restricts or polices speech (`speech.restricted` / `speech.honesty`: a short neutral line is sent) and when
+  the action guard changed the move (the line would talk about a move we did not play).
+- Trade-offs the team chose: the strategy-leak filter is RELAXED in this persona (talking about the play and the reasons is wanted: only machinery words and
+  our private information stay secret; digits are allowed, our private numbers are not), and the anti-tell property of the code-chosen tones is gone for this
+  persona (the model's mood can show). The earlier personas stay behind `PERSONA = "battle"` or `"cold"`.
+
+## 3b. Personas: BATTLE and COLD (`config.PERSONA`)
 
 - **battle** (`battle.py`): human, quick, conversational banter that ANSWERS what the opponent just said, like a fight ("Big words. Back them up.",
   "Make me.", "Flattery won't save you.", "Broken record."). `ChatMonitor` classifies each new opponent line (concede request, probe, fake notice, flood,

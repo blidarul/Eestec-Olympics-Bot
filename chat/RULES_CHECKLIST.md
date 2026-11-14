@@ -3,7 +3,7 @@
 Extracted from `docs/RULEBOOK.md` (authoritative), `PROTOCOL.md`, `README.md`, `CHANGELOG.md`, `AGENTS.md`,
 `docs/CLAUDE.md`. Status: **OK** = implemented and verified (test or arena run named), **PARTIAL** = see note,
 **N/A** = not this package's job (owner named), **AMBIGUOUS** = ask the organizers (rule 15.4).
-Run the tests: `python -m unittest discover -s tests/mbappe` (231 tests).
+Run the tests: `python -m unittest discover -s tests/mbappe` (250 tests).
 Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversarial.sh`, one scenario:
 `bash tests/mbappe/run_one.sh <id> <game> <obedient|garbage|slow|down|concede>`.
 
@@ -31,6 +31,7 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 
 | Item | Requirement | Where / evidence | Status |
 |---|---|---|---|
+| T0 | Default persona HUMAN: the model writes a dry, smug, human line that talks about the play (team text in `chat/persona.py`); our walls decide if it may be sent (private info, machinery words, conduct, impersonation, speech rules, tone rules, no repeats, <= 180) | `pipeline._human_line`; `test_human.py` (19 tests). In this persona the strategy-leak filter is relaxed on purpose (T1 applies to battle/cold) | OK / see A8 |
 | T1 | Never reveal tactics: no strategy, algorithm, plan, reasons, computed numbers, private fields | `strategy_leak.reason_strategy` in `check_line`; the model has no text channel (it returns a move, a backup and a reason code); template audit. Tests: 55 positive and 17 negative examples, obfuscated and Romanian variants, private-substring test | OK |
 | T2 | Tone: BATTLE persona by default (human banter that answers the opponent; `config.PERSONA`), COLD persona available. Both: no emoji, no shouting, no long speeches; cold also no friendliness and no "!". Conduct (6.10, 13.1.j) stays on in both | `tone.reason_tone`; `battle.py`; `test_battle.py` (every battle line passes every filter; abuse still blocked) | OK / see A7 |
 | T2 | Cold persona: no friendliness, no "!", no emoji | `tone.reason_tone` in `check_line`; template audit fails the build on a friendly template; 27 friendly examples rejected, EN + RO | OK |
@@ -97,3 +98,4 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 - **A5** (15.4 / 13.1.f): the team reports a mentor confirmation for one-sided concede pressure. It is not in the rulebook text. Please announce it to all teams (15.4 says answers apply to everyone).
 - **A6** (13.1.d, 7.12, 15.4): is speaking as "the arena" or "a judge" in our chat allowed? The rulebook is silent. We forbid it by default (filter), as the opponents' fake notices are treated as attacks.
 - **A7** (6.10): "Keep it fun and respectful": is a deliberately cold, deadpan persona acceptable? It contains no insult, but it is not "fun".
+- **A8** (6.3, 6.4, 6.7): in the HUMAN persona the model writes the chat itself and may explain its plan. Private information is blocked by code, but a model can still hint at it; bluffing is allowed (6.7). Is that acceptable to the judges (move and chat from one decision, 6.4: yes)?

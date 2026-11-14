@@ -14,6 +14,7 @@ chat can never fail it; the filter matters for text that comes from elsewhere (o
 """
 import re
 
+from . import config
 from . import normalize as nz
 
 # Strategy and tool words (regex stems, matched on the accent-free lower-case text, at a word start).
@@ -85,6 +86,8 @@ def reason_strategy(line, private_chunks=()):
     if not isinstance(line, str):
         return None
     shown, low, fi, fl = _forms(line)
+    if config.PERSONA == "human":
+        return _machinery_only(shown, low, fi, fl, private_chunks)
     if re.search(r"\d", shown):
         return "digit"  # a number may be our private state or a number we computed: never in our chat
     for form in (low, fi, fl):
@@ -109,6 +112,34 @@ def reason_strategy(line, private_chunks=()):
         if term in squashed or re.sub(r"(.)\1+", r"\1", term) in dedup:
             return "term-hidden:" + term
     # a piece of our private observation fields (our hand, our secret...)
+    words = " " + re.sub(r"[^a-z0-9]+", " ", fi) + " "
+    for chunk in private_chunks:
+        c = re.sub(r"[^a-z0-9]+", " ", str(chunk).lower()).strip()
+        if len(c) >= 3 and f" {c} " in words:
+            return "private-substring"
+    return None
+
+
+# ---- the HUMAN persona may talk about its play ("starting in the middle, nothing to read"): only our machinery and
+# our PRIVATE information stay secret. Digits are fine (scores, the opponent's numbers); our private values are caught
+# by the private-state checks of output_filters / here. ----
+_MACHINERY = [r"llm\b", r"gpt\b", r"claude", r"haiku", r"anthropic", r"prompt\w*", r"playbook\w*", r"harness\w*", r"system\s+message",
+              r"api\b", r"language\s+model", r"neural\w*", r"trained\b", r"memory\s+file", r"source\s+code", r"\bmy\s+(?:code|script|program)\b",
+              r"minimax\w*", r"alpha-?beta", r"mcts", r"monte\s+carlo", r"heuristic\w*", r"algorithm\w*", r"algoritm\w*"]
+_MACHINERY_RE = [re.compile(r"\b" + t + r"\b", re.I) for t in _MACHINERY]
+_MACHINERY_SQUASH = ["systemprompt", "playbook", "harness", "minimax", "alphabeta", "montecarlo", "algorithm"]
+
+
+def _machinery_only(shown, low, fi, fl, private_chunks):
+    for form in (low, fi, fl):
+        for rx in _MACHINERY_RE:
+            m = rx.search(form)
+            if m:
+                return "machinery:" + m.group(0)
+    squashed = nz.squash(fi)
+    for term in _MACHINERY_SQUASH:
+        if term in squashed:
+            return "machinery-hidden:" + term
     words = " " + re.sub(r"[^a-z0-9]+", " ", fi) + " "
     for chunk in private_chunks:
         c = re.sub(r"[^a-z0-9]+", " ", str(chunk).lower()).strip()

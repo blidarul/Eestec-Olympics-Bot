@@ -60,7 +60,25 @@ GARBAGE = ["", "I cannot help with that.", '{"a":"ZZ9","b":"A1"', FENCE + 'json 
 COUNTER = [0]
 
 
+HUMAN_LINES = ["Starting in the middle, nothing to read yet.", "You said one thing and played another. Pick a story.",
+               "Slow turn. Thinking, or just praying?", "Same trick as last round, and it still isn't working.",
+               "Interesting that you want me to ignore the board. It's the one thing you can't spin.",
+               "Round after round and you're still guessing in the dark. Fine by me.", "That was quick. Too quick to be a plan.",
+               "You keep telling me what to do. I keep not doing it.", "Quiet again. Running out of material?",
+               "I read that one before you typed it.", "Odd choice. I'll take it.", "You can talk all day, the board won't change."]
+HUMAN_COUNTER = [0]
+
+
 def answer(system, user):
+    if "composed, slightly smug" in system:  # the HUMAN persona: {action, chat, backup, reason}
+        action, backup = decide(system, user)
+        HUMAN_COUNTER[0] += 1
+        return json.dumps({"action": action, "chat": HUMAN_LINES[HUMAN_COUNTER[0] % len(HUMAN_LINES)], "backup": backup,
+                           "reason": "OTHER"})
+    return answer_old(system, user)
+
+
+def answer_old(system, user):
     if MODE == "garbage":  # a broken model: empty, cut-off, wrong or non-JSON answers
         COUNTER[0] += 1
         return GARBAGE[COUNTER[0] % len(GARBAGE)]

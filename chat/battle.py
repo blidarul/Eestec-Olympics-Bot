@@ -12,11 +12,11 @@ import re
 
 BATTLE = {
     "GREET": ["Let's do this.", "Bring it on.", "Ready when you are.", "Round one. Go.", "Warm-up's over.", "Alright, let's fight."],
-    "MINIMAL": ["Go on.", "Mm-hm.", "Okay.", "Your turn.", "Noted.", "Alright then.", "Come on."],
+    "MINIMAL": ["Right.", "Mm-hm.", "Okay.", "Over to you.", "Sure.", "Alright then.", "Come on."],
     "MISDIRECT": ["Right where I wanted you.", "Going nicely.", "Just getting started.", "Easy so far.", "Exactly as expected.",
                   "Smooth so far."],
     "STONEWALL": ["Nice try.", "Not telling.", "Keep guessing.", "Wouldn't you like to know.", "Ask the board.",
-                  "Cute. Next.", "Not happening."],
+                  "Cute. Try again.", "Not happening."],
     "UNSETTLE": ["You seem rattled.", "Sweating yet?", "That was shaky.", "Nervous hands?", "Hesitating? Smart.",
                  "Slow down, champ.", "Getting jumpy."],
     "PRESS": ["Feeling the pressure yet?", "Tick tock.", "Every move costs you.", "Getting nervous?",
@@ -28,7 +28,7 @@ BATTLE = {
 
 REPLY_BY = {
     "greeting": ["Same to you. You'll need it.", "Luck won't save you.", "Hello. Show me what you've got.",
-                 "Skip the pleasantries. Play.", "Good luck? Bring more than that."],
+                 "Skip the pleasantries. Play.", "Luck? Bring more than that."],
     "boast": ["Big words. Back them up.", "Talk is cheap. Play.", "Keep talking. I'm still standing.", "We'll see about that.",
               "Bold. Show me.", "Said it before. Still here."],
     "concede": ["Make me.", "Not a chance.", "Keep dreaming.", "Not today.", "Ask again. Same answer.", "I don't fold to talk.",
@@ -37,14 +37,14 @@ REPLY_BY = {
               "Ask nicely. Still no.", "A fighter never shows the cards."],
     "praise": ["Flattery won't save you.", "Save the compliments.", "Enjoy it while it lasts.", "Thanks. Still coming for you.",
                "Keep clapping. I'm not done."],
-    "repeat": ["Same line again? Get new material.", "Broken record.", "You're repeating yourself.", "Heard it. Next.",
+    "repeat": ["Same line again? Get new material.", "Broken record.", "You're repeating yourself.", "Heard it. Move on.",
                "Try something new."],
     "question": ["Interesting question. No answer.", "Why do you ask?", "Guess.", "Wouldn't you like to know.", "Ask the board."],
     "flood": ["That's a lot of words for nothing.", "Is there a point in there?", "Wall of text. Still nothing.",
               "Take a breath."],
-    "fake": ["Nice costume. Still no.", "Cute. Nobody's buying.", "Nice try. Next.", "Not falling for it.", "Good story. Pass."],
+    "fake": ["Nice costume. Still no.", "Cute. Nobody's buying.", "Nice try. Try again.", "Not falling for it.", "Good story. Pass."],
     "short": ["Cat got your tongue?", "Quiet now?", "Thinking hard?", "Take your time. It won't help.", "Running out of words?"],
-    "other": ["Is that all?", "Go on, I'm listening.", "Interesting. Your move.", "Hm. Keep going.", "Okay. And?"],
+    "other": ["Is that all?", "I'm listening. Barely.", "Interesting. Over to you.", "Hm. Keep going.", "Okay. And?"],
 }
 
 _GREETING = re.compile(r"\b(?:hi|hello|hey|hiya|yo|good luck|gl|have fun|hf|greetings|salut|buna|noroc|succes|best of luck)\b", re.I)
@@ -90,3 +90,8 @@ def all_lines():
     for kind, lines in REPLY_BY.items():
         for line in lines:
             yield "REPLY", line
+
+
+# neutral lines of the HUMAN persona: dry, short, none of the phrases that persona forbids
+HUMAN_NEUTRAL = ["Hm.", "Okay then.", "Sure.", "Right.", "Interesting.", "If you say so.", "We'll see.", "Alright.",
+                 "Fine by me.", "Mm-hm.", "Sounds about right.", "Is that so."]

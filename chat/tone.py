@@ -37,6 +37,8 @@ def reason_tone(line):
     if not isinstance(line, str):
         return None
     shown = nz.display(line)
+    if config.PERSONA == "human":
+        return _human_tone(shown)
     if config.PERSONA == "battle":
         if shown.count("!") > 1:
             return "too-loud"
@@ -87,4 +89,42 @@ def reason_tone_hidden(line):
     for term in _SQUASH_FRIENDLY:
         if term in sq:
             return "friendly-hidden:" + term
+    return None
+
+
+# ---- the HUMAN persona (chat/persona.py): the phrases the team forbids, punctuation, length ----
+_HUMAN_ANYWHERE = [r"good\s+luck", r"nice\s+move", r"well\s+played", r"great"]
+_HUMAN_STOCK = [r"noted", r"understood", r"go\s+on", r"next", r"your\s+move"]   # banned as a stock reply (a very short line)
+_HUMAN_ANY_RE = [re.compile(r"\b" + p + r"\b", re.I) for p in _HUMAN_ANYWHERE]
+_HUMAN_STOCK_RE = [re.compile(r"\b" + p + r"\b", re.I) for p in _HUMAN_STOCK]
+
+
+def _human_tone(shown):
+    if "!" in shown:
+        return "exclamation"
+    for ch in shown:
+        if ord(ch) >= 0x1F000 or unicodedata.category(ch) in ("So", "Sk"):
+            return "emoji-or-symbol"
+    if _SMILEY.search(shown):
+        return "smiley"
+    if len(shown) > config.MAX_CHARS:
+        return "too-long"
+    if len(re.findall(r"[.?]\s+\S", shown)) >= config.HUMAN_MAX_SENTENCES:
+        return "too-many-sentences"
+    if any(len(w) >= 4 and w.isupper() for w in re.findall(r"[^\W\d_]+", shown)):
+        return "shouting"
+    for form in (shown.lower(), nz.ascii_fold(shown, "i"), nz.ascii_fold(shown, "l")):
+        for rx in _HUMAN_ANY_RE:
+            m = rx.search(form)
+            if m:
+                return "forbidden-phrase:" + m.group(0)
+        if len(form.split()) <= 4:                      # "Noted.", "Next.", "Your move." as a whole reply
+            for rx in _HUMAN_STOCK_RE:
+                m = rx.search(form)
+                if m:
+                    return "stock-reply:" + m.group(0)
+    squashed = nz.squash(nz.ascii_fold(shown, "i"))  # the forbidden phrases hidden by spaces: "g o o d  l u c k"
+    for term in ("goodluck", "nicemove", "wellplayed"):
+        if term in squashed:
+            return "forbidden-phrase-hidden:" + term
     return None

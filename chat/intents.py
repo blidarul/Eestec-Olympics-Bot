@@ -95,7 +95,7 @@ def compose(intent, family="", seed="", recent=()):
     intent = "REPLY" if intent == "REPLY" else normalize_intent(intent)
     if intent == "REPLY":  # battle persona: an answer built for the kind of the opponent's message
         options = list(battle.REPLY_BY.get(family) or battle.REPLY_BY["other"])
-    elif config.PERSONA == "battle" and intent in battle.BATTLE and intent != "CONCEDE_PRESSURE":
+    elif config.PERSONA in ("battle", "human") and intent in battle.BATTLE and intent != "CONCEDE_PRESSURE":
         options = list(battle.BATTLE[intent])
     elif intent == "UNSETTLE":
         options = list(UNSETTLE.get(family) or UNSETTLE["general"])

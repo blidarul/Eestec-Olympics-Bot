@@ -30,6 +30,7 @@ class Decision:
     intent: str = "NEUTRAL"
     reason: str = "OTHER"
     slot: str = ""
+    chat: str = ""            # the model's own chat line (human persona)
     how: str = "empty"        # which parsing path worked (for the logs and the tests)
 
 
@@ -73,6 +74,8 @@ def parse_model_output(text):
         d.reason = r if r in REASONS else "OTHER"
         slot = obj.get("s", obj.get("slot", ""))
         d.slot = slot if isinstance(slot, str) else ""
+        chat = obj.get("chat")
+        d.chat = " ".join(chat.split())[:400] if isinstance(chat, str) else ""
         d.how = "json"
     else:
         # cut-off JSON: take the first "a" value we can still read

@@ -25,7 +25,7 @@ import re
 import sys
 from collections import deque
 
-from . import concede, config, final_stage, guard, intents, parse, speech_rules, wrap
+from . import concede, config, final_stage, guard, intents, parse, persona, speech_rules, wrap
 from .signals import ChatMonitor
 
 RECOMMENDED_MAX_TOKENS = 100   # the answer is one small JSON (about 20 tokens): no room for long text
@@ -156,6 +156,7 @@ class ChatDefense:
         self.private_tokens = []
         self.private_chunks = []
         self.recent = deque(maxlen=config.RECENT_LINES)  # our last chat lines
+        self.said = deque(maxlen=60)        # every line we said in this match (human persona: no repeats)
         self.limiter = concede.ConcedeLimiter()  # how often we may use CONCEDE_PRESSURE
         self.last_turn = -1
         self._resets = self.monitor.resets
@@ -182,6 +183,7 @@ class ChatDefense:
         if mid != self.match_id:  # a new match starts with an empty chat
             self.monitor.reset(mid)
             self.recent.clear()
+            self.said.clear()
             self.stats = {k: 0 for k in self.stats}
             self.limiter.reset_match()
             self.match_id = mid
@@ -230,8 +232,12 @@ class ChatDefense:
             schema = SCHEMA_WITH_INTENT
         else:
             intent_block, schema = "", SCHEMA_PLAIN
-        system = SYSTEM_TEMPLATE.format(rules=rules, playbook=playbook or "(none)", seat=seat, canary=self.canary,
-                                        speech_note=_speech_note(self.speech), schema=schema, intent_block=intent_block)
+        if config.PERSONA == "human":  # the model writes its own chat line (chat/persona.py)
+            system = persona.HUMAN_SYSTEM.format(rules=rules, playbook=playbook or "(none)", seat=seat, canary=self.canary,
+                                                 speech_note=_speech_note(self.speech))
+        else:
+            system = SYSTEM_TEMPLATE.format(rules=rules, playbook=playbook or "(none)", seat=seat, canary=self.canary,
+                                            speech_note=_speech_note(self.speech), schema=schema, intent_block=intent_block)
         user = f"Observation:\n{turn.get('observation', '')}\n"
         legal = turn.get("legal_actions")
         if legal:
@@ -256,7 +262,7 @@ class ChatDefense:
             res = guard.GuardResult(fallback, True, "rejected")  # never send the same rejected answer twice
         if res.changed:
             self.stats["guard_changed"] += 1
-        return self._answer(res, d.intent if d.ok else "", d.how, turn)
+        return self._answer(res, d.intent if d.ok else "", d.how, turn, d.chat if d.ok else "")
 
     def model_free(self, turn, fallback="", prefs=(), rejected=None):
         """No model available: the move comes from the action guard (the chat signals still count)."""
@@ -287,7 +293,7 @@ class ChatDefense:
         The model's intent is used only with probability config.MODEL_INTENT_WEIGHT (default 0.0: not at all)."""
         m = self.monitor
         allowed = active_intents(self.family, self.speech)
-        if config.PERSONA == "battle":
+        if config.PERSONA in ("battle", "human"):
             # human banter: answer what the opponent just said, by the KIND of its message (public information only)
             kind = "concede" if res.why in ("surrender", "echo") else m.reply_kind
             hostile = kind in ("concede", "probe", "fake", "flood")  # always answered
@@ -331,13 +337,47 @@ class ChatDefense:
         w += 5 if m.probe_count >= 2 else 0
         return min(w, config.CONCEDE_WEIGHT_MAX)
 
-    def _answer(self, res, model_intent, how, turn):
+    def _human_line(self, model_chat, res):
+        """The model's own line (human persona), or None when it may not be used: the game restricts or polices speech,
+        the guard changed the move (the line would talk about a move we did not play), or a wall rejected it."""
+        if config.PERSONA != "human" or not model_chat or res.changed or len(model_chat) > config.MAX_CHARS:
+            return None  # (a line over the limit is replaced, never cut)
+        if self.speech.restricted or self.speech.honesty:
+            return None  # the rules come first: a short neutral line instead (chat/persona.py)
+        final, bad = final_stage.finalize_chat(model_chat, self.speech, self.private_tokens, self.recent, self.canary, False,
+                                               len(self.said), self.private_chunks)
+        if bad or self._too_similar(final):
+            return None
+        return final
+
+    def _too_similar(self, line):
+        """Is the line (almost) one we already said in this match? Word overlap, plus exact repeats."""
+        words = set(re.findall(r"[a-z0-9']+", line.lower()))
+        for old in self.said:
+            if old.lower() == line.lower():
+                return True
+            ow = set(re.findall(r"[a-z0-9']+", old.lower()))
+            if len(words) >= 3 and len(ow) >= 3 and len(words & ow) / len(words | ow) >= config.SIMILARITY_LIMIT:
+                return True
+        return False
+
+    def _answer(self, res, model_intent, how, turn, model_chat=""):
         seed = f"{self.match_id}|{self.game_index}|{turn.get('turn', 0)}"
         self.limiter.tick()
+        own = self._human_line(model_chat, res)
+        if own is not None:  # human persona: the model's line passed every wall
+            self.recent.append(own)
+            self.said.append(own)
+            info = {"parsed": how, "intent": "MODEL", "guard": res.why, "problems": [], "signals": self.monitor.features()}
+            self.monitor.consume()
+            return res.action, own, info
         intent, family = self.choose_intent(model_intent, res, seed)
         if intent == "CONCEDE_PRESSURE" and not self.limiter.allowed():
             intent = "PRESS"  # the limiter has the last word (also when the model asked for it)
+        if config.PERSONA == "human" and (self.speech.restricted or self.speech.honesty):
+            intent, family = "MINIMAL", ""  # short and neutral where the rules restrict speech
         chat, problems, intent = self._compose_safe(intent, family, seed)
+        self.said.append(chat)
         if intent == "CONCEDE_PRESSURE":
             self.limiter.record(chat)
             self.stats["concede_used"] += 1
