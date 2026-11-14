@@ -222,3 +222,5 @@ model-callable tool; no tool ever raises out of `call()`; no file outside `solve
   Tested on the practice sample_turn texts (guess_number, pig, tic_tac_toe); T1 games not released yet. tests/alex: 188 pass, 1 FAIL not mine (test_deduce.py::test_model_rejected, same as P4). Inbox untouched: #34 #30 #25.
 - P6: DONE 2026-11-14. solvers/README.md (32-row table, usage, result format), tests/alex/smoke_tools.py (32/32 ok, table on stderr; checks openai_tools export vs harness-only), commit 0cb5e49.
   Commented on contract issue #34 (left open: waiting for bld's answer). tests/alex: 189 pass. Other inbox items untouched: #30, #25. Part 1 complete.
+- L6: DONE 2026-11-14. Layer 2 assist_turn committed (b4d2372, 244 tests pass), plans moved to solvers/. Contract issue #35 opened for bld (use assist_turn in generic strategy).
+  Real demo (dev.env, one run): guess -> 1 model call, no tools, action 62, 1907 ms; board -> 0 model calls, certain move C1 (immediate win), 0 ms. No errors. Alex has no open issues.
