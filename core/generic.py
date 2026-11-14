@@ -1,10 +1,12 @@
 """Default strategy: one legal move -> play it; else one model call giving move AND chat together (6.4)."""
+import os
 import re
 import sys
 import time
 import traceback
 
 from core import fallback, hooks, validate
+from optimization.serializer import game_memory_dir, load_json
 from strategies.base import Decision, TurnState
 
 SYSTEM = ("You play a two-player text game. Reply with compact JSON only: {\"a\": \"<your action>\", \"c\": \"<short chat, max 150 chars>\"}. "
@@ -62,6 +64,22 @@ class Generic:
         ) and any(kw in rules_lower or kw in state.observation.lower() for kw in ("connect", "drop", "open columns"))
         if is_c4:
             try:
+                # Check precomputed opening book first (artifacts or disk)
+                c4_book = art.get("opening_book")
+                if not c4_book:
+                    mem_dir = game_memory_dir(getattr(state, "memory_dir", "/memory"), state.game_id)
+                    c4_book = load_json(os.path.join(mem_dir, "opening_book.json"))
+                if c4_book:
+                    from optimization.connect_four import parse_moves_from_obs
+                    from optimization.connect_four_book import query_connect_four_book
+                    obs_moves = parse_moves_from_obs(state.observation)
+                    book_col = query_connect_four_book(c4_book, obs_moves)
+                    if book_col is not None:
+                        cand_act = f"drop {book_col}"
+                        v_act = validate.validate(cand_act, legal, art, rejected, no_repeat)
+                        if v_act is not None:
+                            return Decision(v_act, fb_c, "strategy", {"tool": "c4_opening_book", "action": v_act, "col": book_col})
+
                 from optimization.connect_four import solve_connect_four_from_obs
                 c4_res = solve_connect_four_from_obs(
                     state.observation,
@@ -102,6 +120,65 @@ class Generic:
                 v_act = validate.validate(w_act, legal, art, rejected, no_repeat)
                 if v_act is not None:
                     return Decision(v_act, fb_c, "strategy", w_info)
+            except Exception:
+                traceback.print_exc()
+
+        # 3. Pig DP Fast-Path: Exact Bellman Dynamic Programming Policy
+        is_pig = (
+            "pig" in rules_lower
+            or fam in ("dice_push", "chance")
+            or (legal and set(legal).intersection({"bank", "hold", "roll"}))
+        ) and ("banked:" in state.observation.lower() or "turn total:" in state.observation.lower())
+        if is_pig:
+            try:
+                pig_thresh = art.get("pig_dp")
+                if not pig_thresh:
+                    mem_dir = game_memory_dir(getattr(state, "memory_dir", "/memory"), state.game_id)
+                    pig_thresh = load_json(os.path.join(mem_dir, "pig_dp.json"))
+                if pig_thresh:
+                    m_bank = re.search(r"banked:\s*you\s*(\d+),\s*opponent\s*(\d+)", state.observation, re.I)
+                    m_turn = re.search(r"turn total:\s*(\d+)", state.observation, re.I)
+                    m_tgt = re.search(r"target:\s*(\d+)", state.observation, re.I) or re.search(r"target:\s*(\d+)", state.rules, re.I)
+                    my_s = int(m_bank.group(1)) if m_bank else 0
+                    opp_s = int(m_bank.group(2)) if m_bank else 0
+                    turn_p = int(m_turn.group(1)) if m_turn else 0
+                    tgt = int(m_tgt.group(1)) if m_tgt else 50
+
+                    from optimization.pig_dp import query_pig_action
+                    dp_act = query_pig_action(pig_thresh, my_s, opp_s, turn_p, target_score=tgt)
+                    if dp_act == "bank" and legal and "hold" in legal and "bank" not in legal:
+                        dp_act = "hold"
+                    v_act = validate.validate(dp_act, legal, art, rejected, no_repeat)
+                    if v_act is not None:
+                        thresh_val = pig_thresh[min(my_s, len(pig_thresh) - 1)][min(opp_s, len(pig_thresh[0]) - 1)]
+                        return Decision(v_act, fb_c, "strategy", {"tool": "pig_dp_optimal", "action": v_act, "threshold": thresh_val})
+            except Exception:
+                traceback.print_exc()
+
+        # 4. Colonel Blotto Fast-Path: Precomputed Strategic Allocation Portfolio
+        is_blotto = (
+            "blotto" in rules_lower
+            or "battlefield" in rules_lower
+        ) and ("soldiers this round:" in state.observation.lower() or "enter your allocation" in state.observation.lower())
+        if is_blotto and not legal:
+            try:
+                blotto_book = art.get("blotto_book")
+                if not blotto_book:
+                    mem_dir = game_memory_dir(getattr(state, "memory_dir", "/memory"), state.game_id)
+                    blotto_book = load_json(os.path.join(mem_dir, "blotto_book.json"))
+                if blotto_book:
+                    m_tot = re.search(r"soldiers this round:\s*(\d+)", state.observation, re.I) or re.search(r"allocation of\s*(\d+)\s*soldiers", state.observation, re.I)
+                    m_f = re.search(r"across\s*(\d+)\s*fields", state.observation, re.I)
+                    m_rnd = re.search(r"round\s*(\d+)/", state.observation, re.I)
+                    avail = int(m_tot.group(1)) if m_tot else 100
+                    num_f = int(m_f.group(1)) if m_f else 5
+                    rnd = int(m_rnd.group(1)) if m_rnd else 1
+
+                    from optimization.blotto_solver import select_blotto_action
+                    b_act = select_blotto_action(blotto_book, available_soldiers=avail, fields=num_f, round_no=rnd)
+                    v_act = validate.validate(b_act, legal, art, rejected, no_repeat)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "blotto_strategic_portfolio", "action": v_act})
             except Exception:
                 traceback.print_exc()
 

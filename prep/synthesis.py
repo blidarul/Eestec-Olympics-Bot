@@ -159,6 +159,21 @@ def parse(observation: str, seat: int = 0) -> State:
                             else:
                                 s.board[r * s.cols + c] = None
                         row_count += 1
+            else:
+                clean_pipe = line.strip().strip("|").strip()
+                p_tokens = clean_pipe.split()
+                if len(p_tokens) == s.cols and all(t in (mark_0, mark_1, ".", "-", "_") for t in p_tokens):
+                    if row_count < s.rows:
+                        r = row_count
+                        for c in range(s.cols):
+                            tok = p_tokens[c]
+                            if tok == mark_0:
+                                s.board[r * s.cols + c] = 0
+                            elif tok == mark_1:
+                                s.board[r * s.cols + c] = 1
+                            else:
+                                s.board[r * s.cols + c] = None
+                        row_count += 1
 
     if row_count == 0:
         raise ValueError("Could not parse grid board from observation")

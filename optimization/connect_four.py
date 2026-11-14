@@ -422,7 +422,8 @@ def parse_grid_bits(obs_text: str, rows: int, cols: int, my_symbol: str = "X") -
     lines = [l.strip() for l in obs_text.splitlines() if l.strip()]
     grid_lines = []
     for l in lines:
-        tokens = l.split()
+        cleaned = l.strip().strip("|").strip()
+        tokens = cleaned.split()
         if len(tokens) == cols and all(t in (".", "X", "O", "x", "o") for t in tokens):
             grid_lines.append(tokens)
     if len(grid_lines) != rows:
@@ -460,7 +461,8 @@ def solve_connect_four_from_obs(
         timeout = 0.05
 
     my_sym = "X"
-    if "you are o" in obs_text.lower():
+    obs_lower = obs_text.lower()
+    if "you are o" in obs_lower or "play o" in obs_lower or "seat 1" in obs_lower:
         my_sym = "O"
     bits = parse_grid_bits(obs_text, rows, cols, my_sym)
     if bits is None:

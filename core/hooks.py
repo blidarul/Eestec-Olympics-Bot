@@ -78,6 +78,9 @@ def map_engine_variant(vd: dict) -> dict:
         "grammar": gr,
         "tools": vd.get("tools") or [],
         "tools_prompt": vd.get("tools_prompt") or "",
+        "pig_dp": vd.get("pig_dp"),
+        "opening_book": vd.get("opening_book"),
+        "blotto_book": vd.get("blotto_book"),
     })
     return art
 
