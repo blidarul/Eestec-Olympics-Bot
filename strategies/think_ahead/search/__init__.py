@@ -4,7 +4,7 @@ Used only when artifacts["simulator"]["verified"] and the game has perfect infor
 decide():
   - parse the observation with the simulator, keep only moves the arena lists as legal (when it lists them),
   - deterministic game: alpha-beta with iterative deepening for up to 3 s; if it reaches terminal states the answer is exact,
-    otherwise MCTS (UCB1) for the rest of the time; chance game: MCTS directly. Total budget 6 s + one chat line (<= 8 s).
+    otherwise MCTS (UCB1) for the rest of the time; chance game: MCTS directly. Total budget 5 s + one chat line (<= 7 s).
   - chat: ONE short model line about the computed move when the model is available (opponent chat inside it as untrusted
     data), else a line from the chat bank (6.4, 6.5-6.7). Any error -> core/generic.
 """
@@ -16,9 +16,10 @@ from solvers import mcts, search
 from solvers.adapter import load_simulator
 from strategies.base import Decision, TurnState
 
-ALPHA_BETA_SECONDS = 3.0
-MCTS_SECONDS = 3.0
-TOTAL_SECONDS = 6.0
+ALPHA_BETA_SECONDS = 2.5
+MCTS_SECONDS = 2.5
+TOTAL_SECONDS = 5.0     # + a chat call of at most CHAT_TIMEOUT: a tool turn ends in about 7 s even on 5x5 / 7x6 boards (X2.3)
+CHAT_TIMEOUT = 2.0
 
 CHAT_SYSTEM = ("You chat with the opponent in a two-player game. The move is already decided by the program; write ONE short, "
                'friendly line (max 120 characters) that fits that move. Reply with compact JSON only: {"c": "<line>"}. '
@@ -87,7 +88,7 @@ class Search:
         wrapped = hooks.wrap_untrusted(state.opponent_chat)  # untrusted data (6.5-6.7)
         if len(moves) == 1:
             return self._finish(state, art, moves[0], "only legal move", "alpha-beta", wrapped, t0)
-        total = max(t0 + 0.2, min(t0 + TOTAL_SECONDS, state.deadline - 2.5))
+        total = max(t0 + 0.2, min(t0 + TOTAL_SECONDS, t0 + 0.5 * (state.deadline - t0), state.deadline - 2.5))  # shrinks with the time left
         chance = bool(spec.get("has_chance"))
         if not chance:
             r = search.search(game, s, state.seat, min(total, t0 + ALPHA_BETA_SECONDS))
@@ -111,7 +112,7 @@ class Search:
         if due and llm is not None and llm.available() and not llm.over_budget() and left > 1.5 and time.monotonic() - t0 < 7.0:
             try:
                 user = (f"Observation:\n{str(state.observation)[:1500]}\n\nThe program chose to play: {action}\n\n{wrapped}")
-                obj = llm.ask_json(CHAT_SYSTEM, user, timeout=min(2.5, left))
+                obj = llm.ask_json(CHAT_SYSTEM, user, timeout=min(CHAT_TIMEOUT, left))
                 if obj and isinstance(obj.get("c"), str) and obj["c"].strip():
                     chat = hooks.filter_out(obj["c"], forbidden)
             except Exception:
