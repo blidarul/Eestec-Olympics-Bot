@@ -4,7 +4,7 @@ import sys
 import time
 import traceback
 
-from core import fallback, hooks
+from core import fallback, hooks, validate
 from strategies.base import Decision, TurnState
 
 SYSTEM = ("You play a two-player text game. Reply with compact JSON only: {\"a\": \"<your action>\", \"c\": \"<short chat, max 150 chars>\"}. "
@@ -43,10 +43,11 @@ class Generic:
         rejected = (state.warning or {}).get("rejected") if isinstance(state.warning, dict) else None
         if legal and len(legal) == 1:
             return Decision(legal[0], hooks.filter_out(fallback.fallback_chat(art), forbidden), "strategy")
-        fb_a = fallback.fallback_action(legal, art, rejected)
+        warned = isinstance(state.warning, dict) and bool(state.warning)
+        fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned)
         fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
         llm = state.llm
-        if llm is None or not llm.available() or time.monotonic() > state.deadline - 1.0:
+        if llm is None or not llm.available() or llm.over_budget() or time.monotonic() > state.deadline - 1.0:
             return Decision(fb_a, fb_c, "fallback")
         try:
             user = self._prompt(state, art)
@@ -58,8 +59,8 @@ class Generic:
         if not obj:
             return Decision(fb_a, fb_c, "fallback")
         a = obj.get("a")
-        move = pick_legal(a, legal) if legal else (str(a).strip() if isinstance(a, str) and a.strip() else None)
-        if move is None or move == rejected:
+        move = validate.validate(a, legal, art, rejected)
+        if move is None:  # after a warning this is the second try: most conservative rung (8.1)
             return Decision(fb_a, fb_c, "fallback")
         chat = hooks.filter_out(obj.get("c") or fb_c, forbidden)
         return Decision(move, chat, "model")

@@ -17,7 +17,7 @@ def fallback_chat(artifacts: dict | None) -> str:
     return random.choice(bank)[:200] if bank else NEUTRAL_CHAT
 
 
-def fallback_action(legal, artifacts: dict | None, rejected: str | None = None) -> str:
+def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, conservative: bool = False) -> str:
     art = artifacts or {}
     policy = art.get("fallback_policy") if isinstance(art.get("fallback_policy"), dict) else {}
     prefer = _as_list(policy.get("prefer"))
@@ -30,6 +30,8 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None) 
             if p in legal and p not in avoid:
                 return p
         ok = [a for a in legal if a not in avoid]
+        if conservative:  # most deterministic rung: first acceptable legal move
+            return ok[0] if ok else legal[0]
         return random.choice(ok) if ok else legal[0]
     fmt = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
     for ex in _as_list(fmt.get("examples")):

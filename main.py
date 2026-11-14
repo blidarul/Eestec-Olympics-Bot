@@ -8,7 +8,7 @@ import sys
 import time
 import traceback
 
-from core import fallback, protocol, worker
+from core import fallback, memory, protocol, validate, worker
 
 PREP_DEADLINE = 540.0  # arena gives 600 s
 START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
@@ -95,15 +95,15 @@ def on_turn(msg, wk):
             "legal_actions": [str(a) for a in legal] if isinstance(legal, list) else None,
             "turn": int(msg.get("turn", 0) or 0), "warning": msg.get("warning"),
             "opponent_chat": chat_texts(msg.get("chat")), "artifacts": art},
-            "llm": STATE["llm"], "budget": max(0.5, limit - 2.0)}
+            "llm": STATE["llm"], "match_id": game.get("match_id"), "budget": max(0.5, limit - 2.0)}
         ans = wk.ask(req, limit - (time.monotonic() - t0) - 0.5)
         if ans:
             a, c = ans.get("action"), ans.get("chat")
             a = a if isinstance(a, str) else ""
             rejected = (msg.get("warning") or {}).get("rejected") if isinstance(msg.get("warning"), dict) else None
-            ok = bool(a.strip()) and a != rejected and (not isinstance(legal, list) or not legal or a in legal)
-            if ok:
-                action = a
+            v = validate.validate(a, legal, art, rejected)
+            if v is not None:
+                action = v
                 chat = protocol.clean_chat(c) or fb_chat
     except Exception:
         traceback.print_exc()
@@ -114,6 +114,15 @@ def on_turn(msg, wk):
 
 def on_end(msg):
     protocol.log(f"game {msg.get('game_index')} {msg.get('result')}: {msg.get('reason')}")  # never exit here
+    try:
+        g = STATE["game"]
+        memory.append_log(memory.game_dir(g.get("game_id", ""), g.get("rules", "")), {
+            "t": time.time(), "match_id": g.get("match_id"), "game_index": msg.get("game_index"),
+            "result": msg.get("result"), "reason": str(msg.get("reason", ""))[:200],
+            "opponent": g.get("opponent") or g.get("opponent_id"), "variant": (g.get("variant") or {}).get("label")
+            if isinstance(g.get("variant"), dict) else None})
+    except Exception:
+        traceback.print_exc()
 
 
 def main():

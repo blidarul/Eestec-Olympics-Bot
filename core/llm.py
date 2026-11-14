@@ -12,6 +12,7 @@ PRICE_IN = 0.10 / 1e6   # 7.5
 PRICE_OUT = 0.50 / 1e6
 SKIP_AFTER_FAILS = 2
 SKIP_TURNS = 3
+BUDGET_GUARD = 0.40  # per match (9.3): above this, no more model calls
 
 
 def _log(*a):
@@ -20,7 +21,12 @@ def _log(*a):
 
 class LLM:
     def __init__(self, info: dict | None):
-        self.info = info if isinstance(info, dict) else {}
+        self.raw = info
+        self.info = dict(info) if isinstance(info, dict) else {}
+        # safety net (5.12): fill gaps from the environment; the llm block always wins (7.2)
+        for k, env in (("base_url", "LLM_BASE_URL"), ("api_key", "LLM_API_KEY"), ("model", "LLM_MODEL")):
+            if not self.info.get(k) and os.environ.get(env):
+                self.info[k] = os.environ[env]
         self.model = self.info.get("model") or "haiku"
         self.spend = 0.0
         self.fails = 0
@@ -32,6 +38,9 @@ class LLM:
         if self.skip > 0:
             return False
         return self.stub or bool(self.info.get("api_key") and self.info.get("base_url"))
+
+    def over_budget(self) -> bool:
+        return self.spend > BUDGET_GUARD
 
     def tick_turn(self):
         """Call once per turn: counts down the post-failure pause."""
