@@ -96,7 +96,14 @@ def on_start(msg, wk):
 
 
 def wk_filter(text, forbidden):
-    """Main-process forbidden-term cut (core.chatsafe is pure python, safe to import here)."""
+    """Main-process speech and forbidden-term cut (delegates to chat.filter_out, fallback chatsafe)."""
+    try:
+        from core import hooks
+        res = hooks.filter_out(text, forbidden)
+        if res and isinstance(res, str) and res.strip():
+            return res
+    except Exception:
+        pass
     try:
         from core import chatsafe
         return chatsafe.filter_out(text, forbidden, default=fallback.NEUTRAL_CHAT)

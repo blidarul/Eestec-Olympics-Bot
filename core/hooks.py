@@ -143,6 +143,10 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
         _prepare_strategies(msg, by_label, base, t_start)
     except BaseException:
         traceback.print_exc()
+    try:
+        _warm_chat(msg, by_label)
+    except BaseException:
+        traceback.print_exc()
     for v in variants:
         by_label[str(v.get("label", ""))]["rules_text_hash_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
         memory.save_json(os.path.join(memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base), "artifacts.json"),
@@ -227,6 +231,24 @@ def _prepare_strategies(msg, by_label, base, t_start):
                     _log(f"[prep] {strat.name}.prepare: verified={res.get('verified')} ({res.get('reason')})")
             except BaseException:
                 traceback.print_exc()
+
+
+def _warm_chat(msg: dict, by_label: dict) -> None:
+    """Pre-warm chat/ modules and SpeechRules during prep so turn 1 / start are instant (contract #41)."""
+    try:
+        import chat
+        variants = [v for v in (msg.get("variants") or []) if isinstance(v, dict)]
+        if variants:
+            v0 = variants[0]
+            rules0 = str(v0.get("rules", ""))
+            art0 = by_label.get(str(v0.get("label", ""))) or {}
+            forbidden0 = art0.get("forbidden_terms")
+            family0 = art0.get("family", "")
+            chat.reply_line([], 0, rules0, forbidden0, family0)
+        else:
+            chat.reply_line([], 0, "", [], "")
+    except Exception:
+        pass
 
 
 def ready_line(rules, forbidden, seed) -> str:
