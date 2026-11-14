@@ -74,7 +74,8 @@ def _worker_main(conn):
             except BaseException:
                 traceback.print_exc()
                 d = fallback_strategy.decide(state)
-            conn.send({"action": d.action, "chat": d.chat, "source": d.source})
+            conn.send({"action": d.action, "chat": d.chat, "source": d.source,
+                       "model_error": getattr(llm, "last_error", None) if llm is not None else "no_llm"})
         except BaseException:
             traceback.print_exc()
             try:
