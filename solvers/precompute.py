@@ -26,6 +26,7 @@ class Facts:
     certain: Optional[dict] = None              # {"move": str, "why": str, "tool": str}
     used: list = field(default_factory=list)    # tool names that produced facts
     ms: int = 0
+    search_move: Optional[str] = None           # legal move recommended by the simulator search (fallback only)
 
 
 def _log(msg):
@@ -809,6 +810,8 @@ def _search(observation, legal, artifacts, rules, deadline, facts):
         facts.lines.append("Search recommends %s (share %.2f; %s)." % (r["move"], r["share"], r["why"]))
     else:
         facts.lines.append("Search recommends %s (%s)." % (r["move"], r["why"]))
+    if legal and r["move"] in legal:
+        facts.search_move = r["move"]
     if r.get("proven") and legal and r["move"] in legal:
         _set_certain(facts, r["move"], r["why"], "sim_search")
 

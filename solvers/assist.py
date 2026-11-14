@@ -23,8 +23,10 @@ from solvers.select import select_tools
 from solvers.toolloop import LoopResult, run_tool_loop
 
 PRECOMPUTE_S = 0.3
-SEARCH_S = 6.0          # budget of the simulator search (M6)
-MODEL_RESERVE_S = 8.0   # always left for the model call after the search
+SEARCH_S = 6.0          # max budget of the simulator search (M6)
+SEARCH_RESERVE_S = 4.0  # search budget = min(SEARCH_S, remaining - SEARCH_RESERVE_S), kept for the model call
+MODEL_S = 8.0           # model call timeout = min(MODEL_S, remaining - MODEL_MARGIN_S) (toolloop applies it)
+MODEL_MARGIN_S = 1.5
 CHAT_MAX = 200
 
 
@@ -106,9 +108,11 @@ def assist_turn(observation, legal_actions, artifacts, rules, llm_call, base_sys
         artifacts = artifacts if isinstance(artifacts, dict) else {}
         try:
             now = time.monotonic()
+            deadline = float(deadline)
+            budget = min(SEARCH_S, deadline - now - SEARCH_RESERVE_S)     # measured from the deadline, not added on top
             facts = precompute(str(observation or ""), legal_actions, artifacts, str(rules or ""),
-                               min(float(deadline), now + PRECOMPUTE_S),
-                               search_deadline=min(now + SEARCH_S, float(deadline) - MODEL_RESERVE_S))
+                               min(deadline, now + PRECOMPUTE_S),
+                               search_deadline=(now + budget) if budget > 0.5 else None)
         except Exception as exc:  # noqa: BLE001
             _log("precompute failed: %s" % exc)
         c = facts.certain
@@ -145,4 +149,17 @@ def assist_turn(observation, legal_actions, artifacts, rules, llm_call, base_sys
                                                                if t.get("tool")}))}, tcheck)
     except BaseException as exc:  # noqa: BLE001
         _log("failed: %s: %s" % (type(exc).__name__, exc))
-    return Assist(facts, tools, loop, None)
+    return Assist(facts, tools, loop, _search_fallback(facts, legal_actions))
+
+
+def _search_fallback(facts, legal):
+    """Model failed, timed out or gave an illegal move: use the search's legal recommendation, if there was one."""
+    try:
+        m = getattr(facts, "search_move", None)
+        mv = _legal_action(m, legal) if m and legal else None
+        if mv is None:
+            return None
+        return {"action": mv, "chat": certain_chat(facts)[:CHAT_MAX], "source": "tool", "why": "search fallback"}
+    except Exception as exc:  # noqa: BLE001
+        _log("search fallback failed: %s" % exc)
+        return None

@@ -95,7 +95,7 @@ def _ask(llm_call, messages, tools, timeout, max_tokens):
 
     t = threading.Thread(target=run, daemon=True)
     t.start()
-    t.join(timeout + 0.5)
+    t.join(max(0.05, timeout))
     r = box.get("r")
     if t.is_alive() or not isinstance(r, dict):
         return {"content": None, "tool_calls": [], "error": "model call timed out or returned junk"}

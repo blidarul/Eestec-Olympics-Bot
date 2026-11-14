@@ -77,3 +77,51 @@ def test_chat_truncated_to_200():
     m = Stub('{"a": "go", "c": "%s"}' % ("x" * 500))
     a = go("Your move.", ["go"], "g", m)
     assert len(a.suggestion["chat"]) == 200
+
+
+# ---------------------------------------------------------------- time budget and search fallback (L3 follow-up)
+
+from tests.alex.games import PIG_SIM, TTT_SIM, pig_sample, ttt_sample  # noqa: E402
+
+
+def _spec(tmp_path, src, chance=False):
+    p = tmp_path / "sim.py"
+    p.write_text(src, encoding="utf-8")
+    return {"simulator": {"path": str(p), "verified": True, "has_chance": chance}}
+
+
+def test_slow_search_and_slow_model_stay_inside_deadline(tmp_path):
+    smp = pig_sample(a=18, b=3, t=2)
+    art = _spec(tmp_path, PIG_SIM, True)
+    for secs in (12.0, 5.0, 2.5):
+        t = time.monotonic()
+        assist_turn(smp["observation"], smp["legal_actions"], art, "", Stub(sleep=30), "s", "u", t + secs, False)
+        assert time.monotonic() - t < secs - 0.5, secs
+
+
+def test_short_remaining_skips_or_shortens_search(tmp_path):
+    smp = pig_sample(a=18, b=3, t=2)
+    art = _spec(tmp_path, PIG_SIM, True)
+    t = time.monotonic()
+    a = assist_turn(smp["observation"], smp["legal_actions"], art, "", Stub('{"a": "hold", "c": "ok"}'), "s", "u", t + 5, False)
+    el = time.monotonic() - t
+    assert el < 4.5 and a.suggestion is not None
+    t = time.monotonic()
+    a = assist_turn(smp["observation"], smp["legal_actions"], art, "", Stub('{"a": "hold", "c": "ok"}'), "s", "u", t + 3.5, False)
+    assert "sim_search" not in a.facts.used and time.monotonic() - t < 3.0     # remaining - 4 < 0: search skipped
+
+
+def test_search_fallback_when_model_fails(tmp_path):
+    smp = pig_sample(a=18, b=3, t=2)
+    art = _spec(tmp_path, PIG_SIM, True)
+    for llm in (Stub(error="boom", content=None), Stub('{"a": "fly", "c": "x"}'), Stub(sleep=30)):
+        a = go(smp["observation"], smp["legal_actions"], "", llm, secs=10, art=art)
+        assert a.suggestion and a.suggestion["source"] == "tool" and a.suggestion["why"] == "search fallback"
+        assert a.suggestion["action"] in smp["legal_actions"] and 0 < len(a.suggestion["chat"]) <= 200
+
+
+def test_model_answer_beats_search_fallback(tmp_path):
+    smp = pig_sample(a=18, b=3, t=2)
+    art = _spec(tmp_path, PIG_SIM, True)
+    a = go(smp["observation"], smp["legal_actions"], "", Stub('{"a": "%s", "c": "ok"}' % smp["legal_actions"][0]), secs=10, art=art)
+    assert a.suggestion["source"] == "model"
