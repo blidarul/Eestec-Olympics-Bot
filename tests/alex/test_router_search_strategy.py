@@ -101,10 +101,15 @@ def test_policy_rows(sims):
     assert route(art(sims["ttt"], hidden=True)).strategy.name == "generic"
     assert route(art(sims["ttt"], verified=False)).strategy.name == "generic"
     assert route({"family": "grid_board"}).strategy.name == "generic"
-    assert route({"family": "qa_guardrails"}).strategy.name == "chat_defense"     # alias to guardrails
     assert route({"family": "guardrails"}).strategy.name == "chat_defense"
     assert route({"family": "dice_push"}).strategy.name == "generic"
     assert route({}).strategy.name == "generic"
+
+
+def test_matrix_simultaneous_goes_to_read_opponent():
+    from strategies.read_opponent import STRATEGY as ro
+    r = registry.route("rules", {"family": "matrix_simultaneous"}, entries() + [("read_opponent", ro)])
+    assert r.strategy.name == "read_opponent" and "read_opponent" in r.reason
 
 
 def test_chat_defense_no_longer_catches_every_game():

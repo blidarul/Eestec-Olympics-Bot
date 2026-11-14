@@ -5,7 +5,7 @@
  2  perfect information + verified simulator, deterministic              think_ahead/search            alpha-beta (MCTS if too big)
  3  perfect information + verified simulator, chance                     think_ahead/search            MCTS
  4  family guardrails                                                    guardrails/* (mbappe)         model + chat defense
- 5  family bluff | deals | read_opponent | truth                         strategies/<family>/* (mbappe) as that strategy
+ 5  family bluff | deals | read_opponent | truth | matrix_simultaneous    strategies/<family>/* (mbappe); matrix_simultaneous -> read_opponent
  6  anything else, or any tool above unverified / declining              core/generic                  model + playbook
 
 A strategy found by a rule must also report matches() > THRESHOLD, else the next rule is tried. Any exception
@@ -24,7 +24,9 @@ THRESHOLD = 0.5
 FORCE_ENV = "BOT_FORCE_STRATEGY"
 FAMILY_ALIASES = {"deduction": "guessing", "qa_guardrails": "guardrails", "cards_hidden": "bluff",
                   "negotiation": "deals"}
-MBAPPE_FAMILIES = ("bluff", "deals", "read_opponent", "truth")
+# prep family (after FAMILY_ALIASES) -> strategies/<folder>/ that plays it (rule 5 of the policy)
+FAMILY_DIRS = {"bluff": "bluff", "deals": "deals", "read_opponent": "read_opponent", "truth": "truth",
+               "matrix_simultaneous": "read_opponent"}
 
 
 @dataclass
@@ -101,7 +103,6 @@ def route(rules, artifacts, entries=None) -> Route:
     from core.generic import STRATEGY as generic
     art = artifacts if isinstance(artifacts, dict) else {}
     fam = family_of(art)
-    art = dict(art, family=fam)  # strategies see the strategy-family name (deduction -> guessing, ...)
     entries = load_entries() if entries is None else entries
     forced = os.environ.get(FORCE_ENV)
     if forced:
@@ -139,10 +140,10 @@ def route(rules, artifacts, entries=None) -> Route:
         s = _find(entries, rules, art, fam_dir="guardrails")
         if s:
             return Route(s, "guardrails family", fam)
-    if fam in MBAPPE_FAMILIES:
-        s = _find(entries, rules, art, fam_dir=fam)
+    if fam in FAMILY_DIRS:
+        s = _find(entries, rules, art, fam_dir=FAMILY_DIRS[fam])
         if s:
-            return Route(s, f"{fam} family", fam)
+            return Route(s, f"{fam} family -> strategies/{FAMILY_DIRS[fam]}", fam)
     return Route(generic, "generic: " + ("; ".join(notes) if notes else f"no specialised strategy for family {fam}"), fam)
 
 
