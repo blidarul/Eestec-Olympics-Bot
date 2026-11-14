@@ -226,7 +226,8 @@ only `solvers/` and `tests/alex/` changed; HANDOFF_bld.md matches what is on mai
   Not done: nothing writes profiles yet (bld must call update_profile after a game); predictor needs a payoff matrix or 'X beats Y' sentences, otherwise no fact; zero-sum assumed for the counter-of-counter level.
 - M4: DONE. solvers/chance.py (call_ev, bluff_frequency, claim_probability, card_equity; 44 tools, all model-callable); detector _chance in precompute (facts only), hints in select; tests/alex/test_chance.py; 301 tests pass.
   Not done: no comparator for non-52-card decks (deck arg exists in monte_carlo_equity only), detector parses only hold'em-style and 'Your dice / Current bid' text formats (else pass artifacts), no Kuhn/Leduc tables (M8).
-- M5:
+- M5: DONE. solvers/evidence.py (retrieve, verify_answer, abstain_decision, truth_check; harness-only tools) + solvers/guard.py (forbidden_variants, forbidden_check); assist_turn adds evidence block + truth_check (Assist.truth_check); tests/alex/test_evidence.py; 311 tests pass.
+  Not done: issue for mbappe offering guard.py (open it with gt); truth path needs an "unknown" form in the rules text, scoring parsed best-effort (default +1/-1/0); verify is lexical (no paraphrase/semantic match), yes/no answers are not checked.
 - M6:
 - M7:
 - M8:

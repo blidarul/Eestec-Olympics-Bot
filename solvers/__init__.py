@@ -16,6 +16,8 @@ _TOOL_MODULES = (
     "solvers.classic.tools",
     "solvers.opponent",
     "solvers.chance",
+    "solvers.evidence",
+    "solvers.guard",
 )
 
 for _name in _TOOL_MODULES:
