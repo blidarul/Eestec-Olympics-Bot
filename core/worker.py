@@ -111,10 +111,14 @@ def _worker_main(conn):
             if kind == "ping":
                 conn.send({"pong": True})
                 continue
-            if kind in ("prep", "load", "ready_line"):
+            if kind in ("prep", "load", "ready_line", "cold", "cold_verify"):
                 from core import hooks
                 if kind == "prep":
                     conn.send({"prep": hooks.run_prep(req["msg"])})
+                elif kind == "cold":
+                    conn.send({"artifacts": hooks.run_cold(req["msg"], float(req.get("budget", 60.0)))})
+                elif kind == "cold_verify":
+                    conn.send({"artifacts": hooks.cold_verify(req.get("artifacts"), req.get("game") or {}, req.get("turn") or {})})
                 elif kind == "ready_line":
                     conn.send({"line": hooks.ready_line(req.get("rules", ""), req.get("forbidden") or [], req.get("seed", ""))})
                 else:

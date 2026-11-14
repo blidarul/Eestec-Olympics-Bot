@@ -12,6 +12,7 @@ from core import actionfmt, fallback, forbidden, memory, protocol, validate, wor
 
 PREP_DEADLINE = 540.0  # arena gives 600 s
 START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
+COLD_PREP_CAP = 60.0  # code-only prep at a cold start (rule 4.3)
 TURN_DEADLINE = 12.0  # arena gives 20 s
 START_CHAT = "Ready when you are."
 
@@ -93,12 +94,30 @@ def pick_artifacts(msg, wk):
     return art if isinstance(art, dict) else {}
 
 
+def cold_prep(msg, wk):
+    """No artifacts at `start` (cold container, rule 4.3): run the code-only part of prep on start.rules inside the worker, at most
+    COLD_PREP_CAP s and never more than half of the study clock the arena announces, then route like a warm container."""
+    try:
+        study = float(msg.get("study_seconds") or 30.0)
+    except (TypeError, ValueError):
+        study = 30.0
+    cap = min(COLD_PREP_CAP, 0.5 * study)
+    if cap < 5.0 or not str(msg.get("rules", "")).strip():
+        return {}
+    ans = wk.ask({"kind": "cold", "msg": msg, "budget": cap}, cap)
+    art = ans.get("artifacts") if isinstance(ans, dict) else None
+    return art if isinstance(art, dict) and art else {}
+
+
 def on_start(msg, wk):
     t0 = time.monotonic()
     use_llm(msg)
     STATE["game"] = msg
     try:
         STATE["artifacts"] = pick_artifacts(msg, wk)
+        if not STATE["artifacts"]:
+            STATE["artifacts"] = cold_prep(msg, wk)
+            t0 = time.monotonic()  # the ready line gets its own fresh budget
     except Exception:
         traceback.print_exc()
         STATE["artifacts"] = {}
@@ -184,6 +203,15 @@ def on_turn(msg, wk):
     t0 = time.monotonic()
     source, model_error, meta = "fallback", None, {}
     art = STATE["artifacts"]
+    if art.get("cold_prep") and not art.get("cold_verified"):  # cold container: verify the simulator on the first real turn
+        try:
+            ans = wk.ask({"kind": "cold_verify", "artifacts": art, "game": STATE["game"],
+                          "turn": {"observation": msg.get("observation"), "legal_actions": msg.get("legal_actions")}}, 6.0)
+            new = ans.get("artifacts") if isinstance(ans, dict) else None
+            art = STATE["artifacts"] = new if isinstance(new, dict) and new else dict(art, cold_verified=True)
+        except Exception:
+            traceback.print_exc()
+            art["cold_verified"] = True
     legal = msg.get("legal_actions")
     warning = msg.get("warning") if isinstance(msg.get("warning"), dict) else None
     mine = STATE["my_actions"]

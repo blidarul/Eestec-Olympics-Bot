@@ -23,7 +23,7 @@ from dataclasses import dataclass
 THRESHOLD = 0.5
 FORCE_ENV = "BOT_FORCE_STRATEGY"
 FAMILY_ALIASES = {"deduction": "guessing", "qa_guardrails": "guardrails", "cards_hidden": "bluff",
-                  "negotiation": "deals", "dice_push": "bluff"}
+                  "negotiation": "deals", "dice_push": "chance"}  # chance: dice races go to think_ahead/search when the simulator verifies, else generic
 # prep family (after FAMILY_ALIASES) -> strategies/<folder>/ that plays it (rule 5 of the policy)
 FAMILY_DIRS = {"bluff": "bluff", "deals": "deals", "read_opponent": "read_opponent", "truth": "truth",
                "matrix_simultaneous": "read_opponent"}

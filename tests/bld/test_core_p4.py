@@ -73,7 +73,8 @@ class Bot:
         return "".join(self.err)
 
 
-def test_safety_net_never_repeats_a_guess_even_if_the_model_does(tmp_path):
+def test_safety_net_never_repeats_a_guess_even_if_the_model_does(tmp_path, monkeypatch):
+    monkeypatch.setenv("BOT_FORCE_STRATEGY", "generic")   # the model path: deduce (built-in model, G2) cannot repeat anyway
     b = Bot(tmp_path, '{"a": "guess 50", "c": "Fifty."}')   # a model that always says the same thing; prepare() cannot verify
     try:
         assert b.send(prep_msg())["type"] == "ready"
@@ -205,10 +206,12 @@ def test_cut_off_reply_is_used_only_if_it_holds_a_complete_json_object():
     assert llm_with('{"a": "B2", "c": "hi"}', "stop").ask_json("s", "u") == {"a": "B2", "c": "hi"}
 
 
-def test_dice_push_routes_to_bluff():
+def test_dice_push_is_a_chance_family_not_bluff():
+    # an unverified simulator must never send a dice game to the poker strategy
     r = registry.route("PIG rules", {"family": "dice_push"})
-    assert r.strategy.name == "bluff"
-    assert r.family == "bluff"
+    assert r.family == "chance" and r.strategy.name != "bluff"
+    r = registry.route("PIG rules", {"family": "chance", "simulator": {"verified": False, "path": "x"}})
+    assert r.strategy.name != "bluff"
 
 
 def test_turn_state_opponent_field(tmp_path):
