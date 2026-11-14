@@ -1,0 +1,40 @@
+practice p-20261114-223453: bot-a = 'mybot:fix' vs bot-b = 'python examples/random_bot.py' (seed 234489923)
+prep: 1 game(s) x 2 bots, 600 s each, all at once
+prep bot-b x tic_tac_toe: ready after 0 s
+prep bot-a x tic_tac_toe: ready after 0.9 s
+game 1: Tic-Tac-Toe [5x5, four in a row] seat 0 = bot-a, seat 1 = bot-b
+  bot-a says: Bring it on.
+  bot-a: C3  (6.6s)
+  bot-a says: Hm.
+  bot-b: E3  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: D2  (6.1s)
+  bot-a says: Sure.
+  bot-b: C4  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: B4  (3.9s)
+  bot-a says: Interesting.
+  bot-b: B5  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: E1  (4.9s)
+  bot-a says: We'll see.
+  result: bot-a - seat 0 (X) made 4 in a row  (match 1-0)
+game 2: Tic-Tac-Toe [3x3 classic] seat 0 = bot-b, seat 1 = bot-a
+  bot-a says: Bring it on.
+  bot-b: B1  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: A1  (0.8s)
+  bot-a says: Alright.
+  bot-b: A2  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: B2  (0.7s)
+  bot-a says: We'll see.
+  bot-b: C1  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: C3  (0.9s)
+  bot-a says: Alright.
+  result: bot-a - seat 1 (O) made 3 in a row  (match 2-0)
+match p-20261114-223453: winner bot-a (2-0, by score)
+final: bot-a 2 - 0 bot-b; winner bot-a (score)
+match file: C:\Users\Alex\Downloads\linux_pioneers_bot\bot\arena-lite\results\practice\matches\p-20261114-223453.json
+bot stderr logs: C:\Users\Alex\Downloads\linux_pioneers_bot\bot\arena-lite\results\practice\logs (warm containers: logs/warm/)

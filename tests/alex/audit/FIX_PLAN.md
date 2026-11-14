@@ -112,4 +112,4 @@ silently.
   G4: complete artifacts.json reused, 2nd prep 0 model calls. F0-1: search was already deadline-bounded; the test played 600 games at 8 s/move, now 22 s. tests/bld+core+mbappe 515 pass, tests/alex 353 pass.
 - X4: DONE on fix/audit-t2: B1 532b019, B3 7f5948f, B2 855ff15 (ownership lifted for this branch). Suites: tests/bld, mbappe, core, alex all pass.
   Image mybot:audit, f2_all.py all: inject 16, scen 7, games 48, b3 8 runs: 0 problems, 0 warnings, 0 losses. See BLOCKERS.md fix notes.
-- X5:
+- X5: DONE on image mybot:fix: audit_all --quick + f2_all all: 0 problems, 0 warnings, 0 losses, max stub answer 3.7 s. Real model (3 matches 2-0 each, tic_tac_toe/guess_number/pig): sources tool only, 0 model errors, max answer 6.3 s, 0 own warnings.
