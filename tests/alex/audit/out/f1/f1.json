@@ -1,0 +1,5169 @@
+{
+ "prep": [
+  {
+   "game": "guess_number",
+   "variants": 2,
+   "missing_sample_turn": [],
+   "prep1": {
+    "answer": {
+     "type": "ready"
+    },
+    "latency": 1.38,
+    "gw_calls": 4,
+    "stray": 0,
+    "stage_lines": [
+     "[prep/engine] starting prep for guess_number (guess_number) with 2 variant(s), budget 600s",
+     "[prep/engine] finished prep for guess_number in 0.12s",
+     "[prep] simulator '1-100': verified=True (ok)",
+     "[prep] simulator '1-1000': verified=True (ok)",
+     "[prep] deduce.prepare: verified=False (no code in the answer)",
+     "[prep] deduce.prepare: verified=False (no code in the answer)"
+    ]
+   },
+   "prep2": {
+    "answer": {
+     "type": "ready"
+    },
+    "latency": 1.05,
+    "gw_calls": 4,
+    "stray": 0,
+    "stage_lines": [
+     "[prep/engine] starting prep for guess_number (guess_number) with 2 variant(s), budget 600s",
+     "[prep/engine] finished prep for guess_number in 0.12s",
+     "[prep] simulator '1-100': verified=True (ok)",
+     "[prep] simulator '1-1000': verified=True (ok)",
+     "[prep] deduce.prepare: verified=False (no code in the answer)",
+     "[prep] deduce.prepare: verified=False (no code in the answer)"
+    ]
+   },
+   "memory_files": {
+    "guess_number\\classification.json": 224,
+    "guess_number\\manifest.json": 15935,
+    "guess_number\\observation_schema.json": 182,
+    "guess_number\\samples.json": 816,
+    "guess_number\\simulator.py": 2992,
+    "guess_number\\simulator_0.py": 2992,
+    "guess_number\\simulator_1.py": 2998,
+    "guess_number\\tools.json": 3028,
+    "guess_number\\words.json": 22921,
+    "guess_number\\words_5.json": 22921,
+    "guess_number\\d76a73dcc2b1\\artifacts.json": 6175,
+    "guess_number\\ea5529159409\\artifacts.json": 6169
+   },
+   "classification": {
+    "family": "deduction",
+    "confidence": 1.0,
+    "is_deterministic": false,
+    "has_hidden_information": true,
+    "is_simultaneous": false,
+    "turn_structure": "alternating",
+    "features": {
+     "scores": {
+      "deduction": 57.5
+     },
+     "has_dice": true,
+     "has_secret": true
+    }
+   },
+   "manifest_keys": [
+    "elapsed_seconds",
+    "family",
+    "fingerprint",
+    "game_id",
+    "game_name",
+    "prepped_at",
+    "simulator_calibration",
+    "simulator_path",
+    "tools",
+    "variants"
+   ],
+   "tools_json_keys": "list"
+  },
+  {
+   "game": "pig",
+   "variants": 2,
+   "missing_sample_turn": [],
+   "prep1": {
+    "answer": {
+     "type": "ready"
+    },
+    "latency": 0.56,
+    "gw_calls": 0,
+    "stray": 0,
+    "stage_lines": [
+     "[prep/engine] starting prep for pig (pig) with 2 variant(s), budget 600s",
+     "[prep/engine] finished prep for pig in 0.09s",
+     "[prep] simulator 'One die, first to 50': verified=True (ok)",
+     "[prep] simulator 'Two dice, first to 60 (snake eyes reset)': verified=True (ok)"
+    ]
+   },
+   "prep2": {
+    "answer": {
+     "type": "ready"
+    },
+    "latency": 0.55,
+    "gw_calls": 0,
+    "stray": 0,
+    "stage_lines": [
+     "[prep/engine] starting prep for pig (pig) with 2 variant(s), budget 600s",
+     "[prep/engine] finished prep for pig in 0.09s",
+     "[prep] simulator 'One die, first to 50': verified=True (ok)",
+     "[prep] simulator 'Two dice, first to 60 (snake eyes reset)': verified=True (ok)"
+    ]
+   },
+   "memory_files": {
+    "pig\\classification.json": 245,
+    "pig\\manifest.json": 14310,
+    "pig\\observation_schema.json": 165,
+    "pig\\samples.json": 751,
+    "pig\\simulator.py": 2433,
+    "pig\\simulator_0.py": 2433,
+    "pig\\simulator_1.py": 2432,
+    "pig\\tools.json": 2437,
+    "pig\\9516c51fda6c\\artifacts.json": 5202,
+    "pig\\f8d08f5e61c1\\artifacts.json": 5265
+   },
+   "classification": {
+    "family": "dice_push",
+    "confidence": 1.0,
+    "is_deterministic": false,
+    "has_hidden_information": false,
+    "is_simultaneous": false,
+    "turn_structure": "push_your_luck",
+    "features": {
+     "scores": {
+      "deduction": 3.0,
+      "dice_push": 97.0
+     },
+     "has_dice": true,
+     "has_secret": false
+    }
+   },
+   "manifest_keys": [
+    "elapsed_seconds",
+    "family",
+    "fingerprint",
+    "game_id",
+    "game_name",
+    "prepped_at",
+    "simulator_calibration",
+    "simulator_path",
+    "tools",
+    "variants"
+   ],
+   "tools_json_keys": "list"
+  },
+  {
+   "game": "tic_tac_toe",
+   "variants": 2,
+   "missing_sample_turn": [],
+   "prep1": {
+    "answer": {
+     "type": "ready"
+    },
+    "latency": 0.73,
+    "gw_calls": 0,
+    "stray": 0,
+    "stage_lines": [
+     "[prep/engine] starting prep for tic_tac_toe (tic_tac_toe) with 2 variant(s), budget 600s",
+     "[prep/engine] finished prep for tic_tac_toe in 0.09s",
+     "[prep] simulator '3x3 classic': verified=True (ok)",
+     "[prep] simulator '5x5, four in a row': verified=True (ok)"
+    ]
+   },
+   "prep2": {
+    "answer": {
+     "type": "ready"
+    },
+    "latency": 0.66,
+    "gw_calls": 0,
+    "stray": 0,
+    "stage_lines": [
+     "[prep/engine] starting prep for tic_tac_toe (tic_tac_toe) with 2 variant(s), budget 600s",
+     "[prep/engine] finished prep for tic_tac_toe in 0.09s",
+     "[prep] simulator '3x3 classic': verified=True (ok)",
+     "[prep] simulator '5x5, four in a row': verified=True (ok)"
+    ]
+   },
+   "memory_files": {
+    "tic_tac_toe\\classification.json": 244,
+    "tic_tac_toe\\manifest.json": 15067,
+    "tic_tac_toe\\observation_schema.json": 93,
+    "tic_tac_toe\\samples.json": 795,
+    "tic_tac_toe\\simulator.py": 5007,
+    "tic_tac_toe\\simulator_0.py": 5007,
+    "tic_tac_toe\\simulator_1.py": 5007,
+    "tic_tac_toe\\tools.json": 2665,
+    "tic_tac_toe\\5b2e47e8974f\\artifacts.json": 5328,
+    "tic_tac_toe\\87450c54da6b\\artifacts.json": 5310
+   },
+   "classification": {
+    "family": "grid_board",
+    "confidence": 1.0,
+    "is_deterministic": true,
+    "has_hidden_information": false,
+    "is_simultaneous": false,
+    "turn_structure": "alternating",
+    "features": {
+     "scores": {
+      "grid_board": 34.5,
+      "deduction": 3.0
+     },
+     "has_dice": false,
+     "has_secret": false
+    }
+   },
+   "manifest_keys": [
+    "elapsed_seconds",
+    "family",
+    "fingerprint",
+    "game_id",
+    "game_name",
+    "prepped_at",
+    "simulator_calibration",
+    "simulator_path",
+    "tools",
+    "variants"
+   ],
+   "tools_json_keys": "list"
+  }
+ ],
+ "games": [
+  {
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 0,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 0.735,
+     "legal_n": null,
+     "action": "guess 50",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 4894,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "binary_search_next",
+      "sim_search"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 696,
+     "reason": "model (tools: ); generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 2,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 75",
+     "chat": "Okay. And?",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 4749,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 23,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 3,
+     "latency": 0.016,
+     "legal_n": null,
+     "action": "guess 31",
+     "chat": "Mm-hm.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 4950,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 4,
+     "latency": 0.032,
+     "legal_n": null,
+     "action": "guess 99",
+     "chat": "Is that all?",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5152,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 22,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 5,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 37",
+     "chat": "We'll see.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5353,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 6,
+     "latency": 0.015,
+     "legal_n": null,
+     "action": "guess 90",
+     "chat": "Alright.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5555,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 7,
+     "latency": 0.016,
+     "legal_n": null,
+     "action": "guess 85",
+     "chat": "We'll see.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5757,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 19,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 8,
+     "latency": 0.016,
+     "legal_n": null,
+     "action": "guess 89",
+     "chat": "Alright.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5959,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 19,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 8\"}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint",
+    "[select] bisect_predicate_points: family guessing",
+    "[select] expected_value: general",
+    "[select] best_option: general",
+    "[select] combinatorics: general",
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint"
+   ]
+  },
+  {
+   "game": "guess_number",
+   "variant": 0,
+   "seat": 1,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 0.797,
+     "legal_n": null,
+     "action": "guess 50",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 4922,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "binary_search_next",
+      "sim_search"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 758,
+     "reason": "model (tools: ); generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 2,
+     "latency": 0.032,
+     "legal_n": null,
+     "action": "guess 22",
+     "chat": "Right.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 4791,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 3,
+     "latency": 0.016,
+     "legal_n": null,
+     "action": "guess 73",
+     "chat": "If you say so.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 4992,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 4,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 71",
+     "chat": "Is that all?",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5194,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 23,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 5,
+     "latency": 0.015,
+     "legal_n": null,
+     "action": "guess 64",
+     "chat": "We'll see.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5396,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 6,
+     "latency": 0.016,
+     "legal_n": null,
+     "action": "guess 94",
+     "chat": "Alright.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5598,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 19,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 7,
+     "latency": 0.015,
+     "legal_n": null,
+     "action": "guess 80",
+     "chat": "We'll see.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5799,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 19,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 8,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 39",
+     "chat": "Hm. Keep going.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 6001,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 9,
+     "latency": 0.032,
+     "legal_n": null,
+     "action": "guess 75",
+     "chat": "We'll see.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 6181,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 10,
+     "latency": 0.016,
+     "legal_n": null,
+     "action": "guess 27",
+     "chat": "Alright.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 6300,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 11,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 69",
+     "chat": "Interesting. Over to you.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 6420,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 24,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': \"seat 0 found the opponent's number in round 11\"}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint",
+    "[select] bisect_predicate_points: family guessing",
+    "[select] expected_value: general",
+    "[select] best_option: general",
+    "[select] combinatorics: general",
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint"
+   ]
+  },
+  {
+   "game": "guess_number",
+   "variant": 1,
+   "seat": 0,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 0.735,
+     "legal_n": null,
+     "action": "guess 50",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 4911,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "binary_search_next",
+      "sim_search"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 695,
+     "reason": "model (tools: ); generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 2,
+     "latency": 0.015,
+     "legal_n": null,
+     "action": "guess 500",
+     "chat": "Right.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 4764,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 3,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 690",
+     "chat": "If you say so.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 4971,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 4,
+     "latency": 0.032,
+     "legal_n": null,
+     "action": "guess 810",
+     "chat": "Is that all?",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5178,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 23,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 5,
+     "latency": 0.016,
+     "legal_n": null,
+     "action": "guess 976",
+     "chat": "Okay. And?",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5385,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 6,
+     "latency": 0.015,
+     "legal_n": null,
+     "action": "guess 325",
+     "chat": "Huh. Keep talking, I'm enjoying the show.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5591,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 7,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 723",
+     "chat": "Hm. Keep going.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5798,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 8,
+     "latency": 0.032,
+     "legal_n": null,
+     "action": "guess 659",
+     "chat": "We'll see.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 6005,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 9,
+     "latency": 0.016,
+     "legal_n": null,
+     "action": "guess 978",
+     "chat": "I'm listening. Barely.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 6189,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': \"seat 1 found the opponent's number in round 9\"}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint",
+    "[select] bisect_predicate_points: family guessing",
+    "[select] expected_value: general",
+    "[select] best_option: general",
+    "[select] combinatorics: general",
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint"
+   ]
+  },
+  {
+   "game": "guess_number",
+   "variant": 1,
+   "seat": 1,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 0.641,
+     "legal_n": null,
+     "action": "guess 50",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 4940,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "binary_search_next",
+      "sim_search"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 618,
+     "reason": "model (tools: ); generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 2,
+     "latency": 0.032,
+     "legal_n": null,
+     "action": "guess 500",
+     "chat": "Right.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 4807,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 3,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 579",
+     "chat": "If you say so.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5014,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 23,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 4,
+     "latency": 0.015,
+     "legal_n": null,
+     "action": "guess 439",
+     "chat": "We'll see.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5220,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    },
+    {
+     "turn": 5,
+     "latency": 0.031,
+     "legal_n": null,
+     "action": "guess 607",
+     "chat": "Alright.",
+     "gw_calls": 2,
+     "prompt": {
+      "total": 5428,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "guessing",
+     "strategy": "generic",
+     "tool": "fallback",
+     "source": "fallback",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 20,
+     "reason": "generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': \"seat 0 found the opponent's number in round 5\"}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint",
+    "[select] bisect_predicate_points: family guessing",
+    "[select] expected_value: general",
+    "[select] best_option: general",
+    "[select] combinatorics: general",
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint"
+   ]
+  },
+  {
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 3.485,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay. And?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 920,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 3320,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 2,
+     "latency": 3.062,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Huh. Keep talking, I'm enjoying the show.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1000,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2918,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 3,
+     "latency": 2.719,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Mm-hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1090,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2575,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 4,
+     "latency": 2.64,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1387,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2503,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 5,
+     "latency": 2.797,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Hm. Keep going.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1467,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2663,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 6,
+     "latency": 2.562,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1557,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2446,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 7,
+     "latency": 2.531,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1649,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2407,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 8,
+     "latency": 2.25,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay, I'm curious. Where is this going?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1739,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2141,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 9,
+     "latency": 2.281,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "I'm listening. Barely.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1807,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2172,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 10,
+     "latency": 2.031,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1813,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1932,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 11,
+     "latency": 2.735,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1974,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2597,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 12,
+     "latency": 2.406,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Is that all?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2132,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2296,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 13,
+     "latency": 2.437,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright then.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2127,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2314,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 14,
+     "latency": 1.891,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Interesting. Over to you.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2299,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1797,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 15,
+     "latency": 2.0,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Huh. Keep talking, I'm enjoying the show.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2294,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1899,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 16,
+     "latency": 1.953,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2299,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1857,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 17,
+     "latency": 1.672,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay. And?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2306,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1595,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 18,
+     "latency": 1.906,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2483,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1806,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 19,
+     "latency": 1.859,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Feeling the pressure yet?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2648,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1771,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 20,
+     "latency": 1.797,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "I'm listening. Barely.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2641,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1708,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 21,
+     "latency": 1.906,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2646,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1812,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 22,
+     "latency": 1.703,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2809,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1616,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 23,
+     "latency": 1.844,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2802,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1754,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 24,
+     "latency": 1.812,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2805,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1722,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 25,
+     "latency": 1.578,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2810,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1510,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 26,
+     "latency": 1.562,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2813,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1488,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 27,
+     "latency": 1.406,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Hm. Keep going.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1331,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 28,
+     "latency": 1.547,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1468,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 29,
+     "latency": 1.469,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay, I'm curious. Where is this going?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1391,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 30,
+     "latency": 1.266,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1194,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 31,
+     "latency": 1.313,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1252,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 32,
+     "latency": 1.187,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Is that all?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1139,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 33,
+     "latency": 1.234,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1167,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 34,
+     "latency": 1.297,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Interesting. Over to you.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1223,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 35,
+     "latency": 1.157,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1092,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 36,
+     "latency": 0.985,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 931,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 37,
+     "latency": 0.937,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Huh. Keep talking, I'm enjoying the show.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 891,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.06
+   },
+   "result": "{'winner': 1, 'scores': [28, 55], 'reason': 'seat 1 reached 55 (target 50)'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "game 1 x: None"
+   ]
+  },
+  {
+   "game": "pig",
+   "variant": 0,
+   "seat": 1,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 3.422,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1032,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 3256,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 2,
+     "latency": 3.016,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Sure.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1283,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2872,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 3,
+     "latency": 2.547,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Interesting.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1363,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2423,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 4,
+     "latency": 2.297,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1453,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2191,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 5,
+     "latency": 2.343,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1545,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2224,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 6,
+     "latency": 2.25,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Huh. Keep talking, I'm enjoying the show.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1635,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2134,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 7,
+     "latency": 2.156,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1725,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2054,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 8,
+     "latency": 1.781,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1963,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1686,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 9,
+     "latency": 1.906,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay. And?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2194,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1815,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 10,
+     "latency": 1.922,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Run out of ideas yet?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2190,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1828,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 11,
+     "latency": 1.734,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2195,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1656,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 12,
+     "latency": 1.422,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay, I'm curious. Where is this going?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2201,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1357,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 13,
+     "latency": 1.782,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Mm-hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2372,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1697,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 14,
+     "latency": 1.657,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2367,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1573,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 15,
+     "latency": 1.453,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2372,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1385,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 16,
+     "latency": 1.391,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2378,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1323,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 17,
+     "latency": 1.218,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2383,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1162,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 18,
+     "latency": 1.766,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Hm. Keep going.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2563,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1672,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 19,
+     "latency": 1.828,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2730,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1724,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 20,
+     "latency": 1.516,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "I'm listening. Barely.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2723,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1425,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 21,
+     "latency": 1.406,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2727,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1328,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 22,
+     "latency": 1.578,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2893,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1499,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 23,
+     "latency": 1.625,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Is that all?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2886,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1545,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 24,
+     "latency": 1.437,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2889,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1359,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 25,
+     "latency": 1.375,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2893,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1305,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 26,
+     "latency": 1.125,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2896,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1062,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 27,
+     "latency": 1.453,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1394,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 28,
+     "latency": 1.422,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1345,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 29,
+     "latency": 1.594,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay. And?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1520,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 30,
+     "latency": 1.187,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Interesting. Over to you.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1134,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 31,
+     "latency": 1.094,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1041,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 32,
+     "latency": 1.093,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay, I'm curious. Where is this going?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1041,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 33,
+     "latency": 0.891,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 856,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 34,
+     "latency": 0.625,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Huh. Keep talking, I'm enjoying the show.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 589,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 35,
+     "latency": 0.422,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 399,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 36,
+     "latency": 0.36,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 343,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 1, 'scores': [32, 52], 'reason': 'seat 1 reached 52 (target 50)'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "game 1 x: None"
+   ]
+  },
+  {
+   "game": "pig",
+   "variant": 1,
+   "seat": 0,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 3.36,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 940,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 3199,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 2,
+     "latency": 2.656,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Sure.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1255,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2523,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 3,
+     "latency": 2.484,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Mm-hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1337,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2362,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 4,
+     "latency": 2.422,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1431,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2300,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 5,
+     "latency": 2.188,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1523,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2077,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 6,
+     "latency": 2.141,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1778,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2041,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 7,
+     "latency": 1.828,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1860,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1741,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 8,
+     "latency": 1.468,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Hm. Keep going.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1953,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1401,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 9,
+     "latency": 1.469,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2173,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1402,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 10,
+     "latency": 1.031,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Run out of ideas yet?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2171,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 987,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 11,
+     "latency": 0.25,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Interesting. Over to you.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2179,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 241,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.09
+   },
+   "result": "{'winner': 0, 'scores': [60, 10], 'reason': 'seat 0 reached 60 (target 60)'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "game 1 x: None"
+   ]
+  },
+  {
+   "game": "pig",
+   "variant": 1,
+   "seat": 1,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 3.375,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1088,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 3213,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 2,
+     "latency": 2.266,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay. And?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1338,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2153,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 3,
+     "latency": 2.328,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Mm-hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1420,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2217,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 4,
+     "latency": 2.062,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1514,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1971,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 5,
+     "latency": 1.859,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1772,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1771,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 6,
+     "latency": 1.656,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1856,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1567,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 7,
+     "latency": 1.594,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1948,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1525,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 8,
+     "latency": 2.313,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Hm. Keep going.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2235,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2189,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 9,
+     "latency": 2.172,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "I'm listening. Barely.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2295,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 2061,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 10,
+     "latency": 1.875,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Run out of ideas yet?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2304,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1785,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 11,
+     "latency": 1.625,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2311,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1552,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 12,
+     "latency": 1.328,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Okay, I'm curious. Where is this going?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2466,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1260,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 13,
+     "latency": 1.25,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2463,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1193,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 14,
+     "latency": 1.562,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Interesting. Over to you.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2641,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1481,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 15,
+     "latency": 1.063,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2639,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1009,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 16,
+     "latency": 0.812,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2646,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 769,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 17,
+     "latency": 0.547,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2810,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 515,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 18,
+     "latency": 0.281,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Alright.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2807,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "bluff",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 259,
+     "reason": "simulator verified, chance game, 22265 simulations, branching 2; perfect information, simulator verified, chance"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 1, 'scores': [33, 69], 'reason': 'seat 1 reached 69 (target 60)'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "game 1 x: None"
+   ]
+  },
+  {
+   "game": "tic_tac_toe",
+   "variant": 0,
+   "seat": 0,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 0.859,
+     "legal_n": 9,
+     "action": "A1",
+     "chat": "Okay. And?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 865,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "alpha-beta",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 822,
+     "reason": "simulator verified, alpha-beta to terminal, depth 9, 7864 nodes, value 0; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 2,
+     "latency": 0.031,
+     "legal_n": 7,
+     "action": "B1",
+     "chat": "Sure.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 978,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "alpha-beta",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 26,
+     "reason": "simulator verified, alpha-beta to terminal, depth 7, 767 nodes, value 1; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 3,
+     "latency": 0.016,
+     "legal_n": 5,
+     "action": "C1",
+     "chat": "Interesting.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1077,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "alpha-beta",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 10,
+     "reason": "simulator verified, alpha-beta to terminal, depth 5, 75 nodes, value 1; perfect information, simulator verified, deterministic"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'seat 0 (X) made 3 in a row'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "game 1 x: None"
+   ]
+  },
+  {
+   "game": "tic_tac_toe",
+   "variant": 0,
+   "seat": 1,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 0.735,
+     "legal_n": 8,
+     "action": "C1",
+     "chat": "Hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 885,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "alpha-beta",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 703,
+     "reason": "simulator verified, alpha-beta to terminal, depth 8, 2404 nodes, value 0; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 2,
+     "latency": 0.032,
+     "legal_n": 6,
+     "action": "A2",
+     "chat": "Okay. And?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 984,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "alpha-beta",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 21,
+     "reason": "simulator verified, alpha-beta to terminal, depth 6, 476 nodes, value 0; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 3,
+     "latency": 0.015,
+     "legal_n": 4,
+     "action": "B2",
+     "chat": "Mm-hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1083,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "alpha-beta",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "simulator verified, alpha-beta to terminal, depth 4, 57 nodes, value 0; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 4,
+     "latency": 0.0,
+     "legal_n": 2,
+     "action": "A3",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1182,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "alpha-beta",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 9,
+     "reason": "simulator verified, alpha-beta to terminal, depth 2, 5 nodes, value 1; perfect information, simulator verified, deterministic"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.09
+   },
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'seat 1 (O) made 3 in a row'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "game 1 x: None"
+   ]
+  },
+  {
+   "game": "tic_tac_toe",
+   "variant": 1,
+   "seat": 0,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 6.797,
+     "legal_n": 25,
+     "action": "C3",
+     "chat": "Hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 916,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 6466,
+     "reason": "simulator verified, tree too big for alpha-beta, 3799 simulations, branching 25; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 2,
+     "latency": 5.828,
+     "legal_n": 23,
+     "action": "D4",
+     "chat": "Sure.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1029,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 5542,
+     "reason": "simulator verified, tree too big for alpha-beta, 3794 simulations, branching 23; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 3,
+     "latency": 4.0,
+     "legal_n": 21,
+     "action": "B2",
+     "chat": "Interesting.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1128,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 3812,
+     "reason": "simulator verified, tree too big for alpha-beta, 1536 simulations, branching 21; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 4,
+     "latency": 4.375,
+     "legal_n": 19,
+     "action": "A1",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1227,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 4173,
+     "reason": "simulator verified, tree too big for alpha-beta, 3794 simulations, branching 19; perfect information, simulator verified, deterministic"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'seat 0 (X) made 4 in a row'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "game 1 x: None"
+   ]
+  },
+  {
+   "game": "tic_tac_toe",
+   "variant": 1,
+   "seat": 1,
+   "cold": false,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 6.594,
+     "legal_n": 24,
+     "action": "C2",
+     "chat": "Hm.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 936,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 6271,
+     "reason": "simulator verified, tree too big for alpha-beta, 3799 simulations, branching 24; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 2,
+     "latency": 5.656,
+     "legal_n": 22,
+     "action": "C4",
+     "chat": "Sure.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1035,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 5382,
+     "reason": "simulator verified, tree too big for alpha-beta, 3787 simulations, branching 22; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 3,
+     "latency": 5.094,
+     "legal_n": 20,
+     "action": "C3",
+     "chat": "Interesting.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1134,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 4849,
+     "reason": "simulator verified, tree too big for alpha-beta, 3799 simulations, branching 20; perfect information, simulator verified, deterministic"
+    },
+    {
+     "turn": 4,
+     "latency": 3.953,
+     "legal_n": 18,
+     "action": "C1",
+     "chat": "Is that all?",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1233,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "grid_board",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 3764,
+     "reason": "simulator verified, tree too big for alpha-beta, 3798 simulations, branching 18; perfect information, simulator verified, deterministic"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.08
+   },
+   "result": "{'winner': 1, 'scores': [0, 1], 'reason': 'seat 1 (O) made 4 in a row'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "game 1 x: None"
+   ]
+  },
+  {
+   "game": "pig",
+   "variant": 0,
+   "seat": 0,
+   "cold": true,
+   "turns": [
+    {
+     "turn": 1,
+     "latency": 0.594,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1322,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 557,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 2,
+     "latency": 0.0,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1596,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 10,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 3,
+     "latency": 0.016,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "Sure.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 1841,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 4,
+     "latency": 0.0,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2089,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 5,
+     "latency": 0.016,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2326,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 6,
+     "latency": 0.016,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "If you say so.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2572,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 7,
+     "latency": 0.016,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2814,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 8,
+     "latency": 0.0,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 3063,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 10,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 9,
+     "latency": 0.016,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 3293,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 12,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 10,
+     "latency": 0.015,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 3448,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 11,
+     "latency": 0.015,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 3602,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 12,
+     "latency": 0.016,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "We'll see.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 3647,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 12,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    },
+    {
+     "turn": 13,
+     "latency": 0.0,
+     "legal_n": 2,
+     "action": "hold",
+     "chat": "stub chat",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 3647,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": true,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 400,
+     "family": "generic",
+     "strategy": "generic",
+     "tool": "model (tools: )",
+     "source": "model",
+     "tools_called": [],
+     "facts_used": [
+      "dice_sum_distribution"
+     ],
+     "assist_source": "model",
+     "model_error": null,
+     "answer_ms": 11,
+     "reason": "model (tools: ); generic: no specialised strategy for family generic"
+    }
+   ],
+   "problems": [],
+   "start": {
+    "answer": {
+     "type": "ready",
+     "chat": "Let's do this."
+    },
+    "latency": 0.06
+   },
+   "result": "{'winner': 1, 'scores': [0, 52], 'reason': 'seat 1 reached 52 (target 50)'}",
+   "stray": 0,
+   "early": 0,
+   "warnings": [],
+   "stderr_nondecision": [
+    "[select] binomial_tail: keyword hint",
+    "[select] expected_value: keyword hint",
+    "[select] binary_search_next: keyword hint",
+    "[select] deduce_next: keyword hint",
+    "[select] extract_history: keyword hint",
+    "[select] best_option: general",
+    "[select] binomial_tail: keyword hint",
+    "[select] expected_value: keyword hint"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+#!/bin/sh
+# Static wiring probes: prints file:line of the first hit for each chain link (hypothesis only).
+p() { printf '%-34s' "$1"; grep -rnE "$2" $3 --include=*.py 2>/dev/null | grep -v "/tests/" | head -${4:-2} | cut -d: -f1,2 | tr '\n' ' '; echo; }
+p "router->strategy(family)"       "registry.route|route\(" "core main.py"
+p "family_of"                      "family_of\(" "core prep chat"
+p "action_format->validate"        "action_format|grammar" "core/validate.py core/generic.py"
+p "fallback_policy->fallback"      "fallback_policy" "core prep"
+p "chat_bank->fallback_chat"       "chat_bank" "core chat prep"
+p "forbidden_terms->filter_out"    "forbidden_terms" "core"
+p "simulator->verify"              "simulator|verified" "core/generic.py solvers/assist.py"
+p "feedback_model->deduce"         "feedback_model|feedback" "solvers/assist.py prep"
+p "memory save"                    "def (save|load|write|read)" "core/memory.py"
+p "memory use in worker"           "memory\." "core/worker.py main.py"
+p "opponent chat->prompt"          "untrusted|UNTRUSTED" "core chat solvers"
+p "llm block latest"               "\"llm\"|\['llm'\]|get\(.llm" "core/worker.py core/protocol.py main.py"
+p "assist_turn call"               "assist_turn\(" "core strategies"
+p "precompute->prompt facts"       "facts" "solvers/assist.py core/generic.py"
+p "certain move->validate"         "certain|source.*tool" "core/generic.py solvers/assist.py"
+p "warning->retry"                 "warning|rejected" "core/worker.py core/generic.py core/validate.py"
+p "decision log"                   "log.jsonl|def log_decision|decision" "core/worker.py core/hooks.py"

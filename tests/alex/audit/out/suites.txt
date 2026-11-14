@@ -1,0 +1,34 @@
+tests/bld\test_action_parser.py                 2s  9 passed in 0.06s
+tests/bld\test_chat_integration.py              2s  5 passed in 0.11s
+tests/bld\test_classifier.py                    2s  3 passed in 0.05s
+tests/bld\test_connect_four.py                240s  TIMEOUT 240s
+tests/bld\test_core_loop.py                     6s  7 passed in 4.61s
+tests/bld\test_core_p2.py                      12s  10 passed in 9.71s
+tests/bld\test_core_p3.py                       3s  10 passed in 1.36s
+tests/bld\test_core_p4.py                       7s  17 passed in 5.60s
+tests/bld\test_engine.py                        2s  1 passed in 0.08s
+tests/bld\test_heuristics.py                    2s  4 passed in 0.05s
+tests/bld\test_optimization.py                  2s  9 passed in 0.03s
+tests/bld\test_serializer.py                    2s  7 passed in 0.07s
+tests/bld\test_synthesis.py                     2s  7 passed in 0.16s
+tests/bld\test_tools.py                         2s  9 passed in 0.10s
+tests/bld\test_wordle_duel.py                  85s  9 passed in 83.74s (0:01:23)
+tests/bld\test_zobrist.py                       1s  4 passed in 0.03s
+tests/mbappe\test_alex_guard.py                 2s  2 passed in 0.09s
+tests/mbappe\test_battle.py                     2s  18 passed in 0.95s
+tests/mbappe\test_blotto.py                     9s  23 passed in 7.60s
+tests/mbappe\test_bluff.py                     18s  23 passed in 16.36s
+tests/mbappe\test_concede.py                    6s  26 passed in 4.39s
+tests/mbappe\test_deals.py                      5s  17 passed in 3.76s
+tests/mbappe\test_filters.py                    2s  20 passed in 0.25s
+tests/mbappe\test_final_robust.py               2s  12 passed in 0.13s
+tests/mbappe\test_game_selfcheck.py             2s  2 passed in 0.07s
+tests/mbappe\test_guard_pipeline.py             2s  34 passed in 0.16s
+tests/mbappe\test_human.py                      2s  19 passed in 0.25s
+tests/mbappe\test_injection.py                  2s  16 passed in 0.10s
+tests/mbappe\test_no_deal.py                    2s  11 passed in 0.16s
+tests/mbappe\test_opponent_tracker.py           6s  15 passed in 4.23s
+tests/mbappe\test_poker.py                     24s  19 passed in 22.55s
+tests/mbappe\test_read_opponent.py              8s  24 passed in 6.09s
+tests/mbappe\test_strategy.py                   2s  25 passed in 0.50s
+tests/mbappe\test_tone_leak.py                  5s  28 passed in 3.40s

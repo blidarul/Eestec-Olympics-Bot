@@ -1,0 +1,40 @@
+{
+ "answers": [
+  {
+   "for": "prep",
+   "line": "{\"type\": \"ready\"}",
+   "latency": 0.844,
+   "json": true,
+   "type": "ready",
+   "chat_len": null,
+   "problems": [],
+   "ok": true
+  },
+  {
+   "for": "start",
+   "line": "{\"type\": \"ready\", \"chat\": \"Let's do this.\"}",
+   "latency": 0.0,
+   "json": true,
+   "type": "ready",
+   "chat_len": 14,
+   "problems": [],
+   "ok": true
+  },
+  {
+   "for": "turn",
+   "line": "{\"type\": \"action\", \"action\": \"A1\", \"chat\": \"Hm.\"}",
+   "latency": 1.046,
+   "json": true,
+   "type": "action",
+   "chat_len": 3,
+   "action": "A1",
+   "problems": [],
+   "ok": true
+  }
+ ],
+ "stray": [],
+ "early_stdout": [],
+ "exit": 0,
+ "exit_s": 0.0,
+ "stderr_tail": "with 2 variant(s), budget 600s\n[prep/engine] finished prep for tic_tac_toe in 0.10s\n[prep] simulator '3x3 classic': verified=True (ok)\n[prep] simulator '5x5, four in a row': verified=True (ok)\ndecision {\"kind\": \"decision\", \"game\": \"tic_tac_toe\", \"game_index\": 1, \"turn\": 1, \"family\": \"grid_board\", \"strategy\": \"search\", \"tool\": \"alpha-beta\", \"action\": \"A1\", \"reason\": \"simulator verified, alpha-beta to terminal, depth 9, 7864 nodes, value 0; perfect information, simulator verified, deterministic\", \"candidates_left\": null, \"source\": \"tool\", \"answer_ms\": 1003, \"model_error\": null}\ngame 1 win: None\n"
+}

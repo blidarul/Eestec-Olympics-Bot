@@ -1,0 +1,14 @@
+[prep/engine] starting prep for guess_number (guess_number) with 2 variant(s), budget 600s
+[prep/engine] finished prep for guess_number in 0.13s
+[prep] simulator '1-100': verified=True (ok)
+[prep] simulator '1-1000': verified=True (ok)
+[prep] deduce.prepare: verified=False (no code in the answer)
+[prep] deduce.prepare: verified=False (no code in the answer)
+[select] deduce_next: keyword hint
+[select] extract_history: keyword hint
+[select] bisect_predicate_points: family guessing
+[select] expected_value: general
+[select] best_option: general
+[select] combinatorics: general
+decision {"kind": "decision", "game": "guess_number", "game_index": 1, "turn": 1, "family": "guessing", "strategy": "generic", "tool": "model (tools: )", "action": "guess 1", "reason": "model (tools: ); generic: feedback model unverified (no code in the answer); simulator verified but game has hidden information or simultaneous moves", "candidates_left": null, "source": "model", "answer_ms": 92, "model_error": null, "facts_used": ["binary_search_next", "sim_search"], "tools_called": [], "assist_source": "model", "assist_ms": 6}
+game 1 win: None
