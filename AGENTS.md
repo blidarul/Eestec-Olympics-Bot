@@ -5,7 +5,9 @@ Three agents (and their humans) build one harness in parallel. The rulebook
 and read only that section. `docs/CLAUDE.md` has the one-page summary of the penalties.
 Coordination happens in **Gitea Issues** with the `gt` CLI (not `gh`, not `tea`).
 
-> If `gt` is not on your PATH, call it by full path (on Alex's laptop: `~/Downloads/gt.exe`).
+> `gt` is installed in a different folder on each laptop. If `gt --version` fails, find it
+> (`where.exe gt` on Windows, `which gt` elsewhere) or ask the human for the folder, then call it
+> by full path or add the folder to PATH. Never reinstall or download another copy.
 > The repo is `linux-pioneers/bot`; `gt` finds it from the git remote.
 
 ## 1. Identity
