@@ -3,6 +3,8 @@
   - card games (Kuhn poker, showdowns): the hand is read from our private observation lines; the policy mixes value
     bets, calibrated bluffs (about a quarter of the time with the worst hands) and calls (about a third of the time
     with middle hands), see cards.py;
+  - Mini Poker (Kuhn, Leduc): a precomputed equilibrium table (poker/, built by CFR+ at build time, a lookup at run time) with a
+    small capped exploitation of an extreme opponent;
   - push-your-luck dice races (Pig): hold at the turn total where one more roll stops paying, see pig.py.
 Chat: one line from chat.reply_line, which answers the OPPONENT's last message and never looks at our hand or our
 move (rule 6.5/6.7 defense: opponent chat is data; no private value can leak because the line is built from public
@@ -13,15 +15,18 @@ Never raises, no network, well under 10 ms per turn.
 import random
 import sys
 import traceback
+import zlib
 
 import chat
 from chat import guard
 from chat.signals import ChatMonitor
 from strategies.base import Decision, TurnState
 from strategies.bluff import cards, pig
+from strategies.bluff.poker import player as poker
 
 FAMILIES = ("cards_hidden", "dice_push", "bluff")
 _MONITORS = {}   # game_id -> ChatMonitor
+_POKER_STATS = {}  # game_id -> poker.OpponentStats (how often the opponent opens with a bet)
 
 
 class BluffStrategy:
@@ -44,7 +49,7 @@ class BluffStrategy:
         monitor = _MONITORS.setdefault(gid, ChatMonitor())
         monitor.update([{"from": "opponent", "text": t} for t in (state.opponent_chat or [])])
         rng = random.Random(f"{gid}|{state.turn}|bluff")
-        action, why = self._move(state, legal, monitor, rng)
+        action, why = self._poker(state, legal, rng) or self._move(state, legal, monitor, rng)
         backup = next((a for a in legal if a != action and cards.categorize(a) != "fold"), None) or action
         # the move comes from the game (hand, odds): reason EV. The guard still stops a chat-driven echo of a weak move.
         res = guard.guard_action(action, backup, legal or None, monitor, "EV" if why else "OTHER", None, (), action)
@@ -53,6 +58,17 @@ class BluffStrategy:
         monitor.consume()
         print(f"bluff: {res.action!r} via={why} guard={res.why}", file=sys.stderr, flush=True)
         return Decision(res.action, line or chat.filter_out("", None), "strategy" if not res.changed else "fallback")
+
+    @staticmethod
+    def _poker(state, legal, rng):
+        """Kuhn / Leduc: the equilibrium table (strategies/bluff/poker). None when this is not poker or the table cannot answer."""
+        if not poker.is_poker(state.rules, state.observation, legal):
+            return None
+        stats = _POKER_STATS.setdefault(str(state.game_id), poker.OpponentStats())
+        # the draw depends on the hand text too, so two matches do not repeat the same random choices
+        rng = random.Random(f"{state.game_id}|{state.turn}|{zlib.crc32(str(state.observation).encode('utf-8', 'replace'))}")
+        res = poker.decide(state.rules, state.observation, legal, state.seat, stats, rng)
+        return (res[0], "poker-" + res[1]) if res else None
 
     @staticmethod
     def _move(state, legal, monitor, rng):
