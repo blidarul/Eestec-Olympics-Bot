@@ -78,9 +78,10 @@ class LLM:
             self.spend += (getattr(u, "prompt_tokens", 0) or 0) * PRICE_IN + \
                           (getattr(u, "completion_tokens", 0) or 0) * PRICE_OUT
         ch = resp.choices[0]
-        if getattr(ch, "finish_reason", None) == "length":
-            return None  # cut off
-        return ch.message.content or ""
+        text = ch.message.content or ""
+        if getattr(ch, "finish_reason", None) == "length":  # cut off (7.4): usable only if a complete JSON object is in it
+            return text if re.search(r"\{.*\}", text, re.S) else None
+        return text
 
     def ask(self, system: str, user: str, *, prep: bool = False, timeout: float = 8.0,
             budget: int | None = None, max_tokens: int | None = None) -> str | None:

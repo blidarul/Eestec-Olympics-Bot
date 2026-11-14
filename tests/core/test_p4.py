@@ -180,3 +180,19 @@ def test_search_strategy_end_to_end_from_cold_memory(tmp_path):
     rec = [json.loads(l[9:]) for l in err.splitlines() if l.startswith("decision ")][-1]
     assert rec["strategy"] == "search" and rec["tool"] == "alpha-beta" and rec["source"] == "tool"
     assert "perfect information, simulator verified, deterministic" in rec["reason"]
+
+
+def test_cut_off_reply_is_used_only_if_it_holds_a_complete_json_object():
+    from types import SimpleNamespace as NS
+    from core.llm import LLM
+
+    def llm_with(content, finish):
+        l = LLM({"api_key": "k", "base_url": "http://x/v1", "model": "haiku"})
+        resp = NS(choices=[NS(message=NS(content=content), finish_reason=finish)], usage=None)
+        l._client = NS(chat=NS(completions=NS(create=lambda **kw: resp)))
+        return l
+
+    assert llm_with('{"a": "B2", "c": "hi"} then it kept talking and was cut', "length").ask_json("s", "u") == {"a": "B2", "c": "hi"}
+    l = llm_with('I think the best move is {"a": "B', "length")
+    assert l.ask_json("s", "u") is None and l.last_error == "empty_or_cut_off"
+    assert llm_with('{"a": "B2", "c": "hi"}', "stop").ask_json("s", "u") == {"a": "B2", "c": "hi"}
