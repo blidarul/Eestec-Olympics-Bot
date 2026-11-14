@@ -27,8 +27,8 @@ when you first need them.
 
 | Agent | Role | Owns (edit only these) |
 |---|---|---|
-| `alex` | solvers and deterministic strategies | `main.py`, `Dockerfile`, `requirements.txt`, `core/` (protocol loop, clocks and fallback, Haiku client, safe `/memory` access, strategy registry and interfaces), `solvers/` (minimax, MCTS, deduction, probability), `strategies/think_ahead/`, `strategies/guessing/`, `tests/alex/`, `tests/core/` |
-| `bld` | prep time and optimization | `prep/` (rules reading, playbook and simulator building in the 10-minute prep, rules parsing, observation layout, state synthesis), `optimization/` (profiling, runtime and search speedups, memory footprint, CPU/RAM budgeting), `tests/bld/` |
+| `alex` | solvers, tools, and deterministic strategies | `solvers/` (minimax, MCTS, deduction, probability), `strategies/think_ahead/`, `strategies/guessing/`, solver tools, `tests/alex/` |
+| `bld` | core harness, prep time, and optimization | `main.py`, `Dockerfile`, `requirements.txt`, `core/` (protocol loop, clocks and fallback, Haiku client, safe `/memory` access, strategy registry and interfaces), `prep/` (rules reading, playbook and simulator building in the 10-minute prep, rules parsing, observation layout, state synthesis), `optimization/` (profiling, runtime and search speedups, memory footprint, CPU/RAM budgeting), `tests/bld/`, `tests/core/` |
 | `mbappe` | chat and untrusted data strategies | `chat/` (opponent chat as untrusted data, chat composition, forbidden-subject filter), `opponent/` (opponent profiles), `strategies/bluff/`, `strategies/deals/`, `strategies/read_opponent/`, `strategies/truth/`, `strategies/guardrails/`, `tests/mbappe/` |
 
 **Shared paths (core owner's; change only through a `type:contract` issue and a PR):**
@@ -43,8 +43,8 @@ Ownership rules:
 3. A new module goes into a **new folder** you own (for example `strategies/bluff/kuhn/`) and
    plugs in through the registry interface (`core/` scans `strategies/*/` for a `STRATEGY`
    object). You never edit the core to register it. If the interface cannot express what you
-   need, that is a `type:contract` issue to `alex`.
-4. Anything that touches the protocol, the clocks or the model client is `alex`'s.
+   need, that is a `type:contract` issue to `bld`.
+4. Anything that touches the protocol, the clocks or the model client is `bld`'s.
 
 ## 3. Session routine
 
@@ -164,11 +164,11 @@ Checkable conditions (a test that passes, a command whose output you can compare
   `[<me>] #<issue>: <summary>` (for example `[alex] #12: minimax solver for grid games`, `[bld] #14: rules parser for prep`).
 - `git pull --rebase` right before every push. Never force-push, never rewrite history.
 - Shared paths go through a branch and a PR (`gt pr create`), linked to the `type:contract`
-  issue; `alex` merges.
+  issue; `bld` merges.
 - Never commit `.env`, `dev.env`, any key or secret, or `.agent-id`. The judges can read this
   repository (3.7). Do not paste keys into issues or comments either.
 - Tag every freeze for the judges: `t1`, `t2`, `t3` (same names as the image tags, rule 3.7).
-  `alex` creates them.
+  `bld` creates them.
 - Before every push that goes into an image, go through the checklist in rule 14.7.
 
 ## 7. Definition of done
