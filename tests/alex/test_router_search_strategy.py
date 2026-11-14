@@ -154,3 +154,10 @@ def test_fallback_numeric_grammar_when_legal_list_is_null():
     for _ in range(20):
         assert fallback_action(None, a, avoid_also=taken) == "guess 5"
     assert fallback_action(None, a) == "guess 3"                    # no repeat constraint: the example
+
+
+def test_search_uses_mcts_when_alpha_beta_cannot_finish(sims, monkeypatch):
+    monkeypatch.setattr(ta, "ALPHA_BETA_SECONDS", 0.0)           # a tree too big for the time box (7864 nodes needed)
+    st = turn(ttt_sample(list(".........")), art(sims["ttt"]), seconds=6.0)
+    d = ta.STRATEGY.decide(st)
+    assert d.info["tool"] == "mcts" and "too big" in d.info["reason"] and d.action in st.legal_actions
