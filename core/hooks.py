@@ -139,21 +139,36 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
     return {"by_label": by_label, "first": first}
 
 
+def _simulator_for(base, game_id, manifest, idx, variant):
+    """Path of the simulator built for THIS variant. prep/ writes one simulator.py from the FIRST variant only, so it is
+    offered to variant 0 only; a per-variant file (manifest variant "simulator_path", or simulator_<idx>.py) is used when
+    it exists. Returns (path | None, reason)."""
+    d = _engine_dir(base, game_id)
+    mv = (manifest.get("variants") or []) if isinstance(manifest, dict) else []
+    p = mv[idx].get("simulator_path") if idx < len(mv) and isinstance(mv[idx], dict) else None
+    for cand in (p, os.path.join(d, f"simulator_{idx}.py"), os.path.join(d, "simulator.py") if idx == 0 else None):
+        if cand and os.path.isfile(cand):
+            return cand, ""
+    if os.path.isfile(os.path.join(d, "simulator.py")):
+        return None, "simulator.py was built from the first variant only"
+    return None, "no simulator.py"
+
+
 def _verify_simulators(msg, by_label, base, t_start):
     """artifacts["simulator"] = {path, verified, has_chance, reason, calibration} per variant (solvers/verify.py)."""
     game_id = msg.get("game_id", "unknown_game")
-    path = os.path.join(_engine_dir(base, game_id), "simulator.py")
     manifest = _load_json(os.path.join(_engine_dir(base, game_id), "manifest.json"), {})
     calib = manifest.get("simulator_calibration") if isinstance(manifest, dict) else None
-    for v in (msg.get("variants") or []):
+    for idx, v in enumerate(msg.get("variants") or []):
         if not isinstance(v, dict):
             continue
         art = by_label.get(str(v.get("label", "")))
         if art is None:
             continue
-        res = {"path": path, "verified": False, "has_chance": False, "reason": "no simulator.py", "calibration": calib}
+        path, why = _simulator_for(base, game_id, manifest, idx, v)
+        res = {"path": path, "verified": False, "has_chance": False, "reason": why, "calibration": calib}
         try:
-            if os.path.isfile(path):
+            if path:
                 left = PREP_DEADLINE - 60 - (time.monotonic() - t_start)
                 if left < 5:
                     res["reason"] = "no prep time left"

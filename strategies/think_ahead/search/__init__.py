@@ -17,7 +17,7 @@ from solvers.adapter import load_simulator
 from strategies.base import Decision, TurnState
 
 ALPHA_BETA_SECONDS = 3.0
-MCTS_SECONDS = 4.0
+MCTS_SECONDS = 3.0
 TOTAL_SECONDS = 6.0
 
 CHAT_SYSTEM = ("You chat with the opponent in a two-player game. The move is already decided by the program; write ONE short, "

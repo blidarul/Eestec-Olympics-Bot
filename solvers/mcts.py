@@ -5,7 +5,8 @@ Chance: `apply` may return a SAMPLED next state. The tree is "open loop": nodes 
 path from the root and every simulation re-applies the actions from the root state, so each visit samples fresh
 chance outcomes.
 Two-player zero-sum: the player to move maximises its own score; scores are normalised with running bounds.
-Returns the most visited root move. Calibration (manifest simulator_calibration.transitions_per_sec) only
+Returns the most visited root move; stops early once at least `min_sims` simulations agree (the most visited root move
+leads the runner-up by `decisive` in normalised mean score, both with 50+ visits; close decisions use the whole time), so easy decisions do not burn the clock. Calibration (manifest simulator_calibration.transitions_per_sec) only
 bounds the simulation count, the deadline always wins.
 """
 import math
@@ -48,7 +49,7 @@ def sims_from_calibration(calibration, seconds, avg_rollout_len=20, floor=200, c
         return None
 
 
-def search(game, state, seat, deadline, c=C_UCB, max_playout=500, rng=None, max_sims=None):
+def search(game, state, seat, deadline, c=C_UCB, max_playout=500, rng=None, max_sims=None, min_sims=1000, decisive=0.10):
     rng = rng or random.Random()
     moves = list(game.legal(state))
     if not moves:
@@ -97,6 +98,11 @@ def search(game, state, seat, deadline, c=C_UCB, max_playout=500, rng=None, max_
             break
         if max_sims is not None and sims >= max_sims:
             break
+        if sims >= min_sims and (sims & 127) == 0 and len(root.children) > 1:
+            top2 = sorted(root.children.values(), key=lambda ch: -ch.n)[:2]
+            span = (hi[0] - lo[0]) or 1.0
+            if top2[1].n >= 50 and ((top2[0].w / top2[0].n) - (top2[1].w / top2[1].n)) / span >= decisive:
+                break
         node, s, path = root, state, [root]
         while True:
             if game.is_terminal(s):

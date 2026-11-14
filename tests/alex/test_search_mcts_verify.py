@@ -140,3 +140,12 @@ def test_verify_isolated_good_and_hanging(tmp_path):
     t0 = time.monotonic()
     out = verify_isolated(str(hang), {"sample_turn": ttt_sample(list("XO.X....O"))}, timeout=3)
     assert out["verified"] is False and time.monotonic() - t0 < 10
+
+
+def test_mcts_stops_early_on_a_decisive_position():
+    g = ttt()
+    s = g.parse(ttt_sample(list("XX.OO...."))["observation"], 0)    # win in one: no reason to use the whole clock
+    for seed in range(5):
+        t0 = time.monotonic()
+        r = mcts.search(g, s, 0, t0 + 5.0, rng=random.Random(seed))
+        assert r.action == "C1" and time.monotonic() - t0 < 2.0 and r.sims < 50000

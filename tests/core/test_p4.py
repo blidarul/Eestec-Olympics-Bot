@@ -146,7 +146,7 @@ def test_prep_verifies_simulator_per_variant(tmp_path):
     assert sim["path"].endswith("simulator.py") and sim["has_chance"] is False
     assert sim["verified"] is True, sim            # bld's grid template has parse() since #20
     assert res["by_label"]["3x3"]["classification"]["has_hidden_information"] is False
-    assert res["by_label"]["no sample"]["simulator"]["verified"] is False and "sample" in res["by_label"]["no sample"]["simulator"]["reason"]
+    assert res["by_label"]["no sample"]["simulator"]["verified"] is False and "first variant" in res["by_label"]["no sample"]["simulator"]["reason"]
     with open(sim["path"], "w", encoding="utf-8") as f:   # a simulator without parse() stays unverified
         f.write(TTT_SIM.split("def parse")[0])
     by = {k: {"family": v["family"]} for k, v in res["by_label"].items()}
