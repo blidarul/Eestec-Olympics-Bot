@@ -203,7 +203,10 @@ model-callable tool; no tool ever raises out of `call()`; no file outside `solve
   Tools raise ToolError for bad input; an "explain" key in a tool's dict is lifted into the envelope. dice distribution is listed only up to 40 sums.
   Tests: tests/alex/test_catalog.py, test_numbers.py (36 tests, dice checked against brute force); whole tests/alex 87 passed. No reply from bld on #34 yet.
   Inbox untouched: #32 #31 #30 #27 #25 #21 (#31, #27 need core/ edits: bld's).
-- P2:
+- P2: DONE 2026-11-14. solvers/basic/graphs.py, 10 tools: grid_bfs, grid_astar, grid_flood_fill, grid_components, graph_shortest_path, graph_reachable,
+  graph_topo_sort, graph_components, graph_dfs_order, board_lines. Cells are [row, col] zero-based; graph node ids compared as text; grid uses passable OR blocked (neither = all passable).
+  Lists in results capped (100 items, "*_truncated" counts) to stay under 4 KB; deadline checked in all loops. Added A* as its own tool (grid_astar, optional per-char costs >= 1).
+  Tests: tests/alex/test_graphs.py (40, BFS/A*/Dijkstra/board_lines checked against brute force); whole tests/alex 127 passed. Inbox untouched: #34 #32 #30 #25 #21 (plan says one phase, user asked P2 only).
 - P3:
 - P4:
 - P5:
