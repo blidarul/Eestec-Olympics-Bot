@@ -1,0 +1,164 @@
+"""Hooks into prep/, optimization/ and chat/. WORKER PROCESS ONLY: the main process never imports this.
+
+Every hook is in try/except; if prep/ or optimization/ is missing or raises we fall back to the
+core minimal prep. Artifacts shape (what TurnState.artifacts holds, one dict per variant):
+  {family, playbook, action_format{kind, regex, examples}, fallback_policy{prefer, avoid},
+   chat_bank[], forbidden_terms[], grammar{...}, label}
+"""
+import contextlib
+import os
+import sys
+import time
+import traceback
+
+from core import chatsafe, memory
+from core.llm import LLM
+
+PREP_DEADLINE = 540.0
+NEUTRAL_BANK = ["Good luck, have fun!", "Nice move.", "Interesting choice.", "Let's see how this goes.",
+                "Your move."]
+
+
+def _log(*a):
+    print(*a, file=sys.stderr, flush=True)
+
+
+def _pause_gc():
+    try:
+        from optimization.budget import pause_gc
+        return pause_gc()
+    except Exception:
+        return contextlib.nullcontext()
+
+
+def _load_json(path, default=None):
+    try:
+        from optimization.serializer import load_json
+        return load_json(path, default)
+    except Exception:
+        return memory.load_json(path, default)
+
+
+def _default_artifacts(label="", rules=""):
+    return {"label": label, "family": "generic", "playbook": "", "action_format": {"kind": "", "regex": None, "examples": []},
+            "fallback_policy": {"prefer": [], "avoid": []}, "chat_bank": list(NEUTRAL_BANK), "forbidden_terms": []}
+
+
+def map_engine_variant(vd: dict) -> dict:
+    """Map one PrepEngine manifest variant (prep/engine.py) to the artifacts dict."""
+    cls = vd.get("classification") or {}
+    gr = vd.get("grammar") or {}
+    heur = vd.get("heuristics") or {}
+    opening = [str(x) for x in (heur.get("opening_moves") or [])]
+    examples = [str(x) for x in (gr.get("discrete_actions") or [])][:6] or opening[:3]
+    hints = heur.get("strategy_hints") or {}
+    hint_txt = "; ".join(f"{k}: {v}" for k, v in hints.items() if isinstance(v, (str, int, float)))[:600]
+    art = _default_artifacts(vd.get("label", ""))
+    art.update({
+        "family": cls.get("family") or heur.get("family") or "generic",
+        "playbook": (f"Game family: {cls.get('family', 'generic')}. {hint_txt}").strip()[:900],
+        "action_format": {"kind": gr.get("kind", ""), "regex": None, "examples": examples},
+        "fallback_policy": {"prefer": opening, "avoid": []},
+        "forbidden_terms": [str(x) for x in (gr.get("forbidden_keywords") or [])],
+        "grammar": gr,
+    })
+    return art
+
+
+def _core_prep_variant(llm: LLM, variant: dict) -> dict:
+    """Minimal core prep: one model call (thinking enabled, 7.3). Game rules go only to the gateway."""
+    art = _default_artifacts(variant.get("label", ""))
+    sys_p = ("You prepare a bot for a two-player text game. Reply with compact JSON only: "
+             '{"family": str, "playbook": "<=150 words of strategy", "action_format": {"regex": str, "examples": [str]}, '
+             '"fallback_policy": {"prefer": [str], "avoid": [str]}, "chat_bank": [str <=100 chars, friendly], '
+             '"forbidden_terms": [str]}')
+    obj = llm.ask_json(sys_p, str(variant.get("rules", ""))[:12000], prep=True, timeout=60)
+    if obj:
+        try:
+            art["family"] = str(obj.get("family") or "generic")
+            art["playbook"] = str(obj.get("playbook") or "")[:900]
+            af = obj.get("action_format") if isinstance(obj.get("action_format"), dict) else {}
+            art["action_format"] = {"kind": "", "regex": af.get("regex") or None,
+                                    "examples": [str(x) for x in (af.get("examples") or [])][:6]}
+            fp = obj.get("fallback_policy") if isinstance(obj.get("fallback_policy"), dict) else {}
+            art["fallback_policy"] = {"prefer": [str(x) for x in (fp.get("prefer") or [])][:10],
+                                      "avoid": [str(x) for x in (fp.get("avoid") or [])][:10]}
+            bank = [str(x)[:200] for x in (obj.get("chat_bank") or []) if str(x).strip()][:10]
+            art["chat_bank"] = bank or art["chat_bank"]
+            art["forbidden_terms"] = [str(x) for x in (obj.get("forbidden_terms") or [])][:20]
+        except Exception:
+            traceback.print_exc()
+    return art
+
+
+def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
+    """Return {"by_label": {label: artifacts}, "first": label}. Never raises."""
+    base = memory_dir or memory.BASE
+    variants = [v for v in (msg.get("variants") or []) if isinstance(v, dict)]
+    by_label = {}
+    engine_ok = False
+    try:
+        from prep.engine import PrepEngine
+        with _pause_gc():
+            PrepEngine(base).run_prep(msg)
+        manifest = _load_json(os.path.join(_engine_dir(base, msg.get("game_id", "unknown_game")), "manifest.json"), {})
+        for vd in (manifest.get("variants") or []):
+            if isinstance(vd, dict):
+                by_label[str(vd.get("label", ""))] = map_engine_variant(vd)
+        engine_ok = bool(by_label)
+    except BaseException:  # missing, raises, or exits: core prep takes over
+        traceback.print_exc()
+    if not engine_ok:
+        llm = LLM(msg.get("llm"))
+        for v in variants:
+            try:
+                by_label[str(v.get("label", ""))] = _core_prep_variant(llm, v)
+            except Exception:
+                traceback.print_exc()
+    for v in variants:  # ensure every variant has an entry
+        by_label.setdefault(str(v.get("label", "")), _default_artifacts(str(v.get("label", ""))))
+        by_label[str(v.get("label", ""))]["rules_text_hash_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
+        memory.save_json(os.path.join(memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base), "artifacts.json"),
+                         by_label[str(v.get("label", ""))])
+    first = str(variants[0].get("label", "")) if variants else ""
+    return {"by_label": by_label, "first": first}
+
+
+def _engine_dir(base, game_id):
+    try:
+        from optimization.serializer import game_memory_dir
+        return game_memory_dir(base, game_id)
+    except Exception:
+        return os.path.join(base, str(game_id))
+
+
+def load_artifacts(game_id: str, rules: str, base: str | None = None) -> dict:
+    d = _load_json(os.path.join(memory.game_dir(game_id, rules, base), "artifacts.json"), None)
+    return d if isinstance(d, dict) else {}
+
+
+# --- chat hooks (chat/ if it exposes them, else core/chatsafe.py) ---
+def wrap_untrusted(lines) -> str:
+    try:
+        import chat
+        f = getattr(chat, "wrap_untrusted", None)
+        if callable(f):
+            out = f(lines)
+            if isinstance(out, str) and out:
+                return out
+    except Exception:
+        traceback.print_exc()
+    return chatsafe.wrap_untrusted(lines)
+
+
+def filter_out(text, forbidden=None) -> str:
+    try:
+        import chat
+        f = getattr(chat, "filter_out", None)
+        if callable(f):
+            out = f(text, forbidden)
+            if isinstance(out, str) and out.strip():
+                return out[:200]
+    except Exception:
+        traceback.print_exc()
+    return chatsafe.filter_out(text, forbidden)

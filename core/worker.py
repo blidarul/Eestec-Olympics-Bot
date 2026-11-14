@@ -1,4 +1,4 @@
-"""Strategy work runs in a spawned worker process; the main process only waits with a deadline.
+"""Strategy and prep work runs in a spawned worker process; the main process only waits with a deadline.
 
 Main side: WorkerClient.ask(request, timeout) -> dict | None (None = timeout/crash; worker restarted).
 The main process imports nothing from strategies/, prep/, chat/; the child does, lazily.
@@ -19,28 +19,58 @@ def _worker_main(conn):
         sys.stdout = sys.stderr
     except Exception:
         pass
-    strategy = None
+    strategies, llm = None, None
     try:
         from strategies import default_strategy
         from strategies.base import TurnState
-        strategy = default_strategy()
+        fallback_strategy = default_strategy()
     except BaseException:
         traceback.print_exc()
+        return
     while True:
         try:
             req = conn.recv()
         except (EOFError, OSError):
             return
         try:
-            if strategy is None:
-                raise RuntimeError("no strategy")
-            if req.get("kind") == "ping":
+            kind = req.get("kind")
+            if kind == "ping":
                 conn.send({"pong": True})
                 continue
+            if kind in ("prep", "load"):
+                from core import hooks
+                if kind == "prep":
+                    conn.send({"prep": hooks.run_prep(req["msg"])})
+                else:
+                    conn.send({"artifacts": hooks.load_artifacts(req.get("game_id", ""), req.get("rules", ""))})
+                continue
+            info = req.get("llm")
+            if llm is None or (isinstance(info, dict) and info != llm.info):
+                try:
+                    from core.llm import LLM
+                    new = LLM(info)
+                    if llm is not None:
+                        new.spend, new.fails, new.skip = llm.spend, llm.fails, llm.skip
+                    llm = new
+                except Exception:
+                    traceback.print_exc()
+            if llm is not None:
+                llm.tick_turn()
             fields = dict(req["state"])
             fields["deadline"] = time.monotonic() + float(req.get("budget", 8.0))
-            fields["llm"] = None
-            d = strategy.decide(TurnState(**fields))
+            fields["llm"] = llm
+            state = TurnState(**fields)
+            strategy = fallback_strategy
+            try:
+                from core import registry
+                strategy = registry.pick(state.rules, state.artifacts)
+            except BaseException:
+                traceback.print_exc()
+            try:
+                d = strategy.decide(state)
+            except BaseException:
+                traceback.print_exc()
+                d = fallback_strategy.decide(state)
             conn.send({"action": d.action, "chat": d.chat, "source": d.source})
         except BaseException:
             traceback.print_exc()
