@@ -114,6 +114,10 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
     t_start = time.monotonic()
     base = memory_dir or memory.BASE
     variants = [v for v in (msg.get("variants") or []) if isinstance(v, dict)]
+    reused = _reuse_prep(msg, variants, base)
+    if reused is not None:  # G4: a complete earlier prep of the same rules is in /memory: no engine run, no model call
+        _log(f"[prep] reusing complete artifacts from /memory for {msg.get('game_id')} ({time.monotonic() - t_start:.2f}s)")
+        return reused
     by_label = {}
     engine_ok = False
     try:
@@ -163,6 +167,7 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
             traceback.print_exc()
     for v in variants:
         by_label[str(v.get("label", ""))]["rules_text_hash_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
+        by_label[str(v.get("label", ""))]["prep_complete"] = True   # every prep step ran (G4): the next prep may reuse this file
         memory.save_json(os.path.join(memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base), "artifacts.json"),
                          by_label[str(v.get("label", ""))])
     first = str(variants[0].get("label", "")) if variants else ""
@@ -235,6 +240,29 @@ def cold_verify(art: dict, game: dict, turn: dict, timeout: float = 4.0, memory_
     if d:
         memory.save_json(os.path.join(d, "artifacts.json"), art)
     return art
+
+
+def _reuse_prep(msg: dict, variants: list, base: str):
+    """{"by_label", "first"} when EVERY variant already has a complete artifacts.json for the same rules text (same hash dir),
+    else None. Complete = written by a full run_prep (prep_complete), has the keys routing needs, and its simulator file exists.
+    Tolerates missing, partial or stale files (5.14)."""
+    try:
+        if not variants:
+            return None
+        by_label = {}
+        for v in variants:
+            art = load_artifacts(msg.get("game_id", ""), str(v.get("rules", "")), base)
+            if not (art.get("prep_complete") and art.get("family") and isinstance(art.get("action_format"), dict)
+                    and isinstance(art.get("forbidden_terms"), list) and art.get("cold_prep") is None):
+                return None
+            sim = art.get("simulator")
+            if isinstance(sim, dict) and sim.get("path") and not os.path.isfile(sim["path"]):
+                return None
+            by_label[str(v.get("label", ""))] = art
+        return {"by_label": by_label, "first": str(variants[0].get("label", ""))}
+    except BaseException:
+        traceback.print_exc()
+        return None
 
 
 def attach_action_template(art: dict, rules: str) -> None:

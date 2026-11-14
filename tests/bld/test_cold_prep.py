@@ -52,3 +52,30 @@ def test_cold_container_end_to_end_pig_uses_search(tmp_path):
         err = b.close()
     dec = [l for l in err.splitlines() if l.startswith("decision ")]
     assert dec and all('"strategy": "search"' in l for l in dec), dec
+
+
+def test_second_prep_makes_no_model_calls(tmp_path, monkeypatch):
+    calls = []
+
+    class Fake:
+        def __init__(self, info=None): self.info = info or {}
+        def available(self): return True
+        def over_budget(self): return False
+        def ask(self, *a, **k): calls.append(1); return None
+        def ask_json(self, *a, **k): calls.append(1); return None
+
+    monkeypatch.setattr(hooks, "LLM", Fake)
+    prep, _, _, _ = msgs.build("guess_number")
+    first = hooks.run_prep(prep, memory_dir=str(tmp_path))
+    n1 = len(calls)
+    second = hooks.run_prep(prep, memory_dir=str(tmp_path))
+    assert n1 > 0 and len(calls) == n1, (n1, len(calls))
+    assert second["by_label"].keys() == first["by_label"].keys() and second["first"] == first["first"]
+    assert all(a["family"] and a["prep_complete"] for a in second["by_label"].values())
+
+
+def test_partial_or_cold_artifacts_are_not_reused(tmp_path):
+    prep, start, _, _ = msgs.build("pig")
+    cold = hooks.run_cold(start, 60.0, memory_dir=str(tmp_path))
+    assert cold["cold_prep"] and hooks._reuse_prep(prep, prep["variants"], str(tmp_path)) is None   # a cold file is code-only
+    assert hooks._reuse_prep(prep, prep["variants"], str(tmp_path / "empty")) is None
