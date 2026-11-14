@@ -1,2 +1,17 @@
 .agent-id
 .env
+dev.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Arena outputs and match results
+results/
+memory/
+arena-lite/results/
+arena-lite/memory/
