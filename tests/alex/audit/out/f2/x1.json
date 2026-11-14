@@ -1,0 +1,92 @@
+{
+ "gravity": [
+  {
+   "seat": 0,
+   "seed": 1,
+   "problems": [],
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+   "stray": 0,
+   "early": 0,
+   "gw_requests": 4,
+   "prep": {
+    "ok": true,
+    "s": 0.5
+   },
+   "n": 4,
+   "max_lat": 0.72,
+   "sources": [
+    "model"
+   ],
+   "strategy": [
+    "generic"
+   ]
+  },
+  {
+   "seat": 0,
+   "seed": 2,
+   "problems": [],
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+   "stray": 0,
+   "early": 0,
+   "gw_requests": 9,
+   "prep": null,
+   "n": 9,
+   "max_lat": 0.48,
+   "sources": [
+    "model"
+   ],
+   "strategy": [
+    "generic"
+   ]
+  },
+  {
+   "seat": 1,
+   "seed": 1,
+   "problems": [],
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+   "stray": 0,
+   "early": 0,
+   "gw_requests": 7,
+   "prep": null,
+   "n": 7,
+   "max_lat": 0.53,
+   "sources": [
+    "model"
+   ],
+   "strategy": [
+    "generic"
+   ]
+  },
+  {
+   "seat": 1,
+   "seed": 2,
+   "problems": [],
+   "result": "{'winner': 0, 'scores': [1, 0], 'reason': 'end'}",
+   "stray": 0,
+   "early": 0,
+   "gw_requests": 8,
+   "prep": null,
+   "n": 8,
+   "max_lat": 0.52,
+   "sources": [
+    "model"
+   ],
+   "strategy": [
+    "generic"
+   ]
+  }
+ ],
+ "qa": {
+  "problems": [
+   "turn 1 ILLEGAL 'guess 50'",
+   "turn 1 SECOND BAD ANSWER 'pass' -> GAME LOST"
+  ],
+  "broke": [
+   1
+  ],
+  "ready_chat": "Let's do this.",
+  "artifact_forbidden_terms": {
+   "C:\\Users\\Alex\\AppData\\Local\\Temp\\x1q_l7ov_g96\\audit_qa\\fb0c0e0735a2\\artifacts.json": []
+  }
+ }
+}

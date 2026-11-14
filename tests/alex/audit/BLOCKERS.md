@@ -8,3 +8,8 @@
 
 ## B2 [F2] nim winning move lost when the observation layout is unusual (not a rule break)
 - `solvers/precompute.py:460-472` regex miss on `Heaps: h1=3 h2=4 h3=5`. Owner alex. Draft: `issues/B2_nim_parse.md`.
+
+## B3 [X1] speech rule: `forbidden_terms` stays empty in the artifact (rules 6.8, 6.9)
+- Evidence (image, main `6bf751d`): `audit_qa` rules say "never say the word harbor"; prep artifact `forbidden_terms: []`. Terms are only filled from model-written hooks/grammar (`core/hooks.py:77,106`); the stub writes none. Our chat stayed clean in 56 runs only because the stub chat is canned.
+- Not proven either way with the real model (needs approval). Owner: bld (core/hooks). Candidate: a code-side keyword extraction from "never say/word ..." in the rules as a floor.
+- B1 (strict format fallback) re-confirmed unchanged on `6bf751d`.

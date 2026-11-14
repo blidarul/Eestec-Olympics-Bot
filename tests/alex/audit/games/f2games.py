@@ -176,4 +176,38 @@ class QAGuard(B):
         if self.q >= 3: self.over = True
     def random_action(self, seat, rng): return "answer " + rng.choice(["40", "unknown", "ada fenn", "bob"])
 
+class Gravity(B):
+    """7x6 connect-four-like board with gravity; legal list sent; 4 in a row wins."""
+    id, name, category = "audit_gravity", "Audit Gravity 7x6", "think_ahead"
+    W, H = 7, 6
+    def __init__(self, v, s): super().__init__(v, s); self.g = [[-1] * self.W for _ in range(self.H)]; self.cur = 0
+    def rules(self): return ("GRAVITY FOUR. A 7 column x 6 row board. Players alternate dropping a disc into a column; it falls to the lowest free row. "
+        "Four discs in a row (horizontal, vertical or diagonal) win (score 1). Full board = draw.\nACTION FORMAT: \"drop <column 1-7>\", e.g. \"drop 4\". You receive the legal moves every turn. An illegal move gives a warning, the second loses.")
+    def to_move(self): return [] if self.over else [self.cur]
+    def observation(self, seat):
+        rows = ["".join("." if c < 0 else ("X" if c == 0 else "O") for c in r) for r in self.g]
+        nl = chr(10)
+        return f"You are {'X' if seat == 0 else 'O'}. Board (top row first):" + nl + nl.join(rows) + nl + ("Your turn." if self.cur == seat else "Wait.")
+    def legal_actions(self, seat): return [] if self.over or seat != self.cur else [f"drop {c+1}" for c in range(self.W) if self.g[0][c] < 0]
+    def normalize(self, seat, a):
+        m = re.fullmatch(r"drop (\d)", self.clean(a))
+        if self.over or seat != self.cur or not m: return None
+        c = int(m[1]) - 1
+        return f"drop {c+1}" if 0 <= c < self.W and self.g[0][c] < 0 else None
+    def _win(self, r, c):
+        p = self.g[r][c]
+        for dr, dc in ((0, 1), (1, 0), (1, 1), (1, -1)):
+            n = 1
+            for sgn in (1, -1):
+                rr, cc = r + sgn * dr, c + sgn * dc
+                while 0 <= rr < self.H and 0 <= cc < self.W and self.g[rr][cc] == p: n += 1; rr += sgn * dr; cc += sgn * dc
+            if n >= 4: return True
+        return False
+    def apply(self, acts):
+        c = int(acts[self.cur][5:]) - 1; r = max(i for i in range(self.H) if self.g[i][c] < 0); self.g[r][c] = self.cur
+        if self._win(r, c): self.over = True; self.score[self.cur] = 1
+        elif all(self.g[0][k] >= 0 for k in range(self.W)): self.over = True
+        else: self.cur = 1 - self.cur
+
 ALL = {c.id: c for c in (Nim, Claim, Bet, Simul, Nego, QAGuard)}
+EXTRA = {Gravity.id: Gravity}
