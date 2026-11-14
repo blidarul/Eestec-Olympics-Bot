@@ -9,6 +9,7 @@ from solvers.catalog import call, list_tools, openai_tools  # noqa: F401
 _TOOL_MODULES = (
     "solvers.basic.numbers",
     "solvers.basic.graphs",
+    "solvers.basic.probability",
 )
 
 for _name in _TOOL_MODULES:

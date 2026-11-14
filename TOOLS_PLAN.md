@@ -207,7 +207,10 @@ model-callable tool; no tool ever raises out of `call()`; no file outside `solve
   graph_topo_sort, graph_components, graph_dfs_order, board_lines. Cells are [row, col] zero-based; graph node ids compared as text; grid uses passable OR blocked (neither = all passable).
   Lists in results capped (100 items, "*_truncated" counts) to stay under 4 KB; deadline checked in all loops. Added A* as its own tool (grid_astar, optional per-char costs >= 1).
   Tests: tests/alex/test_graphs.py (40, BFS/A*/Dijkstra/board_lines checked against brute force); whole tests/alex 127 passed. Inbox untouched: #34 #32 #30 #25 #21 (plan says one phase, user asked P2 only).
-- P3:
+- P3: DONE 2026-11-14. solvers/basic/probability.py, 9 tools: combinatorics, count_hands, hypergeometric, binomial_tail, expected_value, best_option, bayes_update,
+  abstain_threshold (model_callable) and monte_carlo_estimate (harness-only: sampler(rng) callable, not exported by openai_tools). Exact Fractions + decimals; p accepts 0.25, "0.25" or "1/4".
+  Caps: n/deck <= 2000, binomial n <= 500; huge integers returned as strings. abstain_threshold: penalty_wrong is a positive loss size; `confidence` optional gives the decision.
+  Tests: tests/alex/test_probability.py (21, checked against enumeration and closed forms); whole tests/alex passes. Inbox untouched: #34 #32 #30 #25 (one phase only).
 - P4:
 - P5:
 - P6:
