@@ -4,9 +4,8 @@ sample turn (no sample_turn -> not verified):
   2. when the sample's legal_actions is a list: set(legal(state)) == set(that list);
   3. 200 random playouts from that state end within 500 steps, no exception, legal moves only;
   4. (extra) when the state tells whose turn it is, it is the sample's seat (0).
-verify() runs in-process; verify_isolated() runs it in a child process with a hard timeout (generated code can loop).
+verify() runs in-process; verify_isolated() runs it in a child interpreter (solvers/isolated.py) with a hard timeout (generated code can loop).
 """
-import multiprocessing as mp
 import random
 import time
 
@@ -64,36 +63,21 @@ def verify(sim, variant):
     return verify_report(sim, variant)[0]
 
 
-def _child(path, variant, conn):
+def child_verify(args):
+    """Entry point of solvers.isolated: {"path", "variant"} -> {"verified", "reason", "has_chance"}."""
     try:
         from solvers.adapter import load_simulator
-        sim = load_simulator(path)
-        ok, reason = verify_report(sim, variant)
-        has_chance = bool(sim.has_chance(sim.parse(variant["sample_turn"]["observation"], 0))) if ok else False
-        conn.send({"verified": ok, "reason": reason, "has_chance": has_chance})
+        sim = load_simulator(args["path"])
+        ok, reason = verify_report(sim, args["variant"])
+        has_chance = bool(sim.has_chance(sim.parse(args["variant"]["sample_turn"]["observation"], 0))) if ok else False
+        return {"verified": ok, "reason": reason, "has_chance": has_chance}
     except BaseException as e:
-        try:
-            conn.send({"verified": False, "reason": f"{type(e).__name__}: {str(e)[:100]}", "has_chance": False})
-        except Exception:
-            pass
+        return {"verified": False, "reason": f"{type(e).__name__}: {str(e)[:100]}", "has_chance": False}
 
 
 def verify_isolated(path, variant, timeout=20.0):
-    """verify() on the simulator file at `path` in a spawned child with a hard timeout -> dict
+    """verify() on the simulator file at `path` in a child interpreter with a hard timeout -> dict
     {"verified", "reason", "has_chance"}; never raises."""
-    try:
-        ctx = mp.get_context("spawn")
-        parent, child = ctx.Pipe()
-        p = ctx.Process(target=_child, args=(path, variant, child), daemon=True)
-        p.start()
-        child.close()
-        out = parent.recv() if parent.poll(timeout) else {"verified": False, "reason": "timeout", "has_chance": False}
-        try:
-            if p.is_alive():
-                p.kill()
-            p.join(1.0)
-        except Exception:
-            pass
-        return out
-    except Exception as e:
-        return {"verified": False, "reason": f"isolation failed: {type(e).__name__}", "has_chance": False}
+    from solvers.isolated import run_isolated
+    out = run_isolated("solvers.verify", "child_verify", {"path": path, "variant": variant}, timeout)
+    return out if isinstance(out, dict) else {"verified": False, "reason": "timeout or crash", "has_chance": False}
