@@ -143,14 +143,15 @@ def test_prep_verifies_simulator_per_variant(tmp_path):
                         {"label": "no sample", "rules": "TIC-TAC-TOE 3x3 grid, columns A-C rows 1-3."}]}
     res = hooks.run_prep(msg, memory_dir=str(tmp_path))
     sim = res["by_label"]["3x3"]["simulator"]
-    assert sim["verified"] is False and "parse" in sim["reason"] and sim["path"].endswith("simulator.py")  # bld's template has no parse yet
+    assert sim["path"].endswith("simulator.py") and sim["has_chance"] is False
+    assert sim["verified"] is True, sim            # bld's grid template has parse() since #20
     assert res["by_label"]["3x3"]["classification"]["has_hidden_information"] is False
-    with open(sim["path"], "w", encoding="utf-8") as f:   # what issue #20 asks bld for
-        f.write(TTT_SIM)
+    assert res["by_label"]["no sample"]["simulator"]["verified"] is False and "sample" in res["by_label"]["no sample"]["simulator"]["reason"]
+    with open(sim["path"], "w", encoding="utf-8") as f:   # a simulator without parse() stays unverified
+        f.write(TTT_SIM.split("def parse")[0])
     by = {k: {"family": v["family"]} for k, v in res["by_label"].items()}
     hooks._verify_simulators(msg, by, str(tmp_path), time.monotonic())
-    assert by["3x3"]["simulator"] == {**by["3x3"]["simulator"], "verified": True, "has_chance": False}
-    assert by["no sample"]["simulator"]["verified"] is False and "sample" in by["no sample"]["simulator"]["reason"]
+    assert by["3x3"]["simulator"]["verified"] is False and "parse" in by["3x3"]["simulator"]["reason"]
 
 
 def test_search_strategy_end_to_end_from_cold_memory(tmp_path):

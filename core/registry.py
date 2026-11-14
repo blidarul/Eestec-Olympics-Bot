@@ -101,6 +101,7 @@ def route(rules, artifacts, entries=None) -> Route:
     from core.generic import STRATEGY as generic
     art = artifacts if isinstance(artifacts, dict) else {}
     fam = family_of(art)
+    art = dict(art, family=fam)  # strategies see the strategy-family name (deduction -> guessing, ...)
     entries = load_entries() if entries is None else entries
     forced = os.environ.get(FORCE_ENV)
     if forced:
