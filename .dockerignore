@@ -1,0 +1,10 @@
+.git
+dev.env
+*.env
+.env
+.agent-id
+results/
+memory/
+__pycache__/
+arena-lite/
+.pytest_cache/
