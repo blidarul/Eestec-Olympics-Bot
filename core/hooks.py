@@ -49,7 +49,17 @@ def map_engine_variant(vd: dict) -> dict:
     gr = vd.get("grammar") or {}
     heur = vd.get("heuristics") or {}
     opening = [str(x) for x in (heur.get("opening_moves") or [])]
-    examples = [str(x) for x in (gr.get("discrete_actions") or [])][:6] or opening[:3]
+    examples = [str(x) for x in (gr.get("examples") or gr.get("discrete_actions") or [])][:6] or opening[:3]
+    if not examples and (gr.get("parameters") or {}).get("examples"):
+        examples = [str(x) for x in gr["parameters"]["examples"]][:6]
+    regex = None
+    if gr.get("kind") == "word":
+        import re as _re
+        w_len = gr.get("word_length") or 5
+        w_pre = _re.escape(str(gr.get("word_prefix") or ""))
+        regex = rf"^(?:{w_pre})?[A-Za-z]{{{w_len}}}$"
+        if not examples:
+            examples = ["slate", "crane", "audio", "raise", "stare"]
     hints = heur.get("strategy_hints") or {}
     hint_txt = "; ".join(f"{k}: {v}" for k, v in hints.items() if isinstance(v, (str, int, float)))[:600]
     art = _default_artifacts(vd.get("label", ""))
@@ -60,7 +70,7 @@ def map_engine_variant(vd: dict) -> dict:
         "classification": {k: cls.get(k) for k in ("confidence", "is_deterministic", "has_hidden_information",
                                                    "is_simultaneous", "turn_structure")},
         "playbook": (f"Game family: {cls.get('family', 'generic')}. {hint_txt}").strip()[:900],
-        "action_format": {"kind": gr.get("kind", ""), "regex": None, "examples": examples},
+        "action_format": {"kind": gr.get("kind", ""), "regex": regex, "examples": examples},
         "fallback_policy": {"prefer": opening, "avoid": []},
         "forbidden_terms": [str(x) for x in (gr.get("forbidden_keywords") or [])],
         "grammar": gr,

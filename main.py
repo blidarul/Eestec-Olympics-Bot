@@ -113,8 +113,8 @@ def on_turn(msg, wk):
     mine = STATE["my_actions"]
     if warning and mine:
         mine.pop()  # the turn is re-sent after a rejected answer: that answer does not count as played
-    guessing = art.get("family") in ("guessing", "deduction") or art.get("prep_family") in ("guessing", "deduction")
-    previous = list(mine) if guessing else []  # guessing games: never send the same action twice (safety net)
+    guessing = (legal is None) or art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")
+    previous = list(mine) if guessing else []  # guessing / word games: never send the same action twice (safety net)
     obs = str(msg.get("observation", ""))
     # fallback FIRST, from the message alone
     fb_action, fb_chat = fallback.fallback_decision(msg, art, previous)
@@ -153,6 +153,15 @@ def on_turn(msg, wk):
                 meta["reason"] = "answer rejected by validator (illegal, repeated or malformed): " + str(meta.get("reason") or "")
     except Exception:
         traceback.print_exc()
+    # Hard circuit breaker: NEVER re-send a move rejected by warning (Rules 8.1, 8.2)
+    if warning:
+        rej = str(warning.get("rejected", ""))
+        if rej and (action == rej or fallback.norm(action) == fallback.norm(rej)):
+            protocol.log(f"CRITICAL: action '{action}' matches rejected '{rej}', forcing fresh non-repeating fallback!")
+            action = fallback.fallback_action(legal, art, rejected=rej, conservative=True, avoid_also=list(mine) + [rej])
+            source = "fallback"
+            meta["tool"] = "fallback"
+            meta["reason"] = f"override rejected action '{rej}' with emergency fallback"
     chat = wk_filter(protocol.clean_chat(chat), art.get("forbidden_terms") or [])
     protocol.send({"type": "action", "action": action, "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
     mine.append(action)

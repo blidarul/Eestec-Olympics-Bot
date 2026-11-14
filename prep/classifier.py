@@ -54,6 +54,8 @@ _FAMILY_KEYWORDS = {
         ("secret number", 4.0), ("secret", 2.5), ("higher", 3.0), ("lower", 3.0),
         ("feedback", 2.5), ("guess", 3.0), ("range", 2.0), ("interval", 2.0),
         ("binary search", 4.0), ("haystack", 2.0), ("correct", 1.5), ("clue", 3.0),
+        ("wordle", 5.0), ("secret word", 5.0), ("letter", 3.0), ("green", 2.5),
+        ("yellow", 2.5), ("grey", 2.0), ("gray", 2.0), ("hangman", 5.0),
     ],
     "dice_push": [
         ("die", 3.0), ("dice", 4.0), ("roll", 3.5), ("banked", 4.0), ("hold", 3.5),

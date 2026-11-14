@@ -254,3 +254,79 @@ def test_hooks_exposes_tools_in_artifacts():
     art = map_engine_variant(vd)
     assert art["tools"] == [{"type": "function", "function": {"name": "test_tool"}}]
     assert "test_tool(): a helper tool" in art["tools_prompt"]
+
+
+def test_wordle_grammar_and_validation():
+    from prep.action_parser import parse_action_grammar
+    rules = (
+        "WORDLE RULES\n"
+        "Guess the secret 5-letter word in 6 tries.\n"
+        "Feedback is given as green, yellow, grey.\n\n"
+        "ACTION FORMAT: Send a 5-letter English word, e.g. 'crane', 'slate'."
+    )
+    grammar = parse_action_grammar(rules)
+    assert grammar.kind == "word"
+    assert grammar.word_length == 5
+    assert "crane" in grammar.examples or "slate" in grammar.examples
+
+    art = {"grammar": grammar.to_dict(), "family": "deduction", "action_format": {"kind": "word", "examples": grammar.examples}}
+    # Valid 5-letter guesses
+    assert validate.validate("crane", None, art) == "crane"
+    assert validate.validate("AUDIO", None, art) == "audio"
+    assert validate.validate("  slate  ", None, art) == "slate"
+    # Invalid guesses (wrong length, numbers)
+    assert validate.validate("cat", None, art) == "pass" or validate.validate("cat", None, art) is None
+    assert validate.validate("toolongword", None, art) is None
+
+    # Never repeat rejected move
+    assert validate.validate("crane", None, art, rejected="crane") is None
+    assert validate.validate(" Crane ", None, art, rejected="crane") is None
+
+    # Fallback produces valid non-rejected 5-letter word
+    w1 = fallback.fallback_action(None, art, rejected="pass")
+    assert w1 != "pass"
+    assert len(w1) == 5
+    w2 = fallback.fallback_action(None, art, rejected=w1, avoid_also=[w1])
+    assert w2 != w1
+    assert len(w2) == 5
+
+
+def test_main_circuit_breaker_on_warning_rejection(tmp_path):
+    # If the stub LLM stubborn-repeats the rejected move on a warning,
+    # main.py must intercept it and send an alternative action.
+    b = Bot(tmp_path, '{"a": "pass", "c": "chat"}')
+    try:
+        b.send(prep_msg())
+        b.send(start_msg("m1"))
+        # First turn: model outputs "pass" (or fallback)
+        t1 = b.send(turn_msg([], 1))
+        # Now send warning saying "pass" was rejected
+        warn = {"rejected": t1["action"], "reason": "invalid action format"}
+        t2 = b.send(turn_msg([], 2, warning=warn))
+        # The bot MUST NOT re-send the rejected action!
+        assert t2["action"] != warn["rejected"]
+        assert fallback.norm(t2["action"]) != fallback.norm(warn["rejected"])
+    finally:
+        b.close()
+
+
+def test_generic_prompt_includes_rules_when_legal_actions_null():
+    from core.generic import STRATEGY as generic
+    state = TurnState(
+        game_id="wordle_test",
+        rules="Wordle rules: guess 5-letter words only.",
+        variant={},
+        seat=0,
+        observation="Guess 1: -----",
+        legal_actions=None,
+        turn=2,
+        warning={"rejected": "slate", "reason": "not in word list"},
+        opponent_chat=[],
+        artifacts={"action_format": {"examples": ["crane"]}},
+        my_actions=["slate"],
+    )
+    prompt = generic._prompt(state, state.artifacts)
+    assert "Wordle rules: guess 5-letter words only." in prompt
+    assert "CRITICAL WARNING" in prompt
+    assert "slate" in prompt
+

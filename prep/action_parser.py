@@ -11,7 +11,7 @@ from typing import Any
 
 @dataclass
 class ActionGrammar:
-    kind: str  # "grid" | "discrete" | "numeric_range" | "generic"
+    kind: str  # "grid" | "discrete" | "numeric_range" | "word" | "generic"
     discrete_actions: list[str] = field(default_factory=list)
     grid_cols: int = 0
     grid_rows: int = 0
@@ -19,6 +19,9 @@ class ActionGrammar:
     numeric_min: int | None = None
     numeric_max: int | None = None
     numeric_prefix: str = ""
+    word_length: int | None = None
+    word_prefix: str = ""
+    examples: list[str] = field(default_factory=list)
     case_sensitive: bool = False
     aliases: dict[str, str] = field(default_factory=dict)
     forbidden_keywords: list[str] = field(default_factory=list)
@@ -79,6 +82,18 @@ class ActionGrammar:
                 return False
             return True
 
+        if self.kind == "word":
+            if self.word_prefix and clean.lower().startswith(self.word_prefix.lower()):
+                clean = clean[len(self.word_prefix):].strip()
+            else:
+                m = re.match(r"^(?:guess\s+)?([A-Za-z]+)$", clean, re.IGNORECASE)
+                clean = m.group(1) if m else clean
+            if not clean.isalpha():
+                return False
+            if self.word_length and len(clean) != self.word_length:
+                return False
+            return True
+
         return True
 
     def normalize(self, action: str, legal_actions: list[str] | None = None) -> str:
@@ -118,12 +133,24 @@ class ActionGrammar:
                 return f"{self.numeric_prefix}{val}".strip()
             return clean
 
+        if self.kind == "word":
+            if self.word_prefix and clean.lower().startswith(self.word_prefix.lower()):
+                w = clean[len(self.word_prefix):].strip()
+            else:
+                m = re.match(r"^(?:guess\s+)?([A-Za-z]+)$", clean, re.IGNORECASE)
+                w = m.group(1) if m else clean
+            case = "upper" if self.case_sensitive else "lower"
+            w_out = w.upper() if case == "upper" else w.lower()
+            return f"{self.word_prefix}{w_out}" if self.word_prefix else w_out
+
         return clean
 
     def fallback_action(self, legal_actions: list[str] | None = None) -> str:
         """Return a safe fallback action guaranteed to be syntactically valid."""
         if legal_actions and len(legal_actions) > 0:
             return legal_actions[0]
+        if self.examples:
+            return self.examples[0]
         if self.discrete_actions:
             return self.discrete_actions[0]
         if self.kind == "grid":
@@ -131,6 +158,14 @@ class ActionGrammar:
         if self.kind == "numeric_range" and self.numeric_min is not None:
             mid = (self.numeric_min + (self.numeric_max or self.numeric_min)) // 2
             return f"{self.numeric_prefix}{mid}".strip()
+        if self.kind == "word":
+            length = self.word_length or 5
+            pre = self.word_prefix or ""
+            openers = ["slate", "crane", "audio", "raise", "stare"]
+            for o in openers:
+                if len(o) == length:
+                    return f"{pre}{o}"
+            return f"{pre}words"[:length]
         return "pass"
 
     def to_dict(self) -> dict[str, Any]:
@@ -143,6 +178,9 @@ class ActionGrammar:
             "numeric_min": self.numeric_min,
             "numeric_max": self.numeric_max,
             "numeric_prefix": self.numeric_prefix,
+            "word_length": self.word_length,
+            "word_prefix": self.word_prefix,
+            "examples": self.examples,
             "case_sensitive": self.case_sensitive,
             "aliases": self.aliases,
             "forbidden_keywords": self.forbidden_keywords,
@@ -160,6 +198,9 @@ class ActionGrammar:
             numeric_min=data.get("numeric_min"),
             numeric_max=data.get("numeric_max"),
             numeric_prefix=data.get("numeric_prefix", ""),
+            word_length=data.get("word_length"),
+            word_prefix=data.get("word_prefix", ""),
+            examples=data.get("examples", []),
             case_sensitive=data.get("case_sensitive", False),
             aliases=data.get("aliases", {}),
             forbidden_keywords=data.get("forbidden_keywords", []),
@@ -316,6 +357,12 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
     has_coord = bool(re.search(r"[A-Z]\d+", action_section) or re.search(r"column letter \+ row number", action_section, re.IGNORECASE))
     num_range = re.search(r"(?:range|between)\s+(\d+)\s*(?:and|-|to)\s*(\d+)", combined_text, re.IGNORECASE)
     has_guess_prefix = bool(re.search(r"guess\s+<n>", action_section, re.IGNORECASE) or re.search(r'"guess\s+\d+"', action_section, re.IGNORECASE))
+    extracted_examples = [q.strip() for q in re.findall(r'["\']([^"\']+)["\']', action_section) if q.strip() and len(q) < 40]
+
+    word_len_m = re.search(r"\b(\d+)[-\s]letter\b", combined_text, re.IGNORECASE)
+    has_word_clues = bool(re.search(r"\b(?:wordle|secret word|letters?|hangman|anagram)\b", combined_text, re.IGNORECASE))
+    guess_word_m = bool(re.search(r"guess\s+(?:a\s+)?word", action_section, re.IGNORECASE) or re.search(r"guess\s+[a-zA-Z]+", action_section, re.IGNORECASE))
+    word_game = (word_len_m is not None) or (has_word_clues and (guess_word_m or "word" in action_section.lower()))
 
     grammar: ActionGrammar
 
@@ -377,7 +424,21 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
             grid_col_letters=[chr(ord("A") + i) for i in range(cols)],
         )
 
-    # 3. Check for Numeric range (e.g. "guess <n>", "between 1 and 100", "range 1-100")
+    # 3. Check for Word / Wordle games (e.g. 5-letter word, guess word, wordle)
+    elif word_game:
+        w_len = int(word_len_m.group(1)) if word_len_m else 5
+        w_pre = "guess " if re.search(r"guess\s+", action_section, re.IGNORECASE) else ""
+        word_examples = [e for e in extracted_examples if any(c.isalpha() for c in e) and "<" not in e]
+        if not word_examples:
+            word_examples = [f"{w_pre}{w}" for w in ["slate", "crane", "audio", "raise", "stare"]]
+        grammar = ActionGrammar(
+            kind="word",
+            word_length=w_len,
+            word_prefix=w_pre,
+            examples=word_examples,
+        )
+
+    # 4. Check for Numeric range (e.g. "guess <n>", "between 1 and 100", "range 1-100")
     elif num_range:
         lo = int(num_range.group(1))
         hi = int(num_range.group(2))
@@ -389,11 +450,15 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
             numeric_prefix=prefix,
         )
 
-    # 4. Default generic text
+    # 5. Default generic text
     else:
         grammar = ActionGrammar(kind="generic")
 
+    if not grammar.examples and extracted_examples:
+        grammar.examples = [e for e in extracted_examples if "<" not in e][:8]
+
     grammar.forbidden_keywords = forbidden
+    params["examples"] = grammar.examples
     grammar.parameters = params
     return grammar
 

@@ -37,10 +37,14 @@ def validate(action, legal, artifacts=None, rejected=None, previous=()):
             out = next((l for l, ln in norms if ln == n), None) or _fuzzy(norms, n)
     else:  # legal_actions is null: follow the action format from prep
         out = _validate_format(action, artifacts)
-    if out is None or (rejected is not None and out == str(rejected)):
+    if out is None:
         return None
+    if rejected is not None:
+        if str(out) == str(rejected) or _norm(out) == _norm(rejected):
+            return None
     if previous:
-        if _norm(out) in {_norm(p) for p in previous}:
+        prev_norms = {_norm(p) for p in previous}
+        if _norm(out) in prev_norms or str(out) in previous:
             return None
         out_nums = re.findall(r"-?\d+", out)
         if len(out_nums) == 1:
@@ -70,10 +74,42 @@ def _numeric(action, artifacts):
     return f"{g.get('numeric_prefix') or ''}{n}"          # words around the number: rebuild from the parsed grammar
 
 
+def _word(action, artifacts):
+    """Word games (prep grammar kind='word' or word_length/prefix): validate word length and alphabet."""
+    g = (artifacts or {}).get("grammar") if isinstance(artifacts, dict) else None
+    if not isinstance(g, dict):
+        g = {}
+    fam = (artifacts or {}).get("family") or (artifacts or {}).get("prep_family")
+    is_word = g.get("kind") == "word" or fam in ("word", "wordle", "hangman")
+    length = g.get("word_length")
+    prefix = g.get("word_prefix") or ""
+    if not is_word and not length:
+        return None
+    clean = action.strip()
+    if prefix and clean.lower().startswith(prefix.lower()):
+        cand = clean[len(prefix):].strip()
+    else:
+        m = re.match(r"^(?:guess\s+)?([A-Za-z]+)$", clean, re.IGNORECASE)
+        cand = m.group(1) if m else clean
+    if not cand.isalpha():
+        return None
+    if length and len(cand) != int(length):
+        return None
+    case = g.get("case", "lower")
+    word_out = cand.upper() if case == "upper" else cand.lower()
+    return f"{prefix}{word_out}" if prefix else word_out
+
+
 def _validate_format(action, artifacts):
     num = _numeric(action, artifacts)
     if num is not None:
         return num
+    w = _word(action, artifacts)
+    if w is not None:
+        return w
+    g = (artifacts or {}).get("grammar") if isinstance(artifacts, dict) else None
+    if isinstance(g, dict) and (g.get("kind") in ("word", "numeric_range") or g.get("word_length") or g.get("numeric_min") is not None):
+        return None
     fmt = (artifacts or {}).get("action_format") if isinstance(artifacts, dict) else None
     fmt = fmt if isinstance(fmt, dict) else {}
     examples = [str(e) for e in (fmt.get("examples") or []) if str(e).strip()]
@@ -88,6 +124,8 @@ def _validate_format(action, artifacts):
         return action if len(action) <= 200 and "\n" not in action else None  # nothing to check against
     if not rx and any(difflib.SequenceMatcher(None, _norm(action), _norm(e)).ratio() >= 0.6 for e in examples):
         return action
-    if not examples:
-        return None
-    return difflib.get_close_matches(action, examples, n=1, cutoff=0.0)[0]
+    if examples:
+        matches = difflib.get_close_matches(action, examples, n=1, cutoff=0.45)
+        if matches:
+            return matches[0]
+    return None

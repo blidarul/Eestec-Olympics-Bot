@@ -44,7 +44,8 @@ class Generic:
         if legal and len(legal) == 1:
             return Decision(legal[0], hooks.filter_out(fallback.fallback_chat(art), forbidden), "strategy")
         warned = isinstance(state.warning, dict) and bool(state.warning)
-        no_repeat = list(state.my_actions or []) if (art.get("family") in ("guessing", "deduction") or art.get("prep_family") in ("guessing", "deduction")) else []
+        is_guess = (not legal) or (art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle"))
+        no_repeat = list(state.my_actions or []) if is_guess else []
         fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat)
         fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
         llm = state.llm
@@ -73,15 +74,25 @@ class Generic:
             parts.append("Playbook:\n" + str(art["playbook"])[:1200])
         if art.get("tools_prompt"):
             parts.append("Available tools:\n" + str(art["tools_prompt"])[:1000])
+        if not state.legal_actions and state.rules:
+            parts.append("Game Rules & Action Instructions:\n" + str(state.rules)[:3000])
         parts.append("Observation:\n" + str(state.observation)[:6000])
         if state.legal_actions:
             parts.append("Legal moves: " + ", ".join(state.legal_actions[:50]))
         else:
-            parts.append(f"Action format examples: {fmt.get('examples') or ''} (follow the rules' format exactly)")
-        if isinstance(state.warning, dict) and state.warning.get("reason"):
-            parts.append("Your previous answer was rejected: " + str(state.warning["reason"])[:200])
-        if (art.get("family") in ("guessing", "deduction") or art.get("prep_family") in ("guessing", "deduction")) and state.my_actions:
-            parts.append("Never repeat a guess you already made; use the feedback to narrow the possibilities.")
+            ex_str = ", ".join(fmt.get('examples') or [])
+            parts.append(f"Action format: follow the rules' format exactly. Examples: [{ex_str}]")
+        if isinstance(state.warning, dict) and state.warning:
+            rej = state.warning.get("rejected")
+            reason = state.warning.get("reason", "illegal action")
+            parts.append(
+                f"CRITICAL WARNING: Your previous action '{rej}' was REJECTED as ILLEGAL ({reason}). "
+                f"You MUST NOT choose '{rej}' again! Choose a completely different valid action that adheres to the rules."
+            )
+        is_guess = (not state.legal_actions) or (art.get("family") in ("guessing", "deduction", "word", "wordle") or art.get("prep_family") in ("guessing", "deduction", "word", "wordle"))
+        if is_guess and state.my_actions:
+            past = ", ".join(str(a) for a in state.my_actions[-10:])
+            parts.append(f"Past guesses: [{past}]. Never repeat an action you already sent; use the feedback to narrow down.")
         parts.append(hooks.wrap_untrusted(state.opponent_chat))
         return "\n\n".join(parts)
 

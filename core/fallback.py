@@ -51,6 +51,40 @@ def unused_numeric(artifacts: dict | None, avoid) -> str | None:
     return None
 
 
+WORDLE_OPENERS = [
+    "slate", "crane", "audio", "raise", "stare", "roast", "adieu", "trace",
+    "brick", "glint", "jumpy", "waltz", "climb", "frown", "spoke"
+]
+
+
+def unused_word(artifacts: dict | None, avoid) -> str | None:
+    """A word action from grammar (prefix + word of word_length) not in avoid, or None."""
+    g = (artifacts or {}).get("grammar")
+    g = g if isinstance(g, dict) else {}
+    kind = g.get("kind")
+    fam = (artifacts or {}).get("family") or (artifacts or {}).get("prep_family")
+    is_word = kind == "word" or fam in ("word", "wordle", "hangman")
+    if not is_word and not g.get("word_length"):
+        return None
+    if g.get("kind") == "numeric_range" or g.get("numeric_min") is not None:
+        return None
+    pre = str(g.get("word_prefix") or "")
+    length = int(g.get("word_length") or 5)
+    case = "upper" if g.get("case") == "upper" else "lower"
+    taken = {norm(a) for a in avoid}
+    for w in WORDLE_OPENERS:
+        if len(w) == length:
+            w_str = w.upper() if case == "upper" else w.lower()
+            cand = f"{pre}{w_str}"
+            if norm(cand) not in taken and cand not in avoid:
+                return cand
+    for w in WORDLE_OPENERS:
+        cand = f"{pre}{w[:length]}" if len(w) >= length else f"{pre}{w}"
+        if norm(cand) not in taken and cand not in avoid:
+            return cand
+    return None
+
+
 def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, conservative: bool = False,
                     avoid_also=()) -> str:
     """Always-legal move. `avoid_also`: actions already sent in this game (guessing games must not repeat)."""
@@ -61,25 +95,47 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
     avoid.update(str(a) for a in avoid_also)
     if rejected:
         avoid.add(str(rejected))
+    taken_norms = {norm(a) for a in avoid}
     if legal:
         legal = [str(a) for a in legal]
         for p in prefer:
-            if p in legal and p not in avoid:
+            if p in legal and p not in avoid and norm(p) not in taken_norms:
                 return p
-        ok = [a for a in legal if a not in avoid]
+        ok = [a for a in legal if a not in avoid and norm(a) not in taken_norms]
         if conservative:  # most deterministic rung: first acceptable legal move
             return ok[0] if ok else legal[0]
         return random.choice(ok) if ok else legal[0]
     fmt = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
-    if avoid_also:  # a repeat is the one thing to avoid: build a fresh value from the grammar first
-        n = unused_numeric(art, avoid)
-        if n:
-            return n
+    # 1. Action format examples not in avoid
     for ex in _as_list(fmt.get("examples")):
-        if ex.strip() and ex not in avoid:
+        if ex.strip() and ex not in avoid and norm(ex) not in taken_norms:
             return ex
+    # 2. Grammar-specific fallback
+    g = art.get("grammar") if isinstance(art.get("grammar"), dict) else {}
+    if g.get("kind") == "numeric_range" or g.get("numeric_min") is not None:
+        n = unused_numeric(art, avoid)
+        if n and n not in avoid and norm(n) not in taken_norms:
+            return n
+    elif g.get("kind") == "word" or g.get("word_length"):
+        w = unused_word(art, avoid)
+        if w and w not in avoid and norm(w) not in taken_norms:
+            return w
+    # 3. Fall through to either numeric or word fallback
     n = unused_numeric(art, avoid)
-    return n or "pass"
+    if n and n not in avoid and norm(n) not in taken_norms:
+        return n
+    w = unused_word(art, avoid)
+    if w and w not in avoid and norm(w) not in taken_norms:
+        return w
+    # 4. Discrete / opening moves
+    for cand in _as_list((art.get("grammar") or {}).get("discrete_actions")) + prefer:
+        if cand.strip() and cand not in avoid and norm(cand) not in taken_norms:
+            return cand
+    # 5. Emergency fallbacks that are NOT in avoid
+    for em in ["pass", "ready", "0", "1", "A1", "yes", "play", "stop", "go"]:
+        if em not in avoid and norm(em) not in taken_norms:
+            return em
+    return "pass_alt"
 
 
 def fallback_decision(msg: dict, artifacts: dict | None, previous=()) -> tuple[str, str]:
