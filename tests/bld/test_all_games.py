@@ -74,6 +74,12 @@ def test_game_steps():
                         act = "CRANE" if game.length == 5 else ("PLANET" if game.length == 6 else "TEST")
                     elif gid == "elemental_duel":
                         act = "cast fireball"
+                    elif gid == "sealed_auction":
+                        act = "bid 50.0"
+                    elif gid == "taboo_duel":
+                        act = "say good day to you my friend"
+                    elif gid == "document_qa":
+                        act = "unknown"
                     else:
                         act = "pass"
                 norm = game.normalize(seat, act)
