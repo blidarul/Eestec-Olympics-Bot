@@ -30,6 +30,21 @@ def _sim(art):
     return s if isinstance(s, dict) and s.get("verified") and s.get("path") else None
 
 
+CHAT_EVERY = 3          # chat-only model call at least every 3rd tool turn (G6); sooner when the opponent said something new
+_CHAT_TURNS = {}        # (match_id, game_index) -> tool turns answered so far
+
+
+def _chat_call_due(state):
+    """True when this tool turn should spend a chat-only model call: a new opponent line arrived (it must reach the
+    model, 6.5/6.6) or every CHAT_EVERY-th turn. The turn message carries only the NEW chat lines."""
+    key = (state.match_id, state.game_index)
+    n = _CHAT_TURNS.get(key, 0)
+    if len(_CHAT_TURNS) > 40:
+        _CHAT_TURNS.clear()
+    _CHAT_TURNS[key] = n + 1
+    return bool(state.opponent_chat) or n % CHAT_EVERY == 0
+
+
 class Search:
     name = "search"
 
@@ -92,7 +107,8 @@ class Search:
         chat = None
         llm = state.llm
         left = state.deadline - time.monotonic() - 0.5
-        if llm is not None and llm.available() and not llm.over_budget() and left > 1.5 and time.monotonic() - t0 < 7.0:
+        due = _chat_call_due(state)  # counts the turn even when the model is unavailable
+        if due and llm is not None and llm.available() and not llm.over_budget() and left > 1.5 and time.monotonic() - t0 < 7.0:
             try:
                 user = (f"Observation:\n{str(state.observation)[:1500]}\n\nThe program chose to play: {action}\n\n{wrapped}")
                 obj = llm.ask_json(CHAT_SYSTEM, user, timeout=min(2.5, left))
@@ -100,7 +116,7 @@ class Search:
                     chat = hooks.filter_out(obj["c"], forbidden)
             except Exception:
                 traceback.print_exc()
-        if chat is None:
+        if chat is None:  # no model call this turn: bank line + the tool's explanation; core/worker swaps bank lines for chat.reply_line
             chat = hooks.filter_out(fallback.fallback_chat(art), forbidden)
         return Decision(action, chat, "strategy", {"tool": tool, "reason": f"simulator verified, {why}"})
 
