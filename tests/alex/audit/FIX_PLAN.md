@@ -106,8 +106,10 @@ silently.
 - X1: DONE on branch fix/audit-t2 (from main 6bf751d), uncommitted. Items 1,2,3,6 PASS. Item 5 FAIL = B1 (8/8 runs lost).
   Item 4: chat clean, but forbidden_terms empty = B3 (new). Details in AUDIT_REPORT.md 'F2-short', BLOCKERS.md.
   Blockers B1,B3 are bld's: X4 needs 'bld agreed'. B2 (nim parse) is alex's. Not fixed in X1.
-- X2:
-- X3:
+- X2: DONE on fix/audit-t2 (ownership lifted). G2: deduce picks built-in numeric/distance models from the rules (pegs/positional still need a verified model-written one). G6: chat-only call only on new opponent line or every 3rd turn.
+  Search budget 5 s shrinking with the clock, chat call <= 2 s: 5x5 and 7x6 tool turns max 6.0 s (1 s stub chat). Certain-move scenario tests added. tests/alex 353 pass.
+- X3: DONE on fix/audit-t2. G3 cold start: hooks.run_cold (code-only prep, 60 s cap, saved) + simulator verified on first turn (no sample turn at start); dice_push -> family "chance" (unverified sim -> generic, no bluff).
+  G4: complete artifacts.json reused, 2nd prep 0 model calls. F0-1: search was already deadline-bounded; the test played 600 games at 8 s/move, now 22 s. tests/bld+core+mbappe 515 pass, tests/alex 353 pass.
 - X4: DONE on fix/audit-t2: B1 532b019, B3 7f5948f, B2 855ff15 (ownership lifted for this branch). Suites: tests/bld, mbappe, core, alex all pass.
   Image mybot:audit, f2_all.py all: inject 16, scen 7, games 48, b3 8 runs: 0 problems, 0 warnings, 0 losses. See BLOCKERS.md fix notes.
 - X5:
