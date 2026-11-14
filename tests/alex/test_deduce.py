@@ -151,3 +151,10 @@ def test_matches_requires_family_and_verified_model():
     assert deduce.STRATEGY.matches("r", artifacts()) > 0.5
     assert deduce.STRATEGY.matches("r", artifacts(verified=False)) == 0.0
     assert deduce.STRATEGY.matches("r", artifacts(family="grid_board")) == 0.0
+
+
+def test_chat_lines_survive_the_output_filters():
+    # chat/ rewrites lines with digits or strategy words into neutral fillers: ours must stay as written (move and chat from one decision)
+    import chat
+    for t in deduce.WIDE + deduce.MID + deduce.NEAR + deduce.LAST:
+        assert chat.filter_out(t, []) == t

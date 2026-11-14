@@ -157,6 +157,7 @@ def on_turn(msg, wk):
     mine.append(action)
     STATE["prev_obs"] = obs
     meta.setdefault("family", art.get("family"))
+    meta["action"] = action
     log_decision(msg, source, time.monotonic() - t0, model_error, meta)
 
 
@@ -168,7 +169,7 @@ def log_decision(msg, source, secs, model_error, meta=None):
     src = {"strategy": "tool"}.get(source, source)  # a strategy's own computation is a "tool" decision
     rec = {"kind": "decision", "game": g.get("game_id"), "game_index": msg.get("game_index"), "turn": msg.get("turn"),
            "family": meta.get("family"), "strategy": meta.get("strategy"), "tool": meta.get("tool"),
-           "reason": meta.get("reason"), "candidates_left": meta.get("candidates_left"),
+           "action": meta.get("action"), "reason": meta.get("reason"), "candidates_left": meta.get("candidates_left"),
            "source": src, "answer_ms": int(secs * 1000), "model_error": model_error}
     protocol.log("decision " + json.dumps(rec, default=str))
     try:

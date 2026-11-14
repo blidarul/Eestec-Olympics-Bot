@@ -3,7 +3,7 @@
 Used only for the guessing family when prepare() produced a VERIFIED feedback model (model.py). Every turn:
   1. history = extract_history(observation); candidates = secrets consistent with all (guess, feedback) pairs,
   2. guess = the candidate-set split with the best worst case (solvers/deduction.py), never a repeat,
-  3. chat = a short line about THAT guess (same decision, 6.4), through hooks.filter_out; the line never mentions our
+  3. chat = a short line about THAT decision (how many candidates remain, 6.4), through hooks.filter_out; the line never mentions our
      own secret (6.3). The opponent's chat is wrapped as untrusted data (hooks.wrap_untrusted, 6.5-6.7) and cannot
      change the guess: it cannot be verified, the feedback can.
   4. no candidate left (the feedback contradicts the model) or any error -> core/generic with the repeat safety net.
@@ -19,8 +19,17 @@ from strategies.guessing.deduce.prepare import prepare as _prepare
 
 _CACHE = {}  # (match_id, game_index, game_id) -> (history tuple, candidates)
 
-LINES = ("Trying {g}.", "Let's see: {g}.", "My guess is {g}.", "{g}, let's find out.", "Going with {g} now.",
-         "How about {g}?", "Narrowing it down: {g}.")
+# Chat lines tied to THIS decision (how far the search is), short and without digits: chat/ replaces lines with digits or
+# strategy words by neutral fillers, which would cut the link between move and chat (6.4).
+WIDE = ("Working through it.", "Hm. Wide open.", "Unsurprising.")
+MID = ("Getting closer.", "Working through it.", "Getting there.")
+NEAR = ("Closing in.", "Nearly there.", "Few options remain.")
+LAST = ("Found it.",)
+
+
+def _line(left, total, turn):
+    bank = LAST if left <= 1 else NEAR if left <= 6 else MID if left * 4 <= total else WIDE
+    return bank[(turn or 0) % len(bank)]
 
 
 def _prepared(art):
@@ -83,8 +92,7 @@ class Deduce:
         legal = state.legal_actions
         if legal and action not in legal:
             return None
-        chat = hooks.filter_out(LINES[(state.turn or 0) % len(LINES)].format(g=action),
-                                art.get("forbidden_terms"))
+        chat = hooks.filter_out(_line(len(cands), len(space), state.turn), art.get("forbidden_terms"))
         return Decision(action, chat, "strategy", {
             "tool": "deduction", "candidates_left": len(cands),
             "reason": f"{len(cands)} candidates left, best worst-case split"})

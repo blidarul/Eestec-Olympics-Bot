@@ -151,3 +151,31 @@ def test_prep_verifies_simulator_per_variant(tmp_path):
     hooks._verify_simulators(msg, by, str(tmp_path), time.monotonic())
     assert by["3x3"]["simulator"] == {**by["3x3"]["simulator"], "verified": True, "has_chance": False}
     assert by["no sample"]["simulator"]["verified"] is False and "sample" in by["no sample"]["simulator"]["reason"]
+
+
+def test_search_strategy_end_to_end_from_cold_memory(tmp_path):
+    """A cold container: no prep message, artifacts (with a verified simulator) come from /memory; the router picks
+    think_ahead/search and the decision log says alpha-beta."""
+    from core import memory
+    from tests.alex.games import TTT_SIM, ttt_sample
+    rules = "TIC-TAC-TOE - 3x3 classic. Cells A1..C3."
+    sim = tmp_path / "simulator.py"
+    sim.write_text(TTT_SIM, encoding="utf-8")
+    art = {"label": "3x3", "family": "grid_board", "classification": {"has_hidden_information": False, "is_simultaneous": False},
+           "simulator": {"path": str(sim), "verified": True, "has_chance": False, "calibration": {"transitions_per_sec": 40000.0}},
+           "chat_bank": ["Your move."], "forbidden_terms": []}
+    memory.save_json(os.path.join(memory.game_dir("tic_tac_toe", rules, str(tmp_path)), "artifacts.json"), art)
+    b = Bot(tmp_path, '{"a": "", "c": "x"}')
+    try:
+        r = b.send({"type": "start", "match_id": "c1", "game_index": 1, "game_id": "tic_tac_toe", "variant": {"label": "3x3"},
+                    "rules": rules, "seat": 0, "llm": LLM})
+        assert r["type"] == "ready"
+        s = ttt_sample(list("XX.OO...."))
+        a = b.send({"type": "turn", "game_index": 1, "turn": 5, "observation": s["observation"],
+                    "legal_actions": s["legal_actions"], "seconds": 20, "chat": []})
+        assert a["action"] == "C1" and a["chat"]
+    finally:
+        err = b.close()
+    rec = [json.loads(l[9:]) for l in err.splitlines() if l.startswith("decision ")][-1]
+    assert rec["strategy"] == "search" and rec["tool"] == "alpha-beta" and rec["source"] == "tool"
+    assert "perfect information, simulator verified, deterministic" in rec["reason"]
