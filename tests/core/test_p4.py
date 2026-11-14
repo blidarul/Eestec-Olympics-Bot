@@ -197,3 +197,11 @@ def test_cut_off_reply_is_used_only_if_it_holds_a_complete_json_object():
     l = llm_with('I think the best move is {"a": "B', "length")
     assert l.ask_json("s", "u") is None and l.last_error == "empty_or_cut_off"
     assert llm_with('{"a": "B2", "c": "hi"}', "stop").ask_json("s", "u") == {"a": "B2", "c": "hi"}
+
+
+def test_dice_push_routes_to_bluff():
+    from core import registry
+    r = registry.route("PIG rules", {"family": "dice_push"})
+    assert r.strategy.name == "bluff"
+    assert r.family == "bluff"
+
