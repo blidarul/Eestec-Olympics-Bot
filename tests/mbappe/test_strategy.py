@@ -241,6 +241,7 @@ class TestHooks(unittest.TestCase):
         self.assertLessEqual(cd.STRATEGY.matches("rules", {}), 0.5)
         self.assertLessEqual(cd.STRATEGY.matches("rules", None), 0.5)
         self.assertGreater(cd.STRATEGY.matches("rules", {"family": "guardrails"}), 0.5)
+        self.assertGreater(cd.STRATEGY.matches("rules", {"family": "qa_guardrails"}), 0.5)   # the name prep/classifier.py uses
 
     def test_registry_routing(self):
         from core import registry
