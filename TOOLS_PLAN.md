@@ -216,5 +216,8 @@ model-callable tool; no tool ever raises out of `call()`; no file outside `solve
   Matrix <= 30x30, heaps <= 12 of <= 1000. Results go through JSON, so tuple moves come back as lists. csp_backtrack also takes all_different groups; both harness tools stop at deadline with complete=false.
   Tests: tests/alex/test_gametheory.py (21; nash checked exactly on random matrices, nim vs brute force). tests/alex: 168 pass, 1 FAIL not from P4: test_deduce.py::test_model_rejected[...-pass] fails without my files too (area of #32).
   Inbox untouched: #34 #30 #25.
-- P5:
+- P5: DONE 2026-11-14. solvers/basic/textparse.py, 4 model-callable tools: extract_numbers (words around each number, 1,000 and decimals), extract_grid (spaced, compact or |-cell boards, optional row/col labels,
+  coord_style "A1"|"numeric"|"r,c"|"other"; rows feed grid_* and board_lines as `board`), extract_cards (A K Q J T 2-9 + S/H/D/C letters, symbols or "Ace of Spades"; `suit_letters=false` avoids "AS" false hits),
+  extract_history (default patterns for "Round N: you guessed X -> fb", "Turn N (you): ..." and "Moves so far: X C2, ..."; optional caller regexes, nested-quantifier patterns rejected). Text is data, never evaluated.
+  Tested on the practice sample_turn texts (guess_number, pig, tic_tac_toe); T1 games not released yet. tests/alex: 188 pass, 1 FAIL not mine (test_deduce.py::test_model_rejected, same as P4). Inbox untouched: #34 #30 #25.
 - P6:
