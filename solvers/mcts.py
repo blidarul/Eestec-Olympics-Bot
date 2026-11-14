@@ -57,6 +57,17 @@ def search(game, state, seat, deadline, c=C_UCB, max_playout=500, rng=None, max_
     if len(moves) == 1:
         return MCTSResult(moves[0], 0, game.score(state, seat), {moves[0]: 0})
     has_to_move = callable(getattr(game, "to_move", None))
+    forced = None
+    hc = getattr(game, "has_chance", None)
+    if (not callable(hc) or not hc(state)) and (not callable(getattr(game, "to_move", None)) or game.to_move(state) == seat):
+        for m in moves:                  # a 1-ply win is always preferred over sampled estimates
+            try:
+                nxt = game.apply(state, m)
+                if game.is_terminal(nxt) and game.score(nxt, seat) > 0:
+                    forced = m
+                    break
+            except Exception:
+                break
 
     def mover_is_me(s, default):
         return (game.to_move(s) == seat) if has_to_move else default
@@ -131,6 +142,6 @@ def search(game, state, seat, deadline, c=C_UCB, max_playout=500, rng=None, max_
     if not root.children:
         return MCTSResult(moves[0], sims, 0.0, {})
     visits = {m: ch.n for m, ch in root.children.items()}
-    best = max(root.children, key=lambda m: (root.children[m].n, root.children[m].w / max(1, root.children[m].n)))
+    best = forced if forced in root.children else max(root.children, key=lambda m: (root.children[m].n, root.children[m].w / max(1, root.children[m].n)))
     ch = root.children[best]
     return MCTSResult(best, sims, ch.w / max(1, ch.n), visits)
