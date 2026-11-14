@@ -19,6 +19,28 @@ _RECENT = deque(maxlen=config.RECENT_LINES)    # the last lines that passed filt
 _SPEECH_CACHE = {}
 
 
+_DEFENSE = None
+_DEFENSE_KEY = None
+
+
+def reply_line(opponent_chat, turn=0, rules="", forbidden=None, family=""):
+    """One chat line in the current persona (config.PERSONA) that answers the opponent's newest message, for ANY
+    strategy that picks its move itself. Same filters and limits as the full pipeline. Never raises: "" on a problem
+    (the caller then keeps its own line). `opponent_chat`: the opponent's texts, oldest first."""
+    global _DEFENSE, _DEFENSE_KEY
+    try:
+        from .pipeline import ChatDefense
+        key = (str(rules)[:200], tuple(sorted(str(t) for t in (forbidden or []))), str(family))
+        if _DEFENSE is None:
+            _DEFENSE = ChatDefense(log=lambda *a: None)
+        if key != _DEFENSE_KEY:  # new game: read its speech rules
+            _DEFENSE.configure(str(rules), forbidden, None, family)
+            _DEFENSE_KEY = key
+        return _DEFENSE.chat_only(list(opponent_chat) if isinstance(opponent_chat, (list, tuple)) else [], turn)
+    except Exception:
+        return ""
+
+
 def wrap_untrusted(lines):
     """`lines`: the opponent's chat texts, oldest first (core/main.py passes strings only)."""
     try:

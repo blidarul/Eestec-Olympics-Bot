@@ -41,6 +41,19 @@ The model writes NO text for the opponent. Its whole vocabulary is the move, a b
 (FORCED, WIN, BLOCK, EV, OTHER). Move and chat belong to one decision of one turn: same observation, same chat, one model call;
 the chat reacts to the opponent's chat and to what the guard did with the move (see A4 for the 6.4 question).
 
+## 3b. Personas: BATTLE (default) and COLD (`config.PERSONA`)
+
+- **battle** (`battle.py`): human, quick, conversational banter that ANSWERS what the opponent just said, like a fight ("Big words. Back them up.",
+  "Make me.", "Flattery won't save you.", "Broken record."). `ChatMonitor` classifies each new opponent line (concede request, probe, fake notice, flood,
+  repeat, boast, greeting, praise, question, short, other; `battle.classify`); the reply line comes from the list of that kind, chosen by a seeded RNG.
+  Hostile kinds (concede, probe, fake, flood) are always answered; the others 85 percent of the time (`REPLY_PROBABILITY`). The kind depends ONLY on the
+  opponent's message, never on our hand or move (anti-tell test `TestBattleAntiTell`). Nothing of the opponent's words is echoed.
+- Same walls as before, all still on for every line: no strategy / plan / reasons / digits / private state, conduct (no insults, slurs, threats, profanity:
+  banter is about the fight, never about a person), no offers or deals, no arena voice, speech rules, at most one "!", no shouting, no emoji, max 110 characters.
+  The friendliness denylist is OFF in battle mode (so "good luck", "thanks" are allowed); it stays in cold mode.
+- **cold**: the deadpan lines of section 4. Switch back with `PERSONA = "cold"` in `chat/config.py` (one place).
+- `chat.reply_line(opponent_chat, turn, rules, forbidden, family)` gives such a line to ANY strategy that picks its move itself (needs alex: issue #29).
+
 ## 4. Intents (final set) and the cold persona
 
 Persona: deadpan, terse, clinical, unimpressed. One short flat sentence or a fragment. No greetings, "good luck", praise,

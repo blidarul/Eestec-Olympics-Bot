@@ -10,7 +10,7 @@ Nothing is dropped: every opponent line is analyzed and counted, only the displa
 import re
 from collections import Counter
 
-from . import config, injection, robust
+from . import battle, config, injection, robust
 from . import normalize as nz
 
 KEEP_REPORTS = 60        # analyzed opponent lines kept in memory
@@ -44,6 +44,7 @@ class ChatMonitor:
         self.repeated_now = False
         self.max_severity = 0
         self.new_reports = []         # reports first seen in the last update()
+        self.new_kinds = []           # battle.classify() kind of each new opponent line
         self.skipped = 0              # lines of a huge chat that were only counted, not analyzed
 
     # ---- reading the chat -----------------------------------------------------------
@@ -56,6 +57,7 @@ class ChatMonitor:
         elif len(chat) == self.seen:
             return self  # nothing new: keep the "new this turn" signals until consume() is called
         self.new_reports = []
+        self.new_kinds = []
         self.repeated_now = False     # one of the new lines repeated the previous opponent line
         start = max(self.seen, len(chat) - config.CHAT_WINDOW)  # a huge chat: only the last lines are analyzed
         if start > self.seen:
@@ -102,11 +104,20 @@ class ChatMonitor:
         if text and text == self.last_text:
             self.repeat_count += 1
             self.repeated_now = True
+        self.new_kinds.append(battle.classify(line.get("text", ""), rep.flags, bool(text) and text == self.last_text))
         self.last_text = text
+
+    @property
+    def reply_kind(self):
+        """The kind of opponent message to answer now (battle persona): the most important of the new lines, or None."""
+        order = ("concede", "probe", "fake", "flood", "repeat", "boast", "greeting", "praise", "question", "short", "other")
+        kinds = set(self.new_kinds)
+        return next((k for k in order if k in kinds), None)
 
     def consume(self):
         """The turn is answered: the "new this turn" signals (pressure, probes, repeats) are used up."""
         self.new_reports = []
+        self.new_kinds = []
         self.repeated_now = False
 
     # ---- the signals ----------------------------------------------------------------

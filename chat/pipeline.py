@@ -274,12 +274,25 @@ class ChatDefense:
                 res = guard.GuardResult(alt[0], True, "rejected")
         return self._answer(res, "", "model-free", turn)
 
+    def chat_only(self, chat, turn=0):
+        """Only the chat line, for strategies that choose the move themselves (core/, solvers): same persona, same
+        filters, same limits. `chat` = the opponent's chat (texts or full lines). Returns the line."""
+        self.monitor.update(chat)
+        self._track({"turn": turn})
+        return self._answer(guard.GuardResult(""), "", "chat-only", {"turn": turn})[1]
+
     # ---- the chat line ---------------------------------------------------------------
     def choose_intent(self, model_intent, res, seed):
         """(intent, family) from public signals and a seeded RNG. Never from our hand, position or move quality.
         The model's intent is used only with probability config.MODEL_INTENT_WEIGHT (default 0.0: not at all)."""
         m = self.monitor
         allowed = active_intents(self.family, self.speech)
+        if config.PERSONA == "battle":
+            # human banter: answer what the opponent just said, by the KIND of its message (public information only)
+            kind = "concede" if res.why in ("surrender", "echo") else m.reply_kind
+            hostile = kind in ("concede", "probe", "fake", "flood")  # always answered
+            if kind and (hostile or random.Random(f"{seed}|reply").random() < config.REPLY_PROBABILITY):
+                return "REPLY", kind
         if res.why in ("surrender", "echo") or m.new_probe or m.new_hostile:
             return "STONEWALL", ("probe" if m.new_probe else "pressure")   # probes, pressure, fake notices: give nothing
         if m.repeated_now and m.opponent_repeats and "UNSETTLE" in allowed:

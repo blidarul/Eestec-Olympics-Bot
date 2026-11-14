@@ -3,7 +3,7 @@
 Extracted from `docs/RULEBOOK.md` (authoritative), `PROTOCOL.md`, `README.md`, `CHANGELOG.md`, `AGENTS.md`,
 `docs/CLAUDE.md`. Status: **OK** = implemented and verified (test or arena run named), **PARTIAL** = see note,
 **N/A** = not this package's job (owner named), **AMBIGUOUS** = ask the organizers (rule 15.4).
-Run the tests: `python -m unittest discover -s tests/mbappe` (174 tests).
+Run the tests: `python -m unittest discover -s tests/mbappe` (231 tests).
 Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversarial.sh`, one scenario:
 `bash tests/mbappe/run_one.sh <id> <game> <obedient|garbage|slow|down|concede>`.
 
@@ -32,7 +32,8 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 | Item | Requirement | Where / evidence | Status |
 |---|---|---|---|
 | T1 | Never reveal tactics: no strategy, algorithm, plan, reasons, computed numbers, private fields | `strategy_leak.reason_strategy` in `check_line`; the model has no text channel (it returns a move, a backup and a reason code); template audit. Tests: 55 positive and 17 negative examples, obfuscated and Romanian variants, private-substring test | OK |
-| T2 | Cold tone, no friendliness, no "!", no emoji | `tone.reason_tone` in `check_line`; template audit fails the build on a friendly template; 27 friendly examples rejected, EN + RO | OK |
+| T2 | Tone: BATTLE persona by default (human banter that answers the opponent; `config.PERSONA`), COLD persona available. Both: no emoji, no shouting, no long speeches; cold also no friendliness and no "!". Conduct (6.10, 13.1.j) stays on in both | `tone.reason_tone`; `battle.py`; `test_battle.py` (every battle line passes every filter; abuse still blocked) | OK / see A7 |
+| T2 | Cold persona: no friendliness, no "!", no emoji | `tone.reason_tone` in `check_line`; template audit fails the build on a friendly template; 27 friendly examples rejected, EN + RO | OK |
 | T3 | Misdirect only where speech is not restricted | `active_intents()`; tests `test_misdirect_is_off_when_speech_is_restricted_or_honest` | OK |
 | T4 | Anti-tell: variant, length, style independent of private state and move quality | tone chosen by code from public signals + seeded RNG; model intent ignored (`MODEL_INTENT_WEIGHT = 0`); `TestAntiTell` (identical lines for two private states, correlation < 0.02, control with weight 1 leaks) | OK |
 | T5 | No impersonation of arena, organizers, judges, system | `impersonation.reason_impersonation` in `check_line` | OK / see A6 |

@@ -10,6 +10,7 @@ import re
 import unicodedata
 
 from . import normalize as nz
+from . import config
 from .config import TONE_MAX_CHARS
 
 _FRIENDLY = [
@@ -31,10 +32,24 @@ _SPACED = re.compile(r"(?<!\w)\w(?:[\s.\-_*]+\w(?!\w))+")
 
 
 def reason_tone(line):
-    """Why the line is not cold (a short code), or None."""
+    """Why the line does not fit the persona (a short code), or None. Cold persona: see the module docstring.
+    Battle persona: banter is fine; still no emoji, no shouting, no long speeches, at most one "!"."""
     if not isinstance(line, str):
         return None
     shown = nz.display(line)
+    if config.PERSONA == "battle":
+        if shown.count("!") > 1:
+            return "too-loud"
+        for ch in shown:
+            if ord(ch) >= 0x1F000 or unicodedata.category(ch) in ("So", "Sk"):
+                return "emoji-or-symbol"
+        if len(shown) > TONE_MAX_CHARS:
+            return "too-long"
+        if len(re.findall(r"[.?!]\s+\S", shown)) >= 3:
+            return "too-many-sentences"
+        if any(len(w) >= 4 and w.isupper() for w in re.findall(r"[^\W\d_]+", shown)):
+            return "shouting"
+        return None
     if "!" in shown:
         return "exclamation"
     for ch in shown:

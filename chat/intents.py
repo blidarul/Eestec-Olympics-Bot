@@ -22,7 +22,7 @@ Variant choice is seeded by (match, game, turn) in code. It never looks at our h
 """
 import random
 
-from . import concede
+from . import battle, concede, config
 
 INTENTS = ("GREET", "MISDIRECT", "STONEWALL", "UNSETTLE", "PRESS", "CONCEDE_PRESSURE", "NOISE", "MINIMAL", "ANCHOR")
 
@@ -64,7 +64,7 @@ UNSETTLE = {
 
 
 def all_templates():
-    """Every line our code can say (for the audit tests): (intent, line)."""
+    """Every COLD line our code can say (for the audit tests): (intent, line). Battle lines: battle.all_lines()."""
     for intent, lines in TEMPLATES.items():
         for line in lines:
             yield intent, line
@@ -92,8 +92,12 @@ def normalize_intent(value, default="MINIMAL"):
 def compose(intent, family="", seed="", recent=()):
     """The line for `intent`. `family` picks the UNSETTLE sub-list. `seed` makes the choice repeatable (code only,
     never our state); `recent` are lines to avoid repeating."""
-    intent = normalize_intent(intent)
-    if intent == "UNSETTLE":
+    intent = "REPLY" if intent == "REPLY" else normalize_intent(intent)
+    if intent == "REPLY":  # battle persona: an answer built for the kind of the opponent's message
+        options = list(battle.REPLY_BY.get(family) or battle.REPLY_BY["other"])
+    elif config.PERSONA == "battle" and intent in battle.BATTLE and intent != "CONCEDE_PRESSURE":
+        options = list(battle.BATTLE[intent])
+    elif intent == "UNSETTLE":
         options = list(UNSETTLE.get(family) or UNSETTLE["general"])
     elif intent == "STONEWALL" and family in STONEWALL_BY:
         options = list(STONEWALL_BY[family])

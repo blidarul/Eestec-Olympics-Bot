@@ -28,3 +28,7 @@ TONE_MAX_CHARS = 110         # terse: one short sentence or two
 NOISE_PROBABILITY = 0.12     # a decoy line sometimes, chosen by the seeded RNG only (never by our state)
 MODEL_INTENT_WEIGHT = 0.0    # how often the model's intent is used when no signal forces one (0 = never: anti-tell)
 REPEAT_UNSETTLE = 2          # opponent repeated itself this many times: UNSETTLE about repetition
+
+# ---- persona ----
+PERSONA = "battle"           # "battle": human, quick banter that answers the opponent; "cold": the earlier deadpan lines
+REPLY_PROBABILITY = 0.85     # battle: how often a new opponent message gets a reply built for its kind
