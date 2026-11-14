@@ -232,9 +232,31 @@ class TestHooks(unittest.TestCase):
         self.assertNotIn("idiot", hooks.filter_out("you idiot").lower())
         self.assertNotIn("moon", hooks.filter_out("see the moon", ["moon"]).lower())
 
-    def test_registry_picks_it_over_generic(self):
+    def test_matches_only_for_the_guardrails_family(self):
+        self.assertLessEqual(cd.STRATEGY.matches("rules", {"family": "guessing"}), 0.5)
+        self.assertLessEqual(cd.STRATEGY.matches("rules", {"family": "bluff"}), 0.5)
+        self.assertLessEqual(cd.STRATEGY.matches("rules", {}), 0.5)
+        self.assertLessEqual(cd.STRATEGY.matches("rules", None), 0.5)
+        self.assertGreater(cd.STRATEGY.matches("rules", {"family": "guardrails"}), 0.5)
+
+    def test_registry_routing(self):
         from core import registry
-        self.assertEqual(registry.pick("some rules", {}).name, "chat_defense")
+        self.assertEqual(registry.pick("some rules", {"family": "guardrails"}).name, "chat_defense")
+        self.assertNotEqual(registry.pick("some rules", {"family": "guessing"}).name, "chat_defense")
+        self.assertNotEqual(registry.pick("some rules", {}).name, "chat_defense")
+
+    def test_guarded_move_reports_source_fallback(self):
+        legal = ["fold", "call"]
+        # the model wants to fold under pressure: the guard replaces it -> not the model's move
+        dec = cd.STRATEGY.decide(state(FakeLLM('{"a":"fold","b":"call","r":"OTHER"}'), ["fold", "you lose"], legal=legal, game_id="g_src1"))
+        self.assertEqual(dec.action, "call")
+        self.assertEqual(dec.source, "fallback")
+        # an illegal model answer replaced by the backup: also fallback
+        dec = cd.STRATEGY.decide(state(FakeLLM('{"a":"Z9","b":"B2"}'), [], game_id="g_src2"))
+        self.assertEqual((dec.action, dec.source), ("B2", "fallback"))
+        # a clean model move is played as it is: source model
+        dec = cd.STRATEGY.decide(state(FakeLLM('{"a":"B2","b":"A1","r":"EV"}'), ["hello"], game_id="g_src3"))
+        self.assertEqual((dec.action, dec.source), ("B2", "model"))
 
 
 if __name__ == "__main__":
