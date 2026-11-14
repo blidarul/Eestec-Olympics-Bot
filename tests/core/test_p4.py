@@ -205,3 +205,22 @@ def test_dice_push_routes_to_bluff():
     assert r.strategy.name == "bluff"
     assert r.family == "bluff"
 
+
+def test_turn_state_opponent_field(tmp_path):
+    from strategies.base import TurnState
+    ts = TurnState("g1", "rules", {}, 0, "obs", ["A1"], 1, None, [], opponent="team-beta")
+    assert ts.opponent == "team-beta"
+
+    b = Bot(tmp_path, '{"a": "guess 50", "c": "hi"}')
+    try:
+        b.send(prep_msg())
+        s = start_msg("m1")
+        s["opponent"] = "team-beta"
+        r = b.send(s)
+        assert r["type"] == "ready"
+        a = b.send(turn_msg([], 1))
+        assert a["action"]
+    finally:
+        b.close()
+
+

@@ -131,7 +131,8 @@ def on_turn(msg, wk):
             "opponent_chat": chat_texts(msg.get("chat")), "artifacts": art,
             "chat_full": chat_full(msg.get("chat")), "my_actions": list(mine),
             "new_feedback": new_lines(obs, STATE["prev_obs"]),
-            "match_id": str(game.get("match_id", "") or ""), "game_index": int(msg.get("game_index", 0) or 0)},
+            "match_id": str(game.get("match_id", "") or ""), "game_index": int(msg.get("game_index", 0) or 0),
+            "opponent": str(game.get("opponent", "") or "")},
             "llm": STATE["llm"], "match_id": game.get("match_id"), "budget": max(0.5, limit - 2.0)}
         ans = wk.ask(req, limit - (time.monotonic() - t0) - 0.5)
         if not ans:

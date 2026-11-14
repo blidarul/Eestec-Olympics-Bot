@@ -35,6 +35,7 @@ class TurnState:
     new_feedback: list = field(default_factory=list)  # observation lines that are new since our last action
     match_id: str = ""
     game_index: int = 0
+    opponent: str = ""
 
 
 class Strategy(Protocol):
