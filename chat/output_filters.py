@@ -8,10 +8,10 @@ A line that fails any filter is replaced by a neutral safe line. The line is als
 """
 import re
 
+from . import no_deal
 from . import normalize as nz
+from .config import CHAT_LIMIT, MAX_CHARS
 
-CHAT_LIMIT = 200     # the rules: a chat string of at most 200 characters (6.2, 6.9)
-MAX_CHARS = 180      # what we really send: a safety margin under the limit
 
 # (a) words of our own machinery that must never appear in a line
 _LEAK_WORDS = [
@@ -43,9 +43,11 @@ _LONG_WORDS = {w for w in _CONDUCT_WORDS if len(w) > 4}
 # words that contain a short stem harmlessly ("die" in "diet", "sex" in "sextant") are only checked as whole words
 
 
-def reason_leak(line, private_tokens=()):
-    """Why the line leaks something (a short code), or None."""
+def reason_leak(line, private_tokens=(), canary=""):
+    """Why the line leaks something (a short code), or None. `canary` is the secret tag of our prompt."""
     shown = nz.display(line)
+    if canary and canary.lower() in shown.lower().replace(" ", ""):
+        return "canary"
     folded = nz.ascii_fold(shown, "i")
     for rx in _LEAK_RE:
         if rx.search(shown) or rx.search(folded):
@@ -114,19 +116,27 @@ def safe_neutral(speech=None, private_tokens=(), seed=0):
     return "."
 
 
-def check_line(line, speech=None, private_tokens=(), seed=0):
-    """Run the three filters. Returns (final_line, problems). `problems` is a list of codes (empty = line unchanged)."""
+def check_line(line, speech=None, private_tokens=(), seed=0, canary="", one_sided=False):
+    """Run the filters. Returns (final_line, problems). `problems` is a list of codes (empty = line unchanged).
+    one_sided=True is for the CONCEDE_PRESSURE intent: the line must pass the no-deal filter as well."""
     problems = []
     if not isinstance(line, str) or not line.strip():
         problems.append("empty")
         line = ""
     line = cut_line(line)
-    why = reason_leak(line, private_tokens)
+    why = reason_leak(line, private_tokens, canary)
     if why:
         problems.append("leak:" + why)
     why = reason_conduct(line)
     if why:
         problems.append("conduct:" + why)
+    why = no_deal.hard_collusion(line)
+    if why:
+        problems.append("collusion:" + why)
+    if one_sided:
+        ok, why = no_deal.is_one_sided_pressure(line)
+        if not ok:
+            problems.append("no-deal:" + why)
     if speech is not None and speech.violates(line):
         problems.append("speech:forbidden")
     if problems:

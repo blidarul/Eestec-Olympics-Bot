@@ -164,7 +164,7 @@ class TestWrapAndPipeline(unittest.TestCase):
     def test_long_chat_is_summarized_not_dropped(self):
         d = self.make()
         _, user = d.prompts(self.turn(opp(*[f"line {i}" for i in range(40)])), "R", "P", 0)
-        self.assertIn("32 earlier opponent lines", user)
+        self.assertIn("32 earlier lines", user)
         self.assertIn("line 39", user)
         self.assertEqual(d.monitor.opp_lines, 40)  # every line was analyzed and counted
 

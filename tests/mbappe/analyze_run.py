@@ -64,7 +64,9 @@ def main():
         prompts = [json.loads(l)["user"] for l in open(args.gateway, encoding="utf-8") if l.strip()]
         joined = "\n".join(prompts)
         opp = [c for c in doc["chat"] if c["team"] != args.bot]
-        missing = [c["n"] for c in opp if f"#{c['n']} opp" not in joined]
+        # the block numbers opponent lines by their position among the opponent's lines (core passes texts only);
+        # the older custom loop numbered by position in the whole chat: accept both
+        missing = [c["n"] for k, c in enumerate(opp, 1) if f"#{k} opp" not in joined and f"#{c['n']} opp" not in joined]
         # the last opponent line(s) can come after our last turn of the game, so they are never shown
         tail_ok = len(missing) <= 3
         check("opponent chat reaches the model input", tail_ok, f"missing lines {missing}")

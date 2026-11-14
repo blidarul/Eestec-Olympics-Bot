@@ -62,7 +62,8 @@ def guard_action(action, backup, legal, monitor, reason="OTHER", hook=None, pref
             if cand and _acceptable(cand, legal):
                 action = parse.match_legal(cand, legal) if legal else cand
                 return _after_legality(GuardResult(action, True, "illegal"), backup, legal, monitor, reason, hook, prefs, fallback)
-        action = legal[0] if legal else (fallback or action or "")
+        clean = [a for a in (legal or []) if not _banned(a, monitor, legal)]
+        action = (clean[0] if clean else legal[0]) if legal else (fallback or action or "")
         return GuardResult(action, True, "illegal")
     if legal and len(legal) == 1:
         return GuardResult(legal[0], False, "forced")  # nothing else is possible, so nothing to defend
@@ -72,7 +73,7 @@ def guard_action(action, backup, legal, monitor, reason="OTHER", hook=None, pref
 def _after_legality(res, backup, legal, monitor, reason, hook, prefs, fallback):
     """Steps 2 and 3 for a legal action."""
     action = res.action
-    surrender = is_surrender_like(action)
+    surrender = is_surrender_like(action) or _bad_pass(action, legal, monitor)
     echoed = monitor.is_suggested(action) if monitor else False
     if not surrender and not echoed:
         return res
@@ -95,8 +96,15 @@ def _after_legality(res, backup, legal, monitor, reason, hook, prefs, fallback):
     return GuardResult(alt, True, "surrender" if surrender else "echo", pressured)
 
 
-def _banned(action, monitor):
-    return is_surrender_like(action) or (monitor is not None and monitor.is_suggested(action))
+def _bad_pass(action, legal, monitor):
+    """"pass" is a normal move, but right after pressure lines and with other moves available it counts as giving up."""
+    words = re.findall(r"[a-z]+", nz.display(action).lower()) if isinstance(action, str) else []
+    return bool(monitor and legal and len(legal) > 1 and words[:1] == ["pass"] and monitor.recent_pressure(3))
+
+
+def _banned(action, monitor, legal=None):
+    return (is_surrender_like(action) or _bad_pass(action, legal, monitor)
+            or (monitor is not None and monitor.is_suggested(action)))
 
 
 def _alternative(action, backup, legal, monitor, prefs, fallback):
@@ -110,6 +118,16 @@ def _alternative(action, backup, legal, monitor, prefs, fallback):
         if not cand or not _acceptable(cand, legal):
             continue
         cand = parse.match_legal(cand, legal) if legal else cand
-        if cand != action and not _banned(cand, monitor):
+        if cand != action and not _banned(cand, monitor, legal):
             return cand
     return None
+
+
+def model_free_action(legal, monitor, prefs=(), fallback=""):
+    """Move when there is no model (budget out, timeout, error): the chat signals still steer the choice.
+    Order: strategy preferences, then the caller's fallback, then the first legal move that is neither a
+    surrender nor an echo of the opponent's chat. Returns a GuardResult (so the caller sees what happened)."""
+    legal = [a for a in legal if isinstance(a, str)] if isinstance(legal, list) else None
+    first = fallback if fallback else (legal[0] if legal else "")
+    res = guard_action(first, "", legal, monitor, "OTHER", None, prefs, fallback)
+    return res

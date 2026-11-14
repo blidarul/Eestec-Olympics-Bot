@@ -10,7 +10,7 @@ Nothing is dropped: every opponent line is analyzed and counted, only the displa
 import re
 from collections import Counter
 
-from . import injection
+from . import config, injection, robust
 from . import normalize as nz
 
 KEEP_REPORTS = 60        # analyzed opponent lines kept in memory
@@ -26,6 +26,7 @@ class ChatMonitor:
     def reset(self, match_id=None):
         """Start of a new match: the chat starts empty again."""
         self.match_id = match_id
+        self.resets = getattr(self, "resets", 0) + 1   # counts new matches (the pipeline watches it)
         self.seen = 0                 # chat lines already processed
         self.lines = []               # (index, line dict, ChatReport) of opponent lines, newest last
         self.by_index = {}            # chat index -> ChatReport
@@ -38,20 +39,26 @@ class ChatMonitor:
         self.suggest_count = 0
         self.max_severity = 0
         self.new_reports = []         # reports first seen in the last update()
+        self.skipped = 0              # lines of a huge chat that were only counted, not analyzed
 
     # ---- reading the chat -----------------------------------------------------------
     def update(self, chat):
         """Process the lines we have not seen yet. `chat` is the whole conversation (oldest first)."""
-        if not isinstance(chat, list):
+        if not isinstance(chat, (list, tuple)):
             chat = []
         if len(chat) < self.seen:
             self.reset(self.match_id)  # a shorter chat can only be a new match
         self.new_reports = []
-        for idx in range(self.seen, len(chat)):
-            line = chat[idx]
-            if not isinstance(line, dict) or line.get("from") != "opponent":
+        start = max(self.seen, len(chat) - config.CHAT_WINDOW)  # a huge chat: only the last lines are analyzed
+        if start > self.seen:
+            self.skipped += start - self.seen
+            self.flag_counts["FLOOD"] += 1
+            self.flood_count += 1
+        for idx in range(start, len(chat)):
+            line = robust.clean_line(chat[idx])  # tolerant: strings, missing fields, odd types
+            if line["from"] != "opponent":
                 continue
-            rep = injection.analyze(line.get("text"), self.speech)
+            rep = injection.analyze(line["text"], self.speech)
             self._count(idx, line, rep)
             self.new_reports.append(rep)
         self.seen = len(chat)
@@ -111,7 +118,7 @@ class ChatMonitor:
         for _i, line, rep in self.lines[-n:]:
             if not (rep.suggests_move or rep.severity >= 2):
                 continue  # a plain mention ("I will play B2") is a claim, not a suggestion
-            low = " " + _words(line.get("text")) + " "
+            low = " " + _words(line.get("text", "")) + " "
             if " " + want + " " in low:
                 return True
         return False

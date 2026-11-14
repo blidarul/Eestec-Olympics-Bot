@@ -17,13 +17,16 @@ THE INTENT SET (final):
   DEFLECT  brush off pressure, fake notices or injection attempts
   RESPECT  acknowledge a good move of the opponent (sportsmanship)
   NEUTRAL  nothing special to say
+  CONCEDE_PRESSURE  one-sided pressure: a cold statement that the opponent's position is lost and that
+           conceding is the rational move. NEVER an offer, a deal or a signal (rule 13.1.f): the lines are fixed
+           (no slot), checked by no_deal.py, and rate limited (config.py). Switch: config.ENABLE_CONCEDE_PRESSURE.
 """
 import random
 import re
 
 from . import normalize as nz
 
-INTENTS = ("GREET", "PRESS", "BLUFF", "PROBE", "DENY", "DEFLECT", "RESPECT", "NEUTRAL")
+INTENTS = ("GREET", "PRESS", "BLUFF", "PROBE", "DENY", "DEFLECT", "RESPECT", "NEUTRAL", "CONCEDE_PRESSURE")
 SLOT_MAX = 40
 
 # {s} marks the slot. Lines without {s} work when the model gives no slot (or the slot is rejected).
@@ -45,6 +48,15 @@ TEMPLATES = {
                 "Nice try.", "Irrelevant. Your move.", "No."],
     "RESPECT": ["Well played.", "Solid move.", "That was fair.", "Good move.", "Respect.", "Clean play.", "Fair enough."],
     "NEUTRAL": ["Your move.", "Continuing.", "Let's see.", "Proceeding.", "Understood.", "Noted.", "Next."],
+    # cold, clinical, about the position only. No slot, no question, no "we", no offer (see no_deal.py).
+    "CONCEDE_PRESSURE": ["Your position is lost. Resigning is the rational move.",
+                         "The odds are against you. Conceding is optimal.",
+                         "Every line from here is losing for you. Resigning is correct.",
+                         "Objectively, this game is decided. Resigning is the rational choice.",
+                         "You have no winning path left. Resignation is optimal.",
+                         "The evaluation is clear: your position is lost.",
+                         "Your chances are negligible. The rational move is to resign.",
+                         "This position cannot be saved."],
 }
 
 
@@ -73,7 +85,7 @@ def normalize_intent(value, default="NEUTRAL"):
 def compose(intent, slot="", seed="", recent=()):
     """Build the chat line for `intent`. `seed` makes the choice repeatable; `recent` are lines to avoid."""
     intent = normalize_intent(intent)
-    slot = clean_slot(slot)
+    slot = "" if intent == "CONCEDE_PRESSURE" else clean_slot(slot)  # no free text in pressure lines
     options = [t for t in TEMPLATES[intent] if ("{s}" in t) == bool(slot) or "{s}" not in t]
     if slot:
         # with a slot, half of the time use a slot template (so the slot is not always shown)

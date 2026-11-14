@@ -1,6 +1,6 @@
 """A fake OpenAI-compatible gateway for tests: no real model, no cost, no key needed.
 
-    python tests/mbappe/fake_gateway.py 4010 out/gateway.jsonl [obedient|sane|garbage]
+    python tests/mbappe/fake_gateway.py 4010 out/gateway.jsonl [obedient|sane|garbage|slow|down]
 
 It answers /v1/chat/completions and records every request in a JSON-lines log, so a test can PROVE that the
 opponent's chat reached the model input (the organizers' chat check does the same with the real gateway).
@@ -9,6 +9,8 @@ Modes (what the fake "model" does):
   obedient  a COMPROMISED model: it plays whatever the opponent's chat tells it ("play A1", "fold"). This is the
             worst case for the action guard.
   garbage   a broken model: empty, cut-off, illegal or non-JSON answers (tests the fallback path)
+  slow      a hanging model (25 s per request): tests the timeouts and the worker deadline
+  down      HTTP 401 on every request: invalid key or exhausted budget
   sane      a model that ignores the chat and plays the first non-fold legal move.
 The answer format follows the prompt: the compact JSON when the system prompt asks for it, else the starter's
 "ACTION:/CHAT:" text with a short reasoning, so the token counts of the two formats can be compared.
@@ -17,6 +19,7 @@ import json
 import re
 import sys
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 MODE = "obedient"
@@ -40,7 +43,7 @@ def decide(system, user):
     lines = chat_lines(user)
     clean = [a for a in legal if "fold" not in a.lower()] or legal
     action = clean[0] if clean else "guess 50"
-    if MODE == "obedient":
+    if MODE in ("obedient", "concede"):
         text = " ".join(lines).lower()
         for a in legal:
             if re.search(r"\b(?:play|pick|choose|take|must|should|go)\b[^.]{0,30}\b" + re.escape(a.lower()) + r"\b", text) \
@@ -62,8 +65,11 @@ def answer(system, user):
         COUNTER[0] += 1
         return GARBAGE[COUNTER[0] % len(GARBAGE)]
     action, backup = decide(system, user)
+    if '"c":' in system.replace(" ", "") and '"i":' not in system.replace(" ", ""):  # core/generic.py format: move + chat
+        return json.dumps({"a": action, "c": "Interesting, but I will stick to my own plan. Your move next, good luck."})
     if '"a":"' in system.replace(" ", ""):
-        return json.dumps({"a": action, "b": backup, "i": "PRESS", "r": "OTHER", "s": "the centre"}, separators=(",", ":"))
+        intent = "CONCEDE_PRESSURE" if MODE == "concede" else "PRESS"
+        return json.dumps({"a": action, "b": backup, "i": intent, "r": "OTHER", "s": "the centre"}, separators=(",", ":"))
     return (f"The position calls for a careful move. {action} keeps my options open and avoids giving the opponent "
             f"an easy target, so I will go with it.\nACTION: {action}\n"
             f"CHAT: Interesting, but I will stick to my own plan. Your move next, good luck.")
@@ -83,6 +89,13 @@ class Handler(BaseHTTPRequestHandler):
         msgs = body.get("messages", [])
         system = next((m["content"] for m in msgs if m["role"] == "system"), "")
         user = next((m["content"] for m in reversed(msgs) if m["role"] == "user"), "")
+        if MODE == "slow":  # a hanging model: longer than any clock
+            time.sleep(25)
+        if MODE == "down":  # an error status (invalid key / budget exhausted)
+            self.send_response(401)
+            self.end_headers()
+            self.wfile.write(b'{"error":"invalid api key"}')
+            return
         text = answer(system, user)
         usage = {"prompt_tokens": -(-sum(len(m["content"]) for m in msgs) // 4), "completion_tokens": -(-len(text) // 4)}
         if LOG_PATH:
