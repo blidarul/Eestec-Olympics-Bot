@@ -25,7 +25,7 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 | 6.11, 12.4 | Enforced by code review | `CHAT_DEFENSE.md` gives exact places | OK |
 | 6.12 | Organizer small-talk bot: its words must show up in our model calls | harmless lines shown verbatim; arena check on the gateway log | OK |
 | 13.1.f | No collusion, no coded signals, no impersonation of the arena | CONCEDE_PRESSURE is one-sided and checked by `no_deal.py` on the final text (>= 15 positive and negative examples, English and Romanian); `hard_collusion` runs on EVERY line; templates fixed and public, nothing is encoded in the choice | OK |
-| 15.4 | CONCEDE_PRESSURE (one-sided pressure to concede) | Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team; confirmation given by: <mentor name, to be filled by the team>. Also within rule 6.3 ("pressure"). One switch: `config.ENABLE_CONCEDE_PRESSURE` | OK / see A5 |
+| 15.4 | CONCEDE_PRESSURE (one-sided pressure to concede) | Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team. Also within rule 6.3 ("pressure"). One switch: `config.ENABLE_CONCEDE_PRESSURE` | OK / see A5 |
 
 ## Tone and tactics (team design, second pass)
 
@@ -80,6 +80,6 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 - **A2** (6.8): the Guardrails games are not released: is the forbidden subject always named literally in the rules text?
 - **A3** (8.1): with `legal_actions: null` legality can only be checked by format; the action grammar belongs to bld's parser.
 - **A4** (6.4): the tone is now chosen by CODE from the opponent's chat and a seeded RNG (anti-tell), not by the model; the model decides only the move. Is this "one decision from the same view"? A caption "with nothing to do with the move" is not enough (6.4). Our lines react to the opponent's chat and to what the guard did with the move. `config.MODEL_INTENT_WEIGHT` lets the model shape the tone if the mentors prefer.
-- **A5** (15.4 / 13.1.f): the team reports a mentor confirmation for one-sided concede pressure. It is not in the rulebook text. Please announce it to all teams (15.4 says answers apply to everyone) and give us the name for this file.
+- **A5** (15.4 / 13.1.f): the team reports a mentor confirmation for one-sided concede pressure. It is not in the rulebook text. Please announce it to all teams (15.4 says answers apply to everyone).
 - **A6** (13.1.d, 7.12, 15.4): is speaking as "the arena" or "a judge" in our chat allowed? The rulebook is silent. We forbid it by default (filter), as the opponents' fake notices are treated as attacks.
 - **A7** (6.10): "Keep it fun and respectful": is a deliberately cold, deadpan persona acceptable? It contains no insult, but it is not "fun".

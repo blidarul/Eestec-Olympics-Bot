@@ -2,7 +2,7 @@
 
 ENABLE_CONCEDE_PRESSURE: one-sided pressure through chat only ("your position is lost, resigning is the
 rational move"). The team reports that the organizers confirmed on 2026-11-14 (rule 15.4) that this is allowed;
-confirmation given by: <mentor name, to be filled by the team>. It is NOT checked anywhere in code; it is also
+It is NOT checked anywhere in code; it is also
 covered by rule 6.3 ("pressure"). Set to False to switch the intent off completely (it then becomes PRESS).
 """
 ENABLE_CONCEDE_PRESSURE = True

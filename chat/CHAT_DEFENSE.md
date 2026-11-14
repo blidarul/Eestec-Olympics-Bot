@@ -73,7 +73,7 @@ The chat style must not depend on our private information or on how good our mov
 ## 6. CONCEDE_PRESSURE (offense, one-sided)
 
 - Fixed lines such as "Your position is lost. Resigning is the rational move." Only the position is talked about.
-- **Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team; confirmation given by: <mentor name, to be filled by the team>.** Also inside rule 6.3 ("pressure").
+- **Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team.** Also inside rule 6.3 ("pressure").
 - The confirmation covers ONE-SIDED pressure only: never an offer, trade, shared benefit, promise, agreed or coded signal, never "lose on purpose" (13.1.f), no threat, no insult.
 - Switch: `chat/config.py: ENABLE_CONCEDE_PRESSURE = True`. Off -> the intent disappears (becomes PRESS).
 - `no_deal.py` on the FINAL text: rejects offers, requests, "we/us/let's", points/standings/bracket, threats tied to a deal, "on purpose", questions, spaced/leetspeak spellings (EN + RO); requires a statement about the position.
