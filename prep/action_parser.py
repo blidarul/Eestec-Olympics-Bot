@@ -214,6 +214,15 @@ def extract_game_parameters(rules_text: str) -> dict[str, Any]:
     if connect_match:
         params["connect_k"] = int(connect_match.group(1))
 
+    dice_match = re.search(r"\b(one|two|three|four|\d+)\s+(?:six-sided\s+)?dice\b", rules_text, re.IGNORECASE)
+    if dice_match:
+        words = {"one": 1, "two": 2, "three": 3, "four": 4}
+        d_raw = dice_match.group(1).lower()
+        params["dice_count"] = words.get(d_raw) or (int(d_raw) if d_raw.isdigit() else 1)
+
+    if re.search(r"snake\s*eyes", rules_text, re.IGNORECASE) or re.search(r"reset\s+to\s+0", rules_text, re.IGNORECASE):
+        params["snake_eyes_reset"] = True
+
     return params
 
 

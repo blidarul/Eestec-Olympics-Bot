@@ -86,6 +86,18 @@ class PrepEngine:
             tools_registry = synthesize_tools(classification, grammar, heuristics, rules)
             tool_schemas = tools_registry.get_schemas()
 
+            # 6. Synthesize per-variant simulator (Issue #26)
+            sim_path = None
+            sim_calib = {}
+            if classification.family in ("grid_board", "dice_push"):
+                sim_filename = f"simulator_{idx}.py"
+                sim_path, sim_calib = save_synthesized_simulator(
+                    dest_dir, classification, grammar, f"{game_id}_{idx}", filename=sim_filename
+                )
+                if idx == 0:
+                    import shutil
+                    shutil.copyfile(sim_path, os.path.join(dest_dir, "simulator.py"))
+
             variants_data.append({
                 "label": label,
                 "classification": classification.to_dict(),
@@ -95,13 +107,12 @@ class PrepEngine:
                 "heuristics": heuristics,
                 "tools": tool_schemas,
                 "tools_prompt": tools_registry.format_for_prompt(),
+                "simulator_path": sim_path,
+                "simulator_calibration": sim_calib,
                 "sample_validation_passed": sample_validation_passed,
             })
 
-        calibration = {}
-        if overall_classification and variants_data:
-            first_grammar = parse_action_grammar(variants[0].get("rules", ""), variants[0].get("sample_turn"))
-            _, calibration = save_synthesized_simulator(dest_dir, overall_classification, first_grammar, game_id)
+        if variants_data:
             if variants[0].get("sample_turn"):
                 first_schema = infer_observation_schema(variants[0]["sample_turn"].get("observation", ""))
                 atomic_save_json(os.path.join(dest_dir, "observation_schema.json"), first_schema.to_dict())
@@ -115,7 +126,8 @@ class PrepEngine:
             "game_name": game_name,
             "fingerprint": fp,
             "family": overall_classification.family if overall_classification else "generic",
-            "simulator_calibration": calibration,
+            "simulator_calibration": variants_data[0].get("simulator_calibration", {}) if variants_data else {},
+            "simulator_path": variants_data[0].get("simulator_path") if variants_data else None,
             "tools": variants_data[0].get("tools", []) if variants_data else [],
             "variants": variants_data,
             "prepped_at": time.time(),

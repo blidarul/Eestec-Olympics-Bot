@@ -167,6 +167,8 @@ def parse(observation: str, seat: int = 0) -> State:
 
     elif family == "dice_push":
         target = params.get("target_score", 50)
+        dice_count = params.get("dice_count", 1)
+        snake_eyes = params.get("snake_eyes_reset", False)
         actions = grammar.discrete_actions or ["roll", "hold"]
         continue_candidates = {"roll", "draw", "push", "spin", "continue", "hit", "take"}
         stop_candidates = {"hold", "bank", "stop", "pass", "stand", "keep"}
@@ -174,7 +176,7 @@ def parse(observation: str, seat: int = 0) -> State:
         continue_act = next((a for a in actions if a.lower() in continue_candidates), actions[0])
         stop_act = next((a for a in actions if a.lower() in stop_candidates), actions[-1] if len(actions) > 1 else "pass")
 
-        return f'''"""Adaptive Accumulator/Push-Your-Luck Simulator for {game_id} (target: {target})."""
+        return f'''"""Adaptive Accumulator/Push-Your-Luck Simulator for {game_id} (target: {target}, dice: {dice_count})."""
 
 class State:
     def __init__(self, target={target}):
@@ -200,13 +202,18 @@ class State:
             new_state.turn_total = 0
             new_state.current = 1 - self.current
         else:
-            # Sample random six-sided die roll (chance outcome)
-            roll = random.randint(1, 6)
-            if roll == 1:
+            # Sample random dice rolls
+            rolls = [random.randint(1, 6) for _ in range({dice_count})]
+            ones = rolls.count(1)
+            if {str(snake_eyes)} and ones == 2:
+                new_state.banked[self.current] = 0
+                new_state.turn_total = 0
+                new_state.current = 1 - self.current
+            elif ones > 0:
                 new_state.turn_total = 0
                 new_state.current = 1 - self.current
             else:
-                new_state.turn_total += roll
+                new_state.turn_total += sum(rolls)
         return new_state
 
     def is_terminal(self):
@@ -356,10 +363,11 @@ def save_synthesized_simulator(
     classification: GameClassification,
     grammar: ActionGrammar,
     game_id: str,
+    filename: str = "simulator.py",
 ) -> tuple[str, dict[str, Any]]:
     """Generate, write, and calibrate synthesized simulator to destination directory."""
     code = synthesize_simulator_code(classification, grammar, game_id)
-    path = os.path.join(destination_dir, "simulator.py")
+    path = os.path.join(destination_dir, filename)
     atomic_write_bytes(path, code.encode("utf-8"))
 
     # Compile and calibrate (max 2 steps)

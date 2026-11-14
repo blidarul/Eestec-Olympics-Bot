@@ -58,13 +58,20 @@ class TestPrepEngine(unittest.TestCase):
         self.assertEqual(res["game_id"], "tic_tac_toe")
         self.assertEqual(res["family"], "grid_board")
         self.assertTrue(os.path.exists(res["manifest_path"]))
-        self.assertTrue(os.path.exists(os.path.join(self.temp_mem, "tic_tac_toe", "simulator.py")))
+        game_dir = os.path.join(self.temp_mem, "tic_tac_toe")
+        self.assertTrue(os.path.exists(os.path.join(game_dir, "simulator.py")))
+        self.assertTrue(os.path.exists(os.path.join(game_dir, "simulator_0.py")))
+        self.assertTrue(os.path.exists(os.path.join(game_dir, "simulator_1.py")))
 
         manifest = load_json(res["manifest_path"])
         self.assertIsNotNone(manifest)
         self.assertEqual(manifest["game_id"], "tic_tac_toe")
         self.assertEqual(len(manifest["variants"]), len(variants))
         self.assertTrue(manifest["variants"][0]["sample_validation_passed"])
+        self.assertIn("simulator_path", manifest["variants"][0])
+        self.assertIn("simulator_path", manifest["variants"][1])
+        self.assertTrue(os.path.exists(manifest["variants"][0]["simulator_path"]))
+        self.assertTrue(os.path.exists(manifest["variants"][1]["simulator_path"]))
 
 
 if __name__ == "__main__":
