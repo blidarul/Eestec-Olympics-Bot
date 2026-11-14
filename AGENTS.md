@@ -27,9 +27,9 @@ when you first need them.
 
 | Agent | Role | Owns (edit only these) |
 |---|---|---|
-| `alex` | core owner | `main.py`, `Dockerfile`, `requirements.txt`, `core/` (protocol loop, clocks and fallback, Haiku client, safe `/memory` access, strategy registry and interfaces), `tests/core/` |
-| `bld` | prep and search | `prep/` (rules reading, playbook and simulator building in the 10-minute prep), `solvers/` (minimax, MCTS, deduction, probability), `strategies/think_ahead/`, `strategies/guessing/`, `tests/bld/` |
-| `mbappe` | chat and imperfect information | `chat/` (opponent chat as untrusted data, chat composition, forbidden-subject filter), `opponent/` (opponent profiles), `strategies/bluff/`, `strategies/deals/`, `strategies/read_opponent/`, `strategies/truth/`, `strategies/guardrails/`, `tests/mbappe/` |
+| `alex` | solvers and deterministic strategies | `main.py`, `Dockerfile`, `requirements.txt`, `core/` (protocol loop, clocks and fallback, Haiku client, safe `/memory` access, strategy registry and interfaces), `solvers/` (minimax, MCTS, deduction, probability), `strategies/think_ahead/`, `strategies/guessing/`, `tests/alex/`, `tests/core/` |
+| `bld` | prep time | `prep/` (rules reading, playbook and simulator building in the 10-minute prep, rules parsing, observation layout, state synthesis), `tests/bld/` |
+| `mbappe` | chat and untrusted data strategies | `chat/` (opponent chat as untrusted data, chat composition, forbidden-subject filter), `opponent/` (opponent profiles), `strategies/bluff/`, `strategies/deals/`, `strategies/read_opponent/`, `strategies/truth/`, `strategies/guardrails/`, `tests/mbappe/` |
 
 **Shared paths (core owner's; change only through a `type:contract` issue and a PR):**
 `main.py`, `Dockerfile`, `requirements.txt`, `core/`, `strategies/__init__.py`, `strategies/base.py`,
@@ -161,7 +161,7 @@ Checkable conditions (a test that passes, a command whose output you can compare
 ## 6. Git
 
 - Commit **directly on `main`**, only files in your own folders. Message format:
-  `[<me>] #<issue>: <summary>` (for example `[bld] #12: minimax solver for grid games`).
+  `[<me>] #<issue>: <summary>` (for example `[alex] #12: minimax solver for grid games`, `[bld] #14: rules parser for prep`).
 - `git pull --rebase` right before every push. Never force-push, never rewrite history.
 - Shared paths go through a branch and a PR (`gt pr create`), linked to the `type:contract`
   issue; `alex` merges.

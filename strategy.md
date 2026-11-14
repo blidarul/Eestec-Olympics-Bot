@@ -23,22 +23,24 @@ This document outlines the strategy catalog, algorithmic ideas, and architecture
 
 ```mermaid
 graph TD
-    subgraph Core [alex: Core Infrastructure]
-        PL[Protocol Loop]
-        FB[Fallback Manager]
+    subgraph Alex [alex: Solvers & Deterministic Strategies + Core]
+        PL[Protocol Loop & Fallback]
         LLM[Haiku Gateway Client]
         MEM[Safe /memory Writer]
         REG[Strategy Registry]
-    end
-
-    subgraph Search [bld: Prep & Search]
-        PREP[10-min Prep Engine]
         SOLV[Solvers: Minimax / MCTS / Prob]
         TA[think_ahead: Board Games]
         GUESS[guessing: Deduction]
     end
 
-    subgraph Imperfect [mbappe: Chat & Imperfect Info]
+    subgraph Bld [bld: Prep Time]
+        PREP[10-min Prep Engine]
+        PARSE[Rules & Action Grammar Parser]
+        SIM[Automated Simulator Synthesis]
+        BOOK[Precomputed Heuristics & Books]
+    end
+
+    subgraph Mbappe [mbappe: Chat & Untrusted Data Strategies]
         CHAT[Untrusted Chat Filter & Gen]
         OPP[Opponent Profiler]
         BLUFF[bluff: Hidden Info]
@@ -59,7 +61,7 @@ graph TD
 
 ---
 
-### A. Core Architecture (`alex`)
+### A. Core, Solvers & Deterministic Strategies (`alex`)
 
 | Component | Path | Key Ideas & Responsibilities |
 |---|---|---|
@@ -69,10 +71,12 @@ graph TD
 | **Haiku Gateway Client** | `core/haiku.py` | Clean wrapper for Claude Haiku via the tournament gateway. Supports thinking budget control (`budget_tokens >= 1024`, `max_tokens >= budget + 1500`), retry logic, and empty response guards. |
 | **Atomic `/memory` Writer** | `core/memory.py` | Thread-safe, cross-container safe atomic writes (write to temp file in same directory then `os.replace`). Keyed by rules hash. |
 | **Strategy Registry** | `core/registry.py` & `strategies/base.py` | Dynamic discovery of strategies exposed in `strategies/<family>/<name>/` matching the rules text. |
+| **Solvers Library** | `solvers/` | Minimax with alpha-beta and iterative deepening (`minimax.py`), MCTS (`mcts.py`), constraint deduction (`deduction.py`), probability/expected value & DP (`probability.py`). |
+| **Deterministic Strategies** | `strategies/think_ahead/`, `strategies/guessing/` | Board games (Tic-Tac-Toe, connect-N, grid games) and deduction from feedback (binary search for `guess_number`, candidate elimination). |
 
 ---
 
-### B. Prep & Search (`bld`)
+### B. Prep Time Engine (`bld`)
 
 #### 1. 10-Minute Prep Engine (`prep/`)
 - **Game Family Classifier:**
@@ -86,31 +90,9 @@ graph TD
 - **Precomputed Heuristics & Opening Books:**
   - Computes opening moves or endgame tables during the 10-minute prep window and serializes them to `/memory/`.
 
-#### 2. Solvers Library (`solvers/`)
-- **`solvers/minimax.py` (Minimax / Alpha-Beta):**
-  - Alpha-Beta pruning with iterative deepening.
-  - Time-capped search: checks remaining milliseconds at each depth level and returns the best move found so far.
-  - Transposition table (Zobrist hashing or state hashing) to avoid re-evaluating duplicate board states.
-- **`solvers/mcts.py` (Monte Carlo Tree Search):**
-  - UCB1 exploration-exploitation balance for games with large branching factors where minimax depth is too shallow.
-  - Fast random rollout policy or heuristic rollout.
-- **`solvers/deduction.py` (Constraint Elimination):**
-  - Maintains candidate solution sets.
-  - On receiving feedback (e.g., "higher", "lower", "2 bulls, 1 cow"), filters impossible candidates and selects the query that maximizes entropy reduction (information gain).
-- **`solvers/probability.py` (Expected Value & DP):**
-  - Optimal threshold computation for dice and push-your-luck games (e.g. Pig optimal hold threshold: hold when turn total >= 20, adjusted for score differential).
-
-#### 3. Strategies to Implement
-- **`strategies/think_ahead/` (Perfect Information Board Games):**
-  - `tic_tac_toe`: 3x3 and 5x5 solver with opening book and minimax.
-  - `grid_games`: Generic connect-N, Gomoku, and Nim solvers using board pattern evaluators.
-- **`strategies/guessing/` (Deduction from Feedback):**
-  - `binary_search`: Optimal number guesser (`guess_number` 1-100, 1-1000) using interval bisection.
-  - `entropy_guesser`: Candidate elimination for word or pattern deduction games.
-
 ---
 
-### C. Chat & Imperfect Information (`mbappe`)
+### C. Chat & Untrusted Data Strategies (`mbappe`)
 
 #### 1. Chat & Guardrails Architecture (`chat/`)
 - **Untrusted Chat Sanitizer:**
@@ -167,13 +149,14 @@ flowchart LR
 - [ ] `alex`: Create strategy discovery registry (`core/registry.py`) and base class (`strategies/base.py`).
 
 ### Milestone 2: Practice Games Specialization (T1 Prep)
-- [ ] `bld`: Implement `strategies/think_ahead/tic_tac_toe` (optimal minimax solver).
-- [ ] `bld`: Implement `strategies/guessing/guess_number` (optimal binary search).
+- [ ] `alex`: Implement `strategies/think_ahead/tic_tac_toe` (optimal minimax solver).
+- [ ] `alex`: Implement `strategies/guessing/guess_number` (optimal binary search).
+- [ ] `bld`: Implement rules parsing and observation layout extraction in `prep/`.
 - [ ] `mbappe`: Implement `strategies/bluff/pig` (optimal threshold dynamic programming).
 - [ ] `mbappe`: Implement `chat/sanitizer.py` and `chat/composer.py` for compliant chat generation.
 
 ### Milestone 3: Generalization & Advanced Solvers (T2 Prep)
-- [ ] `bld`: Generic Alpha-Beta Minimax with iterative deepening in `solvers/minimax.py`.
+- [ ] `alex`: Generic Alpha-Beta Minimax with iterative deepening in `solvers/minimax.py` and MCTS in `solvers/mcts.py`.
 - [ ] `bld`: Automatic rules classification and simulator synthesis in `prep/`.
 - [ ] `mbappe`: Opponent profiling and tracking in `opponent/tracker.py`.
 - [ ] `mbappe`: Negotiation (`strategies/deals/`) and simultaneous prediction (`strategies/read_opponent/`).
