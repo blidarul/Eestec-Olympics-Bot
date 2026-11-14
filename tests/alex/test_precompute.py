@@ -137,3 +137,43 @@ def test_board_symbol_from_practice_wording():
            "   A B C\n 1 O O .\n 2 . . X\n 3 . X .\nMoves so far: X C2, O B1, X B3, O A1")
     f = run(obs, ["C1", "A2", "B2", "A3", "C3"], "Tic-tac-toe. The first player with 3 in a row wins.")
     assert f.certain and f.certain["move"] == "C1" and "block" in f.certain["why"]
+
+
+AUDIT_NIM_RULES = ("NIM. Heaps of stones. Players alternate. On your turn take 1 or more stones from ONE heap. "
+                   "The player who takes the LAST stone wins (score 1, loser 0).\nACTION FORMAT: \"take <heap number> <count>\"")
+
+
+def _audit_legal(heaps):
+    return ["take %d %d" % (i + 1, n) for i, k in enumerate(heaps) for n in range(1, k + 1)]
+
+
+def test_heaps_key_value_and_prose_layouts():
+    from solvers.precompute import _heaps
+    assert _heaps("Heaps: h1=3 h2=4 h3=5. You are seat 0. Your turn.") == ([3, 4, 5], 1)
+    assert _heaps("Heaps: h1=1 h2=3 h3=5 h4=7. You are seat 1.") == ([1, 3, 5, 7], 1)
+    assert _heaps("Row 1 has 3 stones. Row 2 has 4 stones. Row 3 has 5 stones.") == ([3, 4, 5], 1)
+    assert _heaps("pile 0: 2 pile 1: 5") == ([2, 5], 0)
+    assert _heaps("Heaps: [3, 4, 5]") == ([3, 4, 5], None)
+    assert _heaps("You are seat 1. Score 2 to 5.") == (None, None)
+
+
+def test_nim_audit_layout_returns_the_winning_move():
+    for obs, heaps in (("Heaps: h1=3 h2=4 h3=5. You are seat 0. Your turn.", [3, 4, 5]),
+                       ("Heaps: h1=1 h2=3 h3=5 h4=6. You are seat 0. Your turn.", [1, 3, 5, 6])):
+        f = run(obs, _audit_legal(heaps), AUDIT_NIM_RULES)
+        assert "nim_analysis" in f.used, obs
+        if f.certain:  # a unique winning move: it must zero the nim-sum
+            h = list(heaps)
+            i, n = (int(x) for x in f.certain["move"].split()[1:])
+            h[i - 1] -= n
+            x = 0
+            for k in h:
+                x ^= k
+            assert x == 0
+        else:
+            assert any("Winning move" in l for l in f.lines)
+
+
+def test_nim_loser_word_does_not_make_it_misere():
+    f = run("Heaps: h1=3 h2=4 h3=5", _audit_legal([3, 4, 5]), AUDIT_NIM_RULES)
+    assert f.certain and f.certain["move"] == "take 1 2"

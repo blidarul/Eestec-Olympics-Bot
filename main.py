@@ -8,10 +8,11 @@ import sys
 import time
 import traceback
 
-from core import fallback, memory, protocol, validate, worker
+from core import actionfmt, fallback, forbidden, memory, protocol, validate, worker
 
 PREP_DEADLINE = 540.0  # arena gives 600 s
 START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
+COLD_PREP_CAP = 60.0  # code-only prep at a cold start (rule 4.3)
 TURN_DEADLINE = 12.0  # arena gives 20 s
 START_CHAT = "Ready when you are."
 
@@ -105,8 +106,16 @@ def pick_artifacts(msg, wk):
     if not art and same_game and by:
         art = by.get(prep.get("first", ""))
 
-    # 4. If STILL not found (e.g. cold container), build lightweight artifacts on the fly from rules
-    if not art and rules:
+    return art if isinstance(art, dict) else {}
+
+
+def light_artifacts(msg):
+    """Last resort for a cold container when the code-only prep returned nothing: parse family and action grammar from the rules."""
+    rules = str(msg.get("rules", ""))
+    raw_var = msg.get("variant")
+    label = str(raw_var.get("label", "")) if isinstance(raw_var, dict) else (raw_var if isinstance(raw_var, str) else "")
+    art = None
+    if rules:
         try:
             from prep.action_parser import parse_action_grammar
             from prep.classifier import classify_rules
@@ -121,8 +130,22 @@ def pick_artifacts(msg, wk):
             })
         except Exception:
             traceback.print_exc()
-
     return art if isinstance(art, dict) else {}
+
+
+def cold_prep(msg, wk):
+    """No artifacts at `start` (cold container, rule 4.3): run the code-only part of prep on start.rules inside the worker, at most
+    COLD_PREP_CAP s and never more than half of the study clock the arena announces, then route like a warm container."""
+    try:
+        study = float(msg.get("study_seconds") or 30.0)
+    except (TypeError, ValueError):
+        study = 30.0
+    cap = min(COLD_PREP_CAP, 0.5 * study)
+    if cap < 5.0 or not str(msg.get("rules", "")).strip():
+        return {}
+    ans = wk.ask({"kind": "cold", "msg": msg, "budget": cap}, cap)
+    art = ans.get("artifacts") if isinstance(ans, dict) else None
+    return art if isinstance(art, dict) and art else {}
 
 
 def on_start(msg, wk):
@@ -131,14 +154,19 @@ def on_start(msg, wk):
     STATE["game"] = msg
     try:
         STATE["artifacts"] = pick_artifacts(msg, wk)
+        if not STATE["artifacts"]:
+            STATE["artifacts"] = cold_prep(msg, wk) or light_artifacts(msg)
+            t0 = time.monotonic()  # the ready line gets its own fresh budget
     except Exception:
         traceback.print_exc()
         STATE["artifacts"] = {}
     STATE["my_actions"], STATE["prev_obs"] = [], ""
-    forbidden = STATE["artifacts"].get("forbidden_terms") or []
+    ensure_action_template(STATE["artifacts"], msg)
+    ensure_forbidden_terms(STATE["artifacts"], msg)
+    terms0 = STATE["artifacts"].get("forbidden_terms") or []
     chat = None
     try:  # chat.pipeline.ready_line in the worker (pure code, filtered, never empty); main keeps the 2 s start clock
-        ans = wk.ask({"kind": "ready_line", "rules": msg.get("rules", ""), "forbidden": forbidden,
+        ans = wk.ask({"kind": "ready_line", "rules": msg.get("rules", ""), "forbidden": terms0,
                       "seed": str(msg.get("match_id", ""))}, max(0.2, START_DEADLINE - 0.3 - (time.monotonic() - t0)))
         line = ans.get("line") if isinstance(ans, dict) else None
         chat = line if isinstance(line, str) and line.strip() else None
@@ -146,8 +174,52 @@ def on_start(msg, wk):
         traceback.print_exc()
     if chat is None:
         chat = fallback.fallback_chat(STATE["artifacts"]) if STATE["artifacts"].get("chat_bank") else START_CHAT
-        chat = wk_filter(chat, forbidden)
-    protocol.send({"type": "ready", "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
+        chat = wk_filter(chat, terms0)
+    chat = clean_line(protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT, forbidden_terms_of(STATE["artifacts"]), STATE["artifacts"])
+    protocol.send({"type": "ready", "chat": chat})
+
+
+def ensure_action_template(art, msg):
+    """Prep normally stores the template; if it is missing (prep failed, artifacts lost) parse it from the rules now."""
+    try:
+        af = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
+        if not actionfmt.has_template(af):
+            parsed = actionfmt.parse_template(str(msg.get("rules", "")))
+            if parsed:
+                af = dict(af)
+                af.update({"template": parsed["template"], "regex": parsed["regex"],
+                           "placeholders": parsed["placeholders"], "templates": parsed["templates"]})
+                art["action_format"] = af
+    except Exception:
+        traceback.print_exc()
+
+
+def forbidden_terms_of(art):
+    return (art or {}).get("forbidden_terms") or []
+
+
+def ensure_forbidden_terms(art, msg):
+    """Terms the rules name (code-side extraction) are always in the artifacts, whatever prep produced (6.8, 6.9)."""
+    try:
+        rules = str(msg.get("rules", ""))
+        have = art.get("forbidden_terms") or []
+        base = forbidden.extract_terms(rules)
+        if base and any(forbidden.contains(t, have) is None for t in base):
+            art["forbidden_base"] = base
+            art["forbidden_terms"] = forbidden.merge(rules, have)
+    except Exception:
+        traceback.print_exc()
+
+
+def clean_line(chat, terms, art=None):
+    """Chat that still hits a forbidden term (leetspeak, plural, spaced letters) is replaced by a clean bank line, never emptied."""
+    try:
+        if not terms or not forbidden.contains(chat, terms):
+            return chat
+        bank = [str(b) for b in ((art or {}).get("chat_bank") or [])] + [fallback.NEUTRAL_CHAT, START_CHAT, "Good luck.", "Go on."]
+        return next((b for b in bank if b.strip() and not forbidden.contains(b, terms)), fallback.NEUTRAL_CHAT)
+    except Exception:
+        return fallback.NEUTRAL_CHAT
 
 
 def wk_filter(text, forbidden):
@@ -170,6 +242,15 @@ def on_turn(msg, wk):
     t0 = time.monotonic()
     source, model_error, meta = "fallback", None, {}
     art = STATE["artifacts"]
+    if art.get("cold_prep") and not art.get("cold_verified"):  # cold container: verify the simulator on the first real turn
+        try:
+            ans = wk.ask({"kind": "cold_verify", "artifacts": art, "game": STATE["game"],
+                          "turn": {"observation": msg.get("observation"), "legal_actions": msg.get("legal_actions")}}, 6.0)
+            new = ans.get("artifacts") if isinstance(ans, dict) else None
+            art = STATE["artifacts"] = new if isinstance(new, dict) and new else dict(art, cold_verified=True)
+        except Exception:
+            traceback.print_exc()
+            art["cold_verified"] = True
     legal = msg.get("legal_actions")
     warning = msg.get("warning") if isinstance(msg.get("warning"), dict) else None
     mine = STATE["my_actions"]
@@ -180,6 +261,8 @@ def on_turn(msg, wk):
     obs = str(msg.get("observation", ""))
     rules_text = str(STATE["game"].get("rules", ""))
     # fallback FIRST, from the message alone
+    use_fmt = not (isinstance(legal, list) and legal)  # legal_actions null/empty: the rules' template is the only guard
+    fmt = actionfmt.from_artifacts(art, warning) if use_fmt else None
     fb_action, fb_chat = fallback.fallback_decision(msg, art, previous, rules=rules_text)
     action, chat = fb_action, fb_chat
     try:
@@ -205,6 +288,10 @@ def on_turn(msg, wk):
             a = a if isinstance(a, str) else ""
             rejected = warning.get("rejected") if warning else None
             v = validate.validate(a, legal, art, rejected, previous)
+            if fmt and v is not None and not actionfmt.matches(fmt, v):
+                v = actionfmt.repair(fmt, v)  # near miss (quotes, trailing period) or None -> fallback
+            if fmt and v is None and a and actionfmt.matches(fmt, a) and not (rejected and fallback.norm(a) == fallback.norm(rejected)):
+                v = a if a not in previous and fallback.norm(a) not in {fallback.norm(p) for p in previous} else None
             model_error = ans.get("model_error")
             meta = {k: ans.get(k) for k in ("family", "strategy", "tool", "reason", "candidates_left",
                                              "facts_used", "tools_called", "assist_source", "assist_ms")}
@@ -222,11 +309,31 @@ def on_turn(msg, wk):
         rej = str(warning.get("rejected", ""))
         if rej and (action == rej or fallback.norm(action) == fallback.norm(rej)):
             protocol.log(f"CRITICAL: action '{action}' matches rejected '{rej}', forcing fresh non-repeating fallback!")
-            action = fallback.fallback_action(legal, art, rejected=rej, conservative=True, avoid_also=list(mine) + [rej], rules=rules_text)
+            action = fallback.fallback_action(legal, art, rejected=rej, conservative=True, avoid_also=list(mine) + [rej], rules=rules_text,
+                                                observation=obs, warning=warning)
             source = "fallback"
             meta["tool"] = "fallback"
             meta["reason"] = f"override rejected action '{rej}' with emergency fallback"
-    chat = wk_filter(protocol.clean_chat(chat), art.get("forbidden_terms") or [])
+    if fmt and not actionfmt.matches(fmt, action):  # last gate: every outgoing action (model, tool, fallback) fits the template
+        rej = warning.get("rejected") if warning else None
+        fixed = actionfmt.repair(fmt, action) or fallback.fallback_action(
+            legal, art, rejected=rej, conservative=bool(warning), avoid_also=list(mine) + ([rej] if rej else []),
+            observation=obs, warning=warning)
+        protocol.log(f"template gate: {action!r} -> {fixed!r}")
+        action, source = fixed, "fallback"
+        meta["tool"] = "fallback"
+        meta["reason"] = "outgoing action did not fit the action template"
+    terms = forbidden_terms_of(art)
+    if terms and forbidden.contains(action, terms):  # the action itself says a forbidden term (talking is the move)
+        rej = warning.get("rejected") if warning else None
+        safe = forbidden.safe_action(action, terms, legal=legal, fmt=fmt, art=art, avoid=list(mine) + ([rej] if rej else []),
+                                     observation=obs, warning=warning)
+        protocol.log(f"forbidden-term gate: {action!r} -> {safe!r}")
+        action, source = safe, "fallback"
+        meta["tool"] = "fallback"
+        meta["reason"] = "action contained a forbidden term"
+    chat = wk_filter(protocol.clean_chat(chat), terms)
+    chat = clean_line(chat, terms, art)
     protocol.send({"type": "action", "action": action, "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
     mine.append(action)
     STATE["prev_obs"] = obs

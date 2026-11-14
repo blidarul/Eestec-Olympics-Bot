@@ -1,0 +1,138 @@
+practice p-20261114-223528: bot-a = 'mybot:fix' vs bot-b = 'python examples/random_bot.py' (seed 850332145)
+prep: 1 game(s) x 2 bots, 600 s each, all at once
+prep bot-b x pig: ready after 0 s
+prep bot-a x pig: ready after 0.8 s
+game 1: Pig [Two dice, first to 60 (snake eyes reset)] seat 0 = bot-a, seat 1 = bot-b
+  bot-a says: Alright, let's fight.
+  bot-a: roll  (3.8s)
+  bot-a says: Hm.
+  bot-a: roll  (2.6s)
+  bot-a says: Sure.
+  bot-a: roll  (2.6s)
+  bot-a says: Interesting.
+  bot-a: hold  (3.4s)
+  bot-a says: We'll see.
+  bot-b: roll  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (3.5s)
+  bot-a says: Alright.
+  bot-a: roll  (3.1s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.8s)
+  bot-a says: Alright.
+  bot-a: hold  (2.9s)
+  bot-a says: We'll see.
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (2.2s)
+  bot-a says: Alright.
+  bot-a: roll  (1.8s)
+  bot-a says: We'll see.
+  bot-a: roll  (1.8s)
+  bot-a says: Alright.
+  bot-a: hold  (1.0s)
+  bot-a says: We'll see.
+  result: bot-a - seat 0 reached 70 (target 60)  (match 1-0)
+game 2: Pig [One die, first to 50] seat 0 = bot-b, seat 1 = bot-a
+  bot-a says: Alright, let's fight.
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (2.8s)
+  bot-a says: Alright.
+  bot-b: roll  (0.0s)
+  bot-b says: feeling lucky
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (3.2s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.4s)
+  bot-a says: Alright.
+  bot-a: roll  (2.5s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.4s)
+  bot-a says: Alright.
+  bot-a: roll  (2.8s)
+  bot-a says: We'll see.
+  bot-b: roll  (0.0s)
+  bot-b says: feeling lucky
+  bot-b: roll  (0.0s)
+  bot-b says: feeling lucky
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (2.4s)
+  bot-a says: Alright.
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (2.4s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.4s)
+  bot-a says: Alright.
+  bot-a: roll  (3.1s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.2s)
+  bot-a says: Alright.
+  bot-b: roll  (0.0s)
+  bot-b says: feeling lucky
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (2.4s)
+  bot-a says: We'll see.
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (2.3s)
+  bot-a says: Alright.
+  bot-a: roll  (2.2s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.2s)
+  bot-a says: Alright.
+  bot-a: roll  (2.0s)
+  bot-a says: We'll see.
+  bot-b: roll  (0.0s)
+  bot-b says: feeling lucky
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (3.0s)
+  bot-a says: Alright.
+  bot-a: roll  (2.0s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.4s)
+  bot-a says: Alright.
+  bot-a: roll  (2.3s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.2s)
+  bot-a says: Alright.
+  bot-a: roll  (2.1s)
+  bot-a says: We'll see.
+  bot-a: roll  (1.9s)
+  bot-a says: Alright.
+  bot-a: hold  (2.0s)
+  bot-a says: We'll see.
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (2.3s)
+  bot-a says: Alright.
+  bot-a: roll  (2.7s)
+  bot-a says: We'll see.
+  bot-a: roll  (1.6s)
+  bot-a says: Alright.
+  bot-b: hold  (0.0s)
+  bot-b says: feeling lucky
+  bot-a: roll  (1.8s)
+  bot-a says: We'll see.
+  bot-a: roll  (1.7s)
+  bot-a says: Alright.
+  bot-a: roll  (1.8s)
+  bot-a says: We'll see.
+  bot-a: roll  (2.2s)
+  bot-a says: Alright.
+  bot-a: roll  (1.5s)
+  bot-a says: We'll see.
+  bot-a: roll  (1.1s)
+  bot-a says: Alright.
+  bot-a: hold  (1.2s)
+  bot-a says: We'll see.
+  result: bot-a - seat 1 reached 52 (target 50)  (match 2-0)
+match p-20261114-223528: winner bot-a (2-0, by score)
+final: bot-a 2 - 0 bot-b; winner bot-a (score)
+match file: C:\Users\Alex\Downloads\linux_pioneers_bot\bot\arena-lite\results\practice\matches\p-20261114-223528.json
+bot stderr logs: C:\Users\Alex\Downloads\linux_pioneers_bot\bot\arena-lite\results\practice\logs (warm containers: logs/warm/)

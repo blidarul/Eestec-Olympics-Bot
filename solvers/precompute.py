@@ -457,7 +457,7 @@ def _matrix(observation, legal, artifacts, rules, deadline, facts):
 # ------------------------------------------------------------------ nim
 
 _HEAP_LIST = re.compile(r"(?:heaps?|piles?|stacks?)\b[^\n\d\[]{0,25}[:=]?\s*\[?\s*(\d+(?:\s*[,\s]\s*\d+)+)\s*\]?", re.I)
-_HEAP_ONE = re.compile(r"(?:heap|pile|stack)\s*#?(\d+)\s*[:=(]\s*(\d+)", re.I)
+_HEAP_ONE = re.compile(r"(?<![A-Za-z])(?:heap|pile|stack|row|h|p|s)\s*#?(\d+)\s*(?:[:=(]|\s(?:has|have|holds?|contains?|is|with|of)\b)\s*(?:=\s*)?(\d+)(?![\d.]*\s*[:=])", re.I)
 
 
 def _heaps(observation):
@@ -480,8 +480,8 @@ def _nim(observation, legal, artifacts, rules, deadline, facts):
     heaps, first_label = _heaps(observation)
     if not heaps or any(h > 200 for h in heaps):
         return
-    misere = bool(re.search(r"mis[eè]re|last (?:player|one|stone|object|item)[^.]{0,30}(?:loses|lose)|"
-                            r"(?:takes|take|taking|removes)[^.]{0,25}last[^.]{0,25}(?:loses|lose)", low))
+    misere = bool(re.search(r"mis[eè]re|last (?:player|one|stone|object|item)[^.]{0,30}(?:loses|lose)\b|"
+                            r"(?:takes|take|taking|removes)[^.]{0,25}last[^.]{0,25}(?:loses|lose)\b", low))
     limit = re.search(r"(?:at most|up to|no more than|maximum of)\s*(\d+)", low)
     removals = "any"
     if limit:

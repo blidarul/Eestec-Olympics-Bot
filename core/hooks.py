@@ -114,6 +114,10 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
     t_start = time.monotonic()
     base = memory_dir or memory.BASE
     variants = [v for v in (msg.get("variants") or []) if isinstance(v, dict)]
+    reused = _reuse_prep(msg, variants, base)
+    if reused is not None:  # G4: a complete earlier prep of the same rules is in /memory: no engine run, no model call
+        _log(f"[prep] reusing complete artifacts from /memory for {msg.get('game_id')} ({time.monotonic() - t_start:.2f}s)")
+        return reused
     by_label = {}
     engine_ok = False
     try:
@@ -153,11 +157,142 @@ def run_prep(msg: dict, memory_dir: str | None = None) -> dict:
     except BaseException:
         traceback.print_exc()
     for v in variants:
+        try:
+            attach_action_template(by_label[str(v.get("label", ""))], str(v.get("rules", "")))
+        except BaseException:
+            traceback.print_exc()
+        try:
+            attach_forbidden_terms(by_label[str(v.get("label", ""))], str(v.get("rules", "")))
+        except BaseException:
+            traceback.print_exc()
+    for v in variants:
         by_label[str(v.get("label", ""))]["rules_text_hash_dir"] = memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base)
+        by_label[str(v.get("label", ""))]["prep_complete"] = True   # every prep step ran (G4): the next prep may reuse this file
         memory.save_json(os.path.join(memory.game_dir(msg.get("game_id", ""), v.get("rules", ""), base), "artifacts.json"),
                          by_label[str(v.get("label", ""))])
     first = str(variants[0].get("label", "")) if variants else ""
     return {"by_label": by_label, "first": first}
+
+
+def run_cold(msg: dict, budget: float = 60.0, memory_dir: str | None = None) -> dict:
+    """Code-only prep of ONE game from a `start` message (cold container, rule 4.3): PrepEngine, simulator verification,
+    action template and forbidden terms; no model call. Saves artifacts.json like run_prep and returns the artifacts ({} on failure)."""
+    t_start = time.monotonic()
+    base = memory_dir or memory.BASE
+    rules = str(msg.get("rules", ""))
+    variant = msg.get("variant") if isinstance(msg.get("variant"), dict) else {}
+    label = str(variant.get("label", ""))
+    game_id = msg.get("game_id", "unknown_game")
+    pmsg = {"game_id": game_id, "game_name": msg.get("game_name", game_id), "seconds": budget,
+            "variants": [{"label": label, "rules": rules, "sample_turn": None}]}
+    by_label = {}
+    try:
+        from prep.engine import PrepEngine
+        with _pause_gc():
+            PrepEngine(base).run_prep(pmsg)
+        manifest = _load_json(os.path.join(_engine_dir(base, game_id), "manifest.json"), {})
+        for vd in (manifest.get("variants") or []):
+            if isinstance(vd, dict):
+                by_label[str(vd.get("label", ""))] = map_engine_variant(vd)
+    except BaseException:
+        traceback.print_exc()
+    art = by_label.get(label) or _default_artifacts(label)
+    by_label = {label: art}
+    try:
+        _verify_simulators(pmsg, by_label, base, t_start, limit=max(5.0, budget - 5.0))
+    except BaseException:
+        traceback.print_exc()
+    for fn in (attach_action_template, attach_forbidden_terms):
+        try:
+            fn(art, rules)
+        except BaseException:
+            traceback.print_exc()
+    art["cold_prep"] = True
+    d = memory.game_dir(game_id, rules, base)
+    art["rules_text_hash_dir"] = d
+    memory.save_json(os.path.join(d, "artifacts.json"), art)
+    _log(f"[cold] {game_id}: family={art.get('family')} simulator verified={(art.get('simulator') or {}).get('verified')} "
+         f"in {time.monotonic() - t_start:.1f}s")
+    return art
+
+
+def cold_verify(art: dict, game: dict, turn: dict, timeout: float = 4.0, memory_dir: str | None = None) -> dict:
+    """A cold container has no sample turn at `start`, so its simulator stays unverified until the FIRST real turn: verify it
+    on that turn (observation, legal_actions, seat), update artifacts["simulator"] and save. Returns the artifacts."""
+    art = dict(art or {})
+    art["cold_verified"] = True
+    sim = dict(art.get("simulator") or {})
+    if not sim.get("path") or sim.get("verified"):
+        return art
+    variant = dict(game.get("variant") or {})
+    variant["sample_turn"] = {"observation": str(turn.get("observation", "")), "legal_actions": turn.get("legal_actions"),
+                              "seat": int(game.get("seat", 0) or 0)}
+    try:
+        from solvers.verify import verify_isolated
+        out = verify_isolated(sim["path"], variant, timeout=timeout)
+        sim.update({k: out.get(k) for k in ("verified", "reason", "has_chance")})
+    except BaseException as e:
+        traceback.print_exc()
+        sim["reason"] = f"verify error {type(e).__name__}"
+    art["simulator"] = sim
+    _log(f"[cold] simulator verified on the first turn: {sim.get('verified')} ({sim.get('reason')})")
+    d = art.get("rules_text_hash_dir")
+    if d:
+        memory.save_json(os.path.join(d, "artifacts.json"), art)
+    return art
+
+
+def _reuse_prep(msg: dict, variants: list, base: str):
+    """{"by_label", "first"} when EVERY variant already has a complete artifacts.json for the same rules text (same hash dir),
+    else None. Complete = written by a full run_prep (prep_complete), has the keys routing needs, and its simulator file exists.
+    Tolerates missing, partial or stale files (5.14)."""
+    try:
+        if not variants:
+            return None
+        by_label = {}
+        for v in variants:
+            art = load_artifacts(msg.get("game_id", ""), str(v.get("rules", "")), base)
+            if not (art.get("prep_complete") and art.get("family") and isinstance(art.get("action_format"), dict)
+                    and isinstance(art.get("forbidden_terms"), list) and art.get("cold_prep") is None):
+                return None
+            sim = art.get("simulator")
+            if isinstance(sim, dict) and sim.get("path") and not os.path.isfile(sim["path"]):
+                return None
+            by_label[str(v.get("label", ""))] = art
+        return {"by_label": by_label, "first": str(variants[0].get("label", ""))}
+    except BaseException:
+        traceback.print_exc()
+        return None
+
+
+def attach_action_template(art: dict, rules: str) -> None:
+    """artifacts["action_format"] gets template, regex and placeholders parsed from the ACTION FORMAT line (core/actionfmt.py).
+    The template regex replaces a guessed one; examples and kind are kept."""
+    from core import actionfmt
+    parsed = actionfmt.parse_template(rules)
+    if not parsed:
+        return
+    af = art.get("action_format") if isinstance(art.get("action_format"), dict) else {}
+    af = dict(af)
+    af.update({"template": parsed["template"], "regex": parsed["regex"], "placeholders": parsed["placeholders"],
+               "templates": parsed["templates"]})
+    art["action_format"] = af
+
+
+def attach_forbidden_terms(art: dict, rules: str) -> None:
+    """artifacts["forbidden_terms"] = terms read from the rules by code (core/forbidden.py, not the model) merged with the
+    model's own terms, plus variants (case, diacritics, plurals, spacing, leetspeak; solvers/guard.py when present)."""
+    from core import forbidden
+    model_terms = [str(t) for t in (art.get("forbidden_terms") or [])]
+    extra = []
+    try:
+        from prep.action_parser import extract_forbidden_keywords
+        extra = list(extract_forbidden_keywords(rules))
+    except BaseException:
+        pass
+    base = forbidden.merge(rules, [], [])  # code-side base terms, no variants yet
+    art["forbidden_base"] = [t for t in forbidden.extract_terms(rules)]
+    art["forbidden_terms"] = forbidden.merge(rules, model_terms, extra, use_guard=True)
 
 
 def _simulator_for(base, game_id, manifest, idx, variant):
@@ -175,7 +310,7 @@ def _simulator_for(base, game_id, manifest, idx, variant):
     return None, "no simulator.py"
 
 
-def _verify_simulators(msg, by_label, base, t_start):
+def _verify_simulators(msg, by_label, base, t_start, limit=None):
     """artifacts["simulator"] = {path, verified, has_chance, reason, calibration} per variant (solvers/verify.py)."""
     game_id = msg.get("game_id", "unknown_game")
     manifest = _load_json(os.path.join(_engine_dir(base, game_id), "manifest.json"), {})
@@ -192,7 +327,7 @@ def _verify_simulators(msg, by_label, base, t_start):
         res = {"path": path, "verified": False, "has_chance": False, "reason": why, "calibration": v_calib}
         try:
             if path:
-                left = PREP_DEADLINE - 60 - (time.monotonic() - t_start)
+                left = (PREP_DEADLINE - 60 if limit is None else limit) - (time.monotonic() - t_start)
                 if left < 5:
                     res["reason"] = "no prep time left"
                 else:

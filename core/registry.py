@@ -23,7 +23,7 @@ from dataclasses import dataclass
 THRESHOLD = 0.5
 FORCE_ENV = "BOT_FORCE_STRATEGY"
 FAMILY_ALIASES = {"deduction": "guessing", "qa_guardrails": "guardrails", "cards_hidden": "bluff",
-                  "negotiation": "deals", "dice_push": "bluff"}
+                  "negotiation": "deals", "dice_push": "chance"}  # chance: dice races go to think_ahead/search when the simulator verifies, else generic
 # prep family (after FAMILY_ALIASES) -> strategies/<folder>/ that plays it (rule 5 of the policy)
 FAMILY_DIRS = {"bluff": "bluff", "deals": "deals", "read_opponent": "read_opponent", "truth": "truth",
                "matrix_simultaneous": "read_opponent"}
@@ -118,13 +118,11 @@ def route(rules, artifacts, entries=None) -> Route:
     notes = []
 
     if fam == "guessing":
-        if fm.get("verified"):
-            s = _find(entries, rules, art, name="deduce")
-            if s:
-                return Route(s, "guessing family, feedback model verified", fam)
-            notes.append("deduce declined")
-        else:
-            notes.append("feedback model unverified" + (f" ({fm['reason']})" if fm.get("reason") else ""))
+        s = _find(entries, rules, art, name="deduce")  # matches(): verified model-written code OR a built-in feedback model
+        if s:
+            return Route(s, "guessing family, " + ("feedback model verified" if fm.get("verified") else "built-in feedback model"), fam)
+        notes.append("deduce declined (no built-in model fits)" if fm.get("verified") else
+                     "feedback model unverified" + (f" ({fm['reason']})" if fm.get("reason") else ""))
     if sim.get("verified"):
         if cls.get("has_hidden_information") or cls.get("is_simultaneous"):
             notes.append("simulator verified but game has hidden information or simultaneous moves")

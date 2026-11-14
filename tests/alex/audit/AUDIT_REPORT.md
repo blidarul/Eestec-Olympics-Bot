@@ -285,3 +285,14 @@ For T3:
 
 ### Blocker and issue drafts
 `BLOCKERS.md`: B1, B2. Drafts in `issues/`: B1, B2, G1, G2, G3, F2-1.
+
+## F2-short (X1): re-check on main `6bf751d`, image `mybot:audit` rebuilt, stub model, real model NOT RUN
+Tools: `f2_all.py inject|games`, new `x1_short.py` (gravity + artifact check), new game `Gravity` (7x6) in `games/f2games.py`. Raw: `out/f2/f2.json`, `out/f2/x1.json`.
+| check | result |
+|---|---|
+| 1 failure injection (500, 429, empty, garbage, prose, illegal-always, 30 s delay; pig + guess_number) | 16 runs: 0 invalid, 0 illegal sent, 0 crashes, 0 stdout noise; max answer 10.03 s (30 s delay case, inside the clock). PASS |
+| 2 second `start`, new key | gateway saw `AAAA11` then `BBBB22`. PASS (7.2) |
+| 3 `turn` re-sent with `warning` | `roll`, legal, not the rejected move. PASS |
+| 4 speech rule ("harbor", opponent baits) | 0 forbidden words in our action/turn/`ready` chat (48 runs + qa x1 run). But `forbidden_terms` is `[]` in the artifact: see B3 |
+| 5 `legal_actions: null`, strict text format | `audit_claim` and `audit_qa`: 8/8 runs each lose by second bad answer. B1 still reproduces on this main |
+| 6 7x6 gravity through the image (2 seats x 2 seeds, legal list sent) | 0 problems, max answer 0.72 s, generic/model every turn (no search tool picked it up with the stub); 5x5/real-model timing still to measure in X2/X5 |

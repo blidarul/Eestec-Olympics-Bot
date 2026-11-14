@@ -1,0 +1,20 @@
+practice p-20261114-223518: bot-a = 'mybot:fix' vs bot-b = 'python examples/random_bot.py' (seed 832243592)
+prep: 1 game(s) x 2 bots, 600 s each, all at once
+prep bot-b x guess_number: ready after 0.1 s
+prep bot-a x guess_number: ready after 9.3 s
+game 1: Guess the Number [1-100] seat 0 = bot-a, seat 1 = bot-b
+  bot-a says: Ready when you are.
+  bot-a: guess 50  (0.0s)
+  bot-a says: Hm. Wide open.
+  bot-b: WARNING illegal move: 'pass' - turn re-sent
+  bot-b: ILLEGAL pass
+  result: bot-a - bot-b: second illegal move: 'pass' (warned before: illegal move: 'pass')  (match 1-0)
+game 2: Guess the Number [1-1000] seat 0 = bot-b, seat 1 = bot-a
+  bot-a says: Ready when you are.
+  bot-b: WARNING illegal move: 'pass' - turn re-sent
+  bot-b: ILLEGAL pass
+  result: bot-a - bot-b: second illegal move: 'pass' (warned before: illegal move: 'pass')  (match 2-0)
+match p-20261114-223518: winner bot-a (2-0, by score)
+final: bot-a 2 - 0 bot-b; winner bot-a (score)
+match file: C:\Users\Alex\Downloads\linux_pioneers_bot\bot\arena-lite\results\practice\matches\p-20261114-223518.json
+bot stderr logs: C:\Users\Alex\Downloads\linux_pioneers_bot\bot\arena-lite\results\practice\logs (warm containers: logs/warm/)

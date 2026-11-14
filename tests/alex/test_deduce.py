@@ -158,3 +158,32 @@ def test_chat_lines_survive_the_output_filters():
     import chat
     for t in deduce.WIDE + deduce.MID + deduce.NEAR + deduce.LAST:
         assert chat.filter_out(t, []) == t
+
+
+# ---- G2: built-in feedback model detected from the rules, no verified model-written code
+def _unverified():
+    return {"family": "guessing", "prepared": {"deduce": {"verified": False, "reason": "no"}}, "forbidden_terms": []}
+
+
+def test_builtin_numeric_solves_without_verified_code():
+    rng = random.Random(9)
+    for secret in [1, 100, 50] + [rng.randint(1, 100) for _ in range(20)]:
+        g = play(secret, art=_unverified())
+        assert g[-1] == f"guess {secret}" and len(set(g)) == len(g) and len(g) <= 7
+
+
+def test_builtin_decision_source_is_deduction_tool():
+    st = TurnState("guess_number", guess_rules(), {"label": "x"}, 0, guess_obs([(50, "higher")]), None, 2, None, [],
+                   _unverified(), time.monotonic() + 8, None, match_id="mb", game_index=1)
+    d = deduce.STRATEGY.decide(st)
+    assert d.info["tool"] == "deduction" and d.info["candidates_left"] == 50 and d.source == "strategy"
+
+
+def test_builtin_routing_and_no_fit():
+    assert deduce.STRATEGY.matches(guess_rules(), _unverified()) > 0.5
+    assert deduce.STRATEGY.matches("Guess my colour pattern, get pegs feedback.", _unverified()) == 0.0
+    assert deduce.STRATEGY.matches(guess_rules(), {"family": "grid_board"}) == 0.0
+    r = registry.route(guess_rules(), _unverified())
+    assert r.strategy.name == "deduce" and "built-in" in r.reason
+    r = registry.route("Guess my colour pattern, get pegs feedback.", _unverified())
+    assert r.strategy.name != "deduce"
