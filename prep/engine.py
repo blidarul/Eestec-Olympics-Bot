@@ -98,6 +98,32 @@ class PrepEngine:
                     import shutil
                     shutil.copyfile(sim_path, os.path.join(dest_dir, "simulator.py"))
 
+            # 7. Word games vocabulary and Connect Four pre-warming (Issue #39)
+            if grammar.kind == "word" or classification.family in ("word", "wordle", "hangman", "deduction"):
+                w_len = grammar.word_length or 5
+                from optimization.words import get_words
+                words_list = get_words(w_len)
+                if words_list:
+                    atomic_save_json(os.path.join(dest_dir, f"words_{w_len}.json"), words_list)
+                    if idx == 0:
+                        atomic_save_json(os.path.join(dest_dir, "words.json"), words_list)
+
+            if classification.family in ("grid_board", "tic_tac_toe") and (
+                grammar.parameters.get("gravity") or "connect" in rules.lower() or "drop" in rules.lower()
+            ):
+                from optimization.connect_four import solve_connect_four
+                try:
+                    solve_connect_four(
+                        [],
+                        rows=grammar.grid_rows or 6,
+                        cols=grammar.grid_cols or 7,
+                        connect_k=grammar.parameters.get("connect_k", 4),
+                        max_depth=6,
+                        deadline=time.monotonic() + 0.5,
+                    )
+                except Exception:
+                    pass
+
             variants_data.append({
                 "label": label,
                 "classification": classification.to_dict(),

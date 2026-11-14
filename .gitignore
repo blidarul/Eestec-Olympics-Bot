@@ -7,8 +7,11 @@ dev.env
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+*.dll
 .venv/
 venv/
+.vscode/
 
 # Arena outputs and match results
 results/
