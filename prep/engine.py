@@ -47,6 +47,13 @@ class PrepEngine:
         dest_dir = game_memory_dir(self.memory_dir, game_id)
         fp = compute_fingerprint(variants)
 
+        llm = None
+        if msg.get("llm"):
+            from core.llm import LLM
+            llm = LLM(msg["llm"])
+        elif hasattr(self, "llm") and self.llm:
+            llm = self.llm
+
         print(
             f"[prep/engine] starting prep for {game_name} ({game_id}) with {len(variants)} variant(s), "
             f"budget {budget_seconds:.0f}s",
@@ -172,6 +179,25 @@ class PrepEngine:
                 except Exception as e:
                     print(f"[prep/engine] blotto_book precompute failed: {e}", file=sys.stderr)
 
+            # 11. Strategic Playbook synthesis (Issue #47)
+            playbook_path = os.path.join(dest_dir, f"playbook_{idx}.json")
+            playbook_default = os.path.join(dest_dir, "playbook.json")
+            playbook_data = None
+            if os.path.exists(playbook_default) and idx == 0:
+                from optimization.serializer import load_json
+                playbook_data = load_json(playbook_default)
+            elif os.path.exists(playbook_path):
+                from optimization.serializer import load_json
+                playbook_data = load_json(playbook_path)
+
+            if not playbook_data:
+                from .playbook import synthesize_playbook
+                call_llm = llm if (budget_seconds >= 30.0 and llm and llm.available() and not llm.over_budget()) else None
+                playbook_data = synthesize_playbook(rules, call_llm, timeout=min(12.0, budget_seconds / 2.0))
+                atomic_save_json(playbook_path, playbook_data)
+                if idx == 0 or not os.path.exists(playbook_default):
+                    atomic_save_json(playbook_default, playbook_data)
+
             variants_data.append({
                 "label": label,
                 "classification": classification.to_dict(),
@@ -187,6 +213,7 @@ class PrepEngine:
                 "pig_dp": pig_thresh,
                 "opening_book": c4_book,
                 "blotto_book": blotto_book,
+                "playbook_structured": playbook_data,
             })
 
         if variants_data:
@@ -206,6 +233,7 @@ class PrepEngine:
             "simulator_calibration": variants_data[0].get("simulator_calibration", {}) if variants_data else {},
             "simulator_path": variants_data[0].get("simulator_path") if variants_data else None,
             "tools": variants_data[0].get("tools", []) if variants_data else [],
+            "playbook_structured": variants_data[0].get("playbook_structured") if variants_data else None,
             "variants": variants_data,
             "prepped_at": time.time(),
             "elapsed_seconds": round(time.time() - start_time, 3),

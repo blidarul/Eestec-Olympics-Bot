@@ -81,6 +81,7 @@ def map_engine_variant(vd: dict) -> dict:
         "pig_dp": vd.get("pig_dp"),
         "opening_book": vd.get("opening_book"),
         "blotto_book": vd.get("blotto_book"),
+        "playbook_structured": vd.get("playbook_structured"),
     })
     return art
 

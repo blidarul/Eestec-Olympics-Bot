@@ -259,7 +259,12 @@ class Generic:
     def _prompt(self, state, art):
         fmt = art.get("action_format") or {}
         parts = []
-        if art.get("playbook"):
+        if art.get("playbook_structured"):
+            from prep.playbook import format_playbook_for_prompt
+            pb_txt = format_playbook_for_prompt(art["playbook_structured"])
+            if pb_txt:
+                parts.append("Strategy Guidelines:\n" + pb_txt)
+        elif art.get("playbook"):
             parts.append("Playbook:\n" + str(art["playbook"])[:1200])
         if art.get("tools_prompt"):
             parts.append("Available tools:\n" + str(art["tools_prompt"])[:1000])
