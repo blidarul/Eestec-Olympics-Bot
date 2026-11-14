@@ -186,4 +186,4 @@ Write one draft issue per blocker and per A/B gap in `tests/alex/audit/issues/`.
 - F0: DONE on 900ab89. Image built; drive/fake_gateway/summarize self-tested; suites green except bld test_connect_four (240 s timeout). No blockers. Real-model budget: awaiting human (default 3 matches, ~$0.05).
 - F1: DONE on 900ab89. 14 full games + 3 preps via audit_all.py (100 s): 0 illegal/timeouts/crashes/stdout noise; opp chat in 100% of requests. No blockers. Gaps G1-G6 in report (guess->generic not deduce, cold container generic, prep not reused). Real model NOT RUN, T1 games not released.
 - F2: DONE on 900ab89. 16 injection runs + 7 scenarios + 48 unknown-game runs (f2_all.py): injection clean (0 illegal, max 10.0 s). BLOCKER B1: strict-format null-legal fallback sends illegal moves, 8/8 claim and qa runs lost. B2 nim parse, read_opponent ignores constant opponent. Real model NOT RUN.
-- F3:
+- F3: DONE on 900ab89. Report sections 1-7 written; 6 issue drafts (B1, B2, G1, G2, G3, F2-1). Top actions: B1 fix, real-model run (needs approval), B2, G3, F2-1. Real model NOT RUN.
