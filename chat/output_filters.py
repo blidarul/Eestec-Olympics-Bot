@@ -1,14 +1,18 @@
 """Output-side filters: EVERY chat line we send goes through check_line() first (also the `ready` line).
 
-Three filters, in this order:
-  (a) leak filter       no private state (our hand, secret number...), no prompt/playbook/key/harness words,
-  (b) conduct filter    no insults, hate, harassment, sexual content or threats (rules 6.10, 13.1.j),
-  (c) speech filter     no forbidden subject of the game (rule 6.8), see speech_rules.py.
-A line that fails any filter is replaced by a neutral safe line. The line is also cut to MAX_CHARS.
+Filters, in this order:
+  (a) leak filter        no private state, no prompt/playbook/key/harness words, no canary tag,
+  (b) conduct filter     no insults, hate, harassment, sexual content or threats (rules 6.10, 13.1.j),
+  (c) collusion words    no deal, no "lose on purpose" (rule 13.1.f), see no_deal.py,
+  (d) strategy-leak      nothing about our tactics, plans, reasons, numbers (strategy_leak.py),
+  (e) tone               cold: no friendliness, no "!", no emoji (tone.py),
+  (f) impersonation      never speak as the arena, a judge or the system (impersonation.py),
+  (g) no-deal (only for CONCEDE_PRESSURE), (h) speech filter: no forbidden subject of the game (rule 6.8).
+A line that fails any filter is replaced by a neutral cold line. The line is also cut to MAX_CHARS.
 """
 import re
 
-from . import no_deal
+from . import impersonation, no_deal, strategy_leak, tone
 from . import normalize as nz
 from .config import CHAT_LIMIT, MAX_CHARS
 
@@ -91,8 +95,8 @@ def reason_conduct(line):
     return None
 
 
-# Neutral lines used when a line is blocked. Short, polite, no content words that a game could forbid.
-NEUTRAL_LINES = ["Your move.", "Noted.", "Let's continue.", "Playing on.", "Go ahead.", "Alright.", "Understood.", "Well."]
+# Neutral lines used when a line is blocked. Cold and short, no content words that a game could forbid.
+NEUTRAL_LINES = ["Your move.", "Noted.", "Continue.", "Next.", "Proceed.", "Understood.", "Go on.", "Hm."]
 
 
 def cut_line(line, limit=MAX_CHARS):
@@ -116,8 +120,9 @@ def safe_neutral(speech=None, private_tokens=(), seed=0):
     return "."
 
 
-def check_line(line, speech=None, private_tokens=(), seed=0, canary="", one_sided=False):
-    """Run the filters. Returns (final_line, problems). `problems` is a list of codes (empty = line unchanged).
+def check_line(line, speech=None, private_tokens=(), seed=0, canary="", one_sided=False, private_chunks=()):
+    """Run the filters: leak, conduct, collusion, strategy-leak, tone, impersonation, no-deal, speech.
+    Returns (final_line, problems). `problems` is a list of codes (empty = line unchanged).
     one_sided=True is for the CONCEDE_PRESSURE intent: the line must pass the no-deal filter as well."""
     problems = []
     if not isinstance(line, str) or not line.strip():
@@ -133,6 +138,15 @@ def check_line(line, speech=None, private_tokens=(), seed=0, canary="", one_side
     why = no_deal.hard_collusion(line)
     if why:
         problems.append("collusion:" + why)
+    why = strategy_leak.reason_strategy(line, private_chunks)
+    if why:
+        problems.append("strategy:" + why)
+    why = tone.reason_tone(line)
+    if why:
+        problems.append("tone:" + why)
+    why = impersonation.reason_impersonation(line)
+    if why:
+        problems.append(why)
     if one_sided:
         ok, why = no_deal.is_one_sided_pressure(line)
         if not ok:

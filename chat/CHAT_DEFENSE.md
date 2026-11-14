@@ -1,112 +1,127 @@
 # CHAT_DEFENSE.md: how the bot handles the chat (for the judges' code review)
 
 Packages: `chat/` and `strategies/guardrails/chat_defense/` (owner: mbappe). Pure Python standard library, no network, no
-model call inside `chat/`. Rules and evidence: `RULES_CHECKLIST.md`.
+model call inside `chat/`. Rules and evidence: `RULES_CHECKLIST.md`. Sample of final lines: `SAMPLE_LINES.md`.
 
 ## 1. The chat as the rules define it
 
 - **Messages** (rule 5.4): `prep` (no chat), `start` (answer `ready` + `chat`, 30 s warm / 120 s cold), `turn` (answer `action` + `chat`, 20 s), `end` (no answer), `shutdown`.
 - **`chat` array** (6.1): the WHOLE match conversation, oldest first, in every `start`, `turn`, `end`. Line = `{from: you|opponent, game, game_name, phase: study|play, turn, kind: chat|move, text}`.
-- **Our chat move** (6.2): `chat`, a string of at most 200 characters, with every `ready` and every `action`. We send at most 180.
+- **Our chat move** (6.2): `chat`, a string of at most 200 characters, with every `ready` and every `action`. We send at most 180 (and, being terse, at most 110).
 - **Dropped / cut** (6.9): chat on a rejected answer is dropped; longer lines are cut at 200; a non-string `chat` is ignored.
 - **Speech rules** (6.8): a game may forbid a subject; every chat line counts, also the one with `ready`; one wrong line can end the game.
-- **Penalties**: 8.1 (first bad turn answer = warning, second loses), 8.2 (timeout, no valid `ready`, crash = loses at once), 13.1.b (blocking the chat), 13.1.f (collusion), 13.1.j (abusive chat).
-- **What the core gives the strategy**: `TurnState.opponent_chat` = the opponent's texts only (core/main.py `chat_texts`). My code reads it as chat lines through `robust.clean_line`, which also accepts full chat lines, plain strings, missing fields, odd types and huge arrays.
+- **Conduct** (6.10, 13.1.j): no insults, hate, harassment, sexual content, attacks on real people. **Collusion** (13.1.f) is an offence.
+- **Penalties**: 8.1 (first bad turn answer = warning, second loses), 8.2 (timeout, no valid `ready`, crash = loses at once), 13.1.b (blocking the chat).
+- **What the core gives the strategy**: `TurnState.opponent_chat` = the opponent's texts only. `robust.clean_line` also accepts full chat lines, plain strings, missing fields, odd types and huge arrays.
 
 ## 2. Where the opponent chat enters
 
 | Entry | Code | What happens |
 |---|---|---|
-| Model input | `pipeline.prompts()` -> `wrap.build_chat_block()` | last 8 opponent lines inside `<opponent_chat untrusted="true">`, sanitized, flags, counters line. Also `chat.wrap_untrusted()` (hook that `core/hooks.py` uses for every strategy) |
-| Decision logic | `signals.ChatMonitor` (all lines, incrementally) | counters: pressure, injection, bait, flood; `is_suggested(action)`; severity |
-| Move choice | `guard.guard_action()` (model path) and `guard.model_free_action()` (no model) | surrender/echo need an independent reason; the signals change the move |
-| Chat line | `pipeline._answer()` | pressure this turn -> intent DEFLECT |
+| Model input | `pipeline.prompts()` -> `wrap.build_chat_block()` (also the hook `chat.wrap_untrusted()` that `core/hooks.py` uses for every strategy) | last 8 opponent lines inside `<opponent_chat untrusted="true">`, sanitized, flags, counters line |
+| Decision logic | `signals.ChatMonitor` (all lines, incrementally, also with no model) | counters: pressure, injection, probes, repeats; `is_suggested(action)`; severity |
+| Move choice | `guard.guard_action()` / `guard.model_free_action()` | surrender/echo need an independent reason; the signals change the move |
+| Chat line | `pipeline.choose_intent()` | probes, pressure, fake notices -> STONEWALL; repetition -> UNSETTLE |
 
-## 3. One turn (strategies/guardrails/chat_defense, runs in the worker)
+## 3. One turn (strategies/guardrails/chat_defense, in the worker)
 
 ```
 fallback move from the message alone (core/fallback.py)             legal, no model
-budget guard + llm.available() + time left?  ── no ──> model_free()  signals still steer the move
-   │ yes
+budget guard + llm.available() + time left?  -- no --> model_free()  signals still steer the move
+   | yes
 prompts()  ->  ONE model call (thinking off)  ->  finish()
-                                                    parse JSON a,b,i,r,s (garbage -> fallback)
+                                                    parse JSON {a, b, r} (garbage -> fallback)
                                                     guard_action(): legal? surrender? echo?
-                                                    _limit_concede(): switch, 1 per game, 2 per match
-                                                    compose(intent, slot) -> template line
-                                                    final_stage.finalize_chat(): all filters on the FINAL text
-Decision(action, chat, source)  ->  main.py sends it (clean_chat, forbidden-term cut, NEUTRAL_CHAT as last resort)
+                                                    choose_intent(): CODE picks the tone from public signals + seeded RNG
+                                                    compose() -> reviewed template line
+                                                    final_stage.finalize_chat(): every filter on the FINAL text
+Decision(action, chat, source)  ->  main.py sends it
 ```
+The model writes NO text for the opponent. Its whole vocabulary is the move, a backup move and a reason code
+(FORCED, WIN, BLOCK, EV, OTHER). Move and chat belong to one decision of one turn: same observation, same chat, one model call;
+the chat reacts to the opponent's chat and to what the guard did with the move (see A4 for the 6.4 question).
 
-## 4. Modules (`chat/`)
+## 4. Intents (final set) and the cold persona
 
-| File | Job |
-|---|---|
-| `config.py` | all switches and limits in one place (`ENABLE_CONCEDE_PRESSURE`, rate limits, 180-char limit, windows, budget) |
-| `normalize.py` | `display()` (Unicode fold, invisible chars out), `ascii_fold()` (same length: homoglyphs, accents, leetspeak inside words), `squash()` |
-| `robust.py` | tolerant chat-array reading, window for huge arrays |
-| `injection.py` | `analyze(text)` -> sanitized text, flags, severity 0-3. Flags: INSTRUCTION, FAKE_AUTHORITY, REVEAL_PROMPT, REVEAL_PRIVATE, ROLEPLAY, FORMAT_SMUGGLE, PRESSURE, SUGGEST_MOVE, FLOOD, UNICODE_TRICKS, FORBIDDEN_BAIT. EN, RO, ES, FR, DE, IT, PT, RU, ZH, EL |
-| `signals.py` | `ChatMonitor`: counters (pressure per match, injection...), `is_suggested`, `features()` |
-| `wrap.py` | the untrusted chat block for the model |
-| `speech_rules.py` | forbidden words from the rules text, `violates()`, `redact()`, atomic cache in /memory |
-| `output_filters.py` | leak (private state, harness words, keys, **canary**), conduct, collusion words, speech, 180-char cut |
-| `no_deal.py` | `is_one_sided_pressure()` and `hard_collusion()` |
-| `intents.py` | intent enum, template library, `compose()` |
-| `parse.py` | tolerant parser of the compact model answer |
-| `guard.py` | action guard + `model_free_action()` |
-| `final_stage.py` | `finalize_chat()`: the one final output stage |
-| `budget.py` | soft spend limit per key |
-| `pipeline.py` | `ChatDefense`, system prompt, private-state extraction, `ready_line()` |
-| `__init__.py` | hooks `wrap_untrusted()` / `filter_out()` used by `core/hooks.py` |
+Persona: deadpan, terse, clinical, unimpressed. One short flat sentence or a fragment. No greetings, "good luck", praise,
+thanks, apologies, emoji, "!", smileys, small talk. Cold is not abusive (conduct filter stays on).
 
-## 5. Intents and the compact answer
+| Intent | What it does | Notes |
+|---|---|---|
+| GREET | the line sent with `ready` ("Ready.", "Proceed.") | no model call; never concede pressure |
+| MISDIRECT | a dry remark that says nothing true about our approach ("Routine.", "That changes nothing.") | switched off when the rules restrict or police speech (`speech.restricted` or `honesty`) |
+| STONEWALL | non-answers: to probes ("Why ask?", "No comment.") and to pressure / fake notices ("Irrelevant.", "Not going to happen.") | forced by public signals |
+| UNSETTLE | deadpan remark about the opponent: repetition ("You repeat yourself."), noise ("More words, same position."), general ("You hesitate.") | family chosen from signals; off when the rules require honesty |
+| PRESS | pressure about the position | |
+| CONCEDE_PRESSURE | one-sided pressure to concede, see section 6 | fixed lines, rate limited, switch in `config.py` |
+| NOISE | a decoy line unrelated to the game ("Tuesday.", "Dust.") | inserted by the seeded RNG, 12 percent |
+| MINIMAL | the shortest neutral line ("Noted.", "Hm.") | the default; never empty |
+| ANCHOR | negotiation games only (`family == "deals"`): "Position unchanged." | no numbers, nothing private |
 
-`{"a":"<move>","b":"<second-best legal move>","i":"<INTENT>","r":"<REASON>","s":"<slot, max 40 chars>"}`
-(about 15 output tokens). `i` is one of: GREET (pre-game, no model), PRESS, BLUFF, PROBE, DENY, DEFLECT (also forced by
-the code on pressure), RESPECT, NEUTRAL, **CONCEDE_PRESSURE**. Unknown intent -> NEUTRAL; unknown slot characters are dropped;
-an empty or rejected result falls back to a neutral template. `r` is FORCED, WIN, BLOCK, EV, OTHER (used by the guard).
+`intents.py` holds the library. Variant choice uses `random.Random(f"{match}|{game}|{turn}|...")`: code only.
+
+## 5. Anti-tell design
+
+The chat style must not depend on our private information or on how good our move is:
+1. The tone is chosen in code from PUBLIC signals (what the opponent said) and a seeded RNG, never from the hand, the position
+   or the model. `config.MODEL_INTENT_WEIGHT = 0.0`: the model's own intent is ignored (and not even requested), because a model that
+   picks tones by hand strength leaks it. Control test: with the weight at 1 a leaky model leaks through line length (|r| > 0.2); with 0 it is exactly 0.
+2. Lines do not depend on the hand: the private-state checks are NOT applied to template lines. (Found by test: a card "AS"
+   blocked the template "As anticipated." so the chat changed with the hand. Templates are fixed, audited public text.)
+3. Test `TestAntiTell`: same seeds, two synthetic private states and a leaky model -> identical lines and intents; length vs state correlation < 0.02; NOISE rate equal.
 
 ## 6. CONCEDE_PRESSURE (offense, one-sided)
 
-- Fixed lines (no slot) such as "Your position is lost. Resigning is the rational move." Only the position and the odds are talked about.
-- **Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team; confirmation given by: <mentor name, to be filled by the team>.** It is also inside rule 6.3 ("pressure").
+- Fixed lines such as "Your position is lost. Resigning is the rational move." Only the position is talked about.
+- **Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team; confirmation given by: <mentor name, to be filled by the team>.** Also inside rule 6.3 ("pressure").
 - The confirmation covers ONE-SIDED pressure only: never an offer, trade, shared benefit, promise, agreed or coded signal, never "lose on purpose" (13.1.f), no threat, no insult.
-- Switch: `chat/config.py: ENABLE_CONCEDE_PRESSURE = True`. Off -> the intent becomes PRESS and disappears from the prompt.
-- No-deal filter (`no_deal.py`) on the FINAL text: rejects offers, requests, "we/us/let's", points/standings/bracket, threats tied to a deal, "on purpose", questions, spaced/leetspeak spellings, in English and Romanian; and requires a statement about the position/odds. A rejected line becomes a neutral line.
-- Rate limit: once per game, twice per match (counted by the process, see N2 in the checklist); never in the `ready` line (GREET only); eight different wordings, not repeated in a row.
+- Switch: `chat/config.py: ENABLE_CONCEDE_PRESSURE = True`. Off -> the intent disappears (becomes PRESS).
+- `no_deal.py` on the FINAL text: rejects offers, requests, "we/us/let's", points/standings/bracket, threats tied to a deal, "on purpose", questions, spaced/leetspeak spellings (EN + RO); requires a statement about the position.
+- Rate limit: once per game, twice per match (counted per process, see N2); never in the `ready` line.
 
-## 7. Action guard (`guard.py`)
+## 7. Strategy-leak firewall, tone and impersonation filters (`output_filters.check_line`)
 
-1. Legality: only an element of `legal_actions` (exact spelling), else the model's backup `b`, else the fallback, else the first clean legal move.
-2. A single legal move is always played.
-3. Surrender-like (fold, resign, give up, concede... in several languages, and "pass" right after pressure when other moves exist) needs an independent reason: a strategy `hook(action)`, or `r` in {FORCED, EV} and no pressure in the last 3 opponent lines.
-4. Echo (a recent opponent line with an imperative cue mentions exactly this action) needs the hook, or `r` in {FORCED, WIN, BLOCK, EV} and no severity-3 line this turn.
-5. Otherwise: `b`, then strategy `prefs`, then the first legal move that is neither a surrender nor an echo.
-6. No model: `model_free_action()` applies the same rules to the fallback move. We never give up voluntarily.
+Run on the FINAL expanded line, in this order: leak (private tokens, harness words, keys, the canary tag), conduct, collusion words,
+**strategy-leak**, **tone**, **impersonation**, no-deal (CONCEDE_PRESSURE only), speech rules. A failing line is replaced by another
+template of the same intent, then by a neutral cold line.
 
-## 8. Filters and the final output stage
+- `strategy_leak.py`: denylist of strategy / algorithm / tool terms (EN + RO, stems), move announcements ("I will play", "my plan",
+  "I chose"), reasons ("because", "so I", "therefore"), ANY digit (our private state or computed numbers), any piece of our private
+  observation fields (when given), also on leetspeak, look-alikes, zero-width characters and spaced-out letters. 55 positive examples
+  across guessing, cards, negotiation, perfect-information games and machinery in the tests.
+- `tone.py`: friendly words (EN + RO: good, nice, well, luck, thanks, sorry, hello, friend, respect, fair...), "!", emoji and symbols,
+  smileys, shouting, more than two sentences, more than 110 characters.
+- `impersonation.py`: never speak as the arena, organizers, judges, referee or system; no "official notice", no "you are disqualified",
+  no "the rules state". Forbidden by default (AMBIGUOUS, A6).
+- The hook `chat.filter_out()` (used by `core/hooks.py` for EVERY strategy) runs the same filters, so another strategy's
+  "minimax says A1" or "Nice move." becomes a neutral cold line.
+- By construction the model has no text channel, and the template audit test fails the build if any template is friendly,
+  loud, long, contains a digit, a strategy word, or impersonates.
 
-`final_stage.finalize_chat()` runs on the FINAL expanded text of every line: string, non-empty, <= 180; leak (private state from the
-observation, harness words, key-like strings, the **canary** tag that sits in our prompt and may never appear, also spaced out);
-conduct (insults, slurs, threats, sexual terms, also spaced/leetspeak); collusion words; the game's speech rules (rules text +
-prep's `forbidden_terms`); no leftover marker (`{ } < >`); no third identical line in a row. A failing line is replaced by a neutral
-line from a rotation, never repaired by guessing. The slot is dropped when it repeats text of a hostile line, or when the game
-restricts speech but no word could be read.
+## 8. Action guard (`guard.py`), final stage, budget
 
-## 9. Budget, clocks, fallbacks
+Unchanged in design: legality first; a single legal move is always played; surrender-like moves (fold, resign, give up... and "pass"
+right after pressure) and moves the opponent's chat just told us to play need an independent reason (hook, or reason code
+FORCED/EV with no pressure, or WIN/BLOCK/EV/FORCED for an echo without a severity-3 line); else backup move, strategy preferences,
+first clean legal move. No model: `model_free_action()` applies the same rules. `final_stage.finalize_chat()` guarantees a string,
+non-empty, <= 180, no markers, no third identical line in a row. `budget.BudgetGuard`: $0.30 soft limit per key.
 
-Core gives: main-process fallback first, worker with a hard 12 s deadline, model timeout <= 8 s, no retries, pause after 2 failures.
-Mine adds: `BudgetGuard` ($0.30 soft limit per key, then model-free play), no model call when less than 1.5 s are left or when only one
-move is legal, `decide()` never raises.
+## 9. Modules (`chat/`)
+
+`config.py` (all switches), `normalize.py`, `robust.py`, `injection.py` (flags incl. PROBE_STRATEGY), `signals.py` (counters, probes,
+repeats, `consume()`), `wrap.py`, `speech_rules.py` (forbidden words, honesty requirement, cache), `output_filters.py`, `strategy_leak.py`,
+`tone.py`, `impersonation.py`, `no_deal.py`, `intents.py`, `parse.py`, `guard.py`, `final_stage.py`, `budget.py`, `pipeline.py`, `__init__.py`.
 
 ## 10. Tests and runs
 
-- `python -m unittest discover -s tests/mbappe`: 119 tests (normalizer, detector, speech, filters, no-deal EN/RO, guard, parser, expansion, final stage, robust parsing, budget, strategy with request capture and fault injection, hooks).
-- `bash tests/mbappe/run_adversarial.sh`: the real `main.py` against a scripted hostile opponent (`adversarial_bot.py`) on tic_tac_toe, pig, guess_number and a speech-rule test game (`games/forbidden_count.py`, loaded by `run_with_game.py` without touching arena-lite), fake gateway (`fake_gateway.py`, modes obedient, garbage, slow, down, concede).
+- `python -m unittest discover -s tests/mbappe`: 146 tests.
+- `bash tests/mbappe/run_adversarial.sh`: the real `main.py` against `adversarial_bot.py` (probes about strategy and hand, fold spam, fake system messages, prompt extraction, forbidden-subject bait, flooding, repetition, mixed languages) on tic_tac_toe, pig, guess_number and a speech-rule game; `run_one.sh` for fault modes (garbage, slow, down, no gateway). `analyze_run.py` checks warnings, timeouts, leaks, strategy leaks, friendliness, impersonation, forbidden words, chat validity and that opponent chat is in the model requests.
+- `python tests/mbappe/sample_lines.py --write`: 30 lines per game type, in `SAMPLE_LINES.md`.
 
 ## 11. Known limits
 
-- Pattern detection is not perfect; a new phrasing can pass (it still reaches the model as untrusted data and cannot move the guard unless it names a legal action).
-- The guard trusts the model's reason code `r` (narrowed by severity-3 and pressure rules, and by the strategy hook).
-- Speech rules are extracted by patterns; a subject that is described, not named, can be missed.
-- The ready line and the per-match concede limit depend on contracts with the core (checklist N1, N2).
-- The defense costs more input tokens than the plain core prompt (see the final report).
+- The `ready` line is still written by `core/main.py` (alex) with a friendly bank ("Good luck, have fun!", "Nice move."): the arena run reports it as WARN until contract #16 is done. Same for the main-process fallback chat bank (`core/hooks.NEUTRAL_BANK`).
+- Pattern lists can miss new phrasings; templates are the real guarantee, filters protect foreign text.
+- Speech rules are read from the rules text by patterns; a described (not named) subject can be missed.
+- The per-match concede limit is per process (the core passes opponent texts only).
+- Tone changes with the opponent's behaviour (probes, pressure, repetition), which an observer could use; it never depends on our state.

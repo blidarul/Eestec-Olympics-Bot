@@ -18,7 +18,7 @@ from . import normalize as nz
 # flag -> weight (1 = low, 2 = medium). Severity = the biggest weight, +1 for combined attacks.
 FLAG_WEIGHT = {
     "PRESSURE": 1, "SUGGEST_MOVE": 1, "REVEAL_PRIVATE": 1, "FLOOD": 1, "UNICODE_TRICKS": 1,
-    "INSTRUCTION": 2, "FAKE_AUTHORITY": 2, "REVEAL_PROMPT": 2, "ROLEPLAY": 2, "FORMAT_SMUGGLE": 2,
+    "PROBE_STRATEGY": 1, "INSTRUCTION": 2, "FAKE_AUTHORITY": 2, "REVEAL_PROMPT": 2, "ROLEPLAY": 2, "FORMAT_SMUGGLE": 2,
     "FORBIDDEN_BAIT": 2,
 }
 SEVERITY_NAME = {0: "NONE", 1: "LOW", 2: "MEDIUM", 3: "HIGH"}
@@ -65,8 +65,9 @@ _RAW = {
         r"\bwhich\s+(?:ai|model|llm|engine)\s+(?:are\s+you|do\s+you\s+use|powers?)\b",
     ],
     "REVEAL_PRIVATE": [
-        r"\b(?:what(?:'s|s| is| are)|tell me|show me|reveal|share|give me|let me see)\s+(?:me\s+)?(?:your|ur)\s+(?:\w+\s+)?(?:hand|cards?|secret|number|dice|roll|private|hidden|fleet|word|value|code|bid|offer)\b",
+        r"\b(?:what(?:'s|s| is| are)|tell me|show me|reveal|share|give me|let me see)\s+(?:me\s+)?(?:your|ur)\s+(?:\w+\s+)?(?:hand|cards?|secret|number|dice|roll|private|hidden|fleet|word|value|code|bid|offer|reservation|limit|minimum|maximum|price|budget|valuation|ceiling|floor|bottom\s+line)\b",
         r"\b(?:show|reveal)\s+(?:me\s+)?(?:your\s+)?(?:hand|cards?)\b",
+        r"\bwhat(?:'s|s| is)\s+yours\b", r"\bcare\s+e\s+(?:limita|pretul|numarul)\s+tau\b",
     ],
     "ROLEPLAY": [
         r"\byou\s+(?:are|re)\s+(?:now|no longer)\b",
@@ -84,6 +85,17 @@ _RAW = {
         r"\b(?:action|chat)\s*:\s*\S",
         r"```|~~~|<\|[^|]*\|>|\[/?(?:inst|sys|system)\]|###\s*(?:system|instruction|user|assistant)|</?\s*(?:system|user|assistant|untrusted|opponent|instructions?|prompt|tool|function)\w*\s*>",
         r"\{\s*\"",
+    ],
+    "PROBE_STRATEGY": [
+        r"\b(?:what(?:'s|s| is| are)|tell me|explain|describe|reveal|share|show me)\s+(?:\w+\s+){0,2}(?:your|ur)\s+(?:\w+\s+)?(?:strategy|strategies|algorithm|plan|approach|method|tactics?|technique|logic|reasoning|process)\b",
+        r"\bhow\s+(?:do|did|will|are|would)\s+you\s+(?:play|decide|choose|pick|think|work|win|guess|know|calculate|compute|do\s+it)\b",
+        r"\b(?:are|r)\s+you\s+(?:using|doing|running|playing|following|applying|trying)\b",
+        r"\bdo\s+you\s+(?:use|follow|play|have\s+a\s+(?:plan|strategy|system))\b",
+        r"\b(?:binary\s+search|mini-?max|alpha-?beta|monte\s+carlo|mcts|bisect\w*|midpoint|heuristic\w*|algorithm\w*)\b",
+        r"\bwhy\s+(?:did|do|would|are)\s+you\s+(?:play|pick|choose|guess|fold|raise|call|bet|move|say|go)\b",
+        r"\b(?:what|which)\s+(?:cards?|number|hand|move)\s+(?:do|did|will)\s+you\b",
+        r"\bcare\s+(?:e|este)\s+(?:strategia|planul|metoda)\s+ta\b", r"\bcum\s+(?:joci|alegi|decizi|ghicesti)\b",
+        r"\b(?:folosesti|urmezi)\b", r"\bai\s+(?:o\s+strategie|un\s+plan)\b", r"\barata-?mi\s+(?:mana|cartile)\b",
     ],
     "PRESSURE": [
         r"\b(?:fold|folds|folding|resign\w*|surrender\w*|give\s*-?\s*up|giving\s+up|concede\w*|forfeit\w*|quit|yield|withdraw|throw\s+in\s+the\s+towel|lay\s+down|bow\s+out|admit\s+defeat)\b",

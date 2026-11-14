@@ -27,14 +27,15 @@ _BUDGET = BudgetGuard()
 
 def _defense(state):
     key = (hashlib.sha1(str(state.rules).encode("utf-8", "replace")).hexdigest()[:12],
-           tuple(str(t) for t in (state.artifacts or {}).get("forbidden_terms") or []))
+           tuple(str(t) for t in (state.artifacts or {}).get("forbidden_terms") or []),
+           str((state.artifacts or {}).get("family", "")))
     entry = _DEFENSES.get(state.game_id)
     if entry is None:
         entry = _DEFENSES[state.game_id] = [ChatDefense(), None]
     d, done = entry
     if done != key:  # new rules text or new forbidden terms: read the speech rules again
         d.configure(state.rules, (state.artifacts or {}).get("forbidden_terms"),
-                    (state.artifacts or {}).get("rules_text_hash_dir"))
+                    (state.artifacts or {}).get("rules_text_hash_dir"), (state.artifacts or {}).get("family", ""))
         entry[1] = key
     return d
 

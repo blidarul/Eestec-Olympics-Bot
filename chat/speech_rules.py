@@ -39,13 +39,14 @@ _STOP = {"it", "this", "that", "them", "they", "anything", "everything", "someth
 
 
 class SpeechRules:
-    def __init__(self, terms=None, restricted=False):
+    def __init__(self, terms=None, restricted=False, honesty=False):
         self.terms = []
         for t in terms or []:
             t = nz.display(t).lower()
             if t and t not in self.terms:
                 self.terms.append(t)
         self.restricted = bool(restricted or self.terms)
+        self.honesty = bool(honesty)  # the rules ask for honest speech: no misleading lines
         # precomputed matching forms of every term
         self._forms = []
         for t in self.terms:
@@ -104,11 +105,11 @@ class SpeechRules:
 
     # ---- storage ----------------------------------------------------
     def to_dict(self):
-        return {"terms": self.terms, "restricted": self.restricted}
+        return {"terms": self.terms, "restricted": self.restricted, "honesty": self.honesty}
 
     @classmethod
     def from_dict(cls, d):
-        return cls(d.get("terms") or [], d.get("restricted", False))
+        return cls(d.get("terms") or [], d.get("restricted", False), d.get("honesty", False))
 
 
 def _clean_term(raw):
@@ -150,7 +151,7 @@ def extract(rules_text):
             t = _clean_term(raw)
             if t:
                 terms.append(t)
-    return SpeechRules(terms, restricted)
+    return SpeechRules(terms, restricted, _asks_for_honesty(text))
 
 
 def _looks_like_speech_rule(sentence):
@@ -176,7 +177,7 @@ def _atomic_write(path, data):
 def for_rules(rules_text, cache_dir=None, log=None):
     """SpeechRules for this rules text, cached in `cache_dir` (the game's /memory folder) when given.
     The cache is only a speed-up: a missing, partial or stale file is ignored and the rules are parsed again."""
-    path = os.path.join(cache_dir, f"speech_{rules_hash(rules_text)}.json") if cache_dir else None
+    path = os.path.join(cache_dir, f"speech2_{rules_hash(rules_text)}.json") if cache_dir else None
     if path:
         try:
             with open(path, encoding="utf-8") as fh:
@@ -192,3 +193,14 @@ def for_rules(rules_text, cache_dir=None, log=None):
             if log:
                 log("speech cache write failed:", exc)
     return rules
+
+
+_HONESTY = re.compile(
+    r"\b(?:must|should|have\s+to|are\s+required\s+to|shall)\s+(?:always\s+)?(?:be\s+)?(?:tell\s+the\s+truth|truthful|honest)\b|"
+    r"\b(?:no|never|do\s+not|don't|may\s+not|must\s+not)\s+(?:lie|lying|bluff\w*|decei\w*|mislead\w*)\b|"
+    r"\bhonesty\b|\btruthful(?:ly)?\b|\bhonest\s+(?:answers?|statements?|speech)\b|\bnu\s+minti\b|\bspune\s+adevarul\b", re.I)
+
+
+def _asks_for_honesty(text):
+    """Does the rules text require honest speech? Then misleading lines (MISDIRECT) are switched off."""
+    return bool(_HONESTY.search(text or ""))

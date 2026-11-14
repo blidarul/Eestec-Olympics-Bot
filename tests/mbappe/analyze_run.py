@@ -25,6 +25,7 @@ def main():
     ap.add_argument("bot", nargs="?", default="bot-a")
     ap.add_argument("--gateway", default=os.path.join(ROOT, "tests", "mbappe", "out", "gateway.jsonl"))
     ap.add_argument("--forbid", default="")
+    ap.add_argument("--strict-ready", action="store_true", help="also require the ready lines to be cold (needs contract #16)")
     ap.add_argument("--secrets", default="", help="comma list of private values that must never be said")
     args = ap.parse_args()
     forbid = [w for w in args.forbid.split(",") if w]
@@ -53,6 +54,18 @@ def main():
     check("no forbidden word in our chat", not any(w.lower() in t for w in forbid for t in low))
     check("no private value in our chat", not any(re.search(r"\b" + re.escape(w) + r"\b", t) for w in secrets for t in low))
     check("no leak words in our chat", not any(w in t for w in LEAK for t in low))
+    # second-pass checks, with the same filters the bot uses: strategy leaks, friendliness, impersonation, conduct
+    sys.path.insert(0, ROOT)
+    from chat import impersonation, output_filters, strategy_leak, tone
+    # the `ready` line (phase "study") is written by core/main.py (alex): reported as WARN until contract #16 is done
+    texts = [c["text"] for c in mine if c.get("phase") == "play" or args.strict_ready]
+    study_bad = [c["text"] for c in mine if c.get("phase") == "study" and output_filters.check_line(c["text"])[1]]
+    if study_bad and not args.strict_ready:
+        print(f"WARN {len(study_bad)} ready line(s) from core/main.py are not cold: {sorted(set(study_bad))}")
+    check("zero strategy leaks in our chat", not [t for t in texts if strategy_leak.reason_strategy(t)])
+    check("zero friendly lines in our chat", not [t for t in texts if tone.reason_tone(t)])
+    check("zero impersonation in our chat", not [t for t in texts if impersonation.reason_impersonation(t)])
+    check("all our chat lines pass every filter", not [t for t in texts if output_filters.check_line(t)[1]])
 
     log_path = os.path.join(RES, "logs", f"{args.match_id}-{'bot-a' if args.bot == seat_names.get('a', 'bot-a') or args.bot == 'bot-a' else 'bot-b'}.log")
     ignored = []
@@ -66,9 +79,16 @@ def main():
         opp = [c for c in doc["chat"] if c["team"] != args.bot]
         # the block numbers opponent lines by their position among the opponent's lines (core passes texts only);
         # the older custom loop numbered by position in the whole chat: accept both
-        missing = [c["n"] for k, c in enumerate(opp, 1) if f"#{k} opp" not in joined and f"#{c['n']} opp" not in joined]
-        # the last opponent line(s) can come after our last turn of the game, so they are never shown
-        tail_ok = len(missing) <= 3
+        last_ours = max([c["n"] for c in mine if c.get("phase") == "play"] or [0])
+        missing, prev = [], None
+        for k, c in enumerate(opp, 1):
+            seen = f"#{k} opp" in joined or f"#{c['n']} opp" in joined
+            folded = c["text"] == prev            # an equal consecutive line is folded into "(xN)" in the block
+            late = c["n"] > last_ours             # said after our last turn: no turn of ours could read it
+            if not (seen or folded or late):
+                missing.append(c["n"])
+            prev = c["text"]
+        tail_ok = not missing
         check("opponent chat reaches the model input", tail_ok, f"missing lines {missing}")
         print(f"INFO {len(opp)} opponent lines, {len(prompts)} model calls, {len(opp) - len(missing)} lines seen in a prompt")
     print("RESULT", "FAIL" if bad else "ALL PASS")

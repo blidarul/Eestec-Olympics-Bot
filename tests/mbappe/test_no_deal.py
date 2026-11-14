@@ -76,11 +76,13 @@ class TestConcedeIntent(unittest.TestCase):
     MODEL = '{"a":"A1","b":"B2","i":"CONCEDE_PRESSURE","r":"EV","s":"we split points"}'
 
     def setUp(self):
-        self.saved = config.ENABLE_CONCEDE_PRESSURE
+        self.saved = (config.ENABLE_CONCEDE_PRESSURE, config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY)
         config.ENABLE_CONCEDE_PRESSURE = True
+        config.MODEL_INTENT_WEIGHT = 1.0      # use the model's intent every time, so the test is deterministic
+        config.NOISE_PROBABILITY = 0.0
 
     def tearDown(self):
-        config.ENABLE_CONCEDE_PRESSURE = self.saved
+        config.ENABLE_CONCEDE_PRESSURE, config.MODEL_INTENT_WEIGHT, config.NOISE_PROBABILITY = self.saved
 
     def line(self, d, turn):
         _a, chat, info = d.finish(self.MODEL, dict(self.TURN, turn=turn))
@@ -100,7 +102,7 @@ class TestConcedeIntent(unittest.TestCase):
     def test_switch_off(self):
         config.ENABLE_CONCEDE_PRESSURE = False
         d = ChatDefense(log=lambda *a: None)
-        self.assertEqual(self.line(d, 1)[1], "PRESS")
+        self.assertNotEqual(self.line(d, 1)[1], "CONCEDE_PRESSURE")   # off: the intent never comes out
         self.assertNotIn("CONCEDE_PRESSURE", d.prompts(dict(self.TURN), "R", "P", 0)[0])
 
     def test_prompt_describes_the_intent_when_on(self):

@@ -44,7 +44,7 @@ class TestParse(unittest.TestCase):
 
     def test_bad_values_are_normalized(self):
         d = parse.parse_model_output('{"a":"B2","i":"unknown!","r":"nonsense","s":5}')
-        self.assertEqual((d.intent, d.reason, d.slot), ("NEUTRAL", "OTHER", ""))
+        self.assertEqual((d.intent, d.reason), ("MINIMAL", "OTHER"))
         self.assertEqual(parse.parse_model_output('{"a":"B2","i":"press"}').intent, "PRESS")
 
     def test_match_legal(self):
@@ -188,7 +188,7 @@ class TestWrapAndPipeline(unittest.TestCase):
         self.assertEqual(a1, "fold")
         self.assertEqual(a2, "call")
         self.assertEqual(info["guard"], "surrender")
-        self.assertEqual(info["intent"], "DEFLECT")
+        self.assertEqual(info["intent"], "STONEWALL")
 
     def test_compromised_model_cannot_be_steered(self):
         d = self.make()

@@ -19,3 +19,9 @@ MODEL_LINES = 8              # opponent lines shown in full to the model
 MAX_LINE_CHARS = 300         # characters of one opponent line shown to the model
 
 BUDGET_SOFT_USD = 0.30       # spend (this key, this container) after which we play without the model
+
+# ---- tone and tactics (second pass) ----
+TONE_MAX_CHARS = 110         # terse: one short sentence or two
+NOISE_PROBABILITY = 0.12     # a decoy line sometimes, chosen by the seeded RNG only (never by our state)
+MODEL_INTENT_WEIGHT = 0.0    # how often the model's intent is used when no signal forces one (0 = never: anti-tell)
+REPEAT_UNSETTLE = 2          # opponent repeated itself this many times: UNSETTLE about repetition

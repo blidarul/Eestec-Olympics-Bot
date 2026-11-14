@@ -50,7 +50,7 @@ class TestSpeechRules(unittest.TestCase):
     def test_cache_roundtrip_and_corrupt_file(self):
         with tempfile.TemporaryDirectory() as d:
             a = sr.for_rules(RULES_QUOTED, d)
-            files = [f for f in os.listdir(d) if f.startswith("speech_")]
+            files = [f for f in os.listdir(d) if f.startswith("speech")]
             self.assertEqual(len(files), 1)
             self.assertEqual(sr.for_rules(RULES_QUOTED, d).terms, a.terms)
             with open(os.path.join(d, files[0]), "w") as fh:
@@ -69,7 +69,7 @@ class TestOutputFilters(unittest.TestCase):
             line, problems = of.check_line(bad)
             self.assertTrue(problems, bad)
             self.assertNotEqual(line, bad)
-        for ok in ["Good move.", "Your move.", "I like the board", "that is a diet plan", "I'm excited"]:
+        for ok in ["Noted.", "Your move.", "Irrelevant.", "That is a diet", "Position unchanged."]:
             self.assertEqual(of.check_line(ok)[1], [], ok)
 
     def test_leak_words_and_keys(self):
@@ -81,7 +81,7 @@ class TestOutputFilters(unittest.TestCase):
         line, problems = of.check_line("My number is 51", private_tokens=["51"])
         self.assertTrue(problems)
         self.assertNotIn("51", line)
-        self.assertEqual(of.check_line("I have 52 problems", private_tokens=["51"])[1], [])
+        self.assertEqual(of.check_line("Nothing to report.", private_tokens=["51"])[1], [])
 
     def test_speech_filter(self):
         s = sr.extract(RULES_QUOTED)
@@ -102,57 +102,43 @@ class TestOutputFilters(unittest.TestCase):
 
     def test_every_template_passes_every_filter(self):
         s = sr.SpeechRules(["moon", "banana"])
-        for intent, lines in intents.TEMPLATES.items():
-            for t in lines:
-                line = t.replace("{s}", "the centre")
-                self.assertEqual(of.check_line(line, speech=s)[1], [], f"{intent}: {line}")
-                self.assertLessEqual(len(line), of.MAX_CHARS)
+        for intent, line in intents.all_templates():
+            self.assertEqual(of.check_line(line, speech=s, one_sided=(intent == "CONCEDE_PRESSURE"))[1], [], f"{intent}: {line}")
+            self.assertLessEqual(len(line), of.MAX_CHARS)
         for n in of.NEUTRAL_LINES:
             self.assertEqual(of.check_line(n)[1], [], n)
 
 
 class TestTemplates(unittest.TestCase):
-    def test_slot_cleaning(self):
-        self.assertEqual(intents.clean_slot("the centre"), "the centre")
-        self.assertEqual(intents.clean_slot("x" * 100), "x" * 40)
-        cleaned = intents.clean_slot("a{b}c<d> `e`")
-        for ch in "{}<>`":
-            self.assertNotIn(ch, cleaned)
-        for bad in (None, 5, ["a"]):
-            self.assertEqual(intents.clean_slot(bad), "")
-        self.assertNotIn("{", intents.clean_slot("{s}"))
-
     def test_compose_basic_and_seeded(self):
         a = intents.compose("PRESS", "", "m1|1|3")
         self.assertEqual(a, intents.compose("PRESS", "", "m1|1|3"))
-        self.assertTrue(a)
-        self.assertNotIn("{s}", a)
+        self.assertIn(a, intents.TEMPLATES["PRESS"])
 
-    def test_unknown_intent_is_neutral(self):
-        self.assertIn(intents.compose("???", "", "x"), intents.TEMPLATES["NEUTRAL"])
+    def test_unknown_intent_is_minimal(self):
+        self.assertIn(intents.compose("???", "", "x"), intents.TEMPLATES["MINIMAL"])
         self.assertEqual(intents.normalize_intent("press"), "PRESS")
-        self.assertEqual(intents.normalize_intent(None), "NEUTRAL")
+        self.assertEqual(intents.normalize_intent(None), "MINIMAL")
+        self.assertEqual(intents.normalize_intent("BLUFF"), "MISDIRECT")      # old names still work
+        self.assertEqual(intents.normalize_intent("deflect"), "STONEWALL")
+        self.assertEqual(intents.normalize_intent("RESPECT"), "MINIMAL")      # praise is gone
 
     def test_no_repeat(self):
         recent = []
-        for turn in range(len(intents.TEMPLATES["NEUTRAL"])):
-            line = intents.compose("NEUTRAL", "", f"m|1|{turn}", recent)
+        for turn in range(len(intents.TEMPLATES["MINIMAL"])):
+            line = intents.compose("MINIMAL", "", f"m|1|{turn}", recent)
             self.assertNotIn(line, recent)
             recent.append(line)
 
-    def test_slot_is_used_sometimes_and_never_leaves_a_hole(self):
-        seen_slot = False
-        for turn in range(40):
-            line = intents.compose("PRESS", "the centre", f"m|1|{turn}")
-            self.assertNotIn("{", line)
-            seen_slot |= "the centre" in line
-        self.assertTrue(seen_slot)
+    def test_unsettle_families(self):
+        for family, lines in intents.UNSETTLE.items():
+            self.assertIn(intents.compose("UNSETTLE", family, "s"), lines)
+        self.assertIn(intents.compose("UNSETTLE", "nope", "s"), intents.UNSETTLE["general"])
 
-    def test_long_slot_line_is_cut(self):
+    def test_no_placeholder_ever(self):
         for intent in intents.INTENTS:
-            for turn in range(10):
-                line = of.cut_line(intents.compose(intent, "y" * 100, f"s|{turn}"))
-                self.assertLessEqual(len(line), of.MAX_CHARS)
+            for turn in range(20):
+                self.assertNotIn("{", intents.compose(intent, "", f"s|{turn}"))
 
 
 if __name__ == "__main__":

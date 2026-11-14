@@ -37,6 +37,10 @@ class ChatMonitor:
         self.bait_count = 0
         self.flood_count = 0
         self.suggest_count = 0
+        self.probe_count = 0          # questions about our strategy or our hand
+        self.repeat_count = 0         # the opponent said the same thing as in its previous line
+        self.last_text = None
+        self.repeated_now = False
         self.max_severity = 0
         self.new_reports = []         # reports first seen in the last update()
         self.skipped = 0              # lines of a huge chat that were only counted, not analyzed
@@ -48,7 +52,10 @@ class ChatMonitor:
             chat = []
         if len(chat) < self.seen:
             self.reset(self.match_id)  # a shorter chat can only be a new match
+        elif len(chat) == self.seen:
+            return self  # nothing new: keep the "new this turn" signals until consume() is called
         self.new_reports = []
+        self.repeated_now = False     # one of the new lines repeated the previous opponent line
         start = max(self.seen, len(chat) - config.CHAT_WINDOW)  # a huge chat: only the last lines are analyzed
         if start > self.seen:
             self.skipped += start - self.seen
@@ -86,12 +93,39 @@ class ChatMonitor:
             self.flood_count += 1
         if rep.suggests_move:
             self.suggest_count += 1
+        if {"PROBE_STRATEGY", "REVEAL_PROMPT", "REVEAL_PRIVATE"} & set(rep.flags):
+            self.probe_count += 1
+        text = " ".join(str(line.get("text", "")).lower().split())
+        if text and text == self.last_text:
+            self.repeat_count += 1
+            self.repeated_now = True
+        self.last_text = text
+
+    def consume(self):
+        """The turn is answered: the "new this turn" signals (pressure, probes, repeats) are used up."""
+        self.new_reports = []
+        self.repeated_now = False
 
     # ---- the signals ----------------------------------------------------------------
     @property
     def new_pressure(self):
         """A "fold / you lose" line arrived since the last turn."""
         return any(r.pressure for r in self.new_reports)
+
+    @property
+    def new_probe(self):
+        """A question about our strategy / hand / prompt arrived since the last turn."""
+        return any({"PROBE_STRATEGY", "REVEAL_PROMPT", "REVEAL_PRIVATE"} & set(r.flags) for r in self.new_reports)
+
+    @property
+    def new_hostile(self):
+        """Pressure, injection or a fake notice arrived since the last turn."""
+        return self.new_pressure or any(set(r.flags) & INJECTION_FLAGS for r in self.new_reports)
+
+    @property
+    def opponent_repeats(self):
+        """The opponent keeps repeating itself (a public signal we may comment on)."""
+        return self.repeat_count >= config.REPEAT_UNSETTLE
 
     @property
     def new_severity(self):
@@ -128,6 +162,7 @@ class ChatMonitor:
         return {
             "opp_lines": self.opp_lines, "new_lines": len(self.new_reports),
             "pressure_count": self.pressure_count, "new_pressure": self.new_pressure,
+            "probe_count": self.probe_count, "repeat_count": self.repeat_count,
             "injection_count": self.injection_count, "bait_count": self.bait_count,
             "flood_count": self.flood_count, "suggest_count": self.suggest_count,
             "max_severity": self.max_severity, "severity": injection.SEVERITY_NAME[self.max_severity],

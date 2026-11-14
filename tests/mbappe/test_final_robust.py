@@ -16,7 +16,7 @@ class TestFinalStage(unittest.TestCase):
         self.assertLessEqual(len(line), config.CHAT_LIMIT)
 
     def test_leftover_markers_are_blocked(self):
-        for bad in ["Watch {s}.", "Your move }", "<b>hi</b>", "[removed:INSTRUCTION] ok"]:
+        for bad in ["Watch {s}.", "Your move }", "<b>x</b>", "[removed:x] ok"]:
             line, problems = fs.finalize_chat(bad)
             self.assertNotIn("{", line)
             self.assertNotIn("<", line)
@@ -52,11 +52,10 @@ class TestFinalStage(unittest.TestCase):
 class TestExpansion(unittest.TestCase):
     def test_known_unknown_empty(self):
         self.assertIn(intents.compose("PRESS", "", "s"), intents.TEMPLATES["PRESS"])
-        self.assertIn(intents.compose("NOPE", "", "s"), intents.TEMPLATES["NEUTRAL"])      # unknown intent
-        self.assertIn(intents.compose("", "", "s"), intents.TEMPLATES["NEUTRAL"])          # empty
-        self.assertIn(intents.compose(None, None, "s"), intents.TEMPLATES["NEUTRAL"])
-        self.assertNotIn("{", intents.compose("PRESS", "{s}{s}", "s"))
-        self.assertIn(intents.compose("CONCEDE_PRESSURE", "anything we deal", "s"), intents.TEMPLATES["CONCEDE_PRESSURE"])
+        self.assertIn(intents.compose("NOPE", "", "s"), intents.TEMPLATES["MINIMAL"])      # unknown intent
+        self.assertIn(intents.compose("", "", "s"), intents.TEMPLATES["MINIMAL"])          # empty
+        self.assertIn(intents.compose(None, None, "s"), intents.TEMPLATES["MINIMAL"])
+        self.assertIn(intents.compose("CONCEDE_PRESSURE", "we split points", "s"), intents.TEMPLATES["CONCEDE_PRESSURE"])
 
 
 class TestRobustChat(unittest.TestCase):

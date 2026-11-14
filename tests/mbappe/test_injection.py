@@ -93,6 +93,7 @@ class TestMonitor(unittest.TestCase):
         self.assertEqual(m.pressure_count, 2)
         self.assertEqual(m.injection_count, 1)
         self.assertTrue(m.new_pressure)
+        m.consume()
         m.update(c)  # same chat again: nothing is counted twice
         self.assertEqual(m.pressure_count, 2)
         self.assertFalse(m.new_pressure)

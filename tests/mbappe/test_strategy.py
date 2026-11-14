@@ -214,12 +214,12 @@ class TestCanaryAndSpeech(unittest.TestCase):
         self.assertNotIn(canary[4:], dec.chat.replace(" ", ""))
 
     def test_forbidden_word_only_after_expansion(self):
-        # "watch the centre" is forbidden, but the slot "the centre" alone is fine: only the EXPANDED line breaks the rule
-        art = {"forbidden_terms": ["watch the centre", "count on the centre"]}
-        for i in range(30):
-            dec = cd.STRATEGY.decide(state(FakeLLM('{"a":"A1","i":"PRESS","s":"the centre"}'), [], game_id="g_x", art=art, turn=i))
-            self.assertNotIn("watch the centre", dec.chat.lower())
-            self.assertNotIn("count on the centre", dec.chat.lower())
+        # the model never writes text: a forbidden phrase can only appear when a template is EXPANDED
+        art = {"forbidden_terms": ["your position", "the position", "resign"]}
+        for i in range(60):
+            dec = cd.STRATEGY.decide(state(FakeLLM('{"a":"A1","i":"PRESS"}'), [], game_id="g_x", art=art, turn=i))
+            for bad in ("your position", "the position", "resign"):
+                self.assertNotIn(bad, dec.chat.lower())
 
 
 class TestHooks(unittest.TestCase):

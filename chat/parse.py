@@ -1,7 +1,8 @@
 """Robust parsing of the model's compact answer. Never raises, whatever the model returns.
 
 Expected answer (one JSON object, nothing else):
-    {"a": "<action>", "b": "<backup action>", "i": "<INTENT>", "r": "<REASON>", "s": "<slot, max ~40 chars>"}
+    {"a": "<action>", "b": "<backup action>", "i": "<INTENT>", "r": "<REASON>"}  ("s" is read but IGNORED: the model
+    never writes text for the opponent)
       a = the move we want to play (exactly as the rules write it)
       b = the second-best legal move (used if the guard rejects `a`: no second model call is needed)
       i = intent code (see intents.py)        s = optional slot text for the chat template

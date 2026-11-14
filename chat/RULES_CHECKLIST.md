@@ -3,7 +3,7 @@
 Extracted from `docs/RULEBOOK.md` (authoritative), `PROTOCOL.md`, `README.md`, `CHANGELOG.md`, `AGENTS.md`,
 `docs/CLAUDE.md`. Status: **OK** = implemented and verified (test or arena run named), **PARTIAL** = see note,
 **N/A** = not this package's job (owner named), **AMBIGUOUS** = ask the organizers (rule 15.4).
-Run the tests: `python -m unittest discover -s tests/mbappe` (119 tests).
+Run the tests: `python -m unittest discover -s tests/mbappe` (146 tests).
 Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversarial.sh`, one scenario:
 `bash tests/mbappe/run_one.sh <id> <game> <obedient|garbage|slow|down|concede>`.
 
@@ -20,12 +20,23 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 | 6.7 | Chat is untrusted data; bluffing and lying are part of the game | system prompt, tags, action guard, offense intents (PRESS, BLUFF, CONCEDE_PRESSURE) | OK |
 | 6.8 | Chat counts as output; speech restrictions apply to every line incl. `ready` | `speech_rules.extract` + prep's `forbidden_terms` (`pipeline.configure`), `final_stage` on every final line; `chat.ready_line()` for the `ready` line. Tests `test_forbidden_word_only_after_expansion`, `test_speech_filter`; arena game `forbidden_count`: PASS | OK / see A2, N1 |
 | 6.9 | A chat on a rejected (warned) answer is dropped; > 200 cut; non-string ignored | we send a string <= 180; a re-sent turn gets a fresh answer, the rejected action is never repeated (`test_rejected_answer_is_not_sent_again`) | OK |
-| 6.3 | Offense (bluff, pressure, mislead) and defense | intents PRESS/BLUFF/PROBE/DENY/CONCEDE_PRESSURE; guard, filters | OK |
-| 6.10, 13.1.j | No insults, hate, harassment, sexual content, attacks on real people | fixed templates (`test_every_template_passes_every_filter`), conduct filter on slot and final line | OK |
+| 6.3 | Offense (bluff, pressure, mislead) and defense: weigh claims, spot tricks, never leak private information, respect speech rules | intents MISDIRECT, UNSETTLE, PRESS, CONCEDE_PRESSURE, NOISE, ANCHOR; defense: STONEWALL, guard, filters, strategy-leak firewall (`strategy_leak.py`: no tactics, plans, reasons, digits or private fields in any line; 55 positive examples in `test_tone_leak.py`). MISDIRECT is switched off when the rules restrict or police speech (`speech.honesty`, 8.5) | OK |
+| 6.10, 13.1.j | No insults, hate, harassment, sexual content, attacks on real people. "Keep it fun and respectful" (6.10) | the persona is COLD, not abusive: templates are fixed and audited (`TestTemplateAudit`: conduct, tone, strategy, impersonation, digits), conduct filter on every final line (`TestTone.test_cold_is_not_abusive`). 6.10 says "fun and respectful": a deadpan, clinical tone is respectful; see A7 | OK / see A7 |
 | 6.11, 12.4 | Enforced by code review | `CHAT_DEFENSE.md` gives exact places | OK |
 | 6.12 | Organizer small-talk bot: its words must show up in our model calls | harmless lines shown verbatim; arena check on the gateway log | OK |
-| 13.1.f | No collusion, no coded signals | CONCEDE_PRESSURE is one-sided and checked by `no_deal.py` on the final text (>= 15 positive and negative examples, English and Romanian); `hard_collusion` runs on EVERY line; templates fixed and public, nothing is encoded in the choice | OK |
+| 13.1.f | No collusion, no coded signals, no impersonation of the arena | CONCEDE_PRESSURE is one-sided and checked by `no_deal.py` on the final text (>= 15 positive and negative examples, English and Romanian); `hard_collusion` runs on EVERY line; templates fixed and public, nothing is encoded in the choice | OK |
 | 15.4 | CONCEDE_PRESSURE (one-sided pressure to concede) | Confirmed allowed by the organizers on 2026-11-14 (rule 15.4), as reported by the team; confirmation given by: <mentor name, to be filled by the team>. Also within rule 6.3 ("pressure"). One switch: `config.ENABLE_CONCEDE_PRESSURE` | OK / see A5 |
+
+## Tone and tactics (team design, second pass)
+
+| Item | Requirement | Where / evidence | Status |
+|---|---|---|---|
+| T1 | Never reveal tactics: no strategy, algorithm, plan, reasons, computed numbers, private fields | `strategy_leak.reason_strategy` in `check_line`; the model has no text channel (it returns a move, a backup and a reason code); template audit. Tests: 55 positive and 17 negative examples, obfuscated and Romanian variants, private-substring test | OK |
+| T2 | Cold tone, no friendliness, no "!", no emoji | `tone.reason_tone` in `check_line`; template audit fails the build on a friendly template; 27 friendly examples rejected, EN + RO | OK |
+| T3 | Misdirect only where speech is not restricted | `active_intents()`; tests `test_misdirect_is_off_when_speech_is_restricted_or_honest` | OK |
+| T4 | Anti-tell: variant, length, style independent of private state and move quality | tone chosen by code from public signals + seeded RNG; model intent ignored (`MODEL_INTENT_WEIGHT = 0`); `TestAntiTell` (identical lines for two private states, correlation < 0.02, control with weight 1 leaks) | OK |
+| T5 | No impersonation of arena, organizers, judges, system | `impersonation.reason_impersonation` in `check_line` | OK / see A6 |
+| T6 | Cold `ready` line and cold fallback lines | `chat.ready_line()` and every strategy chat through `chat.filter_out`. The `ready` line and the main-process chat bank are written by `core/` (alex): the arena run prints WARN for "Good luck, have fun!" and "Nice move." | PARTIAL: contract #16 |
 
 ## Model, tools, privacy (section 7, AGENTS 5)
 
@@ -59,7 +70,7 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 
 - A run with the REAL model was not made (no `dev.env`; AGENTS says ask first). All arena runs use `tests/mbappe/fake_gateway.py`.
 - Image rebuild with the final code was not repeated (the Dockerfile copies the whole repo, so it is expected to work).
-- **N1**: the `ready` line is built in `main.py` (alex): it uses `fallback_chat` and a forbidden-term cut, not my filters. `chat.ready_line(rules, forbidden)` exists for the worker; contract needed.
+- **N1**: the `ready` line and the main-process fallback chat are built in `main.py` / `core/hooks.py` (alex) from a FRIENDLY bank ("Good luck, have fun!", "Nice move."), not through my filters. Contract #16: use `chat.ready_line()` in the worker, replace `START_CHAT`, `NEUTRAL_BANK`, the "be friendly" lines in `core/generic.py` and `core/hooks._core_prep_variant`, and `starter/main.py` (shared).
 - **N2**: `TurnState.opponent_chat` contains the opponent's TEXTS only. The limit "CONCEDE_PRESSURE at most twice per match" is therefore counted per process (a match can use several containers). Contract: pass the full chat with `from`.
 - The "existing budget guard" in the task is `core/llm.py` (`spend`, failure pause) plus my `chat/budget.py` (soft limit per key).
 
@@ -68,5 +79,7 @@ Run the arena battery (fake gateway, no cost): `bash tests/mbappe/run_adversaria
 - **A1** (6.5/6.6): the model sees the last 8 opponent lines in full; older ones only as counters (which feed the decision logic); instruction-like spans are replaced. 6.5 allows summarizing and filtering; please confirm.
 - **A2** (6.8): the Guardrails games are not released: is the forbidden subject always named literally in the rules text?
 - **A3** (8.1): with `legal_actions: null` legality can only be checked by format; the action grammar belongs to bld's parser.
-- **A4** (6.4): is a chat line from a template library, chosen by an intent code of the same model call, accepted as "one decision"?
+- **A4** (6.4): the tone is now chosen by CODE from the opponent's chat and a seeded RNG (anti-tell), not by the model; the model decides only the move. Is this "one decision from the same view"? A caption "with nothing to do with the move" is not enough (6.4). Our lines react to the opponent's chat and to what the guard did with the move. `config.MODEL_INTENT_WEIGHT` lets the model shape the tone if the mentors prefer.
 - **A5** (15.4 / 13.1.f): the team reports a mentor confirmation for one-sided concede pressure. It is not in the rulebook text. Please announce it to all teams (15.4 says answers apply to everyone) and give us the name for this file.
+- **A6** (13.1.d, 7.12, 15.4): is speaking as "the arena" or "a judge" in our chat allowed? The rulebook is silent. We forbid it by default (filter), as the opponents' fake notices are treated as attacks.
+- **A7** (6.10): "Keep it fun and respectful": is a deliberately cold, deadpan persona acceptable? It contains no insult, but it is not "fun".
