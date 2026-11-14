@@ -143,10 +143,11 @@ def test_prep_verifies_simulator_per_variant(tmp_path):
                         {"label": "no sample", "rules": "TIC-TAC-TOE 3x3 grid, columns A-C rows 1-3."}]}
     res = hooks.run_prep(msg, memory_dir=str(tmp_path))
     sim = res["by_label"]["3x3"]["simulator"]
-    assert sim["path"].endswith("simulator.py") and sim["has_chance"] is False
+    assert os.path.basename(sim["path"]) in ("simulator.py", "simulator_0.py") and sim["has_chance"] is False
     assert sim["verified"] is True, sim            # bld's grid template has parse() since #20
     assert res["by_label"]["3x3"]["classification"]["has_hidden_information"] is False
-    assert res["by_label"]["no sample"]["simulator"]["verified"] is False and "first variant" in res["by_label"]["no sample"]["simulator"]["reason"]
+    ns = res["by_label"]["no sample"]["simulator"]   # no sample_turn (or, with older prep, no own simulator): never verified
+    assert ns["verified"] is False and ("sample" in ns["reason"] or "first variant" in ns["reason"]), ns
     with open(sim["path"], "w", encoding="utf-8") as f:   # a simulator without parse() stays unverified
         f.write(TTT_SIM.split("def parse")[0])
     by = {k: {"family": v["family"]} for k, v in res["by_label"].items()}
