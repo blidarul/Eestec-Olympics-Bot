@@ -58,6 +58,7 @@ Verified end to end by `python tests/alex/smoke_tools.py` (pass/fail table on st
 | `nim_analysis` | any | Nim / subtraction games, normal or misere | `{"heaps":[3,4,5]}` -> nim_sum 2, `winning_moves:[{"heap":0,"remove":2}]` |
 | `extract_numbers` | any | Numbers with surrounding words | `{"text":"Round 3 of 10. You have 42 points"}` -> values 3, 10, 42 with `before`/`after` words |
 | `extract_grid` | any | Find the board block in an observation | `{"text":"Board:\n  A B C\n1 X . O\n..."}` -> `{"rows":["X.O",".X.","O.."],"coord_style":"A1"}` |
+| `deduce_next` | guessing | Secret + feedback (pegs exact/partial, per-position green/yellow, higher/lower, distance): filter candidates, best next guess (entropy or minimax), never repeats | `{"model":"pegs","params":{"length":4,"alphabet":"123456"},"history":[{"guess":"1122","feedback":[1,1]}]}` -> `{"candidates":..,"next_guess_text":"1213","certain":false}`; library: `solvers.deduce.best_guess(candidates, pool, feedback_fn, mode, deadline)` |
 | `extract_cards` | any | Normalise cards to rank + suit | `{"text":"Ace of Spades, 10h, KD"}` -> A/S, T/H, K/D |
 | `extract_history` | any | Parse "Round N: you guessed X -> fb" lines | two lines -> `[{"round":1,"actor":"you","value":50,"feedback":"higher"},...]` |
 | `monte_carlo_estimate` | any | **harness-only**: sample until deadline | `{"sampler": fn(rng)->bool/number, "max_samples":2000}` -> mean, stderr, n |

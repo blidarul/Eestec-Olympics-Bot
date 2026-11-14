@@ -12,6 +12,7 @@ _TOOL_MODULES = (
     "solvers.basic.probability",
     "solvers.basic.gametheory",
     "solvers.basic.textparse",
+    "solvers.deduce",
 )
 
 for _name in _TOOL_MODULES:

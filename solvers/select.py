@@ -27,14 +27,15 @@ HINTS = (
     (r"\b(grid|board|cell|row|column)\b", ("extract_grid", "grid_bfs")),
     (r"\b(payoff|simultaneous|matrix)\b", ("matrix_nash", "best_response")),
     (r"\b(heap|pile|nim)\b", ("nim_analysis",)),
-    (r"\b(guess|higher|lower|secret)\b", ("binary_search_next", "extract_history")),
+    (r"\b(guess|higher|lower|secret)\b", ("binary_search_next", "deduce_next", "extract_history")),
+    (r"\b(pegs?|bulls?|cows?|mastermind|wordle|green|yellow|digits?|letters?)\b", ("deduce_next", "extract_history")),
 )
 
 GENERAL_ORDER = ("expected_value", "best_option", "combinatorics", "bayes_update", "extract_numbers",
                  "binomial_tail", "hypergeometric", "dice_sum_distribution", "matrix_nash", "best_response",
                  "graph_shortest_path", "extract_grid", "extract_history", "extract_cards", "nim_analysis",
                  "sample_action", "count_hands", "abstain_threshold", "graph_reachable", "graph_topo_sort",
-                 "graph_components", "graph_dfs_order")
+                 "graph_components", "graph_dfs_order", "deduce_next")
 
 
 def _log(msg):

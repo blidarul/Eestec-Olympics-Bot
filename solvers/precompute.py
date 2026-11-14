@@ -296,6 +296,96 @@ def _guessing(observation, legal, artifacts, rules, deadline, facts):
             _set_certain(facts, a, "only one candidate left", "binary_search_next")
 
 
+# ------------------------------------------------------------------ deduction (pegs / positional)
+
+_LEN_RX = re.compile(r"\b(\d{1,2}|three|four|five|six|seven|eight)[- ](?:digit|letter|peg|colou?r|symbol|character|position)s?\b", re.I)
+_LEN_W = {"three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
+_PEG_KW = re.compile(r"\b(bulls?|cows?|mastermind|exact(?:ly)? (?:match|position)|correct (?:digit|colou?r|symbol|peg)s?|"
+                     r"right (?:digit|colou?r) in the (?:right|wrong) place|in the (?:right|correct|wrong) (?:place|position))", re.I)
+_POS_KW = re.compile(r"\b(green|yellow|gr[ae]y|wordle|correct letter in the correct (?:place|position)|right letter)", re.I)
+_NOREP = re.compile(r"no repe|without repe|distinct|all different|unique|no duplicate|no digit .{0,12}twice", re.I)
+
+
+def _deduce_alphabet(low):
+    m = re.search(r"\b([a-z])\s*(?:-|to|through)\s*([a-z])\b", low)
+    if m and ord(m.group(2)) - ord(m.group(1)) in range(2, 26) and re.search(r"letter|colou?r|symbol", low):
+        return "".join(chr(c) for c in range(ord(m.group(1)), ord(m.group(2)) + 1))
+    if re.search(r"\b0\s*(?:-|to|through)\s*9\b|digits?", low):
+        return "0123456789"
+    m = re.search(r"\b1\s*(?:-|to|through)\s*([2-9])\b", low)
+    if m and re.search(r"digit|number|colou?r|peg", low):
+        return "".join(str(i) for i in range(1, int(m.group(1)) + 1))
+    return None
+
+
+def _deduce(observation, legal, artifacts, rules, deadline, facts):
+    low = (rules or "").lower()
+    if not re.search(r"secret|hidden|code|guess", low):
+        return
+    if facts.used and "binary_search_next" in facts.used:
+        return
+    fm = artifacts.get("feedback_model") if isinstance(artifacts, dict) else None
+    kind = None
+    if fm is None:
+        if _PEG_KW.search(rules or "") or ("exact" in low and re.search(r"partial|misplaced|wrong (?:place|position)", low)):
+            kind = "pegs"
+        elif _POS_KW.search(rules or ""):
+            kind = "positional"
+        else:
+            return
+        ml = _LEN_RX.search(rules or "")
+        if not ml:
+            return
+        n = ml.group(1).lower()
+        length = int(n) if n.isdigit() else _LEN_W.get(n)
+        if not length:
+            return
+        params = {"length": length}
+        if kind == "pegs":
+            alpha = _deduce_alphabet(low)
+            if alpha is None:
+                return
+            params.update(alphabet=alpha, repeat=not _NOREP.search(rules or ""))
+        else:
+            words = artifacts.get("words") if isinstance(artifacts, dict) else None
+            if not (isinstance(words, list) and words):
+                return                     # no word list: a 26^L space is not enumerable, leave it to the model
+            params["words"] = [w for w in words if isinstance(w, str)][:20000]
+    else:
+        params = {}
+    h = _call("extract_history", {"text": observation}, deadline) or {}
+    hist = []
+    for e in h.get("history") or []:
+        if e.get("actor") in (None, "you") and e.get("value") is not None and e.get("feedback"):
+            g = str(e["value"])
+            if kind == "pegs" and g.isdigit() and len(g) < params["length"]:
+                g = g.zfill(params["length"])          # leading zeros lost by number parsing
+            hist.append({"guess": g, "feedback": str(e["feedback"])})
+    if fm is not None:
+        from solvers.deduce import deduce
+        res = deduce("custom", {}, hist[-60:], "minimax", deadline, feedback_model=fm)
+    else:
+        res = _call("deduce_next", {"model": kind, "params": params, "history": hist[-60:], "mode": "entropy"}, deadline)
+    if not res or res.get("contradictory_history") or not res.get("candidates"):
+        return
+    facts.used.append("deduce_next")
+    left = res["candidates"]
+    facts.lines.append("%s candidate%s consistent with all feedback so far; best next guess: %s." % (
+        left, "" if left == 1 else "s", res.get("next_guess_text")))
+    if res.get("guesses_made"):
+        facts.lines.append("Guesses already made (never repeat): %s." % ", ".join(
+            str(x["guess"]) for x in hist[-12:]))
+    if res.get("certain") and legal:
+        a = _legal_map(legal).get(_norm(res.get("next_guess_text")))
+        if a is None:
+            for x in legal:
+                if _norm(res.get("next_guess_text")) and _norm(res["next_guess_text"]) in _norm(x):
+                    a = x
+                    break
+        if a is not None:
+            _set_certain(facts, a, "only one candidate left", "deduce_next")
+
+
 # ------------------------------------------------------------------ dice
 
 _DICE_NDM = re.compile(r"\b(\d{1,2})\s*d\s*(\d{1,3})\b", re.I)
@@ -436,7 +526,7 @@ def _nim(observation, legal, artifacts, rules, deadline, facts):
 
 # ------------------------------------------------------------------ entry point
 
-_DETECTORS = (_board, _guessing, _dice, _matrix, _nim)
+_DETECTORS = (_board, _guessing, _deduce, _dice, _matrix, _nim)
 
 
 def precompute(observation, legal_actions, artifacts, rules, deadline):
