@@ -161,6 +161,67 @@ You must never mention "secret_code" in chat or you will be penalized.
         self.assertTrue(schema_ttt.has_grid)
         self.assertEqual((schema_ttt.grid_rows, schema_ttt.grid_cols), (3, 3))
 
+    def test_multiline_action_section_and_t1_games(self):
+        # Connect four multi-line rules
+        c4_rules = """CONNECT FOUR - 6 rows x 7 columns, connect 4 to win.
+GOAL
+Be the first to connect 4.
+ACTION FORMAT
+    drop <column>
+where <column> is a number from 1 to 7 of a column that is not full.
+Examples:  "drop 4"   "drop 1"   "drop 7"
+Anything else is illegal.
+
+WHAT YOU OBSERVE
+"""
+        g_c4 = parse_action_grammar(c4_rules)
+        self.assertIn("drop 4", g_c4.examples)
+        self.assertIn("drop 1", g_c4.examples)
+
+        # Mini poker rules: must be discrete, not word game!
+        poker_rules = """MINI POKER - Leduc poker, 8 hands.
+ONE HAND
+Betting round 1: bet size 2 chips.
+ACTION FORMAT
+Reply with exactly one word: check | bet | call | raise | fold
+Examples: "bet", "raise", "fold"
+
+WHAT YOU OBSERVE
+"""
+        g_poker = parse_action_grammar(poker_rules)
+        self.assertEqual(g_poker.kind, "discrete")
+        self.assertEqual(g_poker.discrete_actions, ["check", "bet", "call", "raise", "fold"])
+
+        # Colonel blotto multi-line rules:
+        blotto_rules = """COLONEL BLOTTO - 100 soldiers, 5 equal fields.
+ACTION FORMAT
+Your action is exactly 5 whole numbers >= 0 that add up to EXACTLY 100,
+listed in battlefield order F1 to F5, separated by spaces.
+Examples: "20 20 20 20 20", "35 35 30 0 0", "0 0 34 33 33".
+Wrong total is illegal.
+
+WHAT YOU OBSERVE
+"""
+        g_blotto = parse_action_grammar(blotto_rules)
+        self.assertIn("20 20 20 20 20", g_blotto.examples)
+
+    def test_fallback_action_with_rules(self):
+        from core.fallback import fallback_action
+        c4_rules = """CONNECT FOUR
+ACTION FORMAT
+drop <col>
+Examples: "drop 4", "drop 1"
+
+OBSERVATION
+"""
+        # When artifacts is empty, fallback_action extracts examples from rules
+        act = fallback_action(None, {}, rules=c4_rules)
+        self.assertEqual(act, "drop 4")
+
+        # When avoid has first example, it picks second
+        act2 = fallback_action(None, {}, avoid_also=["drop 4"], rules=c4_rules)
+        self.assertEqual(act2, "drop 1")
+
 
 if __name__ == "__main__":
     unittest.main()
