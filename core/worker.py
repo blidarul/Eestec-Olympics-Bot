@@ -102,6 +102,21 @@ def _worker_main(conn):
                 why = f"{getattr(strategy, 'name', '?')} raised -> generic"
                 d = _generic_decide(state, fallback_strategy)
                 strategy = _generic_strategy() or fallback_strategy
+            # Chat persona (contract #31): reply to the opponent's message with chat.reply_line
+            try:
+                import chat
+                art = state.artifacts if isinstance(state.artifacts, dict) else {}
+                r_line = chat.reply_line(
+                    state.opponent_chat,
+                    state.turn,
+                    state.rules,
+                    art.get("forbidden_terms"),
+                    art.get("family", "")
+                )
+                if r_line:
+                    d.chat = r_line
+            except Exception:
+                pass
             info = dict(getattr(d, "info", None) or {})
             src = d.source if d.source in ("strategy", "model", "fallback") else "fallback"
             tool = info.get("tool") or {"model": "model", "strategy": "strategy", "fallback": "fallback"}[src]

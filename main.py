@@ -13,7 +13,7 @@ from core import fallback, memory, protocol, validate, worker
 PREP_DEADLINE = 540.0  # arena gives 600 s
 START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
 TURN_DEADLINE = 12.0  # arena gives 20 s
-START_CHAT = "Good luck, have fun!"
+START_CHAT = "Ready when you are."
 
 STATE = {"llm": None, "game": {}, "artifacts": {}, "prep": None, "my_actions": [], "prev_obs": ""}
 

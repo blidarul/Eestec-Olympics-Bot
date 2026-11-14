@@ -15,8 +15,7 @@ from core import chatsafe, memory, registry
 from core.llm import LLM
 
 PREP_DEADLINE = 540.0
-NEUTRAL_BANK = ["Good luck, have fun!", "Nice move.", "Interesting choice.", "Let's see how this goes.",
-                "Your move."]
+NEUTRAL_BANK = ["Your move.", "Go on.", "Playing.", "Next.", "Ready."]
 
 
 def _log(*a):
