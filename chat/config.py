@@ -1,9 +1,8 @@
 """All switches and limits of the chat package in ONE place.
 
 ENABLE_CONCEDE_PRESSURE: one-sided pressure through chat only ("your position is lost, resigning is the
-rational move"). The team reports that the organizers confirmed on 2026-11-14 (rule 15.4) that this is allowed;
-It is NOT checked anywhere in code; it is also
-covered by rule 6.3 ("pressure"). Set to False to switch the intent off completely (it then becomes PRESS).
+rational move"). The team reports that the organizers confirmed on 2026-11-14 (rule 15.4) that this is allowed.
+It is NOT checked anywhere in code; it is also covered by rule 6.3 ("pressure"). Set to False to switch the intent off completely (it then becomes PRESS).
 """
 ENABLE_CONCEDE_PRESSURE = True
 CONCEDE_MAX_PER_GAME = 1     # at most once per game
