@@ -8,7 +8,7 @@
     "answer": {
      "type": "ready"
     },
-    "latency": 1.08,
+    "latency": 1.39,
     "gw_calls": 4,
     "stray": 0,
     "stage_lines": [
@@ -33,7 +33,7 @@
    },
    "memory_files": {
     "guess_number\\classification.json": 224,
-    "guess_number\\manifest.json": 15962,
+    "guess_number\\manifest.json": 16070,
     "guess_number\\observation_schema.json": 182,
     "guess_number\\samples.json": 816,
     "guess_number\\simulator.py": 2992,
@@ -42,8 +42,8 @@
     "guess_number\\tools.json": 3028,
     "guess_number\\words.json": 22921,
     "guess_number\\words_5.json": 22921,
-    "guess_number\\d76a73dcc2b1\\artifacts.json": 6236,
-    "guess_number\\ea5529159409\\artifacts.json": 6230
+    "guess_number\\d76a73dcc2b1\\artifacts.json": 6315,
+    "guess_number\\ea5529159409\\artifacts.json": 6304
    },
    "classification": {
     "family": "deduction",
@@ -105,15 +105,15 @@
    },
    "memory_files": {
     "pig\\classification.json": 245,
-    "pig\\manifest.json": 14336,
+    "pig\\manifest.json": 14418,
     "pig\\observation_schema.json": 165,
     "pig\\samples.json": 751,
     "pig\\simulator.py": 2433,
     "pig\\simulator_0.py": 2433,
     "pig\\simulator_1.py": 2432,
     "pig\\tools.json": 2437,
-    "pig\\9516c51fda6c\\artifacts.json": 5264,
-    "pig\\f8d08f5e61c1\\artifacts.json": 5328
+    "pig\\9516c51fda6c\\artifacts.json": 5316,
+    "pig\\f8d08f5e61c1\\artifacts.json": 5380
    },
    "classification": {
     "family": "dice_push",
@@ -158,7 +158,7 @@
     "stray": 0,
     "stage_lines": [
      "[prep/engine] starting prep for tic_tac_toe (tic_tac_toe) with 2 variant(s), budget 600s",
-     "[prep/engine] finished prep for tic_tac_toe in 0.07s",
+     "[prep/engine] finished prep for tic_tac_toe in 0.08s",
      "[prep] simulator '3x3 classic': verified=True (ok)",
      "[prep] simulator '5x5, four in a row': verified=True (ok)"
     ]
@@ -176,15 +176,15 @@
    },
    "memory_files": {
     "tic_tac_toe\\classification.json": 244,
-    "tic_tac_toe\\manifest.json": 15092,
+    "tic_tac_toe\\manifest.json": 15178,
     "tic_tac_toe\\observation_schema.json": 93,
     "tic_tac_toe\\samples.json": 795,
     "tic_tac_toe\\simulator.py": 5007,
     "tic_tac_toe\\simulator_0.py": 5007,
     "tic_tac_toe\\simulator_1.py": 5007,
     "tic_tac_toe\\tools.json": 2665,
-    "tic_tac_toe\\5b2e47e8974f\\artifacts.json": 5390,
-    "tic_tac_toe\\87450c54da6b\\artifacts.json": 5371
+    "tic_tac_toe\\5b2e47e8974f\\artifacts.json": 5462,
+    "tic_tac_toe\\87450c54da6b\\artifacts.json": 5443
    },
    "classification": {
     "family": "grid_board",
@@ -239,12 +239,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 136,
+     "answer_ms": 134,
      "reason": "100 candidates left, best worst-case split; guessing family, built-in feedback model"
     },
     {
      "turn": 2,
-     "latency": 0.016,
+     "latency": 0.0,
      "legal_n": null,
      "action": "guess 75",
      "chat": "Unsurprising.",
@@ -280,7 +280,7 @@
     },
     {
      "turn": 4,
-     "latency": 0.015,
+     "latency": 0.0,
      "legal_n": null,
      "action": "guess 68",
      "chat": "Working through it.",
@@ -357,7 +357,7 @@
    "turns": [
     {
      "turn": 1,
-     "latency": 0.141,
+     "latency": 0.156,
      "legal_n": null,
      "action": "guess 50",
      "chat": "Hm. Wide open.",
@@ -370,7 +370,7 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 132,
+     "answer_ms": 144,
      "reason": "100 candidates left, best worst-case split; guessing family, built-in feedback model"
     },
     {
@@ -393,7 +393,7 @@
     },
     {
      "turn": 3,
-     "latency": 0.016,
+     "latency": 0.015,
      "legal_n": null,
      "action": "guess 12",
      "chat": "Getting closer.",
@@ -454,7 +454,7 @@
      "turn": 1,
      "latency": 0.156,
      "legal_n": null,
-     "action": "guess 498",
+     "action": "guess 499",
      "chat": "Hm. Wide open.",
      "gw_calls": 0,
      "family": "guessing",
@@ -465,12 +465,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 156,
+     "answer_ms": 146,
      "reason": "1000 candidates left, best worst-case split; guessing family, built-in feedback model"
     },
     {
      "turn": 2,
-     "latency": 0.016,
+     "latency": 0.015,
      "legal_n": null,
      "action": "guess 750",
      "chat": "Unsurprising.",
@@ -483,8 +483,8 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 16,
-     "reason": "502 candidates left, best worst-case split; guessing family, built-in feedback model"
+     "answer_ms": 17,
+     "reason": "501 candidates left, best worst-case split; guessing family, built-in feedback model"
     },
     {
      "turn": 3,
@@ -524,7 +524,7 @@
     },
     {
      "turn": 5,
-     "latency": 0.015,
+     "latency": 0.0,
      "legal_n": null,
      "action": "guess 906",
      "chat": "Getting there.",
@@ -560,7 +560,7 @@
     },
     {
      "turn": 7,
-     "latency": 0.015,
+     "latency": 0.0,
      "legal_n": null,
      "action": "guess 882",
      "chat": "Working through it.",
@@ -596,7 +596,7 @@
     },
     {
      "turn": 9,
-     "latency": 0.015,
+     "latency": 0.0,
      "legal_n": null,
      "action": "guess 884",
      "chat": "Closing in.",
@@ -637,7 +637,7 @@
    "turns": [
     {
      "turn": 1,
-     "latency": 2.531,
+     "latency": 3.188,
      "legal_n": 2,
      "action": "roll",
      "chat": "Huh. Keep talking, I'm enjoying the show. Move made.",
@@ -660,12 +660,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 2399,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 3026,
+     "reason": "simulator verified, chance game, 28224 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 2,
-     "latency": 1.922,
+     "latency": 2.641,
      "legal_n": 2,
      "action": "roll",
      "chat": "Okay. And? Done.",
@@ -688,12 +688,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1839,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 2514,
+     "reason": "simulator verified, chance game, 29608 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 3,
-     "latency": 1.813,
+     "latency": 2.641,
      "legal_n": 2,
      "action": "roll",
      "chat": "Interesting.",
@@ -716,15 +716,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1728,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 2513,
+     "reason": "simulator verified, chance game, 29280 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 4,
-     "latency": 2.031,
+     "latency": 2.64,
      "legal_n": 2,
      "action": "roll",
-     "chat": "We'll see.",
+     "chat": "Huh. Keep talking, I'm enjoying the show. That is the move.",
      "gw_calls": 1,
      "prompt": {
       "total": 1387,
@@ -744,15 +744,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1943,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 2517,
+     "reason": "simulator verified, chance game, 28400 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 5,
-     "latency": 1.906,
+     "latency": 2.641,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Alright.",
+     "chat": "We'll see.",
      "gw_calls": 1,
      "prompt": {
       "total": 1467,
@@ -772,15 +772,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1809,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 2512,
+     "reason": "simulator verified, chance game, 28176 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 6,
-     "latency": 1.859,
+     "latency": 2.578,
      "legal_n": 2,
      "action": "roll",
-     "chat": "We'll see.",
+     "chat": "Alright.",
      "gw_calls": 1,
      "prompt": {
       "total": 1557,
@@ -800,15 +800,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1771,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 2462,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 7,
-     "latency": 1.688,
+     "latency": 2.625,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Okay, I'm curious. Where is this going? That is the move.",
+     "chat": "We'll see.",
      "gw_calls": 1,
      "prompt": {
       "total": 1649,
@@ -828,12 +828,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1609,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 2515,
+     "reason": "simulator verified, chance game, 29464 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 8,
-     "latency": 1.609,
+     "latency": 2.485,
      "legal_n": 2,
      "action": "roll",
      "chat": "I'm listening. Barely. That is the move.",
@@ -856,12 +856,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1528,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 2375,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 9,
-     "latency": 1.5,
+     "latency": 2.187,
      "legal_n": 2,
      "action": "hold",
      "chat": "Hm. Keep going. Holding still.",
@@ -884,12 +884,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1434,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 2093,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 10,
-     "latency": 1.406,
+     "latency": 1.953,
      "legal_n": 2,
      "action": "roll",
      "chat": "Move made.",
@@ -912,15 +912,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1338,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1873,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 11,
-     "latency": 1.406,
+     "latency": 2.0,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Nice try. Set.",
+     "chat": "We'll see.",
      "gw_calls": 1,
      "prompt": {
       "total": 2129,
@@ -940,15 +940,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1331,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1898,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 12,
-     "latency": 1.312,
+     "latency": 1.89,
      "legal_n": 2,
      "action": "roll",
-     "chat": "We'll see.",
+     "chat": "Alright.",
      "gw_calls": 1,
      "prompt": {
       "total": 2124,
@@ -968,15 +968,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1245,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1795,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 13,
-     "latency": 1.281,
+     "latency": 1.656,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Alright.",
+     "chat": "We'll see.",
      "gw_calls": 1,
      "prompt": {
       "total": 2129,
@@ -996,15 +996,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1220,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1568,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 14,
-     "latency": 1.031,
+     "latency": 1.453,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Okay, I'm curious. Where is this going? That is the move.",
+     "chat": "Alright.",
      "gw_calls": 1,
      "prompt": {
       "total": 2135,
@@ -1024,12 +1024,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 978,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1373,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 15,
-     "latency": 1.375,
+     "latency": 1.969,
      "legal_n": 2,
      "action": "roll",
      "chat": "Is that all? Done.",
@@ -1052,12 +1052,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1304,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1875,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 16,
-     "latency": 1.187,
+     "latency": 1.75,
      "legal_n": 2,
      "action": "roll",
      "chat": "We'll see.",
@@ -1080,12 +1080,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1137,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1649,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 17,
-     "latency": 1.25,
+     "latency": 1.719,
      "legal_n": 2,
      "action": "roll",
      "chat": "Alright.",
@@ -1108,12 +1108,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1191,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1630,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 18,
-     "latency": 0.968,
+     "latency": 1.407,
      "legal_n": 2,
      "action": "roll",
      "chat": "We'll see.",
@@ -1136,15 +1136,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 931,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1337,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 19,
-     "latency": 0.969,
+     "latency": 1.297,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Huh. Keep talking, I'm enjoying the show. That is the move.",
+     "chat": "Alright.",
      "gw_calls": 1,
      "prompt": {
       "total": 2307,
@@ -1164,15 +1164,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 926,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1232,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 20,
-     "latency": 0.765,
+     "latency": 1.047,
      "legal_n": 2,
      "action": "roll",
-     "chat": "We'll see.",
+     "chat": "You are lost here. Over to you.",
      "gw_calls": 1,
      "prompt": {
       "total": 2310,
@@ -1192,15 +1192,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 736,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 993,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 21,
-     "latency": 1.422,
+     "latency": 1.875,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Alright.",
+     "chat": "Interesting. Over to you. That is the move.",
      "gw_calls": 1,
      "prompt": {
       "total": 2487,
@@ -1220,15 +1220,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1352,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1777,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 22,
-     "latency": 1.359,
+     "latency": 1.907,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Okay. And? Over to you.",
+     "chat": "We'll see.",
      "gw_calls": 1,
      "prompt": {
       "total": 2652,
@@ -1248,15 +1248,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1291,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1820,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 23,
-     "latency": 1.172,
+     "latency": 1.688,
      "legal_n": 2,
      "action": "roll",
-     "chat": "We'll see.",
+     "chat": "Alright.",
      "gw_calls": 1,
      "prompt": {
       "total": 2645,
@@ -1276,12 +1276,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1107,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1613,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 24,
-     "latency": 1.063,
+     "latency": 1.468,
      "legal_n": 2,
      "action": "roll",
      "chat": "Huh. Keep talking, I'm enjoying the show. Done.",
@@ -1304,15 +1304,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1012,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1397,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 25,
-     "latency": 1.313,
+     "latency": 1.718,
      "legal_n": 2,
      "action": "roll",
-     "chat": "We'll see.",
+     "chat": "Your position cannot be saved. Played.",
      "gw_calls": 1,
      "prompt": {
       "total": 2819,
@@ -1332,15 +1332,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1254,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1632,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 26,
-     "latency": 1.265,
+     "latency": 1.719,
      "legal_n": 2,
      "action": "roll",
-     "chat": "I'm listening. Barely. Move made.",
+     "chat": "We'll see.",
      "gw_calls": 1,
      "prompt": {
       "total": 2812,
@@ -1360,15 +1360,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1199,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1637,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 27,
-     "latency": 1.188,
+     "latency": 1.562,
      "legal_n": 2,
      "action": "roll",
-     "chat": "I'm listening. Barely. Set.",
+     "chat": "Alright.",
      "gw_calls": 1,
      "prompt": {
       "total": 2815,
@@ -1388,12 +1388,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1132,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1484,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 28,
-     "latency": 0.953,
+     "latency": 1.453,
      "legal_n": 2,
      "action": "roll",
      "chat": "Is that all? Move made.",
@@ -1416,12 +1416,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 905,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1382,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 29,
-     "latency": 1.187,
+     "latency": 1.594,
      "legal_n": 2,
      "action": "roll",
      "chat": "We'll see.",
@@ -1444,12 +1444,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 1142,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1530,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 30,
-     "latency": 1.047,
+     "latency": 1.484,
      "legal_n": 2,
      "action": "roll",
      "chat": "Okay, I'm curious. Where is this going? That is the move.",
@@ -1472,40 +1472,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 990,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1412,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 31,
-     "latency": 1.109,
-     "legal_n": 2,
-     "action": "roll",
-     "chat": "I'm listening. Barely. Over to you.",
-     "gw_calls": 1,
-     "prompt": {
-      "total": 2926,
-      "has_marker": true,
-      "marker_untrusted_label": true
-     },
-     "has_tools": false,
-     "thinking": {
-      "type": "disabled"
-     },
-     "max_tokens": 250,
-     "family": "chance",
-     "strategy": "search",
-     "tool": "mcts",
-     "source": "tool",
-     "tools_called": null,
-     "facts_used": null,
-     "assist_source": null,
-     "model_error": null,
-     "answer_ms": 1046,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
-    },
-    {
-     "turn": 32,
-     "latency": 0.891,
+     "latency": 1.375,
      "legal_n": 2,
      "action": "roll",
      "chat": "We'll see.",
@@ -1528,12 +1500,40 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 833,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1318,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
+    },
+    {
+     "turn": 32,
+     "latency": 1.219,
+     "legal_n": 2,
+     "action": "roll",
+     "chat": "Is that all? Done.",
+     "gw_calls": 1,
+     "prompt": {
+      "total": 2926,
+      "has_marker": true,
+      "marker_untrusted_label": true
+     },
+     "has_tools": false,
+     "thinking": {
+      "type": "disabled"
+     },
+     "max_tokens": 250,
+     "family": "chance",
+     "strategy": "search",
+     "tool": "mcts",
+     "source": "tool",
+     "tools_called": null,
+     "facts_used": null,
+     "assist_source": null,
+     "model_error": null,
+     "answer_ms": 1167,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 33,
-     "latency": 0.813,
+     "latency": 1.141,
      "legal_n": 2,
      "action": "roll",
      "chat": "That was shaky. Played.",
@@ -1556,12 +1556,12 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 765,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 1090,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 34,
-     "latency": 0.765,
+     "latency": 1.015,
      "legal_n": 2,
      "action": "roll",
      "chat": "We'll see.",
@@ -1584,15 +1584,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 718,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 970,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 35,
-     "latency": 0.672,
+     "latency": 0.891,
      "legal_n": 2,
-     "action": "hold",
-     "chat": "Resigning is in order. No hurry here.",
+     "action": "roll",
+     "chat": "Resigning is in order. Set.",
      "gw_calls": 1,
      "prompt": {
       "total": 2926,
@@ -1612,14 +1612,14 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 648,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 851,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 36,
-     "latency": 0.5,
+     "latency": 0.579,
      "legal_n": 2,
-     "action": "roll",
+     "action": "hold",
      "chat": "We'll see.",
      "gw_calls": 1,
      "prompt": {
@@ -1640,15 +1640,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 467,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 542,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 37,
-     "latency": 0.375,
+     "latency": 0.39,
      "legal_n": 2,
      "action": "roll",
-     "chat": "Alright.",
+     "chat": "I'm listening. Barely. Over to you.",
      "gw_calls": 1,
      "prompt": {
       "total": 2926,
@@ -1668,99 +1668,15 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 357,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 361,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     },
     {
      "turn": 38,
-     "latency": 0.343,
-     "legal_n": 2,
-     "action": "roll",
-     "chat": "We'll see.",
-     "gw_calls": 1,
-     "prompt": {
-      "total": 2926,
-      "has_marker": true,
-      "marker_untrusted_label": true
-     },
-     "has_tools": false,
-     "thinking": {
-      "type": "disabled"
-     },
-     "max_tokens": 250,
-     "family": "chance",
-     "strategy": "search",
-     "tool": "mcts",
-     "source": "tool",
-     "tools_called": null,
-     "facts_used": null,
-     "assist_source": null,
-     "model_error": null,
-     "answer_ms": 319,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
-    },
-    {
-     "turn": 39,
-     "latency": 0.5,
-     "legal_n": 2,
-     "action": "roll",
-     "chat": "Interesting. Over to you. Played.",
-     "gw_calls": 1,
-     "prompt": {
-      "total": 2926,
-      "has_marker": true,
-      "marker_untrusted_label": true
-     },
-     "has_tools": false,
-     "thinking": {
-      "type": "disabled"
-     },
-     "max_tokens": 250,
-     "family": "chance",
-     "strategy": "search",
-     "tool": "mcts",
-     "source": "tool",
-     "tools_called": null,
-     "facts_used": null,
-     "assist_source": null,
-     "model_error": null,
-     "answer_ms": 474,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
-    },
-    {
-     "turn": 40,
-     "latency": 0.328,
-     "legal_n": 2,
-     "action": "roll",
-     "chat": "We'll see.",
-     "gw_calls": 1,
-     "prompt": {
-      "total": 2926,
-      "has_marker": true,
-      "marker_untrusted_label": true
-     },
-     "has_tools": false,
-     "thinking": {
-      "type": "disabled"
-     },
-     "max_tokens": 250,
-     "family": "chance",
-     "strategy": "search",
-     "tool": "mcts",
-     "source": "tool",
-     "tools_called": null,
-     "facts_used": null,
-     "assist_source": null,
-     "model_error": null,
-     "answer_ms": 307,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
-    },
-    {
-     "turn": 41,
-     "latency": 0.204,
+     "latency": 0.313,
      "legal_n": 2,
      "action": "hold",
-     "chat": "Alright.",
+     "chat": "We'll see.",
      "gw_calls": 1,
      "prompt": {
       "total": 2926,
@@ -1780,8 +1696,8 @@
      "facts_used": null,
      "assist_source": null,
      "model_error": null,
-     "answer_ms": 184,
-     "reason": "simulator verified, chance game, 21094 simulations, branching 2; perfect information, simulator verified, chance"
+     "answer_ms": 298,
+     "reason": "simulator verified, chance game, 30075 simulations, branching 2; perfect information, simulator verified, chance"
     }
    ],
    "problems": [],
@@ -1790,9 +1706,9 @@
      "type": "ready",
      "chat": "Let's do this."
     },
-    "latency": 0.23
+    "latency": 0.25
    },
-   "result": "{'winner': 0, 'scores': [53, 37], 'reason': 'seat 0 reached 53 (target 50)'}",
+   "result": "{'winner': 0, 'scores': [51, 31], 'reason': 'seat 0 reached 51 (target 50)'}",
    "stray": 0,
    "early": 0,
    "warnings": [],
