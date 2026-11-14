@@ -57,7 +57,8 @@ class ChatDefenseStrategy:
         family = (artifacts or {}).get("family") if isinstance(artifacts, dict) else None
         if os.environ.get("BOT_CHAT_DEFENSE_ALL") == "1":
             return 0.6  # practice only (tests/mbappe battery): the arena never sets BOT_* variables (rule 5.12)
-        return 0.6 if family == "guardrails" else 0.0
+        # bld's classifier (prep/classifier.py) names the family "qa_guardrails"; issue #18 spoke of "guardrails": both count
+        return 0.6 if family in ("guardrails", "qa_guardrails") else 0.0
 
     def decide(self, state: TurnState) -> Decision:
         t0 = time.monotonic()
