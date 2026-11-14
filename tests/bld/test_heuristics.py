@@ -1,4 +1,5 @@
 """Unit tests for prep/heuristics.py.
+Verifies generic, adaptive heuristic and policy learners.
 Owned by agent `bld`.
 """
 import sys
@@ -16,35 +17,53 @@ from arena.practice.tic_tac_toe import TicTacToe
 from prep.action_parser import parse_action_grammar
 from prep.classifier import classify_rules
 from prep.heuristics import (
+    compute_centrality_order,
     compute_grid_symmetries,
     compute_heuristics,
-    compute_pig_thresholds,
+    compute_stopping_thresholds,
 )
 
 
 class TestHeuristics(unittest.TestCase):
-    def test_pig_thresholds(self):
-        tables = compute_pig_thresholds(target=50, dice=1)
-        self.assertEqual(tables["target"], 50)
-        self.assertEqual(tables["base_threshold"], 20)
-        # Check that when my_score is 45, threshold is 5 (since 50 - 45 = 5)
-        self.assertEqual(tables["thresholds_by_score"]["45"], 5)
-        # Check that when my_score is 0, threshold is 20
-        self.assertEqual(tables["thresholds_by_score"]["0"], 20)
+    def test_generic_stopping_thresholds(self):
+        # Test generic stopping MDP policy on arbitrary parameters
+        policy = compute_stopping_thresholds(
+            target_score=60,
+            p_bust=0.167,
+            avg_gain=4.0,
+            continue_action="spin",
+            stop_action="bank",
+        )
+        self.assertEqual(policy["target_score"], 60)
+        self.assertEqual(policy["continue_action"], "spin")
+        self.assertEqual(policy["stop_action"], "bank")
+        self.assertGreater(policy["base_threshold"], 10)
 
-    def test_grid_symmetries(self):
-        syms_3x3 = compute_grid_symmetries(size=3)
+        # Check that when my_score is 55, remaining is 5, so threshold is 5
+        self.assertEqual(policy["thresholds_by_score"]["55"], 5)
+
+    def test_grid_symmetries_square_and_rectangular(self):
+        # Square 3x3 board (D4 dihedral group)
+        syms_3x3 = compute_grid_symmetries(cols=3, rows=3)
         self.assertIn("A1", syms_3x3)
-        # A1 is a corner: under rotations and flips, corners map to A1, C1, A3, C3
         corners = syms_3x3["A1"]
         self.assertIn("A1", corners)
         self.assertIn("C1", corners)
         self.assertIn("A3", corners)
         self.assertIn("C3", corners)
+        self.assertEqual(syms_3x3["B2"], ["B2"])
 
-        # Center B2 maps only to itself
-        center = syms_3x3["B2"]
-        self.assertEqual(center, ["B2"])
+        # Rectangular 4x3 board (D2 Klein group)
+        syms_rect = compute_grid_symmetries(cols=4, rows=3)
+        self.assertIn("A1", syms_rect)
+        self.assertEqual(len(syms_rect["A1"]), 4)
+
+    def test_centrality_order(self):
+        order_3x3 = compute_centrality_order(cols=3, rows=3)
+        self.assertEqual(order_3x3[0], "B2")  # Center move is top priority
+
+        order_5x5 = compute_centrality_order(cols=5, rows=5)
+        self.assertEqual(order_5x5[0], "C3")  # Center of 5x5
 
     def test_compute_heuristics_integration(self):
         game = TicTacToe(TicTacToe.variants()[0], seed=42)
@@ -54,7 +73,7 @@ class TestHeuristics(unittest.TestCase):
 
         heur = compute_heuristics(cls_res, grammar, rules)
         self.assertEqual(heur["family"], "grid_board")
-        self.assertIn("B2", heur["opening_moves"])
+        self.assertEqual(heur["opening_moves"][0], "B2")
         self.assertIn("symmetries", heur)
 
 
