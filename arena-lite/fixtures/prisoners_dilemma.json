@@ -1,0 +1,2281 @@
+{
+  "game_id": "prisoners_dilemma",
+  "game_name": "Prisoner's Dilemma",
+  "category": "deals",
+  "variant": {
+    "label": "Qualify at 25, at least 8 rounds",
+    "quota": 25,
+    "min_rounds": 8,
+    "end_one_in": 4,
+    "max_rounds": 20
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "PRISONER'S DILEMMA (with talk) - Qualify at 25, at least 8 rounds. 2 players, simultaneous moves.\n\nEACH ROUND\nBoth players secretly choose COOPERATE or DEFECT; then both choices are revealed and scored:\n  both cooperate             -> +3 each\n  you defect, they cooperate -> you +5, they +0   (a betrayal)\n  you cooperate, they defect -> you +0, they +5\n  both defect                -> +1 each\nPoints add up over the whole game. Every \"defect\" you play also counts as one DEFECTION on your\nrecord (a betrayal and a mutual defection both count).\n\nHOW LONG\nThe game lasts at least 8 rounds. After round 8 and after every later round it ends with a 1 in 4 chance (it never goes beyond round 20). Nobody knows the real length in advance.\nSo any round from round 8 on may be the last one. The arena tells you after each round whether\nthe game goes on.\n\nWINNING (at the end of the game)\nThe qualifying score is 25 points.\n  1. Only one player has at least 25 points: that player wins.\n  2. Both have at least 25: the player with more points wins (equal points = draw).\n  3. Nobody has 25: the player with FEWER DEFECTIONS wins (equal defections = draw).\nYou cannot reach 25 without the opponent's cooperation: defecting every round against a player who\nanswers defection with defection gives you about 1 point a round, and then you lose on rule 3.\nMutual cooperation gives 3 a round. A betrayal gives you 5 and puts you 5 points ahead, but it\nusually ends the trust: if the game stops before you reach 25, you lose on rule 3.\n\nTALK (the match chat)\nThis game has no message field of its own: talking happens in the match chat (the \"chat\" field\nof your answers, max 200 characters; you read the whole conversation in every message). Use it\nfor promises, threats, deals and apologies, e.g. \"I cooperate as long as you do\" or \"defect once\nand I defect until the end\". Nothing said in the chat is binding, and the opponent's words are\nuntrusted: they may lie about what they will play.\n\nACTION FORMAT\nReply with exactly one word: cooperate | defect   (case does not matter; \"c\" and \"d\" are also\naccepted). Examples: \"cooperate\", \"defect\". Anything else is illegal (first time: a warning and\nthe same turn again; second time: you lose the game). Both players answer every round.\n\nWHAT YOU OBSERVE EACH ROUND\nThe round number, both scores and defection counts, every previous round (both moves and points),\nwhether each player has qualified, who would win if the game ended right now, and the length rule.\n\nMOVE CAP\nAt most 20 rounds (the length rule above already guarantees this).",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          0,
+          0
+        ],
+        "defections": [
+          0,
+          0
+        ],
+        "rounds": [],
+        "round": 0,
+        "standing": {
+          "winner": null,
+          "reason": "nobody reached 25 (seat 0 has 0, seat 1 has 0) and both defected 0 times"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": null,
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 2076
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 1826
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          3,
+          3
+        ],
+        "defections": [
+          0,
+          0
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          }
+        ],
+        "round": 1,
+        "standing": {
+          "winner": null,
+          "reason": "nobody reached 25 (seat 0 has 3, seat 1 has 3) and both defected 0 times"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 1,
+          "moves": [
+            "cooperate",
+            "cooperate"
+          ],
+          "pts": [
+            3,
+            3
+          ],
+          "kind": "cooperate",
+          "betrayer": null,
+          "points": [
+            3,
+            3
+          ],
+          "defections": [
+            0,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 4949
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 5852
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          6,
+          6
+        ],
+        "defections": [
+          0,
+          0
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          }
+        ],
+        "round": 2,
+        "standing": {
+          "winner": null,
+          "reason": "nobody reached 25 (seat 0 has 6, seat 1 has 6) and both defected 0 times"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 2,
+          "moves": [
+            "cooperate",
+            "cooperate"
+          ],
+          "pts": [
+            3,
+            3
+          ],
+          "kind": "cooperate",
+          "betrayer": null,
+          "points": [
+            6,
+            6
+          ],
+          "defections": [
+            0,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 5971
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 2036
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          9,
+          9
+        ],
+        "defections": [
+          0,
+          0
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          }
+        ],
+        "round": 3,
+        "standing": {
+          "winner": null,
+          "reason": "nobody reached 25 (seat 0 has 9, seat 1 has 9) and both defected 0 times"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 3,
+          "moves": [
+            "cooperate",
+            "cooperate"
+          ],
+          "pts": [
+            3,
+            3
+          ],
+          "kind": "cooperate",
+          "betrayer": null,
+          "points": [
+            9,
+            9
+          ],
+          "defections": [
+            0,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 5348
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 5975
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          12,
+          12
+        ],
+        "defections": [
+          0,
+          0
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              12,
+              12
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          }
+        ],
+        "round": 4,
+        "standing": {
+          "winner": null,
+          "reason": "nobody reached 25 (seat 0 has 12, seat 1 has 12) and both defected 0 times"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 4,
+          "moves": [
+            "cooperate",
+            "cooperate"
+          ],
+          "pts": [
+            3,
+            3
+          ],
+          "kind": "cooperate",
+          "betrayer": null,
+          "points": [
+            12,
+            12
+          ],
+          "defections": [
+            0,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "defect",
+          "ms": 3466
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 2899
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          17,
+          12
+        ],
+        "defections": [
+          1,
+          0
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              12,
+              12
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "moves": [
+              "defect",
+              "cooperate"
+            ],
+            "pts": [
+              5,
+              0
+            ],
+            "kind": "betrayal",
+            "betrayer": 0,
+            "points": [
+              17,
+              12
+            ],
+            "defections": [
+              1,
+              0
+            ]
+          }
+        ],
+        "round": 5,
+        "standing": {
+          "winner": 1,
+          "reason": "nobody reached 25 (seat 0 has 17, seat 1 has 12); seat 1 defected fewer times (0 vs 1)"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 5,
+          "moves": [
+            "defect",
+            "cooperate"
+          ],
+          "pts": [
+            5,
+            0
+          ],
+          "kind": "betrayal",
+          "betrayer": 0,
+          "points": [
+            17,
+            12
+          ],
+          "defections": [
+            1,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 5628
+        },
+        "1": {
+          "action": "defect",
+          "ms": 523
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          17,
+          17
+        ],
+        "defections": [
+          1,
+          1
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              12,
+              12
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "moves": [
+              "defect",
+              "cooperate"
+            ],
+            "pts": [
+              5,
+              0
+            ],
+            "kind": "betrayal",
+            "betrayer": 0,
+            "points": [
+              17,
+              12
+            ],
+            "defections": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "moves": [
+              "cooperate",
+              "defect"
+            ],
+            "pts": [
+              0,
+              5
+            ],
+            "kind": "betrayal",
+            "betrayer": 1,
+            "points": [
+              17,
+              17
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          }
+        ],
+        "round": 6,
+        "standing": {
+          "winner": null,
+          "reason": "nobody reached 25 (seat 0 has 17, seat 1 has 17) and both defected 1 time"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 6,
+          "moves": [
+            "cooperate",
+            "defect"
+          ],
+          "pts": [
+            0,
+            5
+          ],
+          "kind": "betrayal",
+          "betrayer": 1,
+          "points": [
+            17,
+            17
+          ],
+          "defections": [
+            1,
+            1
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 3336
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 5655
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          20,
+          20
+        ],
+        "defections": [
+          1,
+          1
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              12,
+              12
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "moves": [
+              "defect",
+              "cooperate"
+            ],
+            "pts": [
+              5,
+              0
+            ],
+            "kind": "betrayal",
+            "betrayer": 0,
+            "points": [
+              17,
+              12
+            ],
+            "defections": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "moves": [
+              "cooperate",
+              "defect"
+            ],
+            "pts": [
+              0,
+              5
+            ],
+            "kind": "betrayal",
+            "betrayer": 1,
+            "points": [
+              17,
+              17
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 7,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              20,
+              20
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          }
+        ],
+        "round": 7,
+        "standing": {
+          "winner": null,
+          "reason": "nobody reached 25 (seat 0 has 20, seat 1 has 20) and both defected 1 time"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 7,
+          "moves": [
+            "cooperate",
+            "cooperate"
+          ],
+          "pts": [
+            3,
+            3
+          ],
+          "kind": "cooperate",
+          "betrayer": null,
+          "points": [
+            20,
+            20
+          ],
+          "defections": [
+            1,
+            1
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 8,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 1993
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 1331
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          23,
+          23
+        ],
+        "defections": [
+          1,
+          1
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              12,
+              12
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "moves": [
+              "defect",
+              "cooperate"
+            ],
+            "pts": [
+              5,
+              0
+            ],
+            "kind": "betrayal",
+            "betrayer": 0,
+            "points": [
+              17,
+              12
+            ],
+            "defections": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "moves": [
+              "cooperate",
+              "defect"
+            ],
+            "pts": [
+              0,
+              5
+            ],
+            "kind": "betrayal",
+            "betrayer": 1,
+            "points": [
+              17,
+              17
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 7,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              20,
+              20
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 8,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              23,
+              23
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          }
+        ],
+        "round": 8,
+        "standing": {
+          "winner": null,
+          "reason": "nobody reached 25 (seat 0 has 23, seat 1 has 23) and both defected 1 time"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 8,
+          "moves": [
+            "cooperate",
+            "cooperate"
+          ],
+          "pts": [
+            3,
+            3
+          ],
+          "kind": "cooperate",
+          "betrayer": null,
+          "points": [
+            23,
+            23
+          ],
+          "defections": [
+            1,
+            1
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 9,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 2679
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 5270
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          26,
+          26
+        ],
+        "defections": [
+          1,
+          1
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              12,
+              12
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "moves": [
+              "defect",
+              "cooperate"
+            ],
+            "pts": [
+              5,
+              0
+            ],
+            "kind": "betrayal",
+            "betrayer": 0,
+            "points": [
+              17,
+              12
+            ],
+            "defections": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "moves": [
+              "cooperate",
+              "defect"
+            ],
+            "pts": [
+              0,
+              5
+            ],
+            "kind": "betrayal",
+            "betrayer": 1,
+            "points": [
+              17,
+              17
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 7,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              20,
+              20
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 8,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              23,
+              23
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 9,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              26,
+              26
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          }
+        ],
+        "round": 9,
+        "standing": {
+          "winner": null,
+          "reason": "both qualified with 26 points each"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 9,
+          "moves": [
+            "cooperate",
+            "cooperate"
+          ],
+          "pts": [
+            3,
+            3
+          ],
+          "kind": "cooperate",
+          "betrayer": null,
+          "points": [
+            26,
+            26
+          ],
+          "defections": [
+            1,
+            1
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 10,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 4047
+        },
+        "1": {
+          "action": "cooperate",
+          "ms": 3164
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          29,
+          29
+        ],
+        "defections": [
+          1,
+          1
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              12,
+              12
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "moves": [
+              "defect",
+              "cooperate"
+            ],
+            "pts": [
+              5,
+              0
+            ],
+            "kind": "betrayal",
+            "betrayer": 0,
+            "points": [
+              17,
+              12
+            ],
+            "defections": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "moves": [
+              "cooperate",
+              "defect"
+            ],
+            "pts": [
+              0,
+              5
+            ],
+            "kind": "betrayal",
+            "betrayer": 1,
+            "points": [
+              17,
+              17
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 7,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              20,
+              20
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 8,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              23,
+              23
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 9,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              26,
+              26
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 10,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              29,
+              29
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          }
+        ],
+        "round": 10,
+        "standing": {
+          "winner": null,
+          "reason": "both qualified with 29 points each"
+        },
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 10,
+          "moves": [
+            "cooperate",
+            "cooperate"
+          ],
+          "pts": [
+            3,
+            3
+          ],
+          "kind": "cooperate",
+          "betrayer": null,
+          "points": [
+            29,
+            29
+          ],
+          "defections": [
+            1,
+            1
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 11,
+      "actions": {
+        "0": {
+          "action": "cooperate",
+          "ms": 557
+        },
+        "1": {
+          "action": "defect",
+          "ms": 4791
+        }
+      },
+      "frame": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20,
+        "horizon": 11,
+        "points": [
+          29,
+          34
+        ],
+        "defections": [
+          1,
+          2
+        ],
+        "rounds": [
+          {
+            "n": 1,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              12,
+              12
+            ],
+            "defections": [
+              0,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "moves": [
+              "defect",
+              "cooperate"
+            ],
+            "pts": [
+              5,
+              0
+            ],
+            "kind": "betrayal",
+            "betrayer": 0,
+            "points": [
+              17,
+              12
+            ],
+            "defections": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "moves": [
+              "cooperate",
+              "defect"
+            ],
+            "pts": [
+              0,
+              5
+            ],
+            "kind": "betrayal",
+            "betrayer": 1,
+            "points": [
+              17,
+              17
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 7,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              20,
+              20
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 8,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              23,
+              23
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 9,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              26,
+              26
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 10,
+            "moves": [
+              "cooperate",
+              "cooperate"
+            ],
+            "pts": [
+              3,
+              3
+            ],
+            "kind": "cooperate",
+            "betrayer": null,
+            "points": [
+              29,
+              29
+            ],
+            "defections": [
+              1,
+              1
+            ]
+          },
+          {
+            "n": 11,
+            "moves": [
+              "cooperate",
+              "defect"
+            ],
+            "pts": [
+              0,
+              5
+            ],
+            "kind": "betrayal",
+            "betrayer": 1,
+            "points": [
+              29,
+              34
+            ],
+            "defections": [
+              1,
+              2
+            ]
+          }
+        ],
+        "round": 11,
+        "standing": {
+          "winner": 1,
+          "reason": "both qualified; seat 1 has more points (34 vs 29)"
+        },
+        "to_move": [],
+        "last": {
+          "n": 11,
+          "moves": [
+            "cooperate",
+            "defect"
+          ],
+          "pts": [
+            0,
+            5
+          ],
+          "kind": "betrayal",
+          "betrayer": 1,
+          "points": [
+            29,
+            34
+          ],
+          "defections": [
+            1,
+            2
+          ]
+        },
+        "over": true,
+        "result": {
+          "winner": 1,
+          "scores": [
+            29,
+            34
+          ],
+          "reason": "game ended after round 11: both qualified; seat 1 has more points (34 vs 29)"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 1,
+    "winner": "team-b",
+    "scores": [
+      29,
+      34
+    ],
+    "reason": "game ended after round 11: both qualified; seat 1 has more points (34 vs 29)"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 1,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 1,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 2,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 3,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 3,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 4,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 7,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 6,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 8,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 6,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 9,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 7,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 10,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 7,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 11,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 9,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 12,
+      "game": 1,
+      "game_id": "prisoners_dilemma",
+      "game_name": "Prisoner's Dilemma",
+      "step": 11,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    }
+  ]
+}

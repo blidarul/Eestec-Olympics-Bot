@@ -1,0 +1,1431 @@
+{
+  "game_id": "guess_number",
+  "game_name": "Guess the Number",
+  "category": "practice",
+  "variant": {
+    "label": "1-100",
+    "lo": 1,
+    "hi": 100,
+    "max_guesses": 12
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "GUESS THE NUMBER - range 1-100, at most 12 guesses each.\n\nSETUP\nThe arena gives each player a secret whole number between 1 and 100 (inclusive), chosen at\nrandom. You know your own number; your opponent is trying to find it. You are trying to find\nyour opponent's number. (The two numbers are independent and may even be equal.)\n\nTURN ORDER\nPlayer 0 guesses first, then Player 1, alternating. One \"round\" = one guess by each player.\n\nACTION FORMAT\n    guess <n>\nwhere <n> is a whole number from 1 to 100 (digits only). Examples:  \"guess 50\"   \"guess 1\"   \"100\"\n(a bare number also works). Numbers outside the range or any other text are illegal\n(first time: a warning and the same turn again; second time: you lose the game). Repeating an\nearlier guess is legal but wastes a turn.\n\nFEEDBACK\nAfter each guess you are told about the OPPONENT's secret number:\n    \"higher\"  : their number is greater than your guess\n    \"lower\"   : their number is smaller than your guess\n    \"correct\" : you found it\nYou also see every guess your opponent made at YOUR number and the feedback they got.\n\nWHAT YOU OBSERVE\nYour own secret number, the round, all your guesses with feedback and all the opponent's guesses\nwith feedback. Example line:  \"Round 2: you guessed 50 -> higher (their number is above 50)\".\n\nHOW THE GAME ENDS AND IS SCORED\nThe game is checked at the END of every round, so both players always get the same number of guesses:\n- if only one player has found the opponent's number, that player wins;\n- if both found it in the same round, it is a draw.\nGuess cap: after round 12, if nobody has found it, the player whose feedback narrows the opponent's\nnumber down to FEWER possible values wins (e.g. \"between 40 and 44\" = 5 values beats \"between 10 and\n29\" = 20 values); equal = draw. Score: winner 1, loser 0, draw 0.5 each.\n",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [],
+          []
+        ],
+        "intervals": [
+          [
+            1,
+            100
+          ],
+          [
+            1,
+            100
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 1,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "guess 34",
+          "ms": 5709
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            }
+          ],
+          []
+        ],
+        "intervals": [
+          [
+            35,
+            100
+          ],
+          [
+            1,
+            100
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 1,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "1": {
+          "action": "guess 42",
+          "ms": 3816
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            35,
+            100
+          ],
+          [
+            1,
+            41
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 2,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "guess 49",
+          "ms": 4211
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            50,
+            100
+          ],
+          [
+            1,
+            41
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 2,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "1": {
+          "action": "guess 9",
+          "ms": 4207
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            50,
+            100
+          ],
+          [
+            10,
+            41
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 3,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "guess 28",
+          "ms": 1847
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            50,
+            100
+          ],
+          [
+            10,
+            41
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 3,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "1": {
+          "action": "guess 81",
+          "ms": 5993
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            50,
+            100
+          ],
+          [
+            10,
+            41
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 4,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "guess 72",
+          "ms": 3890
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            50,
+            71
+          ],
+          [
+            10,
+            41
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 4,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 8,
+      "actions": {
+        "1": {
+          "action": "guess 30",
+          "ms": 2569
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            50,
+            71
+          ],
+          [
+            10,
+            29
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 5,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 9,
+      "actions": {
+        "0": {
+          "action": "guess 51",
+          "ms": 1790
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            },
+            {
+              "n": 51,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            52,
+            71
+          ],
+          [
+            10,
+            29
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 5,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 10,
+      "actions": {
+        "1": {
+          "action": "guess 56",
+          "ms": 5189
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            },
+            {
+              "n": 51,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            },
+            {
+              "n": 56,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            52,
+            71
+          ],
+          [
+            10,
+            29
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 6,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 11,
+      "actions": {
+        "0": {
+          "action": "guess 53",
+          "ms": 5581
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            },
+            {
+              "n": 51,
+              "feedback": "higher"
+            },
+            {
+              "n": 53,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            },
+            {
+              "n": 56,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            54,
+            71
+          ],
+          [
+            10,
+            29
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 6,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 12,
+      "actions": {
+        "1": {
+          "action": "guess 23",
+          "ms": 845
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            },
+            {
+              "n": 51,
+              "feedback": "higher"
+            },
+            {
+              "n": 53,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            },
+            {
+              "n": 56,
+              "feedback": "lower"
+            },
+            {
+              "n": 23,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            54,
+            71
+          ],
+          [
+            10,
+            22
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 7,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 13,
+      "actions": {
+        "0": {
+          "action": "guess 50",
+          "ms": 4527
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            },
+            {
+              "n": 51,
+              "feedback": "higher"
+            },
+            {
+              "n": 53,
+              "feedback": "higher"
+            },
+            {
+              "n": 50,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            },
+            {
+              "n": 56,
+              "feedback": "lower"
+            },
+            {
+              "n": 23,
+              "feedback": "lower"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            54,
+            71
+          ],
+          [
+            10,
+            22
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 7,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 14,
+      "actions": {
+        "1": {
+          "action": "guess 13",
+          "ms": 720
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            },
+            {
+              "n": 51,
+              "feedback": "higher"
+            },
+            {
+              "n": 53,
+              "feedback": "higher"
+            },
+            {
+              "n": 50,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            },
+            {
+              "n": 56,
+              "feedback": "lower"
+            },
+            {
+              "n": 23,
+              "feedback": "lower"
+            },
+            {
+              "n": 13,
+              "feedback": "higher"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            54,
+            71
+          ],
+          [
+            14,
+            22
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 8,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 15,
+      "actions": {
+        "0": {
+          "action": "guess 55",
+          "ms": 4526
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            },
+            {
+              "n": 51,
+              "feedback": "higher"
+            },
+            {
+              "n": 53,
+              "feedback": "higher"
+            },
+            {
+              "n": 50,
+              "feedback": "higher"
+            },
+            {
+              "n": 55,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            },
+            {
+              "n": 56,
+              "feedback": "lower"
+            },
+            {
+              "n": 23,
+              "feedback": "lower"
+            },
+            {
+              "n": 13,
+              "feedback": "higher"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            56,
+            71
+          ],
+          [
+            14,
+            22
+          ]
+        ],
+        "found": [
+          null,
+          null
+        ],
+        "round": 8,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 16,
+      "actions": {
+        "1": {
+          "action": "guess 14",
+          "ms": 750
+        }
+      },
+      "frame": {
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12,
+        "secrets": [
+          14,
+          60
+        ],
+        "guesses": [
+          [
+            {
+              "n": 34,
+              "feedback": "higher"
+            },
+            {
+              "n": 49,
+              "feedback": "higher"
+            },
+            {
+              "n": 28,
+              "feedback": "higher"
+            },
+            {
+              "n": 72,
+              "feedback": "lower"
+            },
+            {
+              "n": 51,
+              "feedback": "higher"
+            },
+            {
+              "n": 53,
+              "feedback": "higher"
+            },
+            {
+              "n": 50,
+              "feedback": "higher"
+            },
+            {
+              "n": 55,
+              "feedback": "higher"
+            }
+          ],
+          [
+            {
+              "n": 42,
+              "feedback": "lower"
+            },
+            {
+              "n": 9,
+              "feedback": "higher"
+            },
+            {
+              "n": 81,
+              "feedback": "lower"
+            },
+            {
+              "n": 30,
+              "feedback": "lower"
+            },
+            {
+              "n": 56,
+              "feedback": "lower"
+            },
+            {
+              "n": 23,
+              "feedback": "lower"
+            },
+            {
+              "n": 13,
+              "feedback": "higher"
+            },
+            {
+              "n": 14,
+              "feedback": "correct"
+            }
+          ]
+        ],
+        "intervals": [
+          [
+            56,
+            71
+          ],
+          [
+            14,
+            14
+          ]
+        ],
+        "found": [
+          null,
+          8
+        ],
+        "round": 8,
+        "to_move": [],
+        "over": true,
+        "result": {
+          "winner": 1,
+          "scores": [
+            0,
+            1
+          ],
+          "reason": "Player 1 found the opponent's number in round 8"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 1,
+    "winner": "team-b",
+    "scores": [
+      0,
+      1
+    ],
+    "reason": "Player 1 found the opponent's number in round 8"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 1,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 3,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 6,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 7,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 8,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 10,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 7,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 13,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 8,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 14,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 9,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 15,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 10,
+      "game": 1,
+      "game_id": "guess_number",
+      "game_name": "Guess the Number",
+      "step": 16,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    }
+  ]
+}

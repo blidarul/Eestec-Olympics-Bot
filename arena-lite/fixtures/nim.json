@@ -1,0 +1,911 @@
+{
+  "game_id": "nim",
+  "game_name": "Nim",
+  "category": "think",
+  "variant": {
+    "label": "Normal play, 4 piles",
+    "piles": 4,
+    "lo": 1,
+    "hi": 8,
+    "misere": false,
+    "max_take": 0,
+    "max_piles": 1
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "NIM - Normal play, 4 piles\n\nSETUP\nThere are 4 piles of tokens, numbered 1 to 4. Each pile starts with a random number of tokens\nbetween 1 and 8 (the arena picks them). Both players see all piles at all times.\n\nTURN ORDER\nPlayer 0 moves first, then the players alternate. Passing is not allowed.\nOn your turn you remove at least 1 token (any number, up to the whole pile) from exactly ONE pile.\n\nGOAL\nNORMAL PLAY: the player who takes the LAST token WINS (equivalently: if you cannot move, you lose).\n\nACTION FORMAT\n    take <count> from pile <p>\nExamples:  \"take 3 from pile 2\"   \"take 1 from pile 1\"   \"take 2 from pile 4\"\n<count> and <p> are whole numbers written with digits; piles are numbered from 1. The word \"pile\"\nis optional (\"take 3 from 2\" also works). Taking 0 tokens, taking more tokens than a pile has,\nnaming a pile that does not exist or any other text is illegal\n(first time: a warning and the same turn again; second time: you lose the game). When there are at\nmost 50 possible moves the arena also sends you the complete list of legal moves.\n\nWHAT YOU OBSERVE\nThe current size of every pile, the total, whose turn it is, and the full move history.\nExample observation fragment:\n    Piles now: pile 1 = 5, pile 2 = 0, pile 3 = 7, pile 4 = 2   (total 14)\n\nHOW THE GAME ENDS AND IS SCORED\nThe game ends when all piles are empty. The player who took the last token wins.\nThere are no draws. Winner scores 1, loser 0.\nMove cap: every move removes at least one token, so the game lasts at most 14 moves\n(the starting total), and it always ends with a winner.\n",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "piles": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "initial": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1,
+        "history": [],
+        "last": null,
+        "moves": 0,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "take 2 from pile 4",
+          "ms": 1756
+        }
+      },
+      "frame": {
+        "piles": [
+          2,
+          6,
+          2,
+          2
+        ],
+        "initial": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1,
+        "history": [
+          {
+            "seat": 0,
+            "action": "take 2 from pile 4",
+            "take": [
+              [
+                3,
+                2
+              ]
+            ],
+            "piles": [
+              2,
+              6,
+              2,
+              2
+            ]
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "take 2 from pile 4",
+          "take": [
+            [
+              3,
+              2
+            ]
+          ],
+          "piles": [
+            2,
+            6,
+            2,
+            2
+          ]
+        },
+        "moves": 1,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "1": {
+          "action": "take 6 from pile 2",
+          "ms": 5343
+        }
+      },
+      "frame": {
+        "piles": [
+          2,
+          0,
+          2,
+          2
+        ],
+        "initial": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1,
+        "history": [
+          {
+            "seat": 0,
+            "action": "take 2 from pile 4",
+            "take": [
+              [
+                3,
+                2
+              ]
+            ],
+            "piles": [
+              2,
+              6,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 6 from pile 2",
+            "take": [
+              [
+                1,
+                6
+              ]
+            ],
+            "piles": [
+              2,
+              0,
+              2,
+              2
+            ]
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "take 6 from pile 2",
+          "take": [
+            [
+              1,
+              6
+            ]
+          ],
+          "piles": [
+            2,
+            0,
+            2,
+            2
+          ]
+        },
+        "moves": 2,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "take 2 from pile 1",
+          "ms": 1446
+        }
+      },
+      "frame": {
+        "piles": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "initial": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1,
+        "history": [
+          {
+            "seat": 0,
+            "action": "take 2 from pile 4",
+            "take": [
+              [
+                3,
+                2
+              ]
+            ],
+            "piles": [
+              2,
+              6,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 6 from pile 2",
+            "take": [
+              [
+                1,
+                6
+              ]
+            ],
+            "piles": [
+              2,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 2 from pile 1",
+            "take": [
+              [
+                0,
+                2
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              2,
+              2
+            ]
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "take 2 from pile 1",
+          "take": [
+            [
+              0,
+              2
+            ]
+          ],
+          "piles": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "moves": 3,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "1": {
+          "action": "take 1 from pile 3",
+          "ms": 5225
+        }
+      },
+      "frame": {
+        "piles": [
+          0,
+          0,
+          1,
+          2
+        ],
+        "initial": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1,
+        "history": [
+          {
+            "seat": 0,
+            "action": "take 2 from pile 4",
+            "take": [
+              [
+                3,
+                2
+              ]
+            ],
+            "piles": [
+              2,
+              6,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 6 from pile 2",
+            "take": [
+              [
+                1,
+                6
+              ]
+            ],
+            "piles": [
+              2,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 2 from pile 1",
+            "take": [
+              [
+                0,
+                2
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 1 from pile 3",
+            "take": [
+              [
+                2,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "take 1 from pile 3",
+          "take": [
+            [
+              2,
+              1
+            ]
+          ],
+          "piles": [
+            0,
+            0,
+            1,
+            2
+          ]
+        },
+        "moves": 4,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "take 1 from pile 4",
+          "ms": 2629
+        }
+      },
+      "frame": {
+        "piles": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "initial": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1,
+        "history": [
+          {
+            "seat": 0,
+            "action": "take 2 from pile 4",
+            "take": [
+              [
+                3,
+                2
+              ]
+            ],
+            "piles": [
+              2,
+              6,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 6 from pile 2",
+            "take": [
+              [
+                1,
+                6
+              ]
+            ],
+            "piles": [
+              2,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 2 from pile 1",
+            "take": [
+              [
+                0,
+                2
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 1 from pile 3",
+            "take": [
+              [
+                2,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 1 from pile 4",
+            "take": [
+              [
+                3,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "take 1 from pile 4",
+          "take": [
+            [
+              3,
+              1
+            ]
+          ],
+          "piles": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "moves": 5,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "1": {
+          "action": "take 1 from pile 4",
+          "ms": 943
+        }
+      },
+      "frame": {
+        "piles": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "initial": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1,
+        "history": [
+          {
+            "seat": 0,
+            "action": "take 2 from pile 4",
+            "take": [
+              [
+                3,
+                2
+              ]
+            ],
+            "piles": [
+              2,
+              6,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 6 from pile 2",
+            "take": [
+              [
+                1,
+                6
+              ]
+            ],
+            "piles": [
+              2,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 2 from pile 1",
+            "take": [
+              [
+                0,
+                2
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 1 from pile 3",
+            "take": [
+              [
+                2,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 1 from pile 4",
+            "take": [
+              [
+                3,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 1 from pile 4",
+            "take": [
+              [
+                3,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "take 1 from pile 4",
+          "take": [
+            [
+              3,
+              1
+            ]
+          ],
+          "piles": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "moves": 6,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "take 1 from pile 3",
+          "ms": 2666
+        }
+      },
+      "frame": {
+        "piles": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "initial": [
+          2,
+          6,
+          2,
+          4
+        ],
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1,
+        "history": [
+          {
+            "seat": 0,
+            "action": "take 2 from pile 4",
+            "take": [
+              [
+                3,
+                2
+              ]
+            ],
+            "piles": [
+              2,
+              6,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 6 from pile 2",
+            "take": [
+              [
+                1,
+                6
+              ]
+            ],
+            "piles": [
+              2,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 2 from pile 1",
+            "take": [
+              [
+                0,
+                2
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              2,
+              2
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 1 from pile 3",
+            "take": [
+              [
+                2,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 1 from pile 4",
+            "take": [
+              [
+                3,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "seat": 1,
+            "action": "take 1 from pile 4",
+            "take": [
+              [
+                3,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "seat": 0,
+            "action": "take 1 from pile 3",
+            "take": [
+              [
+                2,
+                1
+              ]
+            ],
+            "piles": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "take 1 from pile 3",
+          "take": [
+            [
+              2,
+              1
+            ]
+          ],
+          "piles": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "moves": 7,
+        "to_move": [],
+        "over": true,
+        "result": {
+          "winner": 0,
+          "scores": [
+            1,
+            0
+          ],
+          "reason": "Player 0 took the last token"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 0,
+    "winner": "team-a",
+    "scores": [
+      1,
+      0
+    ],
+    "reason": "Player 0 took the last token"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "nim",
+      "game_name": "Nim",
+      "step": 2,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "nim",
+      "game_name": "Nim",
+      "step": 3,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "nim",
+      "game_name": "Nim",
+      "step": 6,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "nim",
+      "game_name": "Nim",
+      "step": 7,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    }
+  ]
+}

@@ -1,0 +1,1648 @@
+{
+  "game_id": "mini_chess",
+  "game_name": "Mini Chess",
+  "category": "think",
+  "variant": {
+    "label": "Gardner 5x5",
+    "setup": "gardner",
+    "max_moves": 40
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "MINI CHESS - Gardner 5x5 (5x5 board).\n\nOVERVIEW\nChess on a small 5x5 board with simplified rules. Player 0 is WHITE (uppercase letters) and moves\nfirst; Player 1 is BLACK (lowercase letters). Players alternate, one move per turn; passing is not\nallowed.\n\nBOARD AND COORDINATES\nFiles (columns) are letters a..e from left to right as seen by White; ranks (rows) are numbers\n1..5 from White's side (bottom) to Black's side (top). A square is file + rank, e.g. \"c3\".\nLetters on the board: K/k king, Q/q queen, R/r rook, B/b bishop, N/n knight, P/p pawn; \".\" = empty.\nPieces used: king, queen, rook, bishop, knight, pawn.\nStarting position:\nWhite (uppercase) on rank 1: a1 Rook, b1 Knight, c1 Bishop, d1 Queen, e1 King; White pawns on\na2-e2. Black (lowercase) mirrors it: a5 rook, b5 knight, c5 bishop, d5 queen, e5 king; pawns on\na4-e4. Only rank 3 is empty at the start.\n    a b c d e\n 5  r n b q k  5\n 4  p p p p p  4\n 3  . . . . .  3\n 2  P P P P P  2\n 1  R N B Q K  1\n    a b c d e\n\nHOW PIECES MOVE (standard chess)\n- King: one square in any direction (8 directions).\n- Queen: any number of empty squares in a straight line: horizontally, vertically or diagonally.\n- Rook: any number of empty squares horizontally or vertically.\n- Bishop: any number of empty squares diagonally.\n- Knight: an \"L\" jump: two squares in one direction then one square sideways; it jumps over pieces.\n- Pawn: moves ONE square straight forward (White up toward rank 5, Black down toward rank 1) onto\n  an EMPTY square, and captures ONE square diagonally forward. A pawn can never move backwards or\n  sideways and cannot capture straight ahead.\n- Capturing: moving onto a square occupied by an enemy piece removes that piece. You can never move\n  onto your own piece. Sliding pieces cannot jump over pieces.\nSIMPLIFICATIONS: no castling, no en passant, NO pawn double step (pawns always move one square), and\na pawn that reaches the last rank (rank 5 for White, rank 1 for Black) is automatically promoted\nto a QUEEN (always a queen).\n\nCHECK AND CHECKMATE\nA king that is attacked by an enemy piece is \"in check\". You may never make a move that leaves your\nown king in check (moves that do are illegal). If the side to move is in check and has no legal move,\nthat is CHECKMATE and the side to move loses. If the side to move is NOT in check but has no legal\nmove, that is STALEMATE: a draw.\n\nACTION FORMAT\n    <from-square><to-square>\nExamples:  \"b2b3\" (pawn one step forward)   \"b1c3\" (knight jump)   \"c3d4\" (captures whatever enemy\npiece stands on d4)   \"a4a5\" (a white pawn reaching the last rank: becomes a queen).\nPromotion is automatic; you may add \"q\" (\"a4a5q\") but other promotion letters are illegal.\nUpper/lower case, spaces and a \"-\" between the squares are ignored (\"B2-B3\" works), and an optional\npiece letter in front is accepted when it matches the moving piece (\"Nb1c3\"). Short algebraic\nnotation like \"Nc3\" or \"e4\" is NOT accepted: always give both squares. Anything else (wrong piece,\nleaves your king in check, not a legal move for that piece...) is illegal (first time: a warning and\nthe same turn again; second time: you lose the game).\nWhen there are at most 50 legal moves the arena sends you the complete list; otherwise the list is\nomitted (null) and you must work out a legal move yourself.\n\nWHAT YOU OBSERVE\nThe board (rank 5 at the top, White's rank 1 at the bottom), side to move, whether you are in\ncheck, material count, captured pieces and the full move list. Example: the starting position above.\n\nHOW THE GAME ENDS AND IS SCORED\n- Checkmate: the side that delivered mate wins (score 1, loser 0).\n- Stalemate, or only the two kings left: draw (0.5 each).\n- MOVE CAP: after 40 moves by each side (80 moves in total) the game stops. Then the\n  player with more MATERIAL on the board wins, counting queen 9, rook 5, bishop 3, knight 3, pawn 1\n  (kings not counted). Equal material = draw. So capturing pieces matters even without a mate.\n",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "rnbqk",
+          "ppppp",
+          ".....",
+          "PPPPP",
+          "RNBQK"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": null,
+        "moves": [],
+        "captured": [
+          [],
+          []
+        ],
+        "material": [
+          25,
+          25
+        ],
+        "ply": 0,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "d2d3",
+          "ms": 4735
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "rnbqk",
+          "ppppp",
+          "...P.",
+          "PPP.P",
+          "RNBQK"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "d2d3",
+          "piece": "P",
+          "captured": null,
+          "promotion": false,
+          "from": [
+            1,
+            3
+          ],
+          "to": [
+            2,
+            3
+          ]
+        },
+        "moves": [
+          "d2d3"
+        ],
+        "captured": [
+          [],
+          []
+        ],
+        "material": [
+          25,
+          25
+        ],
+        "ply": 1,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "1": {
+          "action": "b4b3",
+          "ms": 4254
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "rnbqk",
+          "p.ppp",
+          ".p.P.",
+          "PPP.P",
+          "RNBQK"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 1,
+          "move": "b4b3",
+          "piece": "p",
+          "captured": null,
+          "promotion": false,
+          "from": [
+            3,
+            1
+          ],
+          "to": [
+            2,
+            1
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3"
+        ],
+        "captured": [
+          [],
+          []
+        ],
+        "material": [
+          25,
+          25
+        ],
+        "ply": 2,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "a2a3",
+          "ms": 5432
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "rnbqk",
+          "p.ppp",
+          "Pp.P.",
+          ".PP.P",
+          "RNBQK"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "a2a3",
+          "piece": "P",
+          "captured": null,
+          "promotion": false,
+          "from": [
+            1,
+            0
+          ],
+          "to": [
+            2,
+            0
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3"
+        ],
+        "captured": [
+          [],
+          []
+        ],
+        "material": [
+          25,
+          25
+        ],
+        "ply": 3,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "1": {
+          "action": "e4e3",
+          "ms": 4772
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "rnbqk",
+          "p.pp.",
+          "Pp.Pp",
+          ".PP.P",
+          "RNBQK"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 1,
+          "move": "e4e3",
+          "piece": "p",
+          "captured": null,
+          "promotion": false,
+          "from": [
+            3,
+            4
+          ],
+          "to": [
+            2,
+            4
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3"
+        ],
+        "captured": [
+          [],
+          []
+        ],
+        "material": [
+          25,
+          25
+        ],
+        "ply": 4,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "d3c4",
+          "ms": 2087
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "rnbqk",
+          "p.Pp.",
+          "Pp..p",
+          ".PP.P",
+          "RNBQK"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "d3c4",
+          "piece": "P",
+          "captured": "p",
+          "promotion": false,
+          "from": [
+            2,
+            3
+          ],
+          "to": [
+            3,
+            2
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4"
+        ],
+        "captured": [
+          [
+            "p"
+          ],
+          []
+        ],
+        "material": [
+          25,
+          24
+        ],
+        "ply": 5,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "1": {
+          "action": "b5a3",
+          "ms": 1369
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "r.bqk",
+          "p.Pp.",
+          "np..p",
+          ".PP.P",
+          "RNBQK"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 1,
+          "move": "b5a3",
+          "piece": "n",
+          "captured": "P",
+          "promotion": false,
+          "from": [
+            4,
+            1
+          ],
+          "to": [
+            2,
+            0
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3"
+        ],
+        "captured": [
+          [
+            "p"
+          ],
+          [
+            "P"
+          ]
+        ],
+        "material": [
+          24,
+          24
+        ],
+        "ply": 6,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "c1d2",
+          "ms": 4392
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "r.bqk",
+          "p.Pp.",
+          "np..p",
+          ".PPBP",
+          "RN.QK"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "c1d2",
+          "piece": "B",
+          "captured": null,
+          "promotion": false,
+          "from": [
+            0,
+            2
+          ],
+          "to": [
+            1,
+            3
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2"
+        ],
+        "captured": [
+          [
+            "p"
+          ],
+          [
+            "P"
+          ]
+        ],
+        "material": [
+          24,
+          24
+        ],
+        "ply": 7,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 8,
+      "actions": {
+        "1": {
+          "action": "e3d2",
+          "ms": 2893
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "r.bqk",
+          "p.Pp.",
+          "np...",
+          ".PPpP",
+          "RN.QK"
+        ],
+        "side": 0,
+        "check": true,
+        "check_square": "e1",
+        "last": {
+          "seat": 1,
+          "move": "e3d2",
+          "piece": "p",
+          "captured": "B",
+          "promotion": false,
+          "from": [
+            2,
+            4
+          ],
+          "to": [
+            1,
+            3
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2"
+        ],
+        "captured": [
+          [
+            "p"
+          ],
+          [
+            "P",
+            "B"
+          ]
+        ],
+        "material": [
+          21,
+          24
+        ],
+        "ply": 8,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 9,
+      "actions": {
+        "0": {
+          "action": "b1d2",
+          "ms": 896
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "r.bqk",
+          "p.Pp.",
+          "np...",
+          ".PPNP",
+          "R..QK"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "b1d2",
+          "piece": "N",
+          "captured": "p",
+          "promotion": false,
+          "from": [
+            0,
+            1
+          ],
+          "to": [
+            1,
+            3
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2"
+        ],
+        "captured": [
+          [
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B"
+          ]
+        ],
+        "material": [
+          21,
+          23
+        ],
+        "ply": 9,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 10,
+      "actions": {
+        "1": {
+          "action": "a3c4",
+          "ms": 3165
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "r.bqk",
+          "p.np.",
+          ".p...",
+          ".PPNP",
+          "R..QK"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 1,
+          "move": "a3c4",
+          "piece": "n",
+          "captured": "P",
+          "promotion": false,
+          "from": [
+            2,
+            0
+          ],
+          "to": [
+            3,
+            2
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4"
+        ],
+        "captured": [
+          [
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P"
+          ]
+        ],
+        "material": [
+          20,
+          23
+        ],
+        "ply": 10,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 11,
+      "actions": {
+        "0": {
+          "action": "d2b3",
+          "ms": 715
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "r.bqk",
+          "p.np.",
+          ".N...",
+          ".PP.P",
+          "R..QK"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "d2b3",
+          "piece": "N",
+          "captured": "p",
+          "promotion": false,
+          "from": [
+            1,
+            3
+          ],
+          "to": [
+            2,
+            1
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P"
+          ]
+        ],
+        "material": [
+          20,
+          22
+        ],
+        "ply": 11,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 12,
+      "actions": {
+        "1": {
+          "action": "a4b3",
+          "ms": 2228
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "r.bqk",
+          "..np.",
+          ".p...",
+          ".PP.P",
+          "R..QK"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 1,
+          "move": "a4b3",
+          "piece": "p",
+          "captured": "N",
+          "promotion": false,
+          "from": [
+            3,
+            0
+          ],
+          "to": [
+            2,
+            1
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N"
+          ]
+        ],
+        "material": [
+          17,
+          22
+        ],
+        "ply": 12,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 13,
+      "actions": {
+        "0": {
+          "action": "a1a3",
+          "ms": 4213
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "r.bqk",
+          "..np.",
+          "Rp...",
+          ".PP.P",
+          "...QK"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "a1a3",
+          "piece": "R",
+          "captured": null,
+          "promotion": false,
+          "from": [
+            0,
+            0
+          ],
+          "to": [
+            2,
+            0
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3",
+          "a1a3"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N"
+          ]
+        ],
+        "material": [
+          17,
+          22
+        ],
+        "ply": 13,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 14,
+      "actions": {
+        "1": {
+          "action": "a5a3",
+          "ms": 5887
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "..bqk",
+          "..np.",
+          "rp...",
+          ".PP.P",
+          "...QK"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 1,
+          "move": "a5a3",
+          "piece": "r",
+          "captured": "R",
+          "promotion": false,
+          "from": [
+            4,
+            0
+          ],
+          "to": [
+            2,
+            0
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3",
+          "a1a3",
+          "a5a3"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N",
+            "R"
+          ]
+        ],
+        "material": [
+          12,
+          22
+        ],
+        "ply": 14,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 15,
+      "actions": {
+        "0": {
+          "action": "e2e3",
+          "ms": 795
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "..bqk",
+          "..np.",
+          "rp..P",
+          ".PP..",
+          "...QK"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "e2e3",
+          "piece": "P",
+          "captured": null,
+          "promotion": false,
+          "from": [
+            1,
+            4
+          ],
+          "to": [
+            2,
+            4
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3",
+          "a1a3",
+          "a5a3",
+          "e2e3"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N",
+            "R"
+          ]
+        ],
+        "material": [
+          12,
+          22
+        ],
+        "ply": 15,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 16,
+      "actions": {
+        "1": {
+          "action": "b3c2",
+          "ms": 5372
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "..bqk",
+          "..np.",
+          "r...P",
+          ".Pp..",
+          "...QK"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 1,
+          "move": "b3c2",
+          "piece": "p",
+          "captured": "P",
+          "promotion": false,
+          "from": [
+            2,
+            1
+          ],
+          "to": [
+            1,
+            2
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3",
+          "a1a3",
+          "a5a3",
+          "e2e3",
+          "b3c2"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N",
+            "R",
+            "P"
+          ]
+        ],
+        "material": [
+          11,
+          22
+        ],
+        "ply": 16,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 17,
+      "actions": {
+        "0": {
+          "action": "d1d2",
+          "ms": 2855
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "..bqk",
+          "..np.",
+          "r...P",
+          ".PpQ.",
+          "....K"
+        ],
+        "side": 1,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 0,
+          "move": "d1d2",
+          "piece": "Q",
+          "captured": null,
+          "promotion": false,
+          "from": [
+            0,
+            3
+          ],
+          "to": [
+            1,
+            3
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3",
+          "a1a3",
+          "a5a3",
+          "e2e3",
+          "b3c2",
+          "d1d2"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N",
+            "R",
+            "P"
+          ]
+        ],
+        "material": [
+          11,
+          22
+        ],
+        "ply": 17,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 18,
+      "actions": {
+        "1": {
+          "action": "d4e3",
+          "ms": 4965
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "..bqk",
+          "..n..",
+          "r...p",
+          ".PpQ.",
+          "....K"
+        ],
+        "side": 0,
+        "check": false,
+        "check_square": null,
+        "last": {
+          "seat": 1,
+          "move": "d4e3",
+          "piece": "p",
+          "captured": "P",
+          "promotion": false,
+          "from": [
+            3,
+            3
+          ],
+          "to": [
+            2,
+            4
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3",
+          "a1a3",
+          "a5a3",
+          "e2e3",
+          "b3c2",
+          "d1d2",
+          "d4e3"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N",
+            "R",
+            "P",
+            "P"
+          ]
+        ],
+        "material": [
+          10,
+          22
+        ],
+        "ply": 18,
+        "max_plies": 80,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 19,
+      "actions": {
+        "0": {
+          "action": "d2e3",
+          "ms": 3525
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "..bqk",
+          "..n..",
+          "r...Q",
+          ".Pp..",
+          "....K"
+        ],
+        "side": 1,
+        "check": true,
+        "check_square": "e5",
+        "last": {
+          "seat": 0,
+          "move": "d2e3",
+          "piece": "Q",
+          "captured": "p",
+          "promotion": false,
+          "from": [
+            1,
+            3
+          ],
+          "to": [
+            2,
+            4
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3",
+          "a1a3",
+          "a5a3",
+          "e2e3",
+          "b3c2",
+          "d1d2",
+          "d4e3",
+          "d2e3"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N",
+            "R",
+            "P",
+            "P"
+          ]
+        ],
+        "material": [
+          10,
+          21
+        ],
+        "ply": 19,
+        "max_plies": 80,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 20,
+      "actions": {
+        "1": {
+          "action": "a3e3",
+          "ms": 2812
+        }
+      },
+      "frame": {
+        "size": 5,
+        "setup": "gardner",
+        "board": [
+          "..bqk",
+          "..n..",
+          "....r",
+          ".Pp..",
+          "....K"
+        ],
+        "side": 0,
+        "check": true,
+        "check_square": "e1",
+        "last": {
+          "seat": 1,
+          "move": "a3e3",
+          "piece": "r",
+          "captured": "Q",
+          "promotion": false,
+          "from": [
+            2,
+            0
+          ],
+          "to": [
+            2,
+            4
+          ]
+        },
+        "moves": [
+          "d2d3",
+          "b4b3",
+          "a2a3",
+          "e4e3",
+          "d3c4",
+          "b5a3",
+          "c1d2",
+          "e3d2",
+          "b1d2",
+          "a3c4",
+          "d2b3",
+          "a4b3",
+          "a1a3",
+          "a5a3",
+          "e2e3",
+          "b3c2",
+          "d1d2",
+          "d4e3",
+          "d2e3",
+          "a3e3"
+        ],
+        "captured": [
+          [
+            "p",
+            "p",
+            "p",
+            "p"
+          ],
+          [
+            "P",
+            "B",
+            "P",
+            "N",
+            "R",
+            "P",
+            "P",
+            "Q"
+          ]
+        ],
+        "material": [
+          1,
+          21
+        ],
+        "ply": 20,
+        "max_plies": 80,
+        "to_move": [],
+        "over": true,
+        "result": {
+          "winner": 1,
+          "scores": [
+            0,
+            1
+          ],
+          "reason": "checkmate: Black wins"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 1,
+    "winner": "team-b",
+    "scores": [
+      0,
+      1
+    ],
+    "reason": "checkmate: Black wins"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 5,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 7,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 8,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 9,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 11,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 12,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 7,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 13,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 8,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 14,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "trust me"
+    },
+    {
+      "n": 9,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 16,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 10,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 17,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 11,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 18,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 12,
+      "game": 1,
+      "game_id": "mini_chess",
+      "game_name": "Mini Chess",
+      "step": 20,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "trust me"
+    }
+  ]
+}

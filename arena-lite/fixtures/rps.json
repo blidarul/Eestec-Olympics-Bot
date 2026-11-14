@@ -1,0 +1,1273 @@
+{
+  "game_id": "rps",
+  "game_name": "Rock Paper Scissors",
+  "category": "read",
+  "variant": {
+    "label": "First to 5",
+    "target": 5,
+    "max_throws": 25
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "ROCK PAPER SCISSORS - First to 5. 2 players, simultaneous throws.\n\nGOAL\nBe the first to reach 5 points. Each throw you win scores 1 point. If 25\nthrows are played without anyone reaching 5 (move cap), the player with more\npoints wins; equal points = draw.\n\nEACH THROW\nBoth players choose one of three signs at the same time: rock, paper, scissors.\nThen both signs are revealed:\n  Rock crushes Scissors   (rock beats scissors)\n  Scissors cut Paper      (scissors beats paper)\n  Paper covers Rock       (paper beats rock)\nSame sign = tie, nobody scores.\n\nSTRATEGY NOTE\nAny single throw is a guess; the game is won by noticing patterns in your opponent's past\nthrows (and hiding your own). The full throw history is in every observation. You may talk to\nyour opponent in the match chat (\"chat\" field of your answer): announce, bluff, provoke.\nNothing said in the chat is binding.\n\nACTION FORMAT\nReply with one sign name: rock | paper | scissors   (case does not matter)\nExamples: \"rock\", \"Paper\", \"scissors\". Anything else is illegal (first time: a warning and\nthe same turn again; second time: you lose the game). You also receive the list of legal\nactions every turn.\n\nWHAT YOU OBSERVE EACH TURN\nThe throw number, both scores, the target, and every previous throw (your sign, the opponent's\nsign, who won it and how many points it scored).",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          0,
+          0
+        ],
+        "throws": [],
+        "n": 0,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": null,
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "scissors",
+          "ms": 1756
+        },
+        "1": {
+          "action": "paper",
+          "ms": 5343
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          1,
+          0
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          }
+        ],
+        "n": 1,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 1,
+          "signs": [
+            "scissors",
+            "paper"
+          ],
+          "winner": 0,
+          "verb": "cut",
+          "pts": 1,
+          "points": [
+            1,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "0": {
+          "action": "rock",
+          "ms": 1446
+        },
+        "1": {
+          "action": "rock",
+          "ms": 5225
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          1,
+          0
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          }
+        ],
+        "n": 2,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 2,
+          "signs": [
+            "rock",
+            "rock"
+          ],
+          "winner": null,
+          "verb": "",
+          "pts": 0,
+          "points": [
+            1,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "paper",
+          "ms": 2629
+        },
+        "1": {
+          "action": "paper",
+          "ms": 943
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          1,
+          0
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "signs": [
+              "paper",
+              "paper"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          }
+        ],
+        "n": 3,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 3,
+          "signs": [
+            "paper",
+            "paper"
+          ],
+          "winner": null,
+          "verb": "",
+          "pts": 0,
+          "points": [
+            1,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "0": {
+          "action": "paper",
+          "ms": 2666
+        },
+        "1": {
+          "action": "rock",
+          "ms": 1061
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          2,
+          0
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "signs": [
+              "paper",
+              "paper"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "signs": [
+              "paper",
+              "rock"
+            ],
+            "winner": 0,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              2,
+              0
+            ]
+          }
+        ],
+        "n": 4,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 4,
+          "signs": [
+            "paper",
+            "rock"
+          ],
+          "winner": 0,
+          "verb": "covers",
+          "pts": 1,
+          "points": [
+            2,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "scissors",
+          "ms": 4434
+        },
+        "1": {
+          "action": "paper",
+          "ms": 4408
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          3,
+          0
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "signs": [
+              "paper",
+              "paper"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "signs": [
+              "paper",
+              "rock"
+            ],
+            "winner": 0,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              2,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              3,
+              0
+            ]
+          }
+        ],
+        "n": 5,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 5,
+          "signs": [
+            "scissors",
+            "paper"
+          ],
+          "winner": 0,
+          "verb": "cut",
+          "pts": 1,
+          "points": [
+            3,
+            0
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "0": {
+          "action": "rock",
+          "ms": 5949
+        },
+        "1": {
+          "action": "paper",
+          "ms": 2233
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          3,
+          1
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "signs": [
+              "paper",
+              "paper"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "signs": [
+              "paper",
+              "rock"
+            ],
+            "winner": 0,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              2,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              3,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "signs": [
+              "rock",
+              "paper"
+            ],
+            "winner": 1,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              3,
+              1
+            ]
+          }
+        ],
+        "n": 6,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 6,
+          "signs": [
+            "rock",
+            "paper"
+          ],
+          "winner": 1,
+          "verb": "covers",
+          "pts": 1,
+          "points": [
+            3,
+            1
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "rock",
+          "ms": 4353
+        },
+        "1": {
+          "action": "scissors",
+          "ms": 2924
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          4,
+          1
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "signs": [
+              "paper",
+              "paper"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "signs": [
+              "paper",
+              "rock"
+            ],
+            "winner": 0,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              2,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              3,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "signs": [
+              "rock",
+              "paper"
+            ],
+            "winner": 1,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              3,
+              1
+            ]
+          },
+          {
+            "n": 7,
+            "signs": [
+              "rock",
+              "scissors"
+            ],
+            "winner": 0,
+            "verb": "crushes",
+            "pts": 1,
+            "points": [
+              4,
+              1
+            ]
+          }
+        ],
+        "n": 7,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 7,
+          "signs": [
+            "rock",
+            "scissors"
+          ],
+          "winner": 0,
+          "verb": "crushes",
+          "pts": 1,
+          "points": [
+            4,
+            1
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 8,
+      "actions": {
+        "0": {
+          "action": "rock",
+          "ms": 1428
+        },
+        "1": {
+          "action": "rock",
+          "ms": 1285
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          4,
+          1
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "signs": [
+              "paper",
+              "paper"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "signs": [
+              "paper",
+              "rock"
+            ],
+            "winner": 0,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              2,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              3,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "signs": [
+              "rock",
+              "paper"
+            ],
+            "winner": 1,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              3,
+              1
+            ]
+          },
+          {
+            "n": 7,
+            "signs": [
+              "rock",
+              "scissors"
+            ],
+            "winner": 0,
+            "verb": "crushes",
+            "pts": 1,
+            "points": [
+              4,
+              1
+            ]
+          },
+          {
+            "n": 8,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              4,
+              1
+            ]
+          }
+        ],
+        "n": 8,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "last": {
+          "n": 8,
+          "signs": [
+            "rock",
+            "rock"
+          ],
+          "winner": null,
+          "verb": "",
+          "pts": 0,
+          "points": [
+            4,
+            1
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 9,
+      "actions": {
+        "0": {
+          "action": "rock",
+          "ms": 5031
+        },
+        "1": {
+          "action": "scissors",
+          "ms": 993
+        }
+      },
+      "frame": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25,
+        "double": [],
+        "no_triple": false,
+        "points": [
+          5,
+          1
+        ],
+        "throws": [
+          {
+            "n": 1,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 2,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 3,
+            "signs": [
+              "paper",
+              "paper"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              1,
+              0
+            ]
+          },
+          {
+            "n": 4,
+            "signs": [
+              "paper",
+              "rock"
+            ],
+            "winner": 0,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              2,
+              0
+            ]
+          },
+          {
+            "n": 5,
+            "signs": [
+              "scissors",
+              "paper"
+            ],
+            "winner": 0,
+            "verb": "cut",
+            "pts": 1,
+            "points": [
+              3,
+              0
+            ]
+          },
+          {
+            "n": 6,
+            "signs": [
+              "rock",
+              "paper"
+            ],
+            "winner": 1,
+            "verb": "covers",
+            "pts": 1,
+            "points": [
+              3,
+              1
+            ]
+          },
+          {
+            "n": 7,
+            "signs": [
+              "rock",
+              "scissors"
+            ],
+            "winner": 0,
+            "verb": "crushes",
+            "pts": 1,
+            "points": [
+              4,
+              1
+            ]
+          },
+          {
+            "n": 8,
+            "signs": [
+              "rock",
+              "rock"
+            ],
+            "winner": null,
+            "verb": "",
+            "pts": 0,
+            "points": [
+              4,
+              1
+            ]
+          },
+          {
+            "n": 9,
+            "signs": [
+              "rock",
+              "scissors"
+            ],
+            "winner": 0,
+            "verb": "crushes",
+            "pts": 1,
+            "points": [
+              5,
+              1
+            ]
+          }
+        ],
+        "n": 9,
+        "banned": [
+          [],
+          []
+        ],
+        "to_move": [],
+        "last": {
+          "n": 9,
+          "signs": [
+            "rock",
+            "scissors"
+          ],
+          "winner": 0,
+          "verb": "crushes",
+          "pts": 1,
+          "points": [
+            5,
+            1
+          ]
+        },
+        "over": true,
+        "result": {
+          "winner": 0,
+          "scores": [
+            5,
+            1
+          ],
+          "reason": "seat 0 reached 5 points first (5-1 after 9 throws)"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 0,
+    "winner": "team-a",
+    "scores": [
+      5,
+      1
+    ],
+    "reason": "seat 0 reached 5 points first (5-1 after 9 throws)"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 1,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 2,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 3,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 4,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 5,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 5,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 7,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 6,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 8,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 6,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 9,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 8,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 10,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 8,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 11,
+      "game": 1,
+      "game_id": "rps",
+      "game_name": "Rock Paper Scissors",
+      "step": 9,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    }
+  ]
+}

@@ -1,0 +1,395 @@
+{
+  "game_id": "wordle_duel",
+  "game_name": "Wordle Duel",
+  "category": "guess",
+  "variant": {
+    "label": "5 letters, 6 guesses",
+    "length": 5,
+    "max_guesses": 6
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "WORDLE DUEL - 5-letter word, at most 6 guesses each.\n\nGOAL\nBoth players try to find the SAME secret English word of exactly 5 letters, chosen at random by\nthe arena from a list of common words (no proper nouns). The first player to guess it wins.\n\nTURN ORDER\nThe game is played in rounds. In every round BOTH players submit one guess at the same time\n(simultaneously); neither sees the other's guess for that round before choosing.\n\nACTION FORMAT\n    guess <word>\n<word> must be exactly 5 letters a-z (case does not matter). It does NOT have to be a real word:\nany 5-letter alphabetic string is legal. Anything else (wrong length, digits, spaces inside the\nword, punctuation) is illegal (first time: a warning and the same turn again; second time: you\nlose the game).\nExamples:  \"guess crane\"   \"guess pilot\"   \"guess STAMP\"\n\nFEEDBACK (after every round)\nEach letter of your guess gets a colour:\n    G = green  : this letter is in the secret word at exactly this position.\n    Y = yellow : this letter is in the secret word, but at a different position.\n    X = gray   : this letter is not in the secret word (or the word has no more copies of it).\nRepeated letters follow standard Wordle rules: greens are assigned first, then yellows from left to\nright, and a letter is never marked green/yellow more times than it appears in the secret word.\nExample: secret \"CRANE\", guess \"CATER\" -> G Y X Y Y  (C=green A=yellow T=gray E=yellow R=yellow).\n\nWHAT YOU OBSERVE\nYour observation lists every guess you made with its colours, and for your opponent ONLY the colour\npattern of each of their guesses (never their letters). You therefore know how close they are, e.g.\n\"G G G X G\" means they are one letter away.\n\nHOW THE GAME ENDS AND IS SCORED\n- After a round, if exactly one player's guess equals the secret word, that player wins.\n- If both players find it in the same round, the game is a draw.\n- If nobody finds it after round 6 (the guess cap), the game ends: the player whose best single\n  guess had more green letters wins; if equal, the one whose best guess had more yellow letters wins\n  (the \"best guess\" is the one with the most greens, ties broken by most yellows); still equal = draw.\nScores: winner 1, loser 0; draw 0.5 each.\n",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "length": 5,
+        "max_guesses": 6,
+        "secret": "click",
+        "round": 1,
+        "players": [
+          {
+            "guesses": [],
+            "solved_round": null,
+            "best": [
+              0,
+              0
+            ]
+          },
+          {
+            "guesses": [],
+            "solved_round": null,
+            "best": [
+              0,
+              0
+            ]
+          }
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "guess cause",
+          "ms": 4151
+        },
+        "1": {
+          "action": "guess color",
+          "ms": 3234
+        }
+      },
+      "frame": {
+        "length": 5,
+        "max_guesses": 6,
+        "secret": "click",
+        "round": 2,
+        "players": [
+          {
+            "guesses": [
+              {
+                "word": "cause",
+                "marks": "GXXXX"
+              }
+            ],
+            "solved_round": null,
+            "best": [
+              1,
+              0
+            ]
+          },
+          {
+            "guesses": [
+              {
+                "word": "color",
+                "marks": "GXYXX"
+              }
+            ],
+            "solved_round": null,
+            "best": [
+              1,
+              1
+            ]
+          }
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "0": {
+          "action": "guess chill",
+          "ms": 3689
+        },
+        "1": {
+          "action": "guess camel",
+          "ms": 2946
+        }
+      },
+      "frame": {
+        "length": 5,
+        "max_guesses": 6,
+        "secret": "click",
+        "round": 3,
+        "players": [
+          {
+            "guesses": [
+              {
+                "word": "cause",
+                "marks": "GXXXX"
+              },
+              {
+                "word": "chill",
+                "marks": "GXGYX"
+              }
+            ],
+            "solved_round": null,
+            "best": [
+              2,
+              1
+            ]
+          },
+          {
+            "guesses": [
+              {
+                "word": "color",
+                "marks": "GXYXX"
+              },
+              {
+                "word": "camel",
+                "marks": "GXXXY"
+              }
+            ],
+            "solved_round": null,
+            "best": [
+              1,
+              1
+            ]
+          }
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "guess climb",
+          "ms": 5414
+        },
+        "1": {
+          "action": "guess brook",
+          "ms": 1345
+        }
+      },
+      "frame": {
+        "length": 5,
+        "max_guesses": 6,
+        "secret": "click",
+        "round": 4,
+        "players": [
+          {
+            "guesses": [
+              {
+                "word": "cause",
+                "marks": "GXXXX"
+              },
+              {
+                "word": "chill",
+                "marks": "GXGYX"
+              },
+              {
+                "word": "climb",
+                "marks": "GGGXX"
+              }
+            ],
+            "solved_round": null,
+            "best": [
+              3,
+              0
+            ]
+          },
+          {
+            "guesses": [
+              {
+                "word": "color",
+                "marks": "GXYXX"
+              },
+              {
+                "word": "camel",
+                "marks": "GXXXY"
+              },
+              {
+                "word": "brook",
+                "marks": "XXXXG"
+              }
+            ],
+            "solved_round": null,
+            "best": [
+              1,
+              1
+            ]
+          }
+        ],
+        "to_move": [
+          0,
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "0": {
+          "action": "guess cliff",
+          "ms": 2089
+        },
+        "1": {
+          "action": "guess click",
+          "ms": 3379
+        }
+      },
+      "frame": {
+        "length": 5,
+        "max_guesses": 6,
+        "secret": "click",
+        "round": 4,
+        "players": [
+          {
+            "guesses": [
+              {
+                "word": "cause",
+                "marks": "GXXXX"
+              },
+              {
+                "word": "chill",
+                "marks": "GXGYX"
+              },
+              {
+                "word": "climb",
+                "marks": "GGGXX"
+              },
+              {
+                "word": "cliff",
+                "marks": "GGGXX"
+              }
+            ],
+            "solved_round": null,
+            "best": [
+              3,
+              0
+            ]
+          },
+          {
+            "guesses": [
+              {
+                "word": "color",
+                "marks": "GXYXX"
+              },
+              {
+                "word": "camel",
+                "marks": "GXXXY"
+              },
+              {
+                "word": "brook",
+                "marks": "XXXXG"
+              },
+              {
+                "word": "click",
+                "marks": "GGGGG"
+              }
+            ],
+            "solved_round": 4,
+            "best": [
+              5,
+              0
+            ]
+          }
+        ],
+        "to_move": [],
+        "over": true,
+        "result": {
+          "winner": 1,
+          "scores": [
+            0,
+            1
+          ],
+          "reason": "Player 1 found CLICK in round 4"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 1,
+    "winner": "team-b",
+    "scores": [
+      0,
+      1
+    ],
+    "reason": "Player 1 found CLICK in round 4"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "wordle_duel",
+      "game_name": "Wordle Duel",
+      "step": 1,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "wordle_duel",
+      "game_name": "Wordle Duel",
+      "step": 2,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "wordle_duel",
+      "game_name": "Wordle Duel",
+      "step": 2,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "trust me"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "wordle_duel",
+      "game_name": "Wordle Duel",
+      "step": 3,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "wordle_duel",
+      "game_name": "Wordle Duel",
+      "step": 3,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "wordle_duel",
+      "game_name": "Wordle Duel",
+      "step": 4,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    }
+  ]
+}

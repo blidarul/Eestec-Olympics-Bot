@@ -1,0 +1,687 @@
+{
+  "game_id": "tic_tac_toe",
+  "game_name": "Tic-Tac-Toe",
+  "category": "practice",
+  "variant": {
+    "label": "3x3 classic",
+    "size": 3,
+    "connect": 3
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "TIC-TAC-TOE - 3x3 classic. 2 players, alternating turns.\n\nGOAL\nBe the first to get 3 of your marks in an unbroken straight line: horizontally, vertically\nor diagonally.\n\nBOARD\nA 3x3 grid. Columns are letters A-C (left to right), rows are numbers 1-3 (top to\nbottom). A1 is the top-left corner, C3 the bottom-right corner:\n   A B C\n 1 . . .\n 2 . . .\n 3 . . .\nSeat 0 plays X and moves first; seat 1 plays O. On your turn you put one mark on any EMPTY cell.\n\nEND AND SCORING\nThe first player with 3 in a row wins (score 1, loser 0). If the board fills up with no line,\nthe game is a draw (0-0). The game cannot last more than 9 moves (move cap).\n\nACTION FORMAT\nA cell name: column letter + row number, e.g. \"B2\". Case does not matter and \"place B2\" also\nworks. Examples: \"A1\", \"c3\", \"place C3\". Occupied or non-existent cells are illegal\n(first time: a warning and the same turn again; second time: you lose the game). You also receive\nthe list of legal moves every turn.\n\nWHAT YOU OBSERVE EACH TURN\nThe board as a text grid (X, O, and . for empty), which mark is yours, and the list of moves\nplayed so far.",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null
+          ]
+        ],
+        "moves": [],
+        "last": null,
+        "to_move": 0,
+        "win_cells": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "C1",
+          "ms": 1182
+        }
+      },
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "cell": "C1",
+            "row": 0,
+            "col": 2
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "cell": "C1",
+          "row": 0,
+          "col": 2
+        },
+        "to_move": 1,
+        "win_cells": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "1": {
+          "action": "B2",
+          "ms": 1850
+        }
+      },
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "cell": "C1",
+            "row": 0,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B2",
+            "row": 1,
+            "col": 1
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "cell": "B2",
+          "row": 1,
+          "col": 1
+        },
+        "to_move": 0,
+        "win_cells": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "A2",
+          "ms": 765
+        }
+      },
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "cell": "C1",
+            "row": 0,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B2",
+            "row": 1,
+            "col": 1
+          },
+          {
+            "seat": 0,
+            "cell": "A2",
+            "row": 1,
+            "col": 0
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "cell": "A2",
+          "row": 1,
+          "col": 0
+        },
+        "to_move": 1,
+        "win_cells": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "1": {
+          "action": "A3",
+          "ms": 2629
+        }
+      },
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "cell": "C1",
+            "row": 0,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B2",
+            "row": 1,
+            "col": 1
+          },
+          {
+            "seat": 0,
+            "cell": "A2",
+            "row": 1,
+            "col": 0
+          },
+          {
+            "seat": 1,
+            "cell": "A3",
+            "row": 2,
+            "col": 0
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "cell": "A3",
+          "row": 2,
+          "col": 0
+        },
+        "to_move": 0,
+        "win_cells": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "C2",
+          "ms": 943
+        }
+      },
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            null,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "cell": "C1",
+            "row": 0,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B2",
+            "row": 1,
+            "col": 1
+          },
+          {
+            "seat": 0,
+            "cell": "A2",
+            "row": 1,
+            "col": 0
+          },
+          {
+            "seat": 1,
+            "cell": "A3",
+            "row": 2,
+            "col": 0
+          },
+          {
+            "seat": 0,
+            "cell": "C2",
+            "row": 1,
+            "col": 2
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "cell": "C2",
+          "row": 1,
+          "col": 2
+        },
+        "to_move": 1,
+        "win_cells": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "1": {
+          "action": "B3",
+          "ms": 2666
+        }
+      },
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "cell": "C1",
+            "row": 0,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B2",
+            "row": 1,
+            "col": 1
+          },
+          {
+            "seat": 0,
+            "cell": "A2",
+            "row": 1,
+            "col": 0
+          },
+          {
+            "seat": 1,
+            "cell": "A3",
+            "row": 2,
+            "col": 0
+          },
+          {
+            "seat": 0,
+            "cell": "C2",
+            "row": 1,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B3",
+            "row": 2,
+            "col": 1
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "cell": "B3",
+          "row": 2,
+          "col": 1
+        },
+        "to_move": 0,
+        "win_cells": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "A1",
+          "ms": 1061
+        }
+      },
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            0,
+            null,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "cell": "C1",
+            "row": 0,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B2",
+            "row": 1,
+            "col": 1
+          },
+          {
+            "seat": 0,
+            "cell": "A2",
+            "row": 1,
+            "col": 0
+          },
+          {
+            "seat": 1,
+            "cell": "A3",
+            "row": 2,
+            "col": 0
+          },
+          {
+            "seat": 0,
+            "cell": "C2",
+            "row": 1,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B3",
+            "row": 2,
+            "col": 1
+          },
+          {
+            "seat": 0,
+            "cell": "A1",
+            "row": 0,
+            "col": 0
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "cell": "A1",
+          "row": 0,
+          "col": 0
+        },
+        "to_move": 1,
+        "win_cells": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 8,
+      "actions": {
+        "1": {
+          "action": "C3",
+          "ms": 2428
+        }
+      },
+      "frame": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3,
+        "board": [
+          [
+            0,
+            null,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "cell": "C1",
+            "row": 0,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B2",
+            "row": 1,
+            "col": 1
+          },
+          {
+            "seat": 0,
+            "cell": "A2",
+            "row": 1,
+            "col": 0
+          },
+          {
+            "seat": 1,
+            "cell": "A3",
+            "row": 2,
+            "col": 0
+          },
+          {
+            "seat": 0,
+            "cell": "C2",
+            "row": 1,
+            "col": 2
+          },
+          {
+            "seat": 1,
+            "cell": "B3",
+            "row": 2,
+            "col": 1
+          },
+          {
+            "seat": 0,
+            "cell": "A1",
+            "row": 0,
+            "col": 0
+          },
+          {
+            "seat": 1,
+            "cell": "C3",
+            "row": 2,
+            "col": 2
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "cell": "C3",
+          "row": 2,
+          "col": 2
+        },
+        "to_move": null,
+        "win_cells": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "over": true,
+        "result": {
+          "winner": 1,
+          "scores": [
+            0,
+            1
+          ],
+          "reason": "seat 1 (O) made 3 in a row"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 1,
+    "winner": "team-b",
+    "scores": [
+      0,
+      1
+    ],
+    "reason": "seat 1 (O) made 3 in a row"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "tic_tac_toe",
+      "game_name": "Tic-Tac-Toe",
+      "step": 1,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "tic_tac_toe",
+      "game_name": "Tic-Tac-Toe",
+      "step": 5,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "tic_tac_toe",
+      "game_name": "Tic-Tac-Toe",
+      "step": 6,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "trust me"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "tic_tac_toe",
+      "game_name": "Tic-Tac-Toe",
+      "step": 8,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    }
+  ]
+}

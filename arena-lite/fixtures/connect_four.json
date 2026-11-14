@@ -1,0 +1,2071 @@
+{
+  "game_id": "connect_four",
+  "game_name": "Connect Four",
+  "category": "think",
+  "variant": {
+    "label": "6x7, connect 4",
+    "rows": 6,
+    "cols": 7,
+    "connect": 4
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "CONNECT FOUR - 6 rows x 7 columns, connect 4 to win.\n\nGOAL\nBe the first to get 4 of your own discs in an unbroken straight line: horizontally,\nvertically or diagonally (both diagonal directions count).\n\nBOARD AND PIECES\nThe board is a vertical grid with 6 rows and 7 columns, numbered 1 to 7 from left to right.\nPlayer 0 plays X and moves first; Player 1 plays O. Players alternate, one disc per turn.\nA disc is dropped into a column and falls to the LOWEST empty cell of that column (gravity).\nYou cannot choose the row, and you cannot drop into a full column. Passing is not allowed.\n\nACTION FORMAT\n    drop <column>\nwhere <column> is a number from 1 to 7 of a column that is not full.\nExamples:  \"drop 4\"   \"drop 1\"   \"drop 7\"\nAnything else (a full column, a number out of range, other text) is illegal (first time: a warning\nand the same turn again; second time: you lose the game). The arena also sends the list of legal\nmoves every turn.\n\nWHAT YOU OBSERVE\nThe board drawn in text, top row first, \".\" = empty, with column numbers above and below, plus\nthe move history and the open columns. Example after X dropped in 3 and 4, and\nO dropped in 3:\n 1 2 3 4 5 6 7\n|. . . . . . .|\n|. . . . . . .|\n|. . . . . . .|\n|. . . . . . .|\n|. . O . . . .|\n|. . X X . . .|\n+-------------+\n 1 2 3 4 5 6 7\n\nHOW THE GAME ENDS AND IS SCORED\n- The first player to complete a line of 4 (or longer) wins immediately (score 1, loser 0).\n- If the board fills up (42 discs, the move cap) without a line, the game is a draw\n  (0.5 each).\n",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "moves": [],
+        "last": null,
+        "win_cells": [],
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "drop 6",
+          "ms": 1756
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "col": 6,
+          "row": 5
+        },
+        "win_cells": [],
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "1": {
+          "action": "drop 4",
+          "ms": 5343
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1,
+            null,
+            0,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "col": 4,
+          "row": 5
+        },
+        "win_cells": [],
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "drop 2",
+          "ms": 1446
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            0,
+            null,
+            1,
+            null,
+            0,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "col": 2,
+          "row": 5
+        },
+        "win_cells": [],
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "1": {
+          "action": "drop 1",
+          "ms": 5225
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            null,
+            1,
+            null,
+            0,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "col": 1,
+          "row": 5
+        },
+        "win_cells": [],
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "drop 4",
+          "ms": 2629
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            null,
+            1,
+            null,
+            0,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "col": 4,
+          "row": 4
+        },
+        "win_cells": [],
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "1": {
+          "action": "drop 3",
+          "ms": 943
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "col": 3,
+          "row": 5
+        },
+        "win_cells": [],
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "drop 3",
+          "ms": 2666
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            null
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "col": 3,
+          "row": 4
+        },
+        "win_cells": [],
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 8,
+      "actions": {
+        "1": {
+          "action": "drop 7",
+          "ms": 1771
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 5
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "col": 7,
+          "row": 5
+        },
+        "win_cells": [],
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 9,
+      "actions": {
+        "0": {
+          "action": "drop 1",
+          "ms": 4434
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 4
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "col": 1,
+          "row": 4
+        },
+        "win_cells": [],
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 10,
+      "actions": {
+        "1": {
+          "action": "drop 4",
+          "ms": 4408
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 3
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "col": 4,
+          "row": 3
+        },
+        "win_cells": [],
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 11,
+      "actions": {
+        "0": {
+          "action": "drop 1",
+          "ms": 5949
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 3
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 3
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "col": 1,
+          "row": 3
+        },
+        "win_cells": [],
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 12,
+      "actions": {
+        "1": {
+          "action": "drop 3",
+          "ms": 2233
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 3
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 3
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 3
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "col": 3,
+          "row": 3
+        },
+        "win_cells": [],
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 13,
+      "actions": {
+        "0": {
+          "action": "drop 1",
+          "ms": 4353
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 3
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 3
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 3
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 2
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "col": 1,
+          "row": 2
+        },
+        "win_cells": [],
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 14,
+      "actions": {
+        "1": {
+          "action": "drop 7",
+          "ms": 2924
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 3
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 3
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 3
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 2
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 4
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "col": 7,
+          "row": 4
+        },
+        "win_cells": [],
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 15,
+      "actions": {
+        "0": {
+          "action": "drop 1",
+          "ms": 1428
+        }
+      },
+      "frame": {
+        "rows": 6,
+        "cols": 7,
+        "connect": 4,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            null,
+            0,
+            1
+          ]
+        ],
+        "moves": [
+          {
+            "seat": 0,
+            "col": 6,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 2,
+            "row": 5
+          },
+          {
+            "seat": 1,
+            "col": 1,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 4,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 3,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 5
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 4
+          },
+          {
+            "seat": 1,
+            "col": 4,
+            "row": 3
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 3
+          },
+          {
+            "seat": 1,
+            "col": 3,
+            "row": 3
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 2
+          },
+          {
+            "seat": 1,
+            "col": 7,
+            "row": 4
+          },
+          {
+            "seat": 0,
+            "col": 1,
+            "row": 1
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "col": 1,
+          "row": 1
+        },
+        "win_cells": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "to_move": [],
+        "over": true,
+        "result": {
+          "winner": 0,
+          "scores": [
+            1,
+            0
+          ],
+          "reason": "Player 0 (X) connected 4 in a row"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 0,
+    "winner": "team-a",
+    "scores": [
+      1,
+      0
+    ],
+    "reason": "Player 0 (X) connected 4 in a row"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 2,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 3,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 6,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 7,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 9,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 10,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 7,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 11,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 8,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 12,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 9,
+      "game": 1,
+      "game_id": "connect_four",
+      "game_name": "Connect Four",
+      "step": 15,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    }
+  ]
+}

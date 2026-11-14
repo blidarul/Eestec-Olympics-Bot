@@ -1,0 +1,5285 @@
+{
+  "game_id": "dots_and_boxes",
+  "game_name": "Dots and Boxes",
+  "category": "think",
+  "variant": {
+    "label": "4x4 boxes",
+    "rows": 4,
+    "cols": 4
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "DOTS AND BOXES - 4x4 boxes (5x5 dots).\n\nGOAL\nOwn more boxes than your opponent when every line has been drawn.\n\nBOARD AND COORDINATES\nThe board is a grid of dots: 5 rows numbered 1..5 from TOP to BOTTOM and 5 columns\nlettered a..e from LEFT to RIGHT. A dot is named column letter + row number: \"a1\" is the top-left\ndot, \"e5\" the bottom-right dot. A line joins two neighbouring dots, either horizontally\n(same row, neighbouring letters, e.g. a1-b1) or vertically (same letter, neighbouring rows, e.g.\na1-a2). Diagonal or longer lines do not exist. There are 40 possible lines and\n16 boxes. The box whose top-left corner is dot a1 is bounded by the lines a1-b1, a2-b2, a1-a2, b1-b2.\n\nTURN ORDER\nPlayer 0 moves first. On your turn you draw ONE line that has not been drawn yet.\n- If your line completes the 4th side of one box (or of two boxes at once), you claim those boxes\n  AND you must move again immediately (another line). This can repeat many times in a row.\n- If your line completes no box, the turn passes to the opponent.\nPassing is not allowed. Lines belong to nobody; only boxes are owned.\n\nACTION FORMAT\n    line <dot>-<dot>\nExamples:  \"line a1-b1\" (horizontal, top-left)   \"line c2-c3\" (vertical)   \"line b5-c5\"\nThe two dots may be given in any order and separated by \"-\" or a space (\"line b1 a1\" works too).\nA line that is already drawn, dots that are not neighbours, or any other text is illegal (first\ntime: a warning and the same turn again; second time: you lose the game). The arena sends the\ncomplete list of legal moves every turn.\n\nWHAT YOU OBSERVE\nThe board in text: \"+\" = dot, \"---\" = horizontal line, \"|\" = vertical line, and a claimed box shows\nthe number of its owner (0 or 1). Example on a 2x2 board where Player 1 owns box a1:\n    a   b   c\n 1  +---+---+\n    | 1 |\n 2  +---+   +\n\n 3  +   +   +\nHere a1-b1, a1-a2, b1-b2, a2-b2 and b1-c1 are drawn. You also see the score, the move history and\nwhether you are moving again after completing a box.\n\nHOW THE GAME ENDS AND IS SCORED\nThe game ends when all 40 lines are drawn (that is also the move cap). The player who\nowns more boxes wins (score = boxes owned). There can be a tie when the boxes are split evenly (draw, 0.5 each).\n",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": null,
+        "moves": 0,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "line b2-c2",
+          "ms": 1182
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line b2-c2",
+          "kind": "h",
+          "r": 1,
+          "c": 1,
+          "completed": []
+        },
+        "moves": 1,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "1": {
+          "action": "line d5-e5",
+          "ms": 2089
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line d5-e5",
+          "kind": "h",
+          "r": 4,
+          "c": 3,
+          "completed": []
+        },
+        "moves": 2,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "line e1-e2",
+          "ms": 3234
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line e1-e2",
+          "kind": "v",
+          "r": 0,
+          "c": 4,
+          "completed": []
+        },
+        "moves": 3,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "1": {
+          "action": "line d1-d2",
+          "ms": 3689
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line d1-d2",
+          "kind": "v",
+          "r": 0,
+          "c": 3,
+          "completed": []
+        },
+        "moves": 4,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "line d1-e1",
+          "ms": 2545
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line d1-e1",
+          "kind": "h",
+          "r": 0,
+          "c": 3,
+          "completed": []
+        },
+        "moves": 5,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "1": {
+          "action": "line b3-b4",
+          "ms": 3105
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line b3-b4",
+          "kind": "v",
+          "r": 2,
+          "c": 1,
+          "completed": []
+        },
+        "moves": 6,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "line a4-b4",
+          "ms": 1771
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line a4-b4",
+          "kind": "h",
+          "r": 3,
+          "c": 0,
+          "completed": []
+        },
+        "moves": 7,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 8,
+      "actions": {
+        "1": {
+          "action": "line c2-d2",
+          "ms": 4434
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line c2-d2",
+          "kind": "h",
+          "r": 1,
+          "c": 2,
+          "completed": []
+        },
+        "moves": 8,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 9,
+      "actions": {
+        "0": {
+          "action": "line c4-c5",
+          "ms": 4408
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line c4-c5",
+          "kind": "v",
+          "r": 3,
+          "c": 2,
+          "completed": []
+        },
+        "moves": 9,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 10,
+      "actions": {
+        "1": {
+          "action": "line b5-c5",
+          "ms": 557
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line b5-c5",
+          "kind": "h",
+          "r": 4,
+          "c": 1,
+          "completed": []
+        },
+        "moves": 10,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 11,
+      "actions": {
+        "0": {
+          "action": "line d2-d3",
+          "ms": 2233
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line d2-d3",
+          "kind": "v",
+          "r": 1,
+          "c": 3,
+          "completed": []
+        },
+        "moves": 11,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 12,
+      "actions": {
+        "1": {
+          "action": "line c5-d5",
+          "ms": 470
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line c5-d5",
+          "kind": "h",
+          "r": 4,
+          "c": 2,
+          "completed": []
+        },
+        "moves": 12,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 13,
+      "actions": {
+        "0": {
+          "action": "line e4-e5",
+          "ms": 5895
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line e4-e5",
+          "kind": "v",
+          "r": 3,
+          "c": 4,
+          "completed": []
+        },
+        "moves": 13,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 14,
+      "actions": {
+        "1": {
+          "action": "line d4-e4",
+          "ms": 2924
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line d4-e4",
+          "kind": "h",
+          "r": 3,
+          "c": 3,
+          "completed": []
+        },
+        "moves": 14,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 15,
+      "actions": {
+        "0": {
+          "action": "line b1-c1",
+          "ms": 1428
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line b1-c1",
+          "kind": "h",
+          "r": 0,
+          "c": 1,
+          "completed": []
+        },
+        "moves": 15,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 16,
+      "actions": {
+        "1": {
+          "action": "line b1-b2",
+          "ms": 1285
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            null,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          0,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line b1-b2",
+          "kind": "v",
+          "r": 0,
+          "c": 1,
+          "completed": []
+        },
+        "moves": 16,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 17,
+      "actions": {
+        "0": {
+          "action": "line c1-c2",
+          "ms": 5031
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          1,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line c1-c2",
+          "kind": "v",
+          "r": 0,
+          "c": 2,
+          "completed": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "moves": 17,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 18,
+      "actions": {
+        "0": {
+          "action": "line a5-b5",
+          "ms": 993
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          1,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line a5-b5",
+          "kind": "h",
+          "r": 4,
+          "c": 0,
+          "completed": []
+        },
+        "moves": 18,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 19,
+      "actions": {
+        "1": {
+          "action": "line e2-e3",
+          "ms": 4275
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            null,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          1,
+          0
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line e2-e3",
+          "kind": "v",
+          "r": 1,
+          "c": 4,
+          "completed": []
+        },
+        "moves": 19,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 20,
+      "actions": {
+        "0": {
+          "action": "line a1-b1",
+          "ms": 1276
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "scores": [
+          1,
+          0
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line a1-b1",
+          "kind": "h",
+          "r": 0,
+          "c": 0,
+          "completed": []
+        },
+        "moves": 20,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 21,
+      "actions": {
+        "1": {
+          "action": "line d4-d5",
+          "ms": 5324
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          1
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line d4-d5",
+          "kind": "v",
+          "r": 3,
+          "c": 3,
+          "completed": [
+            [
+              3,
+              3
+            ]
+          ]
+        },
+        "moves": 21,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 22,
+      "actions": {
+        "1": {
+          "action": "line c4-d4",
+          "ms": 716
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            null,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          2
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line c4-d4",
+          "kind": "h",
+          "r": 3,
+          "c": 2,
+          "completed": [
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        "moves": 22,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 23,
+      "actions": {
+        "1": {
+          "action": "line a3-a4",
+          "ms": 3280
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          2
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line a3-a4",
+          "kind": "v",
+          "r": 2,
+          "c": 0,
+          "completed": []
+        },
+        "moves": 23,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 24,
+      "actions": {
+        "0": {
+          "action": "line a2-a3",
+          "ms": 3862
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          2
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line a2-a3",
+          "kind": "v",
+          "r": 1,
+          "c": 0,
+          "completed": []
+        },
+        "moves": 24,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 25,
+      "actions": {
+        "1": {
+          "action": "line a4-a5",
+          "ms": 755
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          2
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line a4-a5",
+          "kind": "v",
+          "r": 3,
+          "c": 0,
+          "completed": []
+        },
+        "moves": 25,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 26,
+      "actions": {
+        "0": {
+          "action": "line c2-c3",
+          "ms": 3107
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          2
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line c2-c3",
+          "kind": "v",
+          "r": 1,
+          "c": 2,
+          "completed": []
+        },
+        "moves": 26,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 27,
+      "actions": {
+        "1": {
+          "action": "line c1-d1",
+          "ms": 2272
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            null,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          3
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line c1-d1",
+          "kind": "h",
+          "r": 0,
+          "c": 2,
+          "completed": [
+            [
+              0,
+              2
+            ]
+          ]
+        },
+        "moves": 27,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 28,
+      "actions": {
+        "1": {
+          "action": "line a1-a2",
+          "ms": 4085
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          3
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line a1-a2",
+          "kind": "v",
+          "r": 0,
+          "c": 0,
+          "completed": []
+        },
+        "moves": 28,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 29,
+      "actions": {
+        "0": {
+          "action": "line b2-b3",
+          "ms": 1752
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          3
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line b2-b3",
+          "kind": "v",
+          "r": 1,
+          "c": 1,
+          "completed": []
+        },
+        "moves": 29,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 30,
+      "actions": {
+        "1": {
+          "action": "line a3-b3",
+          "ms": 636
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            1,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          4
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line a3-b3",
+          "kind": "h",
+          "r": 2,
+          "c": 0,
+          "completed": [
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        "moves": 30,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 31,
+      "actions": {
+        "1": {
+          "action": "line d2-e2",
+          "ms": 537
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            1,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          5
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line d2-e2",
+          "kind": "h",
+          "r": 1,
+          "c": 3,
+          "completed": [
+            [
+              0,
+              3
+            ]
+          ]
+        },
+        "moves": 31,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 32,
+      "actions": {
+        "1": {
+          "action": "line b4-c4",
+          "ms": 1107
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            null,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            null,
+            0,
+            1,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          1,
+          5
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line b4-c4",
+          "kind": "h",
+          "r": 3,
+          "c": 1,
+          "completed": []
+        },
+        "moves": 32,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 33,
+      "actions": {
+        "0": {
+          "action": "line a2-b2",
+          "ms": 1812
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          3,
+          5
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line a2-b2",
+          "kind": "h",
+          "r": 1,
+          "c": 0,
+          "completed": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        "moves": 33,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 34,
+      "actions": {
+        "0": {
+          "action": "line d3-e3",
+          "ms": 4329
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            0
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          4,
+          5
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line d3-e3",
+          "kind": "h",
+          "r": 2,
+          "c": 3,
+          "completed": [
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "moves": 34,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 35,
+      "actions": {
+        "0": {
+          "action": "line b3-c3",
+          "ms": 583
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            null,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            null,
+            0
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          5,
+          5
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line b3-c3",
+          "kind": "h",
+          "r": 2,
+          "c": 1,
+          "completed": [
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        "moves": 35,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 36,
+      "actions": {
+        "0": {
+          "action": "line c3-d3",
+          "ms": 2031
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          6,
+          5
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line c3-d3",
+          "kind": "h",
+          "r": 2,
+          "c": 2,
+          "completed": [
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        "moves": 36,
+        "total_edges": 40,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 37,
+      "actions": {
+        "0": {
+          "action": "line e3-e4",
+          "ms": 4306
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          6,
+          5
+        ],
+        "last": {
+          "seat": 0,
+          "edge": "line e3-e4",
+          "kind": "v",
+          "r": 2,
+          "c": 4,
+          "completed": []
+        },
+        "moves": 37,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 38,
+      "actions": {
+        "1": {
+          "action": "line d3-d4",
+          "ms": 4693
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            1,
+            0
+          ],
+          [
+            1,
+            null,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          6,
+          6
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line d3-d4",
+          "kind": "v",
+          "r": 2,
+          "c": 3,
+          "completed": [
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        "moves": 38,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 39,
+      "actions": {
+        "1": {
+          "action": "line b4-b5",
+          "ms": 3753
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            null,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          6,
+          8
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line b4-b5",
+          "kind": "v",
+          "r": 3,
+          "c": 1,
+          "completed": [
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ]
+          ]
+        },
+        "moves": 39,
+        "total_edges": 40,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 40,
+      "actions": {
+        "1": {
+          "action": "line c3-c4",
+          "ms": 4824
+        }
+      },
+      "frame": {
+        "rows": 4,
+        "cols": 4,
+        "h": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "v": [
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ]
+        ],
+        "boxes": [
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ],
+        "scores": [
+          6,
+          10
+        ],
+        "last": {
+          "seat": 1,
+          "edge": "line c3-c4",
+          "kind": "v",
+          "r": 2,
+          "c": 2,
+          "completed": [
+            [
+              2,
+              1
+            ],
+            [
+              2,
+              2
+            ]
+          ]
+        },
+        "moves": 40,
+        "total_edges": 40,
+        "to_move": [],
+        "over": true,
+        "result": {
+          "winner": 1,
+          "scores": [
+            6,
+            10
+          ],
+          "reason": "all lines drawn, Player 1 owns more boxes (10-6)"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 1,
+    "winner": "team-b",
+    "scores": [
+      6,
+      10
+    ],
+    "reason": "all lines drawn, Player 1 owns more boxes (10-6)"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 1,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 4,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 6,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 8,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 9,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 10,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 7,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 11,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 8,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 12,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 9,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 15,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 10,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 16,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 11,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 18,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 12,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 21,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 13,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 22,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 14,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 24,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 15,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 25,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 16,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 27,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 17,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 28,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 18,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 30,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 19,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 32,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 20,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 34,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 21,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 36,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 22,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 37,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 23,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 38,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 24,
+      "game": 1,
+      "game_id": "dots_and_boxes",
+      "game_name": "Dots and Boxes",
+      "step": 39,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    }
+  ]
+}

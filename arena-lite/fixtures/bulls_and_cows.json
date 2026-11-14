@@ -1,0 +1,608 @@
+{
+  "game_id": "bulls_and_cows",
+  "game_name": "Bulls and Cows",
+  "category": "guess",
+  "variant": {
+    "label": "4 digits, no repeats",
+    "alphabet": "0123456789",
+    "length": 4,
+    "repeats": false,
+    "max_rounds": 10
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "BULLS AND COWS - 4 digits, no repeats. 2 players, a simultaneous code-breaking race.\n\nSECRET CODES\nThe arena gives each player a secret code of 4 digits from 0-9. All 4 digits are DIFFERENT (no repeats), and your guesses must also use 4 different digits.\nYour opponent tries to crack YOUR code and you try to crack THEIRS. You see your own code\n(it does not affect your play) but never the opponent's.\n\nEACH ROUND\nBoth players submit one guess at the opponent's code at the same time. Each guess gets\nfeedback:\n  - BULLS: how many positions hold exactly the right symbol;\n  - COWS: how many further symbols are in the code but at a different position.\nCounting with repeats works like Mastermind: for every symbol, take the smaller of its count\nin the guess and in the code, add these up, and subtract the bulls; the rest are cows.\nExample: code 4721, guess 1724 -> 2 bulls, 2 cows.\n\nEND AND SCORING\n- Crack the code (a guess with 4 bulls) to win. If both players crack in the same round, the\n  game is a draw.\n- Move cap: at most 10 rounds. If nobody has cracked by then, the player whose BEST guess\n  had more bulls wins; equal bulls -> more cows in that best guess wins; still equal -> draw.\nYour score = bulls of your best guess.\n\nACTION FORMAT\n    guess <code>      exactly 4 digits from 0-9, all different\nThe word \"guess\" is optional. Examples: \"guess 0123\", \"guess 9876\", \"guess 4721\".\nA guess with the wrong length, other symbols, or repeated symbols is illegal\n(first time: a warning and the same turn again; second time: you lose the game).\nThe legal-actions list is null (too many possible codes).\n\nWHAT YOU OBSERVE EACH TURN\nThe round number, your own secret code, all your previous guesses with their feedback, and all\nyour opponent's previous guesses at your code with their feedback.",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "label": "4 digits, no repeats",
+        "alphabet": "0123456789",
+        "length": 4,
+        "repeats": false,
+        "round": 1,
+        "max_rounds": 10,
+        "codes": [
+          "1597",
+          "9867"
+        ],
+        "guesses": [
+          [],
+          []
+        ],
+        "best": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "last": null,
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "guess 2174",
+          "ms": 2089
+        },
+        "1": {
+          "action": "guess 2504",
+          "ms": 1359
+        }
+      },
+      "frame": {
+        "label": "4 digits, no repeats",
+        "alphabet": "0123456789",
+        "length": 4,
+        "repeats": false,
+        "round": 2,
+        "max_rounds": 10,
+        "codes": [
+          "1597",
+          "9867"
+        ],
+        "guesses": [
+          [
+            {
+              "round": 1,
+              "guess": "2174",
+              "bulls": 0,
+              "cows": 1
+            }
+          ],
+          [
+            {
+              "round": 1,
+              "guess": "2504",
+              "bulls": 1,
+              "cows": 0
+            }
+          ]
+        ],
+        "best": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "last": {
+          "round": 1,
+          "guesses": [
+            "2174",
+            "2504"
+          ],
+          "feedback": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "0": {
+          "action": "guess 4098",
+          "ms": 2946
+        },
+        "1": {
+          "action": "guess 3908",
+          "ms": 5895
+        }
+      },
+      "frame": {
+        "label": "4 digits, no repeats",
+        "alphabet": "0123456789",
+        "length": 4,
+        "repeats": false,
+        "round": 3,
+        "max_rounds": 10,
+        "codes": [
+          "1597",
+          "9867"
+        ],
+        "guesses": [
+          [
+            {
+              "round": 1,
+              "guess": "2174",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 2,
+              "guess": "4098",
+              "bulls": 0,
+              "cows": 2
+            }
+          ],
+          [
+            {
+              "round": 1,
+              "guess": "2504",
+              "bulls": 1,
+              "cows": 0
+            },
+            {
+              "round": 2,
+              "guess": "3908",
+              "bulls": 0,
+              "cows": 1
+            }
+          ]
+        ],
+        "best": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "last": {
+          "round": 2,
+          "guesses": [
+            "4098",
+            "3908"
+          ],
+          "feedback": [
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "guess 1830",
+          "ms": 5226
+        },
+        "1": {
+          "action": "guess 2136",
+          "ms": 3709
+        }
+      },
+      "frame": {
+        "label": "4 digits, no repeats",
+        "alphabet": "0123456789",
+        "length": 4,
+        "repeats": false,
+        "round": 4,
+        "max_rounds": 10,
+        "codes": [
+          "1597",
+          "9867"
+        ],
+        "guesses": [
+          [
+            {
+              "round": 1,
+              "guess": "2174",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 2,
+              "guess": "4098",
+              "bulls": 0,
+              "cows": 2
+            },
+            {
+              "round": 3,
+              "guess": "1830",
+              "bulls": 1,
+              "cows": 0
+            }
+          ],
+          [
+            {
+              "round": 1,
+              "guess": "2504",
+              "bulls": 1,
+              "cows": 0
+            },
+            {
+              "round": 2,
+              "guess": "3908",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 3,
+              "guess": "2136",
+              "bulls": 0,
+              "cows": 1
+            }
+          ]
+        ],
+        "best": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "last": {
+          "round": 3,
+          "guesses": [
+            "1830",
+            "2136"
+          ],
+          "feedback": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "0": {
+          "action": "guess 6920",
+          "ms": 2916
+        },
+        "1": {
+          "action": "guess 8567",
+          "ms": 3699
+        }
+      },
+      "frame": {
+        "label": "4 digits, no repeats",
+        "alphabet": "0123456789",
+        "length": 4,
+        "repeats": false,
+        "round": 5,
+        "max_rounds": 10,
+        "codes": [
+          "1597",
+          "9867"
+        ],
+        "guesses": [
+          [
+            {
+              "round": 1,
+              "guess": "2174",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 2,
+              "guess": "4098",
+              "bulls": 0,
+              "cows": 2
+            },
+            {
+              "round": 3,
+              "guess": "1830",
+              "bulls": 1,
+              "cows": 0
+            },
+            {
+              "round": 4,
+              "guess": "6920",
+              "bulls": 0,
+              "cows": 2
+            }
+          ],
+          [
+            {
+              "round": 1,
+              "guess": "2504",
+              "bulls": 1,
+              "cows": 0
+            },
+            {
+              "round": 2,
+              "guess": "3908",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 3,
+              "guess": "2136",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 4,
+              "guess": "8567",
+              "bulls": 2,
+              "cows": 0
+            }
+          ]
+        ],
+        "best": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "last": {
+          "round": 4,
+          "guesses": [
+            "6920",
+            "8567"
+          ],
+          "feedback": [
+            [
+              0,
+              2
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "guess 1679",
+          "ms": 3751
+        },
+        "1": {
+          "action": "guess 1597",
+          "ms": 5641
+        }
+      },
+      "frame": {
+        "label": "4 digits, no repeats",
+        "alphabet": "0123456789",
+        "length": 4,
+        "repeats": false,
+        "round": 5,
+        "max_rounds": 10,
+        "codes": [
+          "1597",
+          "9867"
+        ],
+        "guesses": [
+          [
+            {
+              "round": 1,
+              "guess": "2174",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 2,
+              "guess": "4098",
+              "bulls": 0,
+              "cows": 2
+            },
+            {
+              "round": 3,
+              "guess": "1830",
+              "bulls": 1,
+              "cows": 0
+            },
+            {
+              "round": 4,
+              "guess": "6920",
+              "bulls": 0,
+              "cows": 2
+            },
+            {
+              "round": 5,
+              "guess": "1679",
+              "bulls": 0,
+              "cows": 3
+            }
+          ],
+          [
+            {
+              "round": 1,
+              "guess": "2504",
+              "bulls": 1,
+              "cows": 0
+            },
+            {
+              "round": 2,
+              "guess": "3908",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 3,
+              "guess": "2136",
+              "bulls": 0,
+              "cows": 1
+            },
+            {
+              "round": 4,
+              "guess": "8567",
+              "bulls": 2,
+              "cows": 0
+            },
+            {
+              "round": 5,
+              "guess": "1597",
+              "bulls": 4,
+              "cows": 0
+            }
+          ]
+        ],
+        "best": [
+          [
+            1,
+            0
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "last": {
+          "round": 5,
+          "guesses": [
+            "1679",
+            "1597"
+          ],
+          "feedback": [
+            [
+              0,
+              3
+            ],
+            [
+              4,
+              0
+            ]
+          ]
+        },
+        "over": true,
+        "result": {
+          "winner": 1,
+          "scores": [
+            1,
+            4
+          ],
+          "reason": "seat 1 cracked the opponent's code in round 5"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 1,
+    "winner": "team-b",
+    "scores": [
+      1,
+      4
+    ],
+    "reason": "seat 1 cracked the opponent's code in round 5"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "bulls_and_cows",
+      "game_name": "Bulls and Cows",
+      "step": 1,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "bulls_and_cows",
+      "game_name": "Bulls and Cows",
+      "step": 2,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "trust me"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "bulls_and_cows",
+      "game_name": "Bulls and Cows",
+      "step": 3,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "bulls_and_cows",
+      "game_name": "Bulls and Cows",
+      "step": 4,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "bulls_and_cows",
+      "game_name": "Bulls and Cows",
+      "step": 5,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    }
+  ]
+}

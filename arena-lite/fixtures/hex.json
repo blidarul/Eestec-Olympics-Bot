@@ -1,0 +1,9566 @@
+{
+  "game_id": "hex",
+  "game_name": "Hex",
+  "category": "think",
+  "variant": {
+    "label": "7x7",
+    "size": 7,
+    "swap": false
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "HEX - 7x7 board.\n\nBOARD\nThe board is a rhombus (diamond) of 7x7 = 49 hexagonal cells. Columns are letters a..g\nfrom left to right, rows are numbers 1..7 from top to bottom; a cell is letter + number, e.g. c3.\nBecause the cells are hexagons, every row is shifted half a cell to the right of the row above, and\neach cell touches up to 6 neighbours: for cell c3 they are b3 and d3 (same row), c2 and d2 (row\nabove), b4 and c4 (row below). In general cell (column L, row R) touches (L-1,R), (L+1,R),\n(L,R-1), (L+1,R-1), (L-1,R+1), (L,R+1). Cells such as b2 and c3 do NOT touch.\n\nPLAYERS AND GOAL\nPlayer 0 plays X and must connect the TOP edge (row 1) to the BOTTOM edge (row 7) with an unbroken\nchain of touching X stones. Player 1 plays O and must connect the LEFT edge (column a) to the RIGHT\nedge (column g) with a chain of touching O stones. The first player to complete a chain wins.\n\nTURN ORDER\nPlayer 0 (X) moves first; then the players alternate. On your turn you place one stone of your\nsymbol on any empty cell. Stones never move and are never removed. Passing is not allowed.\n\nACTION FORMAT\n    place <cell>\nExamples:  \"place c3\"   \"place a1\"   \"place g7\"\nPlacing on an occupied cell, a cell outside the board or any other text is illegal (first time: a\nwarning and the same turn again; second time: you lose the game). The arena sends the complete list\nof legal moves every turn.\n\nWHAT YOU OBSERVE\nThe board drawn as a slanted grid, \".\" = empty, the move history and whose turn it is.\nExample (7x7, X stones on b2 and b3, an O stone on c3):\n     a b c d e f g        (X joins top<->bottom, O joins left<->right)\n  1  . . . . . . .  1\n   2  . X . . . . .  2\n    3  . X O . . . .  3\n     4  . . . . . . .  4\n      5  . . . . . . .  5\n       6  . . . . . . .  6\n        7  . . . . . . .  7\n           a b c d e f g\n\nHOW THE GAME ENDS AND IS SCORED\nThe game ends as soon as one player completes a chain between their two edges: that player wins\n(score 1, loser 0). A draw is impossible in Hex: when the board is full one player always has a\nchain, so the game lasts at most 49 moves (the move cap).\n",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "history": [],
+        "last": null,
+        "win_path": [],
+        "moves": 0,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "place a7",
+          "ms": 4388
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place a7",
+          "r": 6,
+          "c": 0,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 1,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "1": {
+          "action": "place c4",
+          "ms": 1408
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place c4",
+          "r": 3,
+          "c": 2,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 2,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "place f1",
+          "ms": 2712
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place f1",
+          "r": 0,
+          "c": 5,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 3,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "1": {
+          "action": "place g2",
+          "ms": 4373
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place g2",
+          "r": 1,
+          "c": 6,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 4,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "place d3",
+          "ms": 4267
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place d3",
+          "r": 2,
+          "c": 3,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 5,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 6,
+      "actions": {
+        "1": {
+          "action": "place d4",
+          "ms": 3556
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place d4",
+          "r": 3,
+          "c": 3,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 6,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 7,
+      "actions": {
+        "0": {
+          "action": "place e7",
+          "ms": 4557
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place e7",
+          "r": 6,
+          "c": 4,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 7,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 8,
+      "actions": {
+        "1": {
+          "action": "place g5",
+          "ms": 5629
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place g5",
+          "r": 4,
+          "c": 6,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 8,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 9,
+      "actions": {
+        "0": {
+          "action": "place c2",
+          "ms": 5808
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place c2",
+          "r": 1,
+          "c": 2,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 9,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 10,
+      "actions": {
+        "1": {
+          "action": "place a4",
+          "ms": 2069
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place a4",
+          "r": 3,
+          "c": 0,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 10,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 11,
+      "actions": {
+        "0": {
+          "action": "place a6",
+          "ms": 1675
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place a6",
+          "r": 5,
+          "c": 0,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 11,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 12,
+      "actions": {
+        "1": {
+          "action": "place a2",
+          "ms": 5223
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place a2",
+          "r": 1,
+          "c": 0,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 12,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 13,
+      "actions": {
+        "0": {
+          "action": "place e6",
+          "ms": 2597
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place e6",
+          "r": 5,
+          "c": 4,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 13,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 14,
+      "actions": {
+        "1": {
+          "action": "place f3",
+          "ms": 906
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place f3",
+          "r": 2,
+          "c": 5,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 14,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 15,
+      "actions": {
+        "0": {
+          "action": "place g4",
+          "ms": 5526
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place g4",
+          "r": 3,
+          "c": 6,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 15,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 16,
+      "actions": {
+        "1": {
+          "action": "place f7",
+          "ms": 3494
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            null,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place f7",
+          "r": 6,
+          "c": 5,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 16,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 17,
+      "actions": {
+        "0": {
+          "action": "place e3",
+          "ms": 497
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null
+          ],
+          [
+            1,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place e3",
+          "r": 2,
+          "c": 4,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 17,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 18,
+      "actions": {
+        "1": {
+          "action": "place g1",
+          "ms": 3938
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            null,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place g1",
+          "r": 0,
+          "c": 6,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 18,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 19,
+      "actions": {
+        "0": {
+          "action": "place b2",
+          "ms": 4810
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place b2",
+          "r": 1,
+          "c": 1,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 19,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 20,
+      "actions": {
+        "1": {
+          "action": "place a1",
+          "ms": 4599
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            null,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place a1",
+          "r": 0,
+          "c": 0,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 20,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 21,
+      "actions": {
+        "0": {
+          "action": "place c7",
+          "ms": 870
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            null,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place c7",
+          "r": 6,
+          "c": 2,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 21,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 22,
+      "actions": {
+        "1": {
+          "action": "place b1",
+          "ms": 3326
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place b1",
+          "r": 0,
+          "c": 1,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 22,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 23,
+      "actions": {
+        "0": {
+          "action": "place b5",
+          "ms": 2843
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place b5",
+          "r": 4,
+          "c": 1,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 23,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 24,
+      "actions": {
+        "1": {
+          "action": "place d6",
+          "ms": 2581
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            null,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            1,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place d6",
+          "r": 5,
+          "c": 3,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 24,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 25,
+      "actions": {
+        "0": {
+          "action": "place a5",
+          "ms": 2736
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            null
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            1,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place a5",
+          "r": 4,
+          "c": 0,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 25,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 26,
+      "actions": {
+        "1": {
+          "action": "place g3",
+          "ms": 2618
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            1,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            null,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place g3",
+          "r": 2,
+          "c": 6,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 26,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 27,
+      "actions": {
+        "0": {
+          "action": "place d7",
+          "ms": 2692
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            1,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place d7",
+          "r": 6,
+          "c": 3,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 27,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 28,
+      "actions": {
+        "1": {
+          "action": "place d2",
+          "ms": 3147
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            1,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place d2",
+          "r": 1,
+          "c": 3,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 28,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 29,
+      "actions": {
+        "0": {
+          "action": "place c6",
+          "ms": 3272
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            1,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place c6",
+          "r": 5,
+          "c": 2,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 29,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 30,
+      "actions": {
+        "1": {
+          "action": "place d5",
+          "ms": 1781
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            null,
+            null,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            1,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place d5",
+          "r": 4,
+          "c": 3,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 30,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 31,
+      "actions": {
+        "0": {
+          "action": "place e4",
+          "ms": 4771
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            0,
+            null,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            1,
+            0,
+            null,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place e4",
+          "r": 3,
+          "c": 4,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 31,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 32,
+      "actions": {
+        "1": {
+          "action": "place f6",
+          "ms": 2633
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            0,
+            null,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            1,
+            0,
+            1,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f6",
+            "r": 5,
+            "c": 5,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place f6",
+          "r": 5,
+          "c": 5,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 32,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 33,
+      "actions": {
+        "0": {
+          "action": "place f4",
+          "ms": 4063
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            1,
+            0,
+            1,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f6",
+            "r": 5,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f4",
+            "r": 3,
+            "c": 5,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place f4",
+          "r": 3,
+          "c": 5,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 33,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 34,
+      "actions": {
+        "1": {
+          "action": "place b6",
+          "ms": 3304
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f6",
+            "r": 5,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f4",
+            "r": 3,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b6",
+            "r": 5,
+            "c": 1,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place b6",
+          "r": 5,
+          "c": 1,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 34,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 35,
+      "actions": {
+        "0": {
+          "action": "place e2",
+          "ms": 4969
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            0,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            null
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f6",
+            "r": 5,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f4",
+            "r": 3,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b6",
+            "r": 5,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e2",
+            "r": 1,
+            "c": 4,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place e2",
+          "r": 1,
+          "c": 4,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 35,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 36,
+      "actions": {
+        "1": {
+          "action": "place g6",
+          "ms": 3296
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            0,
+            null,
+            1
+          ],
+          [
+            null,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f6",
+            "r": 5,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f4",
+            "r": 3,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b6",
+            "r": 5,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e2",
+            "r": 1,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g6",
+            "r": 5,
+            "c": 6,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place g6",
+          "r": 5,
+          "c": 6,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 36,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 37,
+      "actions": {
+        "0": {
+          "action": "place a3",
+          "ms": 3763
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            0,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            null,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f6",
+            "r": 5,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f4",
+            "r": 3,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b6",
+            "r": 5,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e2",
+            "r": 1,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g6",
+            "r": 5,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a3",
+            "r": 2,
+            "c": 0,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place a3",
+          "r": 2,
+          "c": 0,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 37,
+        "to_move": [
+          1
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 38,
+      "actions": {
+        "1": {
+          "action": "place b4",
+          "ms": 715
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            0,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            null,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f6",
+            "r": 5,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f4",
+            "r": 3,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b6",
+            "r": 5,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e2",
+            "r": 1,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g6",
+            "r": 5,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a3",
+            "r": 2,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b4",
+            "r": 3,
+            "c": 1,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 1,
+          "action": "place b4",
+          "r": 3,
+          "c": 1,
+          "swap": false
+        },
+        "win_path": [],
+        "moves": 38,
+        "to_move": [
+          0
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 39,
+      "actions": {
+        "0": {
+          "action": "place e5",
+          "ms": 1575
+        }
+      },
+      "frame": {
+        "size": 7,
+        "swap_rule": false,
+        "swapped": false,
+        "board": [
+          [
+            1,
+            1,
+            null,
+            null,
+            null,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            0,
+            null,
+            1
+          ],
+          [
+            0,
+            null,
+            null,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            null,
+            1,
+            0,
+            null,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            null,
+            0,
+            0,
+            0,
+            1,
+            null
+          ]
+        ],
+        "history": [
+          {
+            "seat": 0,
+            "action": "place a7",
+            "r": 6,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place c4",
+            "r": 3,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f1",
+            "r": 0,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g2",
+            "r": 1,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d3",
+            "r": 2,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d4",
+            "r": 3,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e7",
+            "r": 6,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g5",
+            "r": 4,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c2",
+            "r": 1,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a4",
+            "r": 3,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a6",
+            "r": 5,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a2",
+            "r": 1,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e6",
+            "r": 5,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f3",
+            "r": 2,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place g4",
+            "r": 3,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f7",
+            "r": 6,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e3",
+            "r": 2,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g1",
+            "r": 0,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b2",
+            "r": 1,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place a1",
+            "r": 0,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c7",
+            "r": 6,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b1",
+            "r": 0,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place b5",
+            "r": 4,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d6",
+            "r": 5,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a5",
+            "r": 4,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g3",
+            "r": 2,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place d7",
+            "r": 6,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d2",
+            "r": 1,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place c6",
+            "r": 5,
+            "c": 2,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place d5",
+            "r": 4,
+            "c": 3,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e4",
+            "r": 3,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place f6",
+            "r": 5,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place f4",
+            "r": 3,
+            "c": 5,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b6",
+            "r": 5,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e2",
+            "r": 1,
+            "c": 4,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place g6",
+            "r": 5,
+            "c": 6,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place a3",
+            "r": 2,
+            "c": 0,
+            "swap": false
+          },
+          {
+            "seat": 1,
+            "action": "place b4",
+            "r": 3,
+            "c": 1,
+            "swap": false
+          },
+          {
+            "seat": 0,
+            "action": "place e5",
+            "r": 4,
+            "c": 4,
+            "swap": false
+          }
+        ],
+        "last": {
+          "seat": 0,
+          "action": "place e5",
+          "r": 4,
+          "c": 4,
+          "swap": false
+        },
+        "win_path": [
+          [
+            0,
+            5
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            3
+          ]
+        ],
+        "moves": 39,
+        "to_move": [],
+        "over": true,
+        "result": {
+          "winner": 0,
+          "scores": [
+            1,
+            0
+          ],
+          "reason": "Player 0 (X) connected top and bottom edges"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 0,
+    "winner": "team-a",
+    "scores": [
+      1,
+      0
+    ],
+    "reason": "Player 0 (X) connected top and bottom edges"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 4,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 5,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 8,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 9,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 10,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 11,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "let's see"
+    },
+    {
+      "n": 7,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 12,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 8,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 13,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 9,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 15,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 10,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 17,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 11,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 18,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 12,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 20,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 13,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 21,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 14,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 22,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 15,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 23,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 16,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 24,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "random fixture move"
+    },
+    {
+      "n": 17,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 26,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 18,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 29,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 19,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 30,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 20,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 32,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "hmm"
+    },
+    {
+      "n": 21,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 37,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    },
+    {
+      "n": 22,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 38,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "let's see"
+    },
+    {
+      "n": 23,
+      "game": 1,
+      "game_id": "hex",
+      "game_name": "Hex",
+      "step": 39,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    }
+  ]
+}

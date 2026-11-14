@@ -1,0 +1,4585 @@
+{
+  "source": "https://arena.hackaton-2026.dvloper.io/#/games",
+  "secret_count": 9,
+  "total_games": 15,
+  "games": [
+    {
+      "id": "battleship",
+      "name": "Battleship",
+      "category": "guess",
+      "blurb": "Hunt the hidden fleet cell by cell: every hit is a clue, every miss a wasted shell.",
+      "howto": "Each player has hidden ships on a grid. Take turns firing at squares: X means a hit, a dot means water. Sink the whole enemy fleet first to win.",
+      "practice": false,
+      "variants_meta": [
+        "6x6, 3 ships",
+        "8x8, 4 ships",
+        "8x8 salvo"
+      ],
+      "sample_variant": {
+        "label": "6x6, 3 ships",
+        "size": 6,
+        "fleet": "small",
+        "salvo": false,
+        "max_rounds": 30
+      },
+      "rules": "BATTLESHIP - 6x6 grid, 3 ships each.\n\nGOAL\nEach player has a hidden fleet on their own 6x6 grid. Sink all of your opponent's ships before\nthey sink yours.\n\nSETUP (done by the arena, randomly)\nFleet of each player: Cruiser (3 cells, letter C), Destroyer (2 cells, letter D), Patrol boat (2 cells, letter P) = 7 ship cells.\nShips are straight lines (horizontal or vertical), never overlap, may touch each other, and stay\ninside the grid. You see your own ships; you never see the opponent's ships.\n\nCOORDINATES\nColumns are letters a..f from left to right, rows are numbers 1..6 from top to bottom.\nA cell is column letter + row number: \"a1\" is the top-left corner, \"f6\" the bottom-right.\n\nTURN ORDER\nPlayer 0 shoots first, then Player 1, alternating. One \"round\" = Player 0's turn + Player 1's turn.\nEach turn you fire exactly ONE shot.\n\nACTION FORMAT\n    fire <cell>\nwhere <cell> is a cell you have never fired at before.\nExamples:  \"fire c4\"   \"fire a1\"   \"fire f6\"\nFiring at a cell you already fired at, a cell outside the grid, or any other text is illegal\n(first time: a warning and the same turn again; second time: you lose the game). Case and extra\nspaces do not matter.\n\nFEEDBACK\nAfter each shot you learn: \"miss\" (water), \"hit\" (a ship was hit; the ship is not named), or\n\"hit, sunk <Ship name> (<size>)\" when that shot hit the last remaining cell of a ship.\nYou also see where the opponent's shots landed on your own grid.\n\nWHAT YOU OBSERVE\n- Status of both fleets (which ships are sunk), round number, how many shots you must fire.\n- YOUR SHOTS grid (the opponent's waters):  . = not fired yet, o = miss, X = hit, # = hit on a ship\n  that is already sunk.\n- YOUR WATERS grid (your fleet): a ship letter = intact part of your ship, * = part of your ship\n  that was hit, o = opponent's miss, . = untouched water.\n- The recent shot history of both players.\nExample (top-left of a YOUR SHOTS grid):\n    a b c d\n 1  . o . .\n 2  . X X .\n 3  # # o .\nMeaning: misses at b1 and c3, hits at b2 and c2 (that ship is not sunk yet), and a sunk 2-cell\nship at a3-b3.\n\nHOW THE GAME ENDS AND IS SCORED\nThe game is checked at the END of every round, so both players always get the same number of turns:\n- if only one player has sunk the whole enemy fleet, that player wins;\n- if both did it in the same round (Player 1 equalised on the last turn), it is a draw.\nShot cap: after round 30 the game ends; the player who hit more enemy ship cells wins,\nequal = draw. Score = number of enemy ship cells you hit (max 7).\n",
+      "action_format": "fire <cell>\nwhere <cell> is a cell you have never fired at before.\nExamples:  \"fire c4\"   \"fire a1\"   \"fire f6\"\nFiring at a cell you already fired at, a cell outside the grid, or any other text is illegal\n(first time: a warning and the same turn again; second time: you lose the game). Case and extra\nspaces do not matter.",
+      "sample_steps_count": 43,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "fire e3",
+              "ms": 5709
+            }
+          },
+          "frame": {
+            "size": 6,
+            "salvo": false,
+            "round": 1,
+            "max_rounds": 30,
+            "boards": [
+              {
+                "ships": [
+                  {
+                    "name": "Cruiser",
+                    "letter": "C",
+                    "size": 3,
+                    "cells": [
+                      [
+                        1,
+                        2
+                      ],
+                      [
+                        1,
+                        3
+                      ],
+                      [
+                        1,
+                        4
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Destroyer",
+                    "letter": "D",
+                    "size": 2,
+                    "cells": [
+                      [
+                        1,
+                        0
+                      ],
+                      [
+                        2,
+                        0
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Patrol boat",
+                    "letter": "P",
+                    "size": 2,
+                    "cells": [
+                      [
+                        2,
+                        1
+                      ],
+                      [
+                        2,
+                        2
+                      ]
+                    ],
+                    "sunk": false
+                  }
+                ],
+                "shots": []
+              },
+              {
+                "ships": [
+                  {
+                    "name": "Cruiser",
+                    "letter": "C",
+                    "size": 3,
+                    "cells": [
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        1
+                      ],
+                      [
+                        0,
+                        2
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Destroyer",
+                    "letter": "D",
+                    "size": 2,
+                    "cells": [
+                      [
+                        2,
+                        5
+                      ],
+                      [
+                        3,
+                        5
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Patrol boat",
+                    "letter": "P",
+                    "size": 2,
+                    "cells": [
+                      [
+                        5,
+                        0
+                      ],
+                      [
+                        5,
+                        1
+                      ]
+                    ],
+                    "sunk": false
+                  }
+                ],
+                "shots": [
+                  [
+                    2,
+                    4,
+                    "miss"
+                  ]
+                ]
+              }
+            ],
+            "hits": [
+              0,
+              0
+            ],
+            "afloat": [
+              3,
+              3
+            ],
+            "last": {
+              "round": 1,
+              "seat": 0,
+              "shots": [
+                {
+                  "cell": "e3",
+                  "r": 2,
+                  "c": 4,
+                  "result": "miss",
+                  "sunk": null
+                }
+              ]
+            },
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "fire c4",
+              "ms": 3816
+            }
+          },
+          "frame": {
+            "size": 6,
+            "salvo": false,
+            "round": 2,
+            "max_rounds": 30,
+            "boards": [
+              {
+                "ships": [
+                  {
+                    "name": "Cruiser",
+                    "letter": "C",
+                    "size": 3,
+                    "cells": [
+                      [
+                        1,
+                        2
+                      ],
+                      [
+                        1,
+                        3
+                      ],
+                      [
+                        1,
+                        4
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Destroyer",
+                    "letter": "D",
+                    "size": 2,
+                    "cells": [
+                      [
+                        1,
+                        0
+                      ],
+                      [
+                        2,
+                        0
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Patrol boat",
+                    "letter": "P",
+                    "size": 2,
+                    "cells": [
+                      [
+                        2,
+                        1
+                      ],
+                      [
+                        2,
+                        2
+                      ]
+                    ],
+                    "sunk": false
+                  }
+                ],
+                "shots": [
+                  [
+                    3,
+                    2,
+                    "miss"
+                  ]
+                ]
+              },
+              {
+                "ships": [
+                  {
+                    "name": "Cruiser",
+                    "letter": "C",
+                    "size": 3,
+                    "cells": [
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        1
+                      ],
+                      [
+                        0,
+                        2
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Destroyer",
+                    "letter": "D",
+                    "size": 2,
+                    "cells": [
+                      [
+                        2,
+                        5
+                      ],
+                      [
+                        3,
+                        5
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Patrol boat",
+                    "letter": "P",
+                    "size": 2,
+                    "cells": [
+                      [
+                        5,
+                        0
+                      ],
+                      [
+                        5,
+                        1
+                      ]
+                    ],
+                    "sunk": false
+                  }
+                ],
+                "shots": [
+                  [
+                    2,
+                    4,
+                    "miss"
+                  ]
+                ]
+              }
+            ],
+            "hits": [
+              0,
+              0
+            ],
+            "afloat": [
+              3,
+              3
+            ],
+            "last": {
+              "round": 1,
+              "seat": 1,
+              "shots": [
+                {
+                  "cell": "c4",
+                  "r": 3,
+                  "c": 2,
+                  "result": "miss",
+                  "sunk": null
+                }
+              ]
+            },
+            "to_move": [
+              0
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "fire b5",
+              "ms": 4211
+            }
+          },
+          "frame": {
+            "size": 6,
+            "salvo": false,
+            "round": 2,
+            "max_rounds": 30,
+            "boards": [
+              {
+                "ships": [
+                  {
+                    "name": "Cruiser",
+                    "letter": "C",
+                    "size": 3,
+                    "cells": [
+                      [
+                        1,
+                        2
+                      ],
+                      [
+                        1,
+                        3
+                      ],
+                      [
+                        1,
+                        4
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Destroyer",
+                    "letter": "D",
+                    "size": 2,
+                    "cells": [
+                      [
+                        1,
+                        0
+                      ],
+                      [
+                        2,
+                        0
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Patrol boat",
+                    "letter": "P",
+                    "size": 2,
+                    "cells": [
+                      [
+                        2,
+                        1
+                      ],
+                      [
+                        2,
+                        2
+                      ]
+                    ],
+                    "sunk": false
+                  }
+                ],
+                "shots": [
+                  [
+                    3,
+                    2,
+                    "miss"
+                  ]
+                ]
+              },
+              {
+                "ships": [
+                  {
+                    "name": "Cruiser",
+                    "letter": "C",
+                    "size": 3,
+                    "cells": [
+                      [
+                        0,
+                        0
+                      ],
+                      [
+                        0,
+                        1
+                      ],
+                      [
+                        0,
+                        2
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Destroyer",
+                    "letter": "D",
+                    "size": 2,
+                    "cells": [
+                      [
+                        2,
+                        5
+                      ],
+                      [
+                        3,
+                        5
+                      ]
+                    ],
+                    "sunk": false
+                  },
+                  {
+                    "name": "Patrol boat",
+                    "letter": "P",
+                    "size": 2,
+                    "cells": [
+                      [
+                        5,
+                        0
+                      ],
+                      [
+                        5,
+                        1
+                      ]
+                    ],
+                    "sunk": false
+                  }
+                ],
+                "shots": [
+                  [
+                    2,
+                    4,
+                    "miss"
+                  ],
+                  [
+                    4,
+                    1,
+                    "miss"
+                  ]
+                ]
+              }
+            ],
+            "hits": [
+              0,
+              0
+            ],
+            "afloat": [
+              3,
+              3
+            ],
+            "last": {
+              "round": 2,
+              "seat": 0,
+              "shots": [
+                {
+                  "cell": "b5",
+                  "r": 4,
+                  "c": 1,
+                  "result": "miss",
+                  "sunk": null
+                }
+              ]
+            },
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          4,
+          7
+        ],
+        "reason": "Player 1 sank the whole enemy fleet in round 21"
+      }
+    },
+    {
+      "id": "bulls_and_cows",
+      "name": "Bulls and Cows",
+      "category": "guess",
+      "blurb": "A code-breaking race: both crack each other's secret code at once, and every clue counts.",
+      "howto": "Each player tries to crack the other's secret code. Every guess reveals how many symbols are right and in place, and how many are right but misplaced. First to crack it wins.",
+      "practice": false,
+      "variants_meta": [
+        "4 digits, no repeats",
+        "5 digits, repeats allowed",
+        "4 letters A-F, repeats allowed"
+      ],
+      "sample_variant": {
+        "label": "4 digits, no repeats",
+        "alphabet": "0123456789",
+        "length": 4,
+        "repeats": false,
+        "max_rounds": 10
+      },
+      "rules": "BULLS AND COWS - 4 digits, no repeats. 2 players, a simultaneous code-breaking race.\n\nSECRET CODES\nThe arena gives each player a secret code of 4 digits from 0-9. All 4 digits are DIFFERENT (no repeats), and your guesses must also use 4 different digits.\nYour opponent tries to crack YOUR code and you try to crack THEIRS. You see your own code\n(it does not affect your play) but never the opponent's.\n\nEACH ROUND\nBoth players submit one guess at the opponent's code at the same time. Each guess gets\nfeedback:\n  - BULLS: how many positions hold exactly the right symbol;\n  - COWS: how many further symbols are in the code but at a different position.\nCounting with repeats works like Mastermind: for every symbol, take the smaller of its count\nin the guess and in the code, add these up, and subtract the bulls; the rest are cows.\nExample: code 4721, guess 1724 -> 2 bulls, 2 cows.\n\nEND AND SCORING\n- Crack the code (a guess with 4 bulls) to win. If both players crack in the same round, the\n  game is a draw.\n- Move cap: at most 10 rounds. If nobody has cracked by then, the player whose BEST guess\n  had more bulls wins; equal bulls -> more cows in that best guess wins; still equal -> draw.\nYour score = bulls of your best guess.\n\nACTION FORMAT\n    guess <code>      exactly 4 digits from 0-9, all different\nThe word \"guess\" is optional. Examples: \"guess 0123\", \"guess 9876\", \"guess 4721\".\nA guess with the wrong length, other symbols, or repeated symbols is illegal\n(first time: a warning and the same turn again; second time: you lose the game).\nThe legal-actions list is null (too many possible codes).\n\nWHAT YOU OBSERVE EACH TURN\nThe round number, your own secret code, all your previous guesses with their feedback, and all\nyour opponent's previous guesses at your code with their feedback.",
+      "action_format": "guess <code>      exactly 4 digits from 0-9, all different\nThe word \"guess\" is optional. Examples: \"guess 0123\", \"guess 9876\", \"guess 4721\".\nA guess with the wrong length, other symbols, or repeated symbols is illegal\n(first time: a warning and the same turn again; second time: you lose the game).\nThe legal-actions list is null (too many possible codes).",
+      "sample_steps_count": 6,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "guess 2174",
+              "ms": 2089
+            },
+            "1": {
+              "action": "guess 2504",
+              "ms": 1359
+            }
+          },
+          "frame": {
+            "label": "4 digits, no repeats",
+            "alphabet": "0123456789",
+            "length": 4,
+            "repeats": false,
+            "round": 2,
+            "max_rounds": 10,
+            "codes": [
+              "1597",
+              "9867"
+            ],
+            "guesses": [
+              [
+                {
+                  "round": 1,
+                  "guess": "2174",
+                  "bulls": 0,
+                  "cows": 1
+                }
+              ],
+              [
+                {
+                  "round": 1,
+                  "guess": "2504",
+                  "bulls": 1,
+                  "cows": 0
+                }
+              ]
+            ],
+            "best": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "last": {
+              "round": 1,
+              "guesses": [
+                "2174",
+                "2504"
+              ],
+              "feedback": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  1,
+                  0
+                ]
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "0": {
+              "action": "guess 4098",
+              "ms": 2946
+            },
+            "1": {
+              "action": "guess 3908",
+              "ms": 5895
+            }
+          },
+          "frame": {
+            "label": "4 digits, no repeats",
+            "alphabet": "0123456789",
+            "length": 4,
+            "repeats": false,
+            "round": 3,
+            "max_rounds": 10,
+            "codes": [
+              "1597",
+              "9867"
+            ],
+            "guesses": [
+              [
+                {
+                  "round": 1,
+                  "guess": "2174",
+                  "bulls": 0,
+                  "cows": 1
+                },
+                {
+                  "round": 2,
+                  "guess": "4098",
+                  "bulls": 0,
+                  "cows": 2
+                }
+              ],
+              [
+                {
+                  "round": 1,
+                  "guess": "2504",
+                  "bulls": 1,
+                  "cows": 0
+                },
+                {
+                  "round": 2,
+                  "guess": "3908",
+                  "bulls": 0,
+                  "cows": 1
+                }
+              ]
+            ],
+            "best": [
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "last": {
+              "round": 2,
+              "guesses": [
+                "4098",
+                "3908"
+              ],
+              "feedback": [
+                [
+                  0,
+                  2
+                ],
+                [
+                  0,
+                  1
+                ]
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "guess 1830",
+              "ms": 5226
+            },
+            "1": {
+              "action": "guess 2136",
+              "ms": 3709
+            }
+          },
+          "frame": {
+            "label": "4 digits, no repeats",
+            "alphabet": "0123456789",
+            "length": 4,
+            "repeats": false,
+            "round": 4,
+            "max_rounds": 10,
+            "codes": [
+              "1597",
+              "9867"
+            ],
+            "guesses": [
+              [
+                {
+                  "round": 1,
+                  "guess": "2174",
+                  "bulls": 0,
+                  "cows": 1
+                },
+                {
+                  "round": 2,
+                  "guess": "4098",
+                  "bulls": 0,
+                  "cows": 2
+                },
+                {
+                  "round": 3,
+                  "guess": "1830",
+                  "bulls": 1,
+                  "cows": 0
+                }
+              ],
+              [
+                {
+                  "round": 1,
+                  "guess": "2504",
+                  "bulls": 1,
+                  "cows": 0
+                },
+                {
+                  "round": 2,
+                  "guess": "3908",
+                  "bulls": 0,
+                  "cows": 1
+                },
+                {
+                  "round": 3,
+                  "guess": "2136",
+                  "bulls": 0,
+                  "cows": 1
+                }
+              ]
+            ],
+            "best": [
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "last": {
+              "round": 3,
+              "guesses": [
+                "1830",
+                "2136"
+              ],
+              "feedback": [
+                [
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  1
+                ]
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          1,
+          4
+        ],
+        "reason": "seat 1 cracked the opponent's code in round 5"
+      }
+    },
+    {
+      "id": "colonel_blotto",
+      "name": "Colonel Blotto",
+      "category": "read",
+      "blurb": "Split your army across battlefields in secret: outguess where your rival goes heavy and where they gamble.",
+      "howto": "Each round both players secretly split their soldiers across several battlefields. The bigger army takes each battlefield; take the most valuable share to win the round, and win the most rounds.",
+      "practice": false,
+      "variants_meta": [
+        "100 soldiers, 5 equal fields",
+        "60 soldiers, 6 fields worth 1-6",
+        "Reserves: +30 per round, 3 fields"
+      ],
+      "sample_variant": {
+        "label": "100 soldiers, 5 equal fields",
+        "soldiers": 100,
+        "fields": 5,
+        "rounds": 5,
+        "values": "equal"
+      },
+      "rules": "COLONEL BLOTTO - 100 soldiers, 5 equal fields. 2 players, simultaneous moves, 5 rounds.\n\nGOAL\nWin more rounds than your opponent.\n\nEACH ROUND\nThere are 5 battlefields, called F1 F2 F3 F4 F5 (in this order, left to right).\nAll battlefields are worth the same (1 point each).\nEvery round each player has exactly 100 soldiers to place (a fresh army each round).\nBoth players secretly choose how many soldiers to put on each battlefield, at the same time.\nThen both allocations are revealed. On each battlefield the player with MORE soldiers captures\nit; equal soldiers (including 0 vs 0) = nobody captures it.\nA round is won by the player who captures MORE battlefields. Equal numbers = the\nround is drawn (nobody wins it).\n\nEND AND SCORING\nAfter 5 rounds, the player who won more rounds wins the game. If rounds won are equal, the\nplayer who captured more battlefield points over the whole game wins; if that is equal too,\nthe game is a draw. Your score = rounds won. The game always lasts exactly 5 rounds (move cap).\n\nACTION FORMAT\nYour action is exactly 5 whole numbers >= 0 that add up to EXACTLY 100,\nlisted in battlefield order F1 to F5, separated by spaces (commas are also accepted).\nExamples: \"20 20 20 20 20\", \"35 35 30 0 0\", \"0 0 34 33 33\".\nWrong count of numbers, negative numbers, decimals, or a wrong total are illegal (first time: a\nwarning and the same turn again; second time: you lose the game). The legal-actions list is null\nbecause there are too many possible splits.\n\nWHAT YOU OBSERVE EACH TURN\nThe round number, this round's battlefield values, your soldiers,\nthe score in rounds and battlefield points, and the full history of earlier rounds (both\nallocations, who captured each battlefield, who won the round).",
+      "action_format": "Your action is exactly 5 whole numbers >= 0 that add up to EXACTLY 100,\nlisted in battlefield order F1 to F5, separated by spaces (commas are also accepted).\nExamples: \"20 20 20 20 20\", \"35 35 30 0 0\", \"0 0 34 33 33\".\nWrong count of numbers, negative numbers, decimals, or a wrong total are illegal (first time: a\nwarning and the same turn again; second time: you lose the game). The legal-actions list is null\nbecause there are too many possible splits.",
+      "sample_steps_count": 6,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "12 9 37 34 8",
+              "ms": 5343
+            },
+            "1": {
+              "action": "16 6 22 52 4",
+              "ms": 765
+            }
+          },
+          "frame": {
+            "label": "100 soldiers, 5 equal fields",
+            "k": 5,
+            "round": 2,
+            "rounds": 5,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "reserves": false,
+            "reserve": [
+              0,
+              0
+            ],
+            "soldiers": 100,
+            "income": 30,
+            "rounds_won": [
+              1,
+              0
+            ],
+            "value_won": [
+              3,
+              2
+            ],
+            "last": {
+              "round": 1,
+              "values": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "alloc": [
+                [
+                  12,
+                  9,
+                  37,
+                  34,
+                  8
+                ],
+                [
+                  16,
+                  6,
+                  22,
+                  52,
+                  4
+                ]
+              ],
+              "captured": [
+                1,
+                0,
+                0,
+                1,
+                0
+              ],
+              "points": [
+                3,
+                2
+              ],
+              "winner": 0,
+              "rounds_won": [
+                1,
+                0
+              ]
+            },
+            "history": [
+              {
+                "round": 1,
+                "values": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "alloc": [
+                  [
+                    12,
+                    9,
+                    37,
+                    34,
+                    8
+                  ],
+                  [
+                    16,
+                    6,
+                    22,
+                    52,
+                    4
+                  ]
+                ],
+                "captured": [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0
+                ],
+                "points": [
+                  3,
+                  2
+                ],
+                "winner": 0,
+                "rounds_won": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "0": {
+              "action": "7 27 17 39 10",
+              "ms": 2545
+            },
+            "1": {
+              "action": "35 4 3 52 6",
+              "ms": 5414
+            }
+          },
+          "frame": {
+            "label": "100 soldiers, 5 equal fields",
+            "k": 5,
+            "round": 3,
+            "rounds": 5,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "reserves": false,
+            "reserve": [
+              0,
+              0
+            ],
+            "soldiers": 100,
+            "income": 30,
+            "rounds_won": [
+              2,
+              0
+            ],
+            "value_won": [
+              6,
+              4
+            ],
+            "last": {
+              "round": 2,
+              "values": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "alloc": [
+                [
+                  7,
+                  27,
+                  17,
+                  39,
+                  10
+                ],
+                [
+                  35,
+                  4,
+                  3,
+                  52,
+                  6
+                ]
+              ],
+              "captured": [
+                1,
+                0,
+                0,
+                1,
+                0
+              ],
+              "points": [
+                3,
+                2
+              ],
+              "winner": 0,
+              "rounds_won": [
+                2,
+                0
+              ]
+            },
+            "history": [
+              {
+                "round": 1,
+                "values": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "alloc": [
+                  [
+                    12,
+                    9,
+                    37,
+                    34,
+                    8
+                  ],
+                  [
+                    16,
+                    6,
+                    22,
+                    52,
+                    4
+                  ]
+                ],
+                "captured": [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0
+                ],
+                "points": [
+                  3,
+                  2
+                ],
+                "winner": 0,
+                "rounds_won": [
+                  1,
+                  0
+                ]
+              },
+              {
+                "round": 2,
+                "values": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "alloc": [
+                  [
+                    7,
+                    27,
+                    17,
+                    39,
+                    10
+                  ],
+                  [
+                    35,
+                    4,
+                    3,
+                    52,
+                    6
+                  ]
+                ],
+                "captured": [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0
+                ],
+                "points": [
+                  3,
+                  2
+                ],
+                "winner": 0,
+                "rounds_won": [
+                  2,
+                  0
+                ]
+              }
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "10 4 7 72 7",
+              "ms": 4434
+            },
+            "1": {
+              "action": "2 24 26 10 38",
+              "ms": 5949
+            }
+          },
+          "frame": {
+            "label": "100 soldiers, 5 equal fields",
+            "k": 5,
+            "round": 4,
+            "rounds": 5,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "reserves": false,
+            "reserve": [
+              0,
+              0
+            ],
+            "soldiers": 100,
+            "income": 30,
+            "rounds_won": [
+              2,
+              1
+            ],
+            "value_won": [
+              8,
+              7
+            ],
+            "last": {
+              "round": 3,
+              "values": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "alloc": [
+                [
+                  10,
+                  4,
+                  7,
+                  72,
+                  7
+                ],
+                [
+                  2,
+                  24,
+                  26,
+                  10,
+                  38
+                ]
+              ],
+              "captured": [
+                0,
+                1,
+                1,
+                0,
+                1
+              ],
+              "points": [
+                2,
+                3
+              ],
+              "winner": 1,
+              "rounds_won": [
+                2,
+                1
+              ]
+            },
+            "history": [
+              {
+                "round": 1,
+                "values": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "alloc": [
+                  [
+                    12,
+                    9,
+                    37,
+                    34,
+                    8
+                  ],
+                  [
+                    16,
+                    6,
+                    22,
+                    52,
+                    4
+                  ]
+                ],
+                "captured": [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0
+                ],
+                "points": [
+                  3,
+                  2
+                ],
+                "winner": 0,
+                "rounds_won": [
+                  1,
+                  0
+                ]
+              },
+              {
+                "round": 2,
+                "values": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "alloc": [
+                  [
+                    7,
+                    27,
+                    17,
+                    39,
+                    10
+                  ],
+                  [
+                    35,
+                    4,
+                    3,
+                    52,
+                    6
+                  ]
+                ],
+                "captured": [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0
+                ],
+                "points": [
+                  3,
+                  2
+                ],
+                "winner": 0,
+                "rounds_won": [
+                  2,
+                  0
+                ]
+              },
+              {
+                "round": 3,
+                "values": [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "alloc": [
+                  [
+                    10,
+                    4,
+                    7,
+                    72,
+                    7
+                  ],
+                  [
+                    2,
+                    24,
+                    26,
+                    10,
+                    38
+                  ]
+                ],
+                "captured": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  1
+                ],
+                "points": [
+                  2,
+                  3
+                ],
+                "winner": 1,
+                "rounds_won": [
+                  2,
+                  1
+                ]
+              }
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          2,
+          3
+        ],
+        "reason": "seat 1 won more rounds (3 vs 2)"
+      }
+    },
+    {
+      "id": "connect_four",
+      "name": "Connect Four",
+      "category": "think",
+      "blurb": "Gravity-powered tactics: build threats, block lines, and trap your rival in a forced loss.",
+      "howto": "Players take turns dropping discs into columns, where they fall to the bottom. The first to line up enough discs in a row, across, up or diagonally, wins.",
+      "practice": false,
+      "variants_meta": [
+        "6x7, connect 4",
+        "5x6, connect 4",
+        "7x9, connect 5"
+      ],
+      "sample_variant": {
+        "label": "6x7, connect 4",
+        "rows": 6,
+        "cols": 7,
+        "connect": 4
+      },
+      "rules": "CONNECT FOUR - 6 rows x 7 columns, connect 4 to win.\n\nGOAL\nBe the first to get 4 of your own discs in an unbroken straight line: horizontally,\nvertically or diagonally (both diagonal directions count).\n\nBOARD AND PIECES\nThe board is a vertical grid with 6 rows and 7 columns, numbered 1 to 7 from left to right.\nPlayer 0 plays X and moves first; Player 1 plays O. Players alternate, one disc per turn.\nA disc is dropped into a column and falls to the LOWEST empty cell of that column (gravity).\nYou cannot choose the row, and you cannot drop into a full column. Passing is not allowed.\n\nACTION FORMAT\n    drop <column>\nwhere <column> is a number from 1 to 7 of a column that is not full.\nExamples:  \"drop 4\"   \"drop 1\"   \"drop 7\"\nAnything else (a full column, a number out of range, other text) is illegal (first time: a warning\nand the same turn again; second time: you lose the game). The arena also sends the list of legal\nmoves every turn.\n\nWHAT YOU OBSERVE\nThe board drawn in text, top row first, \".\" = empty, with column numbers above and below, plus\nthe move history and the open columns. Example after X dropped in 3 and 4, and\nO dropped in 3:\n 1 2 3 4 5 6 7\n|. . . . . . .|\n|. . . . . . .|\n|. . . . . . .|\n|. . . . . . .|\n|. . O . . . .|\n|. . X X . . .|\n+-------------+\n 1 2 3 4 5 6 7\n\nHOW THE GAME ENDS AND IS SCORED\n- The first player to complete a line of 4 (or longer) wins immediately (score 1, loser 0).\n- If the board fills up (42 discs, the move cap) without a line, the game is a draw\n  (0.5 each).\n",
+      "action_format": "drop <column>\nwhere <column> is a number from 1 to 7 of a column that is not full.\nExamples:  \"drop 4\"   \"drop 1\"   \"drop 7\"\nAnything else (a full column, a number out of range, other text) is illegal (first time: a warning\nand the same turn again; second time: you lose the game). The arena also sends the list of legal\nmoves every turn.",
+      "sample_steps_count": 16,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "drop 6",
+              "ms": 1756
+            }
+          },
+          "frame": {
+            "rows": 6,
+            "cols": 7,
+            "connect": 4,
+            "board": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                0,
+                null
+              ]
+            ],
+            "moves": [
+              {
+                "seat": 0,
+                "col": 6,
+                "row": 5
+              }
+            ],
+            "last": {
+              "seat": 0,
+              "col": 6,
+              "row": 5
+            },
+            "win_cells": [],
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "drop 4",
+              "ms": 5343
+            }
+          },
+          "frame": {
+            "rows": 6,
+            "cols": 7,
+            "connect": 4,
+            "board": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                1,
+                null,
+                0,
+                null
+              ]
+            ],
+            "moves": [
+              {
+                "seat": 0,
+                "col": 6,
+                "row": 5
+              },
+              {
+                "seat": 1,
+                "col": 4,
+                "row": 5
+              }
+            ],
+            "last": {
+              "seat": 1,
+              "col": 4,
+              "row": 5
+            },
+            "win_cells": [],
+            "to_move": [
+              0
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "drop 2",
+              "ms": 1446
+            }
+          },
+          "frame": {
+            "rows": 6,
+            "cols": 7,
+            "connect": 4,
+            "board": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                0,
+                null,
+                1,
+                null,
+                0,
+                null
+              ]
+            ],
+            "moves": [
+              {
+                "seat": 0,
+                "col": 6,
+                "row": 5
+              },
+              {
+                "seat": 1,
+                "col": 4,
+                "row": 5
+              },
+              {
+                "seat": 0,
+                "col": 2,
+                "row": 5
+              }
+            ],
+            "last": {
+              "seat": 0,
+              "col": 2,
+              "row": 5
+            },
+            "win_cells": [],
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 0,
+        "winner": "team-a",
+        "scores": [
+          1,
+          0
+        ],
+        "reason": "Player 0 (X) connected 4 in a row"
+      }
+    },
+    {
+      "id": "dots_and_boxes",
+      "name": "Dots and Boxes",
+      "category": "think",
+      "blurb": "Every line is a gift or a trap: the player who controls the long chains claims the board.",
+      "howto": "Players take turns drawing a line between two neighbouring dots. Close the fourth side of a box to claim it and draw again. Most boxes at the end wins.",
+      "practice": false,
+      "variants_meta": [
+        "3x3 boxes",
+        "4x4 boxes",
+        "3x5 boxes"
+      ],
+      "sample_variant": {
+        "label": "4x4 boxes",
+        "rows": 4,
+        "cols": 4
+      },
+      "rules": "DOTS AND BOXES - 4x4 boxes (5x5 dots).\n\nGOAL\nOwn more boxes than your opponent when every line has been drawn.\n\nBOARD AND COORDINATES\nThe board is a grid of dots: 5 rows numbered 1..5 from TOP to BOTTOM and 5 columns\nlettered a..e from LEFT to RIGHT. A dot is named column letter + row number: \"a1\" is the top-left\ndot, \"e5\" the bottom-right dot. A line joins two neighbouring dots, either horizontally\n(same row, neighbouring letters, e.g. a1-b1) or vertically (same letter, neighbouring rows, e.g.\na1-a2). Diagonal or longer lines do not exist. There are 40 possible lines and\n16 boxes. The box whose top-left corner is dot a1 is bounded by the lines a1-b1, a2-b2, a1-a2, b1-b2.\n\nTURN ORDER\nPlayer 0 moves first. On your turn you draw ONE line that has not been drawn yet.\n- If your line completes the 4th side of one box (or of two boxes at once), you claim those boxes\n  AND you must move again immediately (another line). This can repeat many times in a row.\n- If your line completes no box, the turn passes to the opponent.\nPassing is not allowed. Lines belong to nobody; only boxes are owned.\n\nACTION FORMAT\n    line <dot>-<dot>\nExamples:  \"line a1-b1\" (horizontal, top-left)   \"line c2-c3\" (vertical)   \"line b5-c5\"\nThe two dots may be given in any order and separated by \"-\" or a space (\"line b1 a1\" works too).\nA line that is already drawn, dots that are not neighbours, or any other text is illegal (first\ntime: a warning and the same turn again; second time: you lose the game). The arena sends the\ncomplete list of legal moves every turn.\n\nWHAT YOU OBSERVE\nThe board in text: \"+\" = dot, \"---\" = horizontal line, \"|\" = vertical line, and a claimed box shows\nthe number of its owner (0 or 1). Example on a 2x2 board where Player 1 owns box a1:\n    a   b   c\n 1  +---+---+\n    | 1 |\n 2  +---+   +\n\n 3  +   +   +\nHere a1-b1, a1-a2, b1-b2, a2-b2 and b1-c1 are drawn. You also see the score, the move history and\nwhether you are moving again after completing a box.\n\nHOW THE GAME ENDS AND IS SCORED\nThe game ends when all 40 lines are drawn (that is also the move cap). The player who\nowns more boxes wins (score = boxes owned). There can be a tie when the boxes are split evenly (draw, 0.5 each).\n",
+      "action_format": "line <dot>-<dot>\nExamples:  \"line a1-b1\" (horizontal, top-left)   \"line c2-c3\" (vertical)   \"line b5-c5\"\nThe two dots may be given in any order and separated by \"-\" or a space (\"line b1 a1\" works too).\nA line that is already drawn, dots that are not neighbours, or any other text is illegal (first\ntime: a warning and the same turn again; second time: you lose the game). The arena sends the\ncomplete list of legal moves every turn.",
+      "sample_steps_count": 41,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "line b2-c2",
+              "ms": 1182
+            }
+          },
+          "frame": {
+            "rows": 4,
+            "cols": 4,
+            "h": [
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                0,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "v": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "boxes": [
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "scores": [
+              0,
+              0
+            ],
+            "last": {
+              "seat": 0,
+              "edge": "line b2-c2",
+              "kind": "h",
+              "r": 1,
+              "c": 1,
+              "completed": []
+            },
+            "moves": 1,
+            "total_edges": 40,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "line d5-e5",
+              "ms": 2089
+            }
+          },
+          "frame": {
+            "rows": 4,
+            "cols": 4,
+            "h": [
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                0,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                1
+              ]
+            ],
+            "v": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "boxes": [
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "scores": [
+              0,
+              0
+            ],
+            "last": {
+              "seat": 1,
+              "edge": "line d5-e5",
+              "kind": "h",
+              "r": 4,
+              "c": 3,
+              "completed": []
+            },
+            "moves": 2,
+            "total_edges": 40,
+            "to_move": [
+              0
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "line e1-e2",
+              "ms": 3234
+            }
+          },
+          "frame": {
+            "rows": 4,
+            "cols": 4,
+            "h": [
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                0,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                1
+              ]
+            ],
+            "v": [
+              [
+                null,
+                null,
+                null,
+                null,
+                0
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "boxes": [
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "scores": [
+              0,
+              0
+            ],
+            "last": {
+              "seat": 0,
+              "edge": "line e1-e2",
+              "kind": "v",
+              "r": 0,
+              "c": 4,
+              "completed": []
+            },
+            "moves": 3,
+            "total_edges": 40,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          6,
+          10
+        ],
+        "reason": "all lines drawn, Player 1 owns more boxes (10-6)"
+      }
+    },
+    {
+      "id": "hex",
+      "name": "Hex",
+      "category": "think",
+      "blurb": "A race of crossing paths on a honeycomb: every stone both builds your bridge and blocks theirs.",
+      "howto": "Players take turns placing stones on a honeycomb board. One player must link top to bottom, the other left to right, with an unbroken chain. The first chain wins.",
+      "practice": false,
+      "variants_meta": [
+        "5x5",
+        "7x7",
+        "7x7 with swap rule"
+      ],
+      "sample_variant": {
+        "label": "7x7",
+        "size": 7,
+        "swap": false
+      },
+      "rules": "HEX - 7x7 board.\n\nBOARD\nThe board is a rhombus (diamond) of 7x7 = 49 hexagonal cells. Columns are letters a..g\nfrom left to right, rows are numbers 1..7 from top to bottom; a cell is letter + number, e.g. c3.\nBecause the cells are hexagons, every row is shifted half a cell to the right of the row above, and\neach cell touches up to 6 neighbours: for cell c3 they are b3 and d3 (same row), c2 and d2 (row\nabove), b4 and c4 (row below). In general cell (column L, row R) touches (L-1,R), (L+1,R),\n(L,R-1), (L+1,R-1), (L-1,R+1), (L,R+1). Cells such as b2 and c3 do NOT touch.\n\nPLAYERS AND GOAL\nPlayer 0 plays X and must connect the TOP edge (row 1) to the BOTTOM edge (row 7) with an unbroken\nchain of touching X stones. Player 1 plays O and must connect the LEFT edge (column a) to the RIGHT\nedge (column g) with a chain of touching O stones. The first player to complete a chain wins.\n\nTURN ORDER\nPlayer 0 (X) moves first; then the players alternate. On your turn you place one stone of your\nsymbol on any empty cell. Stones never move and are never removed. Passing is not allowed.\n\nACTION FORMAT\n    place <cell>\nExamples:  \"place c3\"   \"place a1\"   \"place g7\"\nPlacing on an occupied cell, a cell outside the board or any other text is illegal (first time: a\nwarning and the same turn again; second time: you lose the game). The arena sends the complete list\nof legal moves every turn.\n\nWHAT YOU OBSERVE\nThe board drawn as a slanted grid, \".\" = empty, the move history and whose turn it is.\nExample (7x7, X stones on b2 and b3, an O stone on c3):\n     a b c d e f g        (X joins top<->bottom, O joins left<->right)\n  1  . . . . . . .  1\n   2  . X . . . . .  2\n    3  . X O . . . .  3\n     4  . . . . . . .  4\n      5  . . . . . . .  5\n       6  . . . . . . .  6\n        7  . . . . . . .  7\n           a b c d e f g\n\nHOW THE GAME ENDS AND IS SCORED\nThe game ends as soon as one player completes a chain between their two edges: that player wins\n(score 1, loser 0). A draw is impossible in Hex: when the board is full one player always has a\nchain, so the game lasts at most 49 moves (the move cap).\n",
+      "action_format": "place <cell>\nExamples:  \"place c3\"   \"place a1\"   \"place g7\"\nPlacing on an occupied cell, a cell outside the board or any other text is illegal (first time: a\nwarning and the same turn again; second time: you lose the game). The arena sends the complete list\nof legal moves every turn.",
+      "sample_steps_count": 40,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "place a7",
+              "ms": 4388
+            }
+          },
+          "frame": {
+            "size": 7,
+            "swap_rule": false,
+            "swapped": false,
+            "board": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "history": [
+              {
+                "seat": 0,
+                "action": "place a7",
+                "r": 6,
+                "c": 0,
+                "swap": false
+              }
+            ],
+            "last": {
+              "seat": 0,
+              "action": "place a7",
+              "r": 6,
+              "c": 0,
+              "swap": false
+            },
+            "win_path": [],
+            "moves": 1,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "place c4",
+              "ms": 1408
+            }
+          },
+          "frame": {
+            "size": 7,
+            "swap_rule": false,
+            "swapped": false,
+            "board": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                1,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "history": [
+              {
+                "seat": 0,
+                "action": "place a7",
+                "r": 6,
+                "c": 0,
+                "swap": false
+              },
+              {
+                "seat": 1,
+                "action": "place c4",
+                "r": 3,
+                "c": 2,
+                "swap": false
+              }
+            ],
+            "last": {
+              "seat": 1,
+              "action": "place c4",
+              "r": 3,
+              "c": 2,
+              "swap": false
+            },
+            "win_path": [],
+            "moves": 2,
+            "to_move": [
+              0
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "place f1",
+              "ms": 2712
+            }
+          },
+          "frame": {
+            "size": 7,
+            "swap_rule": false,
+            "swapped": false,
+            "board": [
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                0,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                1,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              [
+                0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ]
+            ],
+            "history": [
+              {
+                "seat": 0,
+                "action": "place a7",
+                "r": 6,
+                "c": 0,
+                "swap": false
+              },
+              {
+                "seat": 1,
+                "action": "place c4",
+                "r": 3,
+                "c": 2,
+                "swap": false
+              },
+              {
+                "seat": 0,
+                "action": "place f1",
+                "r": 0,
+                "c": 5,
+                "swap": false
+              }
+            ],
+            "last": {
+              "seat": 0,
+              "action": "place f1",
+              "r": 0,
+              "c": 5,
+              "swap": false
+            },
+            "win_path": [],
+            "moves": 3,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 0,
+        "winner": "team-a",
+        "scores": [
+          1,
+          0
+        ],
+        "reason": "Player 0 (X) connected top and bottom edges"
+      }
+    },
+    {
+      "id": "mini_chess",
+      "name": "Mini Chess",
+      "category": "think",
+      "blurb": "Full-blooded chess squeezed onto a tiny board: every piece is in the fight from move one.",
+      "howto": "Chess on a small board: take turns moving pieces, capture the enemy's, and checkmate their king to win. If the game runs too long, the player with the stronger army left wins.",
+      "practice": false,
+      "variants_meta": [
+        "Gardner 5x5",
+        "Los Alamos 6x6"
+      ],
+      "sample_variant": {
+        "label": "Gardner 5x5",
+        "setup": "gardner",
+        "max_moves": 40
+      },
+      "rules": "MINI CHESS - Gardner 5x5 (5x5 board).\n\nOVERVIEW\nChess on a small 5x5 board with simplified rules. Player 0 is WHITE (uppercase letters) and moves\nfirst; Player 1 is BLACK (lowercase letters). Players alternate, one move per turn; passing is not\nallowed.\n\nBOARD AND COORDINATES\nFiles (columns) are letters a..e from left to right as seen by White; ranks (rows) are numbers\n1..5 from White's side (bottom) to Black's side (top). A square is file + rank, e.g. \"c3\".\nLetters on the board: K/k king, Q/q queen, R/r rook, B/b bishop, N/n knight, P/p pawn; \".\" = empty.\nPieces used: king, queen, rook, bishop, knight, pawn.\nStarting position:\nWhite (uppercase) on rank 1: a1 Rook, b1 Knight, c1 Bishop, d1 Queen, e1 King; White pawns on\na2-e2. Black (lowercase) mirrors it: a5 rook, b5 knight, c5 bishop, d5 queen, e5 king; pawns on\na4-e4. Only rank 3 is empty at the start.\n    a b c d e\n 5  r n b q k  5\n 4  p p p p p  4\n 3  . . . . .  3\n 2  P P P P P  2\n 1  R N B Q K  1\n    a b c d e\n\nHOW PIECES MOVE (standard chess)\n- King: one square in any direction (8 directions).\n- Queen: any number of empty squares in a straight line: horizontally, vertically or diagonally.\n- Rook: any number of empty squares horizontally or vertically.\n- Bishop: any number of empty squares diagonally.\n- Knight: an \"L\" jump: two squares in one direction then one square sideways; it jumps over pieces.\n- Pawn: moves ONE square straight forward (White up toward rank 5, Black down toward rank 1) onto\n  an EMPTY square, and captures ONE square diagonally forward. A pawn can never move backwards or\n  sideways and cannot capture straight ahead.\n- Capturing: moving onto a square occupied by an enemy piece removes that piece. You can never move\n  onto your own piece. Sliding pieces cannot jump over pieces.\nSIMPLIFICATIONS: no castling, no en passant, NO pawn double step (pawns always move one square), and\na pawn that reaches the last rank (rank 5 for White, rank 1 for Black) is automatically promoted\nto a QUEEN (always a queen).\n\nCHECK AND CHECKMATE\nA king that is attacked by an enemy piece is \"in check\". You may never make a move that leaves your\nown king in check (moves that do are illegal). If the side to move is in check and has no legal move,\nthat is CHECKMATE and the side to move loses. If the side to move is NOT in check but has no legal\nmove, that is STALEMATE: a draw.\n\nACTION FORMAT\n    <from-square><to-square>\nExamples:  \"b2b3\" (pawn one step forward)   \"b1c3\" (knight jump)   \"c3d4\" (captures whatever enemy\npiece stands on d4)   \"a4a5\" (a white pawn reaching the last rank: becomes a queen).\nPromotion is automatic; you may add \"q\" (\"a4a5q\") but other promotion letters are illegal.\nUpper/lower case, spaces and a \"-\" between the squares are ignored (\"B2-B3\" works), and an optional\npiece letter in front is accepted when it matches the moving piece (\"Nb1c3\"). Short algebraic\nnotation like \"Nc3\" or \"e4\" is NOT accepted: always give both squares. Anything else (wrong piece,\nleaves your king in check, not a legal move for that piece...) is illegal (first time: a warning and\nthe same turn again; second time: you lose the game).\nWhen there are at most 50 legal moves the arena sends you the complete list; otherwise the list is\nomitted (null) and you must work out a legal move yourself.\n\nWHAT YOU OBSERVE\nThe board (rank 5 at the top, White's rank 1 at the bottom), side to move, whether you are in\ncheck, material count, captured pieces and the full move list. Example: the starting position above.\n\nHOW THE GAME ENDS AND IS SCORED\n- Checkmate: the side that delivered mate wins (score 1, loser 0).\n- Stalemate, or only the two kings left: draw (0.5 each).\n- MOVE CAP: after 40 moves by each side (80 moves in total) the game stops. Then the\n  player with more MATERIAL on the board wins, counting queen 9, rook 5, bishop 3, knight 3, pawn 1\n  (kings not counted). Equal material = draw. So capturing pieces matters even without a mate.\n",
+      "action_format": "<from-square><to-square>\nExamples:  \"b2b3\" (pawn one step forward)   \"b1c3\" (knight jump)   \"c3d4\" (captures whatever enemy\npiece stands on d4)   \"a4a5\" (a white pawn reaching the last rank: becomes a queen).\nPromotion is automatic; you may add \"q\" (\"a4a5q\") but other promotion letters are illegal.\nUpper/lower case, spaces and a \"-\" between the squares are ignored (\"B2-B3\" works), and an optional\npiece letter in front is accepted when it matches the moving piece (\"Nb1c3\"). Short algebraic\nnotation like \"Nc3\" or \"e4\" is NOT accepted: always give both squares. Anything else (wrong piece,\nleaves your king in check, not a legal move for that piece...) is illegal (first time: a warning and\nthe same turn again; second time: you lose the game).\nWhen there are at most 50 legal moves the arena sends you the complete list; otherwise the list is\nomitted (null) and you must work out a legal move yourself.",
+      "sample_steps_count": 21,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "d2d3",
+              "ms": 4735
+            }
+          },
+          "frame": {
+            "size": 5,
+            "setup": "gardner",
+            "board": [
+              "rnbqk",
+              "ppppp",
+              "...P.",
+              "PPP.P",
+              "RNBQK"
+            ],
+            "side": 1,
+            "check": false,
+            "check_square": null,
+            "last": {
+              "seat": 0,
+              "move": "d2d3",
+              "piece": "P",
+              "captured": null,
+              "promotion": false,
+              "from": [
+                1,
+                3
+              ],
+              "to": [
+                2,
+                3
+              ]
+            },
+            "moves": [
+              "d2d3"
+            ],
+            "captured": [
+              [],
+              []
+            ],
+            "material": [
+              25,
+              25
+            ],
+            "ply": 1,
+            "max_plies": 80,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "b4b3",
+              "ms": 4254
+            }
+          },
+          "frame": {
+            "size": 5,
+            "setup": "gardner",
+            "board": [
+              "rnbqk",
+              "p.ppp",
+              ".p.P.",
+              "PPP.P",
+              "RNBQK"
+            ],
+            "side": 0,
+            "check": false,
+            "check_square": null,
+            "last": {
+              "seat": 1,
+              "move": "b4b3",
+              "piece": "p",
+              "captured": null,
+              "promotion": false,
+              "from": [
+                3,
+                1
+              ],
+              "to": [
+                2,
+                1
+              ]
+            },
+            "moves": [
+              "d2d3",
+              "b4b3"
+            ],
+            "captured": [
+              [],
+              []
+            ],
+            "material": [
+              25,
+              25
+            ],
+            "ply": 2,
+            "max_plies": 80,
+            "to_move": [
+              0
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "a2a3",
+              "ms": 5432
+            }
+          },
+          "frame": {
+            "size": 5,
+            "setup": "gardner",
+            "board": [
+              "rnbqk",
+              "p.ppp",
+              "Pp.P.",
+              ".PP.P",
+              "RNBQK"
+            ],
+            "side": 1,
+            "check": false,
+            "check_square": null,
+            "last": {
+              "seat": 0,
+              "move": "a2a3",
+              "piece": "P",
+              "captured": null,
+              "promotion": false,
+              "from": [
+                1,
+                0
+              ],
+              "to": [
+                2,
+                0
+              ]
+            },
+            "moves": [
+              "d2d3",
+              "b4b3",
+              "a2a3"
+            ],
+            "captured": [
+              [],
+              []
+            ],
+            "material": [
+              25,
+              25
+            ],
+            "ply": 3,
+            "max_plies": 80,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          0,
+          1
+        ],
+        "reason": "checkmate: Black wins"
+      }
+    },
+    {
+      "id": "mini_poker",
+      "name": "Mini Poker",
+      "category": "bluff",
+      "blurb": "Poker with a tiny deck: with only three ranks, every bet is either a bluff or a trap.",
+      "howto": "Poker with a tiny deck. Each hand both players get a hidden card and bet, check, call or fold; the better card takes the pot unless someone folds. Most chips at the end wins.",
+      "practice": false,
+      "variants_meta": [
+        "Kuhn poker, 12 hands",
+        "Leduc poker, 8 hands"
+      ],
+      "sample_variant": {
+        "label": "Leduc poker, 8 hands",
+        "style": "leduc",
+        "hands": 8,
+        "stack": 40
+      },
+      "rules": "MINI POKER - Leduc poker, 8 hands, heads-up (2 players).\n\nGOAL\nFinish the match with more chips than your opponent. Both players start with 40 chips.\nThe match lasts 8 hands (or ends earlier if a player is busted, see below).\n\nTHE CARDS\nThe deck has 6 cards: two Jacks, two Queens and two Kings (J < Q < K; suits do not matter).\nAt the start of every hand the deck is shuffled, each player gets 1 private card, and one\ncommunity card is set aside face down. You see only your own card (and the community card\nonce it is revealed).\n\nONE HAND\n1. Ante: both players automatically put 1 chip into the pot (pot = 2).\n2. Betting round 1: bet size 2 chips.\n3. The community card is revealed (if nobody folded).\n4. Betting round 2: bet size 4 chips.\n5. Showdown if nobody folded.\n\nThe player who acts first alternates: seat 0 acts first in hands 1, 3, 5, ...; seat 1 in\nhands 2, 4, 6, ... The same player acts first in both betting rounds of a hand.\n\nBETTING (in each round; at most 2 bets per round = one bet plus one raise)\n- No bet in front of you: \"check\" (put in nothing) or \"bet\" (put in the bet size).\n- Facing a bet: \"call\" (match it), \"raise\" (match it AND add one more bet size; only if this\n  round has had just 1 bet so far), or \"fold\" (give up the hand).\n- The round ends when both players check, when a bet or raise is called, or on a fold.\nExample in round 1 (bet size 2): A bets (puts in 2), B raises (puts in 4 = 2 to match + 2 more),\nA calls (puts in 2 more). Each player has put 4 into the pot in this round.\n\nWINNING A HAND\n- Fold: the other player takes the whole pot and NO cards are shown.\n- Showdown: both private cards are shown. A player whose card has the SAME RANK as the\n  community card (a pair) wins. Otherwise the higher card wins. Equal ranks split the pot\n  (each player gets back what they put in).\nExample: community card Q. You hold J, opponent holds K: K wins. If you held the other Q,\nyour pair of Queens would beat the K.\n\nBUSTED\nBefore each hand, a player with fewer than 13 chips (the most you can lose in one\nhand: 1 ante + 4 in round 1 + 8 in round 2) is busted: the match ends immediately and the\nplayer with more chips wins.\n\nEND AND SCORING\nAfter hand 8, or when a player is busted, the player with more chips wins the game.\nEqual chips = draw. Your score is your final chip count.\n\nACTION FORMAT\nReply with exactly one word: check | bet | call | raise | fold\nOnly the actions in the legal-actions list you receive are allowed. The chip amounts are\nautomatic (you never type a number). Anything else is illegal (first time: a warning and the\nsame turn again; second time: you lose the game).\nExamples:\n  - Round 1, you act first holding K: \"bet\"   (puts in 2)\n  - Round 2, the opponent bet 4 and you hold the pair: \"raise\"   (puts in 8)\n  - Round 2, the opponent raised and you hold J with a Q on board: \"fold\"\n\nWHAT YOU OBSERVE EACH TURN\nHand number, who acts first this hand, both chip stacks, your card, the community card\n(once revealed), the pot, the betting so far in this hand, the legal actions with their\ncost, and a log of all previous hands: your card, the opponent's card if it was shown at a\nshowdown, the community card, the betting, and who won how much.\n\nMOVE CAP\nThe match also ends after 200 actions in total (this cannot happen in normal play).",
+      "action_format": "Reply with exactly one word: check | bet | call | raise | fold\nOnly the actions in the legal-actions list you receive are allowed. The chip amounts are\nautomatic (you never type a number). Anything else is illegal (first time: a warning and the\nsame turn again; second time: you lose the game).\nExamples:\n  - Round 1, you act first holding K: \"bet\"   (puts in 2)\n  - Round 2, the opponent bet 4 and you hold the pair: \"raise\"   (puts in 8)\n  - Round 2, the opponent raised and you hold J with a Q on board: \"fold\"",
+      "sample_steps_count": 38,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "check",
+              "ms": 1182
+            }
+          },
+          "frame": {
+            "style": "leduc",
+            "label": "Leduc poker, 8 hands",
+            "hand": 1,
+            "hands": 8,
+            "first": 0,
+            "stacks": [
+              39,
+              39
+            ],
+            "start_stack": 40,
+            "cards": [
+              "Ks",
+              "Jh"
+            ],
+            "community": "Qh",
+            "community_shown": false,
+            "pot": 2,
+            "contrib": [
+              1,
+              1
+            ],
+            "round": 1,
+            "rounds": 2,
+            "bet_sizes": [
+              2,
+              4
+            ],
+            "actions": [
+              [
+                {
+                  "seat": 0,
+                  "act": "check",
+                  "amount": 0
+                }
+              ],
+              []
+            ],
+            "to_act": 1,
+            "legal": [
+              "check",
+              "bet"
+            ],
+            "last": {
+              "seat": 0,
+              "act": "check",
+              "amount": 0,
+              "hand": 1,
+              "round": 1
+            },
+            "last_hand": null,
+            "history": [],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "check",
+              "ms": 1850
+            }
+          },
+          "frame": {
+            "style": "leduc",
+            "label": "Leduc poker, 8 hands",
+            "hand": 1,
+            "hands": 8,
+            "first": 0,
+            "stacks": [
+              39,
+              39
+            ],
+            "start_stack": 40,
+            "cards": [
+              "Ks",
+              "Jh"
+            ],
+            "community": "Qh",
+            "community_shown": true,
+            "pot": 2,
+            "contrib": [
+              1,
+              1
+            ],
+            "round": 2,
+            "rounds": 2,
+            "bet_sizes": [
+              2,
+              4
+            ],
+            "actions": [
+              [
+                {
+                  "seat": 0,
+                  "act": "check",
+                  "amount": 0
+                },
+                {
+                  "seat": 1,
+                  "act": "check",
+                  "amount": 0
+                }
+              ],
+              []
+            ],
+            "to_act": 0,
+            "legal": [
+              "check",
+              "bet"
+            ],
+            "last": {
+              "seat": 1,
+              "act": "check",
+              "amount": 0,
+              "hand": 1,
+              "round": 1
+            },
+            "last_hand": null,
+            "history": [],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "bet",
+              "ms": 765
+            }
+          },
+          "frame": {
+            "style": "leduc",
+            "label": "Leduc poker, 8 hands",
+            "hand": 1,
+            "hands": 8,
+            "first": 0,
+            "stacks": [
+              35,
+              39
+            ],
+            "start_stack": 40,
+            "cards": [
+              "Ks",
+              "Jh"
+            ],
+            "community": "Qh",
+            "community_shown": true,
+            "pot": 6,
+            "contrib": [
+              5,
+              1
+            ],
+            "round": 2,
+            "rounds": 2,
+            "bet_sizes": [
+              2,
+              4
+            ],
+            "actions": [
+              [
+                {
+                  "seat": 0,
+                  "act": "check",
+                  "amount": 0
+                },
+                {
+                  "seat": 1,
+                  "act": "check",
+                  "amount": 0
+                }
+              ],
+              [
+                {
+                  "seat": 0,
+                  "act": "bet",
+                  "amount": 4
+                }
+              ]
+            ],
+            "to_act": 1,
+            "legal": [
+              "call",
+              "raise",
+              "fold"
+            ],
+            "last": {
+              "seat": 0,
+              "act": "bet",
+              "amount": 4,
+              "hand": 1,
+              "round": 2
+            },
+            "last_hand": null,
+            "history": [],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 0,
+        "winner": "team-a",
+        "scores": [
+          43,
+          37
+        ],
+        "reason": "all 8 hands played; seat 0 has more chips (43 vs 37)"
+      }
+    },
+    {
+      "id": "nim",
+      "name": "Nim",
+      "category": "think",
+      "blurb": "Ancient take-away game where one line of math (the nim-sum) separates winners from losers.",
+      "howto": "Players take turns removing tokens from the piles on the table. Depending on the version, taking the very last token either wins or loses the game.",
+      "practice": false,
+      "variants_meta": [
+        "Normal play, 4 piles",
+        "Misere, 3 piles",
+        "Take 1-3, 4 piles",
+        "Up to two piles"
+      ],
+      "sample_variant": {
+        "label": "Normal play, 4 piles",
+        "piles": 4,
+        "lo": 1,
+        "hi": 8,
+        "misere": false,
+        "max_take": 0,
+        "max_piles": 1
+      },
+      "rules": "NIM - Normal play, 4 piles\n\nSETUP\nThere are 4 piles of tokens, numbered 1 to 4. Each pile starts with a random number of tokens\nbetween 1 and 8 (the arena picks them). Both players see all piles at all times.\n\nTURN ORDER\nPlayer 0 moves first, then the players alternate. Passing is not allowed.\nOn your turn you remove at least 1 token (any number, up to the whole pile) from exactly ONE pile.\n\nGOAL\nNORMAL PLAY: the player who takes the LAST token WINS (equivalently: if you cannot move, you lose).\n\nACTION FORMAT\n    take <count> from pile <p>\nExamples:  \"take 3 from pile 2\"   \"take 1 from pile 1\"   \"take 2 from pile 4\"\n<count> and <p> are whole numbers written with digits; piles are numbered from 1. The word \"pile\"\nis optional (\"take 3 from 2\" also works). Taking 0 tokens, taking more tokens than a pile has,\nnaming a pile that does not exist or any other text is illegal\n(first time: a warning and the same turn again; second time: you lose the game). When there are at\nmost 50 possible moves the arena also sends you the complete list of legal moves.\n\nWHAT YOU OBSERVE\nThe current size of every pile, the total, whose turn it is, and the full move history.\nExample observation fragment:\n    Piles now: pile 1 = 5, pile 2 = 0, pile 3 = 7, pile 4 = 2   (total 14)\n\nHOW THE GAME ENDS AND IS SCORED\nThe game ends when all piles are empty. The player who took the last token wins.\nThere are no draws. Winner scores 1, loser 0.\nMove cap: every move removes at least one token, so the game lasts at most 14 moves\n(the starting total), and it always ends with a winner.\n",
+      "action_format": "take <count> from pile <p>\nExamples:  \"take 3 from pile 2\"   \"take 1 from pile 1\"   \"take 2 from pile 4\"\n<count> and <p> are whole numbers written with digits; piles are numbered from 1. The word \"pile\"\nis optional (\"take 3 from 2\" also works). Taking 0 tokens, taking more tokens than a pile has,\nnaming a pile that does not exist or any other text is illegal\n(first time: a warning and the same turn again; second time: you lose the game). When there are at\nmost 50 possible moves the arena also sends you the complete list of legal moves.",
+      "sample_steps_count": 8,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "take 2 from pile 4",
+              "ms": 1756
+            }
+          },
+          "frame": {
+            "piles": [
+              2,
+              6,
+              2,
+              2
+            ],
+            "initial": [
+              2,
+              6,
+              2,
+              4
+            ],
+            "misere": false,
+            "max_take": 0,
+            "max_piles": 1,
+            "history": [
+              {
+                "seat": 0,
+                "action": "take 2 from pile 4",
+                "take": [
+                  [
+                    3,
+                    2
+                  ]
+                ],
+                "piles": [
+                  2,
+                  6,
+                  2,
+                  2
+                ]
+              }
+            ],
+            "last": {
+              "seat": 0,
+              "action": "take 2 from pile 4",
+              "take": [
+                [
+                  3,
+                  2
+                ]
+              ],
+              "piles": [
+                2,
+                6,
+                2,
+                2
+              ]
+            },
+            "moves": 1,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "take 6 from pile 2",
+              "ms": 5343
+            }
+          },
+          "frame": {
+            "piles": [
+              2,
+              0,
+              2,
+              2
+            ],
+            "initial": [
+              2,
+              6,
+              2,
+              4
+            ],
+            "misere": false,
+            "max_take": 0,
+            "max_piles": 1,
+            "history": [
+              {
+                "seat": 0,
+                "action": "take 2 from pile 4",
+                "take": [
+                  [
+                    3,
+                    2
+                  ]
+                ],
+                "piles": [
+                  2,
+                  6,
+                  2,
+                  2
+                ]
+              },
+              {
+                "seat": 1,
+                "action": "take 6 from pile 2",
+                "take": [
+                  [
+                    1,
+                    6
+                  ]
+                ],
+                "piles": [
+                  2,
+                  0,
+                  2,
+                  2
+                ]
+              }
+            ],
+            "last": {
+              "seat": 1,
+              "action": "take 6 from pile 2",
+              "take": [
+                [
+                  1,
+                  6
+                ]
+              ],
+              "piles": [
+                2,
+                0,
+                2,
+                2
+              ]
+            },
+            "moves": 2,
+            "to_move": [
+              0
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "take 2 from pile 1",
+              "ms": 1446
+            }
+          },
+          "frame": {
+            "piles": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "initial": [
+              2,
+              6,
+              2,
+              4
+            ],
+            "misere": false,
+            "max_take": 0,
+            "max_piles": 1,
+            "history": [
+              {
+                "seat": 0,
+                "action": "take 2 from pile 4",
+                "take": [
+                  [
+                    3,
+                    2
+                  ]
+                ],
+                "piles": [
+                  2,
+                  6,
+                  2,
+                  2
+                ]
+              },
+              {
+                "seat": 1,
+                "action": "take 6 from pile 2",
+                "take": [
+                  [
+                    1,
+                    6
+                  ]
+                ],
+                "piles": [
+                  2,
+                  0,
+                  2,
+                  2
+                ]
+              },
+              {
+                "seat": 0,
+                "action": "take 2 from pile 1",
+                "take": [
+                  [
+                    0,
+                    2
+                  ]
+                ],
+                "piles": [
+                  0,
+                  0,
+                  2,
+                  2
+                ]
+              }
+            ],
+            "last": {
+              "seat": 0,
+              "action": "take 2 from pile 1",
+              "take": [
+                [
+                  0,
+                  2
+                ]
+              ],
+              "piles": [
+                0,
+                0,
+                2,
+                2
+              ]
+            },
+            "moves": 3,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 0,
+        "winner": "team-a",
+        "scores": [
+          1,
+          0
+        ],
+        "reason": "Player 0 took the last token"
+      }
+    },
+    {
+      "id": "prisoners_dilemma",
+      "name": "Prisoner's Dilemma",
+      "category": "deals",
+      "blurb": "Talk your rival into trusting you, then decide when to betray: too early and it backfires, too late and they strike first.",
+      "howto": "Each round both players secretly cooperate or defect. Working together scores steadily; betraying a partner scores big. Reach the qualifying score to win; if nobody does, the player who betrayed less wins. Nobody knows which round is the last.",
+      "practice": false,
+      "variants_meta": [
+        "Qualify at 25, at least 8 rounds",
+        "Long game: qualify at 40, at least 12 rounds",
+        "Short fuse: qualify at 16, at least 5 rounds"
+      ],
+      "sample_variant": {
+        "label": "Qualify at 25, at least 8 rounds",
+        "quota": 25,
+        "min_rounds": 8,
+        "end_one_in": 4,
+        "max_rounds": 20
+      },
+      "rules": "PRISONER'S DILEMMA (with talk) - Qualify at 25, at least 8 rounds. 2 players, simultaneous moves.\n\nEACH ROUND\nBoth players secretly choose COOPERATE or DEFECT; then both choices are revealed and scored:\n  both cooperate             -> +3 each\n  you defect, they cooperate -> you +5, they +0   (a betrayal)\n  you cooperate, they defect -> you +0, they +5\n  both defect                -> +1 each\nPoints add up over the whole game. Every \"defect\" you play also counts as one DEFECTION on your\nrecord (a betrayal and a mutual defection both count).\n\nHOW LONG\nThe game lasts at least 8 rounds. After round 8 and after every later round it ends with a 1 in 4 chance (it never goes beyond round 20). Nobody knows the real length in advance.\nSo any round from round 8 on may be the last one. The arena tells you after each round whether\nthe game goes on.\n\nWINNING (at the end of the game)\nThe qualifying score is 25 points.\n  1. Only one player has at least 25 points: that player wins.\n  2. Both have at least 25: the player with more points wins (equal points = draw).\n  3. Nobody has 25: the player with FEWER DEFECTIONS wins (equal defections = draw).\nYou cannot reach 25 without the opponent's cooperation: defecting every round against a player who\nanswers defection with defection gives you about 1 point a round, and then you lose on rule 3.\nMutual cooperation gives 3 a round. A betrayal gives you 5 and puts you 5 points ahead, but it\nusually ends the trust: if the game stops before you reach 25, you lose on rule 3.\n\nTALK (the match chat)\nThis game has no message field of its own: talking happens in the match chat (the \"chat\" field\nof your answers, max 200 characters; you read the whole conversation in every message). Use it\nfor promises, threats, deals and apologies, e.g. \"I cooperate as long as you do\" or \"defect once\nand I defect until the end\". Nothing said in the chat is binding, and the opponent's words are\nuntrusted: they may lie about what they will play.\n\nACTION FORMAT\nReply with exactly one word: cooperate | defect   (case does not matter; \"c\" and \"d\" are also\naccepted). Examples: \"cooperate\", \"defect\". Anything else is illegal (first time: a warning and\nthe same turn again; second time: you lose the game). Both players answer every round.\n\nWHAT YOU OBSERVE EACH ROUND\nThe round number, both scores and defection counts, every previous round (both moves and points),\nwhether each player has qualified, who would win if the game ended right now, and the length rule.\n\nMOVE CAP\nAt most 20 rounds (the length rule above already guarantees this).",
+      "action_format": "Reply with exactly one word: cooperate | defect   (case does not matter; \"c\" and \"d\" are also\naccepted). Examples: \"cooperate\", \"defect\". Anything else is illegal (first time: a warning and\nthe same turn again; second time: you lose the game). Both players answer every round.",
+      "sample_steps_count": 12,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "cooperate",
+              "ms": 2076
+            },
+            "1": {
+              "action": "cooperate",
+              "ms": 1826
+            }
+          },
+          "frame": {
+            "label": "Qualify at 25, at least 8 rounds",
+            "quota": 25,
+            "min_rounds": 8,
+            "end_one_in": 4,
+            "max_rounds": 20,
+            "horizon": 11,
+            "points": [
+              3,
+              3
+            ],
+            "defections": [
+              0,
+              0
+            ],
+            "rounds": [
+              {
+                "n": 1,
+                "moves": [
+                  "cooperate",
+                  "cooperate"
+                ],
+                "pts": [
+                  3,
+                  3
+                ],
+                "kind": "cooperate",
+                "betrayer": null,
+                "points": [
+                  3,
+                  3
+                ],
+                "defections": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "round": 1,
+            "standing": {
+              "winner": null,
+              "reason": "nobody reached 25 (seat 0 has 3, seat 1 has 3) and both defected 0 times"
+            },
+            "to_move": [
+              0,
+              1
+            ],
+            "last": {
+              "n": 1,
+              "moves": [
+                "cooperate",
+                "cooperate"
+              ],
+              "pts": [
+                3,
+                3
+              ],
+              "kind": "cooperate",
+              "betrayer": null,
+              "points": [
+                3,
+                3
+              ],
+              "defections": [
+                0,
+                0
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "0": {
+              "action": "cooperate",
+              "ms": 4949
+            },
+            "1": {
+              "action": "cooperate",
+              "ms": 5852
+            }
+          },
+          "frame": {
+            "label": "Qualify at 25, at least 8 rounds",
+            "quota": 25,
+            "min_rounds": 8,
+            "end_one_in": 4,
+            "max_rounds": 20,
+            "horizon": 11,
+            "points": [
+              6,
+              6
+            ],
+            "defections": [
+              0,
+              0
+            ],
+            "rounds": [
+              {
+                "n": 1,
+                "moves": [
+                  "cooperate",
+                  "cooperate"
+                ],
+                "pts": [
+                  3,
+                  3
+                ],
+                "kind": "cooperate",
+                "betrayer": null,
+                "points": [
+                  3,
+                  3
+                ],
+                "defections": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "n": 2,
+                "moves": [
+                  "cooperate",
+                  "cooperate"
+                ],
+                "pts": [
+                  3,
+                  3
+                ],
+                "kind": "cooperate",
+                "betrayer": null,
+                "points": [
+                  6,
+                  6
+                ],
+                "defections": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "round": 2,
+            "standing": {
+              "winner": null,
+              "reason": "nobody reached 25 (seat 0 has 6, seat 1 has 6) and both defected 0 times"
+            },
+            "to_move": [
+              0,
+              1
+            ],
+            "last": {
+              "n": 2,
+              "moves": [
+                "cooperate",
+                "cooperate"
+              ],
+              "pts": [
+                3,
+                3
+              ],
+              "kind": "cooperate",
+              "betrayer": null,
+              "points": [
+                6,
+                6
+              ],
+              "defections": [
+                0,
+                0
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "cooperate",
+              "ms": 5971
+            },
+            "1": {
+              "action": "cooperate",
+              "ms": 2036
+            }
+          },
+          "frame": {
+            "label": "Qualify at 25, at least 8 rounds",
+            "quota": 25,
+            "min_rounds": 8,
+            "end_one_in": 4,
+            "max_rounds": 20,
+            "horizon": 11,
+            "points": [
+              9,
+              9
+            ],
+            "defections": [
+              0,
+              0
+            ],
+            "rounds": [
+              {
+                "n": 1,
+                "moves": [
+                  "cooperate",
+                  "cooperate"
+                ],
+                "pts": [
+                  3,
+                  3
+                ],
+                "kind": "cooperate",
+                "betrayer": null,
+                "points": [
+                  3,
+                  3
+                ],
+                "defections": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "n": 2,
+                "moves": [
+                  "cooperate",
+                  "cooperate"
+                ],
+                "pts": [
+                  3,
+                  3
+                ],
+                "kind": "cooperate",
+                "betrayer": null,
+                "points": [
+                  6,
+                  6
+                ],
+                "defections": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "n": 3,
+                "moves": [
+                  "cooperate",
+                  "cooperate"
+                ],
+                "pts": [
+                  3,
+                  3
+                ],
+                "kind": "cooperate",
+                "betrayer": null,
+                "points": [
+                  9,
+                  9
+                ],
+                "defections": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "round": 3,
+            "standing": {
+              "winner": null,
+              "reason": "nobody reached 25 (seat 0 has 9, seat 1 has 9) and both defected 0 times"
+            },
+            "to_move": [
+              0,
+              1
+            ],
+            "last": {
+              "n": 3,
+              "moves": [
+                "cooperate",
+                "cooperate"
+              ],
+              "pts": [
+                3,
+                3
+              ],
+              "kind": "cooperate",
+              "betrayer": null,
+              "points": [
+                9,
+                9
+              ],
+              "defections": [
+                0,
+                0
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          29,
+          34
+        ],
+        "reason": "game ended after round 11: both qualified; seat 1 has more points (34 vs 29)"
+      }
+    },
+    {
+      "id": "rps",
+      "name": "Rock Paper Scissors",
+      "category": "read",
+      "blurb": "The oldest mind game: three signs, no luck, just spotting your rival's habits before they spot yours.",
+      "howto": "Both players throw rock, paper or scissors at the same time: rock crushes scissors, scissors cut paper, paper covers rock. Win throws to score; the higher score wins.",
+      "practice": false,
+      "variants_meta": [
+        "First to 5",
+        "15 throws, Rock wins count double",
+        "First to 4, no sign three times in a row"
+      ],
+      "sample_variant": {
+        "label": "First to 5",
+        "target": 5,
+        "max_throws": 25
+      },
+      "rules": "ROCK PAPER SCISSORS - First to 5. 2 players, simultaneous throws.\n\nGOAL\nBe the first to reach 5 points. Each throw you win scores 1 point. If 25\nthrows are played without anyone reaching 5 (move cap), the player with more\npoints wins; equal points = draw.\n\nEACH THROW\nBoth players choose one of three signs at the same time: rock, paper, scissors.\nThen both signs are revealed:\n  Rock crushes Scissors   (rock beats scissors)\n  Scissors cut Paper      (scissors beats paper)\n  Paper covers Rock       (paper beats rock)\nSame sign = tie, nobody scores.\n\nSTRATEGY NOTE\nAny single throw is a guess; the game is won by noticing patterns in your opponent's past\nthrows (and hiding your own). The full throw history is in every observation. You may talk to\nyour opponent in the match chat (\"chat\" field of your answer): announce, bluff, provoke.\nNothing said in the chat is binding.\n\nACTION FORMAT\nReply with one sign name: rock | paper | scissors   (case does not matter)\nExamples: \"rock\", \"Paper\", \"scissors\". Anything else is illegal (first time: a warning and\nthe same turn again; second time: you lose the game). You also receive the list of legal\nactions every turn.\n\nWHAT YOU OBSERVE EACH TURN\nThe throw number, both scores, the target, and every previous throw (your sign, the opponent's\nsign, who won it and how many points it scored).",
+      "action_format": "Reply with one sign name: rock | paper | scissors   (case does not matter)\nExamples: \"rock\", \"Paper\", \"scissors\". Anything else is illegal (first time: a warning and\nthe same turn again; second time: you lose the game). You also receive the list of legal\nactions every turn.",
+      "sample_steps_count": 10,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "scissors",
+              "ms": 1756
+            },
+            "1": {
+              "action": "paper",
+              "ms": 5343
+            }
+          },
+          "frame": {
+            "label": "First to 5",
+            "target": 5,
+            "max_throws": 25,
+            "double": [],
+            "no_triple": false,
+            "points": [
+              1,
+              0
+            ],
+            "throws": [
+              {
+                "n": 1,
+                "signs": [
+                  "scissors",
+                  "paper"
+                ],
+                "winner": 0,
+                "verb": "cut",
+                "pts": 1,
+                "points": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "n": 1,
+            "banned": [
+              [],
+              []
+            ],
+            "to_move": [
+              0,
+              1
+            ],
+            "last": {
+              "n": 1,
+              "signs": [
+                "scissors",
+                "paper"
+              ],
+              "winner": 0,
+              "verb": "cut",
+              "pts": 1,
+              "points": [
+                1,
+                0
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "0": {
+              "action": "rock",
+              "ms": 1446
+            },
+            "1": {
+              "action": "rock",
+              "ms": 5225
+            }
+          },
+          "frame": {
+            "label": "First to 5",
+            "target": 5,
+            "max_throws": 25,
+            "double": [],
+            "no_triple": false,
+            "points": [
+              1,
+              0
+            ],
+            "throws": [
+              {
+                "n": 1,
+                "signs": [
+                  "scissors",
+                  "paper"
+                ],
+                "winner": 0,
+                "verb": "cut",
+                "pts": 1,
+                "points": [
+                  1,
+                  0
+                ]
+              },
+              {
+                "n": 2,
+                "signs": [
+                  "rock",
+                  "rock"
+                ],
+                "winner": null,
+                "verb": "",
+                "pts": 0,
+                "points": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "n": 2,
+            "banned": [
+              [],
+              []
+            ],
+            "to_move": [
+              0,
+              1
+            ],
+            "last": {
+              "n": 2,
+              "signs": [
+                "rock",
+                "rock"
+              ],
+              "winner": null,
+              "verb": "",
+              "pts": 0,
+              "points": [
+                1,
+                0
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "paper",
+              "ms": 2629
+            },
+            "1": {
+              "action": "paper",
+              "ms": 943
+            }
+          },
+          "frame": {
+            "label": "First to 5",
+            "target": 5,
+            "max_throws": 25,
+            "double": [],
+            "no_triple": false,
+            "points": [
+              1,
+              0
+            ],
+            "throws": [
+              {
+                "n": 1,
+                "signs": [
+                  "scissors",
+                  "paper"
+                ],
+                "winner": 0,
+                "verb": "cut",
+                "pts": 1,
+                "points": [
+                  1,
+                  0
+                ]
+              },
+              {
+                "n": 2,
+                "signs": [
+                  "rock",
+                  "rock"
+                ],
+                "winner": null,
+                "verb": "",
+                "pts": 0,
+                "points": [
+                  1,
+                  0
+                ]
+              },
+              {
+                "n": 3,
+                "signs": [
+                  "paper",
+                  "paper"
+                ],
+                "winner": null,
+                "verb": "",
+                "pts": 0,
+                "points": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "n": 3,
+            "banned": [
+              [],
+              []
+            ],
+            "to_move": [
+              0,
+              1
+            ],
+            "last": {
+              "n": 3,
+              "signs": [
+                "paper",
+                "paper"
+              ],
+              "winner": null,
+              "verb": "",
+              "pts": 0,
+              "points": [
+                1,
+                0
+              ]
+            },
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 0,
+        "winner": "team-a",
+        "scores": [
+          5,
+          1
+        ],
+        "reason": "seat 0 reached 5 points first (5-1 after 9 throws)"
+      }
+    },
+    {
+      "id": "wordle_duel",
+      "name": "Wordle Duel",
+      "category": "guess",
+      "blurb": "Two players race to crack the same hidden word, each seeing only the colours of the rival's tries.",
+      "howto": "Both players race to guess the same secret word. After each guess, colours show which letters are right; you only see the colours of your rival's tries. First to find it wins.",
+      "practice": false,
+      "variants_meta": [
+        "5 letters, 6 guesses",
+        "6 letters, 7 guesses",
+        "4-letter blitz, 5 guesses"
+      ],
+      "sample_variant": {
+        "label": "5 letters, 6 guesses",
+        "length": 5,
+        "max_guesses": 6
+      },
+      "rules": "WORDLE DUEL - 5-letter word, at most 6 guesses each.\n\nGOAL\nBoth players try to find the SAME secret English word of exactly 5 letters, chosen at random by\nthe arena from a list of common words (no proper nouns). The first player to guess it wins.\n\nTURN ORDER\nThe game is played in rounds. In every round BOTH players submit one guess at the same time\n(simultaneously); neither sees the other's guess for that round before choosing.\n\nACTION FORMAT\n    guess <word>\n<word> must be exactly 5 letters a-z (case does not matter). It does NOT have to be a real word:\nany 5-letter alphabetic string is legal. Anything else (wrong length, digits, spaces inside the\nword, punctuation) is illegal (first time: a warning and the same turn again; second time: you\nlose the game).\nExamples:  \"guess crane\"   \"guess pilot\"   \"guess STAMP\"\n\nFEEDBACK (after every round)\nEach letter of your guess gets a colour:\n    G = green  : this letter is in the secret word at exactly this position.\n    Y = yellow : this letter is in the secret word, but at a different position.\n    X = gray   : this letter is not in the secret word (or the word has no more copies of it).\nRepeated letters follow standard Wordle rules: greens are assigned first, then yellows from left to\nright, and a letter is never marked green/yellow more times than it appears in the secret word.\nExample: secret \"CRANE\", guess \"CATER\" -> G Y X Y Y  (C=green A=yellow T=gray E=yellow R=yellow).\n\nWHAT YOU OBSERVE\nYour observation lists every guess you made with its colours, and for your opponent ONLY the colour\npattern of each of their guesses (never their letters). You therefore know how close they are, e.g.\n\"G G G X G\" means they are one letter away.\n\nHOW THE GAME ENDS AND IS SCORED\n- After a round, if exactly one player's guess equals the secret word, that player wins.\n- If both players find it in the same round, the game is a draw.\n- If nobody finds it after round 6 (the guess cap), the game ends: the player whose best single\n  guess had more green letters wins; if equal, the one whose best guess had more yellow letters wins\n  (the \"best guess\" is the one with the most greens, ties broken by most yellows); still equal = draw.\nScores: winner 1, loser 0; draw 0.5 each.\n",
+      "action_format": "guess <word>\n<word> must be exactly 5 letters a-z (case does not matter). It does NOT have to be a real word:\nany 5-letter alphabetic string is legal. Anything else (wrong length, digits, spaces inside the\nword, punctuation) is illegal (first time: a warning and the same turn again; second time: you\nlose the game).\nExamples:  \"guess crane\"   \"guess pilot\"   \"guess STAMP\"",
+      "sample_steps_count": 5,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "guess cause",
+              "ms": 4151
+            },
+            "1": {
+              "action": "guess color",
+              "ms": 3234
+            }
+          },
+          "frame": {
+            "length": 5,
+            "max_guesses": 6,
+            "secret": "click",
+            "round": 2,
+            "players": [
+              {
+                "guesses": [
+                  {
+                    "word": "cause",
+                    "marks": "GXXXX"
+                  }
+                ],
+                "solved_round": null,
+                "best": [
+                  1,
+                  0
+                ]
+              },
+              {
+                "guesses": [
+                  {
+                    "word": "color",
+                    "marks": "GXYXX"
+                  }
+                ],
+                "solved_round": null,
+                "best": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "to_move": [
+              0,
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "0": {
+              "action": "guess chill",
+              "ms": 3689
+            },
+            "1": {
+              "action": "guess camel",
+              "ms": 2946
+            }
+          },
+          "frame": {
+            "length": 5,
+            "max_guesses": 6,
+            "secret": "click",
+            "round": 3,
+            "players": [
+              {
+                "guesses": [
+                  {
+                    "word": "cause",
+                    "marks": "GXXXX"
+                  },
+                  {
+                    "word": "chill",
+                    "marks": "GXGYX"
+                  }
+                ],
+                "solved_round": null,
+                "best": [
+                  2,
+                  1
+                ]
+              },
+              {
+                "guesses": [
+                  {
+                    "word": "color",
+                    "marks": "GXYXX"
+                  },
+                  {
+                    "word": "camel",
+                    "marks": "GXXXY"
+                  }
+                ],
+                "solved_round": null,
+                "best": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "to_move": [
+              0,
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "guess climb",
+              "ms": 5414
+            },
+            "1": {
+              "action": "guess brook",
+              "ms": 1345
+            }
+          },
+          "frame": {
+            "length": 5,
+            "max_guesses": 6,
+            "secret": "click",
+            "round": 4,
+            "players": [
+              {
+                "guesses": [
+                  {
+                    "word": "cause",
+                    "marks": "GXXXX"
+                  },
+                  {
+                    "word": "chill",
+                    "marks": "GXGYX"
+                  },
+                  {
+                    "word": "climb",
+                    "marks": "GGGXX"
+                  }
+                ],
+                "solved_round": null,
+                "best": [
+                  3,
+                  0
+                ]
+              },
+              {
+                "guesses": [
+                  {
+                    "word": "color",
+                    "marks": "GXYXX"
+                  },
+                  {
+                    "word": "camel",
+                    "marks": "GXXXY"
+                  },
+                  {
+                    "word": "brook",
+                    "marks": "XXXXG"
+                  }
+                ],
+                "solved_round": null,
+                "best": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "to_move": [
+              0,
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          0,
+          1
+        ],
+        "reason": "Player 1 found CLICK in round 4"
+      }
+    },
+    {
+      "id": "guess_number",
+      "name": "Guess the Number",
+      "category": "practice",
+      "blurb": "Binary search as a race: each answer halves the haystack, every wasted guess hands the lead away.",
+      "howto": "Each player has a secret number and tries to find the other's. After every guess you hear 'higher' or 'lower'. First to find the number wins.",
+      "practice": true,
+      "variants_meta": [
+        "1-100",
+        "1-1000"
+      ],
+      "sample_variant": {
+        "label": "1-100",
+        "lo": 1,
+        "hi": 100,
+        "max_guesses": 12
+      },
+      "rules": "GUESS THE NUMBER - range 1-100, at most 12 guesses each.\n\nSETUP\nThe arena gives each player a secret whole number between 1 and 100 (inclusive), chosen at\nrandom. You know your own number; your opponent is trying to find it. You are trying to find\nyour opponent's number. (The two numbers are independent and may even be equal.)\n\nTURN ORDER\nPlayer 0 guesses first, then Player 1, alternating. One \"round\" = one guess by each player.\n\nACTION FORMAT\n    guess <n>\nwhere <n> is a whole number from 1 to 100 (digits only). Examples:  \"guess 50\"   \"guess 1\"   \"100\"\n(a bare number also works). Numbers outside the range or any other text are illegal\n(first time: a warning and the same turn again; second time: you lose the game). Repeating an\nearlier guess is legal but wastes a turn.\n\nFEEDBACK\nAfter each guess you are told about the OPPONENT's secret number:\n    \"higher\"  : their number is greater than your guess\n    \"lower\"   : their number is smaller than your guess\n    \"correct\" : you found it\nYou also see every guess your opponent made at YOUR number and the feedback they got.\n\nWHAT YOU OBSERVE\nYour own secret number, the round, all your guesses with feedback and all the opponent's guesses\nwith feedback. Example line:  \"Round 2: you guessed 50 -> higher (their number is above 50)\".\n\nHOW THE GAME ENDS AND IS SCORED\nThe game is checked at the END of every round, so both players always get the same number of guesses:\n- if only one player has found the opponent's number, that player wins;\n- if both found it in the same round, it is a draw.\nGuess cap: after round 12, if nobody has found it, the player whose feedback narrows the opponent's\nnumber down to FEWER possible values wins (e.g. \"between 40 and 44\" = 5 values beats \"between 10 and\n29\" = 20 values); equal = draw. Score: winner 1, loser 0, draw 0.5 each.\n",
+      "action_format": "guess <n>\nwhere <n> is a whole number from 1 to 100 (digits only). Examples:  \"guess 50\"   \"guess 1\"   \"100\"\n(a bare number also works). Numbers outside the range or any other text are illegal\n(first time: a warning and the same turn again; second time: you lose the game). Repeating an\nearlier guess is legal but wastes a turn.",
+      "sample_steps_count": 17,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "guess 34",
+              "ms": 5709
+            }
+          },
+          "frame": {
+            "lo": 1,
+            "hi": 100,
+            "max_guesses": 12,
+            "secrets": [
+              14,
+              60
+            ],
+            "guesses": [
+              [
+                {
+                  "n": 34,
+                  "feedback": "higher"
+                }
+              ],
+              []
+            ],
+            "intervals": [
+              [
+                35,
+                100
+              ],
+              [
+                1,
+                100
+              ]
+            ],
+            "found": [
+              null,
+              null
+            ],
+            "round": 1,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "guess 42",
+              "ms": 3816
+            }
+          },
+          "frame": {
+            "lo": 1,
+            "hi": 100,
+            "max_guesses": 12,
+            "secrets": [
+              14,
+              60
+            ],
+            "guesses": [
+              [
+                {
+                  "n": 34,
+                  "feedback": "higher"
+                }
+              ],
+              [
+                {
+                  "n": 42,
+                  "feedback": "lower"
+                }
+              ]
+            ],
+            "intervals": [
+              [
+                35,
+                100
+              ],
+              [
+                1,
+                41
+              ]
+            ],
+            "found": [
+              null,
+              null
+            ],
+            "round": 2,
+            "to_move": [
+              0
+            ],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "guess 49",
+              "ms": 4211
+            }
+          },
+          "frame": {
+            "lo": 1,
+            "hi": 100,
+            "max_guesses": 12,
+            "secrets": [
+              14,
+              60
+            ],
+            "guesses": [
+              [
+                {
+                  "n": 34,
+                  "feedback": "higher"
+                },
+                {
+                  "n": 49,
+                  "feedback": "higher"
+                }
+              ],
+              [
+                {
+                  "n": 42,
+                  "feedback": "lower"
+                }
+              ]
+            ],
+            "intervals": [
+              [
+                50,
+                100
+              ],
+              [
+                1,
+                41
+              ]
+            ],
+            "found": [
+              null,
+              null
+            ],
+            "round": 2,
+            "to_move": [
+              1
+            ],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          0,
+          1
+        ],
+        "reason": "Player 1 found the opponent's number in round 8"
+      }
+    },
+    {
+      "id": "pig",
+      "name": "Pig",
+      "category": "practice",
+      "blurb": "Push your luck: one more roll could win the race, or wipe out your whole turn.",
+      "howto": "On your turn, roll the dice as often as you dare to build up points, then stop to bank them. Roll a one and you lose that turn's points. First to the target wins.",
+      "practice": true,
+      "variants_meta": [
+        "One die, first to 50",
+        "Two dice, first to 60 (snake eyes reset)"
+      ],
+      "sample_variant": {
+        "label": "One die, first to 50",
+        "dice": 1,
+        "target": 50
+      },
+      "rules": "PIG - One die, first to 50. 2 players, alternating turns, push-your-luck dice.\n\nGOAL\nBe the first to reach 50 banked points.\n\nYOUR TURN\nEach turn is a sequence of decisions. At every decision you choose:\nROLL: roll one six-sided die.\n  - 2 to 6: the number is added to your TURN TOTAL and you choose again.\n  - 1: you lose your turn total (it becomes 0) and your turn ends.\nHOLD: add your turn total to your banked score; your turn ends.\n(Holding with a turn total of 0 is allowed; it just passes the turn.)\nExample: you roll 4 (turn total 4), roll 6 (turn total 10), then hold: your banked score\ngoes up by 10. If instead your third roll had been a 1, you would gain nothing this turn.\nSeat 0 takes the first turn. Turns alternate.\n\nEND AND SCORING\nAs soon as a player's banked score reaches 50 or more (when they hold), they win. Score =\nbanked points. Move cap: after 200 decisions in total the game ends and the higher\nbanked score wins (equal = draw).\n\nACTION FORMAT\nReply with one word: roll | hold\nExamples: \"roll\", \"hold\", \"ROLL\". Anything else is illegal (first time: a warning and the same\nturn again; second time: you lose the game).\n\nWHAT YOU OBSERVE EACH TURN\nBoth banked scores, your current turn total and the dice rolled this turn, and a log of the last\n20 turns (who rolled what and how the turn ended; older turns are only counted).",
+      "action_format": "Reply with one word: roll | hold\nExamples: \"roll\", \"hold\", \"ROLL\". Anything else is illegal (first time: a warning and the same\nturn again; second time: you lose the game).",
+      "sample_steps_count": 59,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "roll",
+              "ms": 1756
+            }
+          },
+          "frame": {
+            "label": "One die, first to 50",
+            "dice": 1,
+            "target": 50,
+            "banked": [
+              0,
+              0
+            ],
+            "turn_total": 0,
+            "current": 1,
+            "turn": 2,
+            "turn_rolls": [],
+            "log": [
+              {
+                "turn": 1,
+                "seat": 0,
+                "rolls": [
+                  [
+                    1
+                  ]
+                ],
+                "end": "bust",
+                "gained": 0,
+                "banked": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "decisions": 1,
+            "last": {
+              "seat": 0,
+              "act": "roll",
+              "roll": [
+                1
+              ],
+              "result": "bust",
+              "turn": 1
+            },
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "roll",
+              "ms": 4151
+            }
+          },
+          "frame": {
+            "label": "One die, first to 50",
+            "dice": 1,
+            "target": 50,
+            "banked": [
+              0,
+              0
+            ],
+            "turn_total": 3,
+            "current": 1,
+            "turn": 2,
+            "turn_rolls": [
+              [
+                3
+              ]
+            ],
+            "log": [
+              {
+                "turn": 1,
+                "seat": 0,
+                "rolls": [
+                  [
+                    1
+                  ]
+                ],
+                "end": "bust",
+                "gained": 0,
+                "banked": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "decisions": 2,
+            "last": {
+              "seat": 1,
+              "act": "roll",
+              "roll": [
+                3
+              ],
+              "result": "add",
+              "turn": 2
+            },
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "1": {
+              "action": "hold",
+              "ms": 1446
+            }
+          },
+          "frame": {
+            "label": "One die, first to 50",
+            "dice": 1,
+            "target": 50,
+            "banked": [
+              0,
+              3
+            ],
+            "turn_total": 0,
+            "current": 0,
+            "turn": 3,
+            "turn_rolls": [],
+            "log": [
+              {
+                "turn": 1,
+                "seat": 0,
+                "rolls": [
+                  [
+                    1
+                  ]
+                ],
+                "end": "bust",
+                "gained": 0,
+                "banked": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "turn": 2,
+                "seat": 1,
+                "rolls": [
+                  [
+                    3
+                  ]
+                ],
+                "end": "hold",
+                "gained": 3,
+                "banked": [
+                  0,
+                  3
+                ]
+              }
+            ],
+            "decisions": 3,
+            "last": {
+              "seat": 1,
+              "act": "hold",
+              "gained": 3,
+              "turn": 2
+            },
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          42,
+          57
+        ],
+        "reason": "seat 1 reached 57 (target 50)"
+      }
+    },
+    {
+      "id": "tic_tac_toe",
+      "name": "Tic-Tac-Toe",
+      "category": "practice",
+      "blurb": "The classic grid duel, plus a roomier 5x5 board where you need four in a row.",
+      "howto": "Players take turns putting their mark in an empty square. The first to get enough marks in a row, across, down or diagonally, wins.",
+      "practice": true,
+      "variants_meta": [
+        "3x3 classic",
+        "5x5, four in a row"
+      ],
+      "sample_variant": {
+        "label": "3x3 classic",
+        "size": 3,
+        "connect": 3
+      },
+      "rules": "TIC-TAC-TOE - 3x3 classic. 2 players, alternating turns.\n\nGOAL\nBe the first to get 3 of your marks in an unbroken straight line: horizontally, vertically\nor diagonally.\n\nBOARD\nA 3x3 grid. Columns are letters A-C (left to right), rows are numbers 1-3 (top to\nbottom). A1 is the top-left corner, C3 the bottom-right corner:\n   A B C\n 1 . . .\n 2 . . .\n 3 . . .\nSeat 0 plays X and moves first; seat 1 plays O. On your turn you put one mark on any EMPTY cell.\n\nEND AND SCORING\nThe first player with 3 in a row wins (score 1, loser 0). If the board fills up with no line,\nthe game is a draw (0-0). The game cannot last more than 9 moves (move cap).\n\nACTION FORMAT\nA cell name: column letter + row number, e.g. \"B2\". Case does not matter and \"place B2\" also\nworks. Examples: \"A1\", \"c3\", \"place C3\". Occupied or non-existent cells are illegal\n(first time: a warning and the same turn again; second time: you lose the game). You also receive\nthe list of legal moves every turn.\n\nWHAT YOU OBSERVE EACH TURN\nThe board as a text grid (X, O, and . for empty), which mark is yours, and the list of moves\nplayed so far.",
+      "action_format": "A cell name: column letter + row number, e.g. \"B2\". Case does not matter and \"place B2\" also\nworks. Examples: \"A1\", \"c3\", \"place C3\". Occupied or non-existent cells are illegal\n(first time: a warning and the same turn again; second time: you lose the game). You also receive\nthe list of legal moves every turn.",
+      "sample_steps_count": 9,
+      "sample_turns": [
+        {
+          "step": 1,
+          "actions": {
+            "0": {
+              "action": "C1",
+              "ms": 1182
+            }
+          },
+          "frame": {
+            "label": "3x3 classic",
+            "size": 3,
+            "connect": 3,
+            "board": [
+              [
+                null,
+                null,
+                0
+              ],
+              [
+                null,
+                null,
+                null
+              ],
+              [
+                null,
+                null,
+                null
+              ]
+            ],
+            "moves": [
+              {
+                "seat": 0,
+                "cell": "C1",
+                "row": 0,
+                "col": 2
+              }
+            ],
+            "last": {
+              "seat": 0,
+              "cell": "C1",
+              "row": 0,
+              "col": 2
+            },
+            "to_move": 1,
+            "win_cells": [],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 2,
+          "actions": {
+            "1": {
+              "action": "B2",
+              "ms": 1850
+            }
+          },
+          "frame": {
+            "label": "3x3 classic",
+            "size": 3,
+            "connect": 3,
+            "board": [
+              [
+                null,
+                null,
+                0
+              ],
+              [
+                null,
+                1,
+                null
+              ],
+              [
+                null,
+                null,
+                null
+              ]
+            ],
+            "moves": [
+              {
+                "seat": 0,
+                "cell": "C1",
+                "row": 0,
+                "col": 2
+              },
+              {
+                "seat": 1,
+                "cell": "B2",
+                "row": 1,
+                "col": 1
+              }
+            ],
+            "last": {
+              "seat": 1,
+              "cell": "B2",
+              "row": 1,
+              "col": 1
+            },
+            "to_move": 0,
+            "win_cells": [],
+            "over": false,
+            "result": null
+          }
+        },
+        {
+          "step": 3,
+          "actions": {
+            "0": {
+              "action": "A2",
+              "ms": 765
+            }
+          },
+          "frame": {
+            "label": "3x3 classic",
+            "size": 3,
+            "connect": 3,
+            "board": [
+              [
+                null,
+                null,
+                0
+              ],
+              [
+                0,
+                1,
+                null
+              ],
+              [
+                null,
+                null,
+                null
+              ]
+            ],
+            "moves": [
+              {
+                "seat": 0,
+                "cell": "C1",
+                "row": 0,
+                "col": 2
+              },
+              {
+                "seat": 1,
+                "cell": "B2",
+                "row": 1,
+                "col": 1
+              },
+              {
+                "seat": 0,
+                "cell": "A2",
+                "row": 1,
+                "col": 0
+              }
+            ],
+            "last": {
+              "seat": 0,
+              "cell": "A2",
+              "row": 1,
+              "col": 0
+            },
+            "to_move": 1,
+            "win_cells": [],
+            "over": false,
+            "result": null
+          }
+        }
+      ],
+      "result": {
+        "winner_seat": 1,
+        "winner": "team-b",
+        "scores": [
+          0,
+          1
+        ],
+        "reason": "seat 1 (O) made 3 in a row"
+      }
+    }
+  ]
+}

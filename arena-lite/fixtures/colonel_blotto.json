@@ -1,0 +1,1207 @@
+{
+  "game_id": "colonel_blotto",
+  "game_name": "Colonel Blotto",
+  "category": "read",
+  "variant": {
+    "label": "100 soldiers, 5 equal fields",
+    "soldiers": 100,
+    "fields": 5,
+    "rounds": 5,
+    "values": "equal"
+  },
+  "seats": [
+    "team-a",
+    "team-b"
+  ],
+  "names": [
+    "Team A",
+    "Team B"
+  ],
+  "rules": "COLONEL BLOTTO - 100 soldiers, 5 equal fields. 2 players, simultaneous moves, 5 rounds.\n\nGOAL\nWin more rounds than your opponent.\n\nEACH ROUND\nThere are 5 battlefields, called F1 F2 F3 F4 F5 (in this order, left to right).\nAll battlefields are worth the same (1 point each).\nEvery round each player has exactly 100 soldiers to place (a fresh army each round).\nBoth players secretly choose how many soldiers to put on each battlefield, at the same time.\nThen both allocations are revealed. On each battlefield the player with MORE soldiers captures\nit; equal soldiers (including 0 vs 0) = nobody captures it.\nA round is won by the player who captures MORE battlefields. Equal numbers = the\nround is drawn (nobody wins it).\n\nEND AND SCORING\nAfter 5 rounds, the player who won more rounds wins the game. If rounds won are equal, the\nplayer who captured more battlefield points over the whole game wins; if that is equal too,\nthe game is a draw. Your score = rounds won. The game always lasts exactly 5 rounds (move cap).\n\nACTION FORMAT\nYour action is exactly 5 whole numbers >= 0 that add up to EXACTLY 100,\nlisted in battlefield order F1 to F5, separated by spaces (commas are also accepted).\nExamples: \"20 20 20 20 20\", \"35 35 30 0 0\", \"0 0 34 33 33\".\nWrong count of numbers, negative numbers, decimals, or a wrong total are illegal (first time: a\nwarning and the same turn again; second time: you lose the game). The legal-actions list is null\nbecause there are too many possible splits.\n\nWHAT YOU OBSERVE EACH TURN\nThe round number, this round's battlefield values, your soldiers,\nthe score in rounds and battlefield points, and the full history of earlier rounds (both\nallocations, who captured each battlefield, who won the round).",
+  "timeline": [
+    {
+      "step": 0,
+      "frame": {
+        "label": "100 soldiers, 5 equal fields",
+        "k": 5,
+        "round": 1,
+        "rounds": 5,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "reserves": false,
+        "reserve": [
+          0,
+          0
+        ],
+        "soldiers": 100,
+        "income": 30,
+        "rounds_won": [
+          0,
+          0
+        ],
+        "value_won": [
+          0,
+          0
+        ],
+        "last": null,
+        "history": [],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 1,
+      "actions": {
+        "0": {
+          "action": "12 9 37 34 8",
+          "ms": 5343
+        },
+        "1": {
+          "action": "16 6 22 52 4",
+          "ms": 765
+        }
+      },
+      "frame": {
+        "label": "100 soldiers, 5 equal fields",
+        "k": 5,
+        "round": 2,
+        "rounds": 5,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "reserves": false,
+        "reserve": [
+          0,
+          0
+        ],
+        "soldiers": 100,
+        "income": 30,
+        "rounds_won": [
+          1,
+          0
+        ],
+        "value_won": [
+          3,
+          2
+        ],
+        "last": {
+          "round": 1,
+          "values": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "alloc": [
+            [
+              12,
+              9,
+              37,
+              34,
+              8
+            ],
+            [
+              16,
+              6,
+              22,
+              52,
+              4
+            ]
+          ],
+          "captured": [
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "points": [
+            3,
+            2
+          ],
+          "winner": 0,
+          "rounds_won": [
+            1,
+            0
+          ]
+        },
+        "history": [
+          {
+            "round": 1,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                12,
+                9,
+                37,
+                34,
+                8
+              ],
+              [
+                16,
+                6,
+                22,
+                52,
+                4
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              1,
+              0
+            ]
+          }
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 2,
+      "actions": {
+        "0": {
+          "action": "7 27 17 39 10",
+          "ms": 2545
+        },
+        "1": {
+          "action": "35 4 3 52 6",
+          "ms": 5414
+        }
+      },
+      "frame": {
+        "label": "100 soldiers, 5 equal fields",
+        "k": 5,
+        "round": 3,
+        "rounds": 5,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "reserves": false,
+        "reserve": [
+          0,
+          0
+        ],
+        "soldiers": 100,
+        "income": 30,
+        "rounds_won": [
+          2,
+          0
+        ],
+        "value_won": [
+          6,
+          4
+        ],
+        "last": {
+          "round": 2,
+          "values": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "alloc": [
+            [
+              7,
+              27,
+              17,
+              39,
+              10
+            ],
+            [
+              35,
+              4,
+              3,
+              52,
+              6
+            ]
+          ],
+          "captured": [
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "points": [
+            3,
+            2
+          ],
+          "winner": 0,
+          "rounds_won": [
+            2,
+            0
+          ]
+        },
+        "history": [
+          {
+            "round": 1,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                12,
+                9,
+                37,
+                34,
+                8
+              ],
+              [
+                16,
+                6,
+                22,
+                52,
+                4
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              1,
+              0
+            ]
+          },
+          {
+            "round": 2,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                7,
+                27,
+                17,
+                39,
+                10
+              ],
+              [
+                35,
+                4,
+                3,
+                52,
+                6
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              2,
+              0
+            ]
+          }
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 3,
+      "actions": {
+        "0": {
+          "action": "10 4 7 72 7",
+          "ms": 4434
+        },
+        "1": {
+          "action": "2 24 26 10 38",
+          "ms": 5949
+        }
+      },
+      "frame": {
+        "label": "100 soldiers, 5 equal fields",
+        "k": 5,
+        "round": 4,
+        "rounds": 5,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "reserves": false,
+        "reserve": [
+          0,
+          0
+        ],
+        "soldiers": 100,
+        "income": 30,
+        "rounds_won": [
+          2,
+          1
+        ],
+        "value_won": [
+          8,
+          7
+        ],
+        "last": {
+          "round": 3,
+          "values": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "alloc": [
+            [
+              10,
+              4,
+              7,
+              72,
+              7
+            ],
+            [
+              2,
+              24,
+              26,
+              10,
+              38
+            ]
+          ],
+          "captured": [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "points": [
+            2,
+            3
+          ],
+          "winner": 1,
+          "rounds_won": [
+            2,
+            1
+          ]
+        },
+        "history": [
+          {
+            "round": 1,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                12,
+                9,
+                37,
+                34,
+                8
+              ],
+              [
+                16,
+                6,
+                22,
+                52,
+                4
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              1,
+              0
+            ]
+          },
+          {
+            "round": 2,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                7,
+                27,
+                17,
+                39,
+                10
+              ],
+              [
+                35,
+                4,
+                3,
+                52,
+                6
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              2,
+              0
+            ]
+          },
+          {
+            "round": 3,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                10,
+                4,
+                7,
+                72,
+                7
+              ],
+              [
+                2,
+                24,
+                26,
+                10,
+                38
+              ]
+            ],
+            "captured": [
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            "points": [
+              2,
+              3
+            ],
+            "winner": 1,
+            "rounds_won": [
+              2,
+              1
+            ]
+          }
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 4,
+      "actions": {
+        "0": {
+          "action": "28 2 16 47 7",
+          "ms": 470
+        },
+        "1": {
+          "action": "11 28 46 6 9",
+          "ms": 423
+        }
+      },
+      "frame": {
+        "label": "100 soldiers, 5 equal fields",
+        "k": 5,
+        "round": 5,
+        "rounds": 5,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "reserves": false,
+        "reserve": [
+          0,
+          0
+        ],
+        "soldiers": 100,
+        "income": 30,
+        "rounds_won": [
+          2,
+          2
+        ],
+        "value_won": [
+          10,
+          10
+        ],
+        "last": {
+          "round": 4,
+          "values": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "alloc": [
+            [
+              28,
+              2,
+              16,
+              47,
+              7
+            ],
+            [
+              11,
+              28,
+              46,
+              6,
+              9
+            ]
+          ],
+          "captured": [
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "points": [
+            2,
+            3
+          ],
+          "winner": 1,
+          "rounds_won": [
+            2,
+            2
+          ]
+        },
+        "history": [
+          {
+            "round": 1,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                12,
+                9,
+                37,
+                34,
+                8
+              ],
+              [
+                16,
+                6,
+                22,
+                52,
+                4
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              1,
+              0
+            ]
+          },
+          {
+            "round": 2,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                7,
+                27,
+                17,
+                39,
+                10
+              ],
+              [
+                35,
+                4,
+                3,
+                52,
+                6
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              2,
+              0
+            ]
+          },
+          {
+            "round": 3,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                10,
+                4,
+                7,
+                72,
+                7
+              ],
+              [
+                2,
+                24,
+                26,
+                10,
+                38
+              ]
+            ],
+            "captured": [
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            "points": [
+              2,
+              3
+            ],
+            "winner": 1,
+            "rounds_won": [
+              2,
+              1
+            ]
+          },
+          {
+            "round": 4,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                28,
+                2,
+                16,
+                47,
+                7
+              ],
+              [
+                11,
+                28,
+                46,
+                6,
+                9
+              ]
+            ],
+            "captured": [
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            "points": [
+              2,
+              3
+            ],
+            "winner": 1,
+            "rounds_won": [
+              2,
+              2
+            ]
+          }
+        ],
+        "over": false,
+        "result": null
+      }
+    },
+    {
+      "step": 5,
+      "actions": {
+        "0": {
+          "action": "12 1 3 32 52",
+          "ms": 5445
+        },
+        "1": {
+          "action": "13 59 4 1 23",
+          "ms": 1046
+        }
+      },
+      "frame": {
+        "label": "100 soldiers, 5 equal fields",
+        "k": 5,
+        "round": 5,
+        "rounds": 5,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "reserves": false,
+        "reserve": [
+          0,
+          0
+        ],
+        "soldiers": 100,
+        "income": 30,
+        "rounds_won": [
+          2,
+          3
+        ],
+        "value_won": [
+          12,
+          13
+        ],
+        "last": {
+          "round": 5,
+          "values": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "alloc": [
+            [
+              12,
+              1,
+              3,
+              32,
+              52
+            ],
+            [
+              13,
+              59,
+              4,
+              1,
+              23
+            ]
+          ],
+          "captured": [
+            1,
+            1,
+            1,
+            0,
+            0
+          ],
+          "points": [
+            2,
+            3
+          ],
+          "winner": 1,
+          "rounds_won": [
+            2,
+            3
+          ]
+        },
+        "history": [
+          {
+            "round": 1,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                12,
+                9,
+                37,
+                34,
+                8
+              ],
+              [
+                16,
+                6,
+                22,
+                52,
+                4
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              1,
+              0
+            ]
+          },
+          {
+            "round": 2,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                7,
+                27,
+                17,
+                39,
+                10
+              ],
+              [
+                35,
+                4,
+                3,
+                52,
+                6
+              ]
+            ],
+            "captured": [
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            "points": [
+              3,
+              2
+            ],
+            "winner": 0,
+            "rounds_won": [
+              2,
+              0
+            ]
+          },
+          {
+            "round": 3,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                10,
+                4,
+                7,
+                72,
+                7
+              ],
+              [
+                2,
+                24,
+                26,
+                10,
+                38
+              ]
+            ],
+            "captured": [
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            "points": [
+              2,
+              3
+            ],
+            "winner": 1,
+            "rounds_won": [
+              2,
+              1
+            ]
+          },
+          {
+            "round": 4,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                28,
+                2,
+                16,
+                47,
+                7
+              ],
+              [
+                11,
+                28,
+                46,
+                6,
+                9
+              ]
+            ],
+            "captured": [
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            "points": [
+              2,
+              3
+            ],
+            "winner": 1,
+            "rounds_won": [
+              2,
+              2
+            ]
+          },
+          {
+            "round": 5,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "alloc": [
+              [
+                12,
+                1,
+                3,
+                32,
+                52
+              ],
+              [
+                13,
+                59,
+                4,
+                1,
+                23
+              ]
+            ],
+            "captured": [
+              1,
+              1,
+              1,
+              0,
+              0
+            ],
+            "points": [
+              2,
+              3
+            ],
+            "winner": 1,
+            "rounds_won": [
+              2,
+              3
+            ]
+          }
+        ],
+        "over": true,
+        "result": {
+          "winner": 1,
+          "scores": [
+            2,
+            3
+          ],
+          "reason": "seat 1 won more rounds (3 vs 2)"
+        }
+      }
+    }
+  ],
+  "result": {
+    "winner_seat": 1,
+    "winner": "team-b",
+    "scores": [
+      2,
+      3
+    ],
+    "reason": "seat 1 won more rounds (3 vs 2)"
+  },
+  "chat": [
+    {
+      "n": 1,
+      "game": 1,
+      "game_id": "colonel_blotto",
+      "game_name": "Colonel Blotto",
+      "step": 1,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 2,
+      "game": 1,
+      "game_id": "colonel_blotto",
+      "game_name": "Colonel Blotto",
+      "step": 2,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "trust me"
+    },
+    {
+      "n": 3,
+      "game": 1,
+      "game_id": "colonel_blotto",
+      "game_name": "Colonel Blotto",
+      "step": 3,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "random fixture move"
+    },
+    {
+      "n": 4,
+      "game": 1,
+      "game_id": "colonel_blotto",
+      "game_name": "Colonel Blotto",
+      "step": 3,
+      "phase": "play",
+      "seat": 1,
+      "team": "team-b",
+      "text": "bold!"
+    },
+    {
+      "n": 5,
+      "game": 1,
+      "game_id": "colonel_blotto",
+      "game_name": "Colonel Blotto",
+      "step": 4,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "bold!"
+    },
+    {
+      "n": 6,
+      "game": 1,
+      "game_id": "colonel_blotto",
+      "game_name": "Colonel Blotto",
+      "step": 5,
+      "phase": "play",
+      "seat": 0,
+      "team": "team-a",
+      "text": "hmm"
+    }
+  ]
+}
