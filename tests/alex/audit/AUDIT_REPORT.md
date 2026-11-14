@@ -212,3 +212,76 @@ NOT RUN with the real model (no budget approval). Stub call counts per turn: nim
 - **B2 (B, alex/bld, nim):** the winning-move solver depends on regexes over the observation text; unseen layouts give a plain model game (heaps/piles are a known game family).
 - Other findings: F2-1 read_opponent does not exploit a constant opponent; F2-2 `TypeError` in tool loop on empty content (caught); F2-3 `action_format.regex` is None, so strict formats cannot be validated (G5 confirmed by the claim game); F2-4 a 30 s gateway delay costs 10 s per turn (answers stay at 10.03 s, within the clock).
 - Not run: real model, 6.4 coherence, cost per real match, pig hand-made dice state, T1 games.
+
+## F3: report (main `900ab89`; real model NOT RUN, T1 games NOT RUN)
+
+### 1. Scorecard
+| area | health | evidence |
+|---|---|---|
+| protocol | GREEN | 0 stray/early stdout, 0 crashes in 14+16+7+48 runs; exit <0.1 s after stdin close |
+| robustness | YELLOW | injection clean (0 illegal, max 10.03 s); BLOCKER B1: strict-format null-legal fallback loses 16/16 runs (claim, qa) |
+| prep | YELLOW | 0.5-1.3 s of 600 s, simulators 6/6 verified; no reuse of /memory by a second prep; real-model prep GREY |
+| tool usage | YELLOW | search tools answer pig/ttt 100%; facts/certain moves only in generic; tool loop never executed; nim solver misses layouts (B2) |
+| decision quality | YELLOW | ttt win/block PASS; nim, truth question, constant opponent FAIL with stub; real model GREY |
+| unknown games | YELLOW | 48 runs, 0 timeouts/crashes; 2 of 6 games lost by B1 |
+| chat | YELLOW | <=200 chars always, opponent chat in 100% of model requests; bluff/deals/read_opponent use canned chat, 0 model requests; 6.4 and forbidden words GREY |
+| cost | GREY | not measured with the real model; thinking disabled, max_tokens 250-400, 0-call strategies exist |
+
+### 2. Component cards
+Format: name | owner | does | wired (matrix rows) | observed | health | gap | impact/effort.
+- Protocol loop and clocks | bld | JSON-lines loop, start/turn/end/shutdown | rows 10,15 | start->ready 0.06-0.09 s, turn max 6.5 s (ttt 5x5), 10.03 s under 30 s model delay | GREEN | 5x5 search is slowest path | B/S
+- Worker and fallback ladder | bld | picks strategy, retries with warning, fallback move | rows 1,3,14 | 29 guess fallbacks in range; illegal-every-time: 0 sent; warning retry ok | YELLOW | strict-format fallback illegal (B1) | A/M
+- LLM client | bld | gateway call, timeout 10 s, latest key | row 10 | 500/429/empty/garbage handled, key change used (AAAA11->BBBB22); empty content logs TypeError in tool loop (caught) | GREEN | 10 s lost per turn when gateway hangs | C/S
+- Validator | bld | legality check, grammar | row 2 | 0 illegal sent in all runs; `regex` None in 6/6 | YELLOW | strict formats unvalidatable (G5) | A/M
+- Prep engine (parse, classify, grammar, heuristics, simulator, calibration) | bld | builds artifacts per game | rows 1,2,6,7 | 0.5-1.3 s, 6/6 simulators verified, 4 model calls for guess_number | YELLOW | no calibration or probing, 599 s unused (G1) | B/M
+- /memory layer | bld | artifacts and log.jsonl per game/hash | row 8 | warm 14/14 used; log.jsonl written; second prep recomputes (G4) | YELLOW | cold container generic (G3), no prep reuse | B/S-M
+- Registry and router | bld | family -> strategy | row 1 | 6 strategies loaded; guessing->generic, deduce never chosen (G2) | YELLOW | deduce unused | B/M
+- Generic strategy | bld | model + facts + tool loop | rows 11,12,13 | 100% of guess and cold pig turns | YELLOW | tool loop never executed; nim/qa/claim failures | B/M
+- Chat module and guardrails (chat_defense) | mbappe | untrusted block, speech filter, chat bank | rows 4,5,9 | block in 100% of requests; 0 forbidden words in 48 runs (stub chat); forbidden_terms empty in artifacts | YELLOW | filter not proven with a real bait; qa actions illegal | A/M
+- assist_turn (precompute, select, tool loop) | alex | facts, certain moves, tools | rows 11-13 | facts present in generic only; certain moves 0 uses; nim parse miss | YELLOW | only generic calls it; fragile regexes (B2) | B/M
+- Tool catalog | alex | 55 tools, 39 model_callable (board search, dice sim, deduction, heaps, bluff, deals) | row 11 | search 100% on pig/ttt; others not exercised | YELLOW | model never asked a tool with the stub | B/S
+- Search/MCTS/deduction solvers | alex | alpha-beta, simulation, binary search | rows 6,7 | ttt depth 9 7864 nodes 0.8 s; pig ~23k sims 3.9 s | GREEN | deduce path unverified (G2) | B/M
+- Strategies bluff, deals, read_opponent | mbappe | tool-only play, 0 model calls | row 1 | bet/simul/nego 0 requests, <1 s | YELLOW | read_opponent ignores constant opponent (F2-1); canned chat | B/M
+- Decision logging | bld | one JSON line per turn, log.jsonl | row 15 | fields complete on all turns | GREEN | none | D/S
+
+### 3. What happens in a game, in plain words
+- **Prep (bld prep engine).** The `prep` message brings the rules text and an `llm` block. The engine parses the rules, classifies the family (deduction, dice, grid board), builds the action grammar, a fallback policy, a chat bank and a simulator, verifies the simulator by playing it, and writes everything to `/memory/<game>/<hash>/`. Measured: 0.5-1.3 s for 3 games, 4 model calls only for guess_number. The rest of the 10 minutes is unused.
+- **Start (worker, registry).** The `start` message carries the latest key. The worker loads artifacts, router picks a strategy (search for pig and board games, generic for guessing and cold containers), and replies `ready` with a bank chat. Measured 0.06-0.09 s.
+- **Turn (worker, strategy, assist_turn).** The strategy builds facts (guess interval, dice distribution) or runs a search tool, wraps the opponent's latest chat as untrusted DATA, may call the model for the move and/or chat, validates the move against legal actions or the grammar, falls back to a safe move if needed, filters speech, and sends action + chat. Measured: most turns under 1 s, 3.9 s pig, 6.5 s ttt 5x5, 10.03 s when the gateway hangs.
+- **End.** Nothing is sent. The worker keeps state and the process waits for the next `start`.
+- **Shutdown.** `shutdown` or closed stdin ends the process; measured exit <0.1 s after stdin close.
+
+### 4. Integration matrix
+Complete in F1 (section "Integration matrix"), with the F2 updates: key change on a second `start` CONNECTED+USED (AAAA11 then BBBB22); warning retry CONNECTED+USED (rejected move not repeated); forbidden_terms still NOT EXERCISED with a real speech rule (artifact lists empty); certain move NOT EXERCISED; feedback model -> deduction NOT CONNECTED in play with the stub, GREY with the real model.
+
+### 5. Where to work next
+Before the T2 freeze (23:59):
+1. **B1** strict-format fallback re-uses the rules' format template (bld, A, M). Rules 8.1, 9.4: each lost game costs 1.25 points; 16/16 runs lost in two games.
+2. **Real-model run** of at most 3 matches / about $0.05 (human approval): proves prep playbook, tool loop, forbidden words with bait, 6.4 coherence, cost (alex, A/B, S). Rules 6.4, 6.8, 7.5.
+3. **B2** nim/heap parser accepts more layouts, or ask the model at prep for a layout regex (alex, B, S-M). Rule 9.1.
+4. **G3** build or load a simulator on a cold container at `start` (bld, B, S-M). Rule 4.3.
+5. **F2-1** read_opponent best-replies constant and cyclic opponents (mbappe, B, M). Rule 9.1.
+6. **G2** route guessing to `deduce` when the feedback model verifies (alex/bld, B, M).
+7. Put the speech rule into `forbidden_terms` for guarded games and test with a baited real model (mbappe, A, S-M). Rules 6.8, 6.9.
+For T3:
+8. G1 use the prep time: self-play calibration, opponent priors (bld, B, M). Rule 12.1.
+9. G4 reuse artifacts on a second prep; G6 skip the chat-only model call on tool turns (bld, C, S). Rule 7.5.
+10. G5 validate strict formats with a prep-written regex; fix the TypeError on empty content in the tool loop; test_connect_four timeout (bld, D/C, S).
+
+### 6. What works well (rule 12.1)
+- Protocol hygiene: zero stdout noise or crashes in 85+ image runs, fast clean exit.
+- Failure injection: 500, 429, empty, garbage, illegal-every-time and a 30 s delay produce 0 illegal answers, all within 10.03 s.
+- Simulator-first prep: 6/6 simulators verified by self-play in about a second; pig and tic-tac-toe answered by search tools with no model move calls.
+- Opponent chat reaches every model request as a labelled untrusted block; hostile chat did not change our moves in 24 paired runs.
+- Latest key is used after a second `start`; decision log gives per-turn traceability.
+- 342 alex and 18 mbappe test files pass.
+
+### 7. Open questions (rule 15.4)
+- Is canned template chat tied to the move's intent enough for 6.4 in bluff/deals/read_opponent games?
+- Does 6.5 count chat that reaches only ChatMonitor/signals (no model prompt) as reaching the decision logic?
+- Real-model budget: three matches / $0.05 approved? Not given.
+- Which strict-format `legal_actions: null` games to expect at T1/T2, so the fallback template is tested on them?
+- T1 games are not released: when will they be available to run?
+
+### Blocker and issue drafts
+`BLOCKERS.md`: B1, B2. Drafts in `issues/`: B1, B2, G1, G2, G3, F2-1.
