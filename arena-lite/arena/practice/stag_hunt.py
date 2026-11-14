@@ -50,6 +50,9 @@ Every round, both players choose simultaneously:
 ACTION FORMAT
     stag   OR   hare   (case does not matter)
 Examples: "stag", "hare", "Stag", "HARE".
+
+SCORING & WIN CONDITION
+The player with the highest total score after {self.rounds} rounds wins the game.
 """
 
     def to_move(self) -> list[int]:

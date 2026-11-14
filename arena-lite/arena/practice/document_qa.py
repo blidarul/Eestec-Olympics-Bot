@@ -48,7 +48,7 @@ QA_HISTORY = [
     },
 ]
 
-_ANS_RE = re.compile(r"^(?:answer\s+)?(.+)$", re.IGNORECASE)
+_ANS_RE = re.compile(r"^(?:answer\s+)(.+)$", re.IGNORECASE)
 
 
 class DocumentQA(Game):
