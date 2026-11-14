@@ -61,6 +61,10 @@ class ColonelBlotto(Game):
         val_str = ", ".join(f"F{i+1}={self.values[i]}" for i in range(self.k))
         res_info = f"Reserves: +{self.income} per round; send at most your reserve, unspent soldiers are kept." if self.reserves else "A fresh army each round."
         action_fmt = f"Your action is exactly {self.k} whole numbers >= 0 that add up to at most your reserve" if self.reserves else f"Your action is exactly {self.k} whole numbers >= 0 that add up to EXACTLY {self.base_soldiers}"
+        ex_share = self.base_soldiers // self.k
+        rem = self.base_soldiers - ex_share * (self.k - 1)
+        ex_nums = [ex_share] * (self.k - 1) + [rem]
+        ex_str = " ".join(str(x) for x in ex_nums)
         return f"""COLONEL BLOTTO - {self.label}. 2 players, simultaneous moves, {self.rounds} rounds.
 
 GOAL
@@ -82,7 +86,7 @@ the game is a draw. Your score = rounds won. The game always lasts exactly {self
 
 ACTION FORMAT
 {action_fmt}, listed in battlefield order F1 to F{self.k}, separated by spaces (commas are also accepted).
-Examples: "20 20 20 20 20". The legal-actions list is null."""
+Examples: "{ex_str}". The legal-actions list is null."""
 
     def to_move(self) -> list[int]:
         if self.over:
