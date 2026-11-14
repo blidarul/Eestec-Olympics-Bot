@@ -253,11 +253,17 @@ class PythonBitboardEngine:
         completed_depth = 1
         proven = False
 
-        target_max_d = max_depth
-        if self.rows * self.cols <= 30 and target_max_d < 16:
-            target_max_d = 16
+        if max_depth is None or max_depth == 12:
+            if self.rows * self.cols <= 30:
+                target_max_depth = 16
+            elif self.rows * self.cols <= 45:
+                target_max_depth = 10
+            else:
+                target_max_depth = 6
+        else:
+            target_max_depth = max_depth
 
-        for d in range(1, target_max_d + 1):
+        for d in range(1, target_max_depth + 1):
             depth_best_move = open_c[0]
             depth_best_score = -30000
             timeout_in_d = False
@@ -327,6 +333,16 @@ def solve_connect_four(
     else:
         norm_moves = move_ints
 
+    if max_depth is None or max_depth == 12:
+        if rows * cols <= 30:
+            effective_depth = 16
+        elif rows * cols <= 45:
+            effective_depth = 10
+        else:
+            effective_depth = 6
+    else:
+        effective_depth = max_depth
+
     c_lib = _load_c_engine()
     engine_name = "c_native" if c_lib is not None else "python_bitboard"
 
@@ -348,7 +364,7 @@ def solve_connect_four(
                 arr,
                 len(norm_moves),
                 1,  # one_indexed=1
-                max_depth,
+                effective_depth,
                 timeout,
                 ctypes.byref(out_sc),
                 ctypes.byref(out_dp),
@@ -367,7 +383,7 @@ def solve_connect_four(
     if c_lib is None:
         py_engine = PythonBitboardEngine(rows=rows, cols=cols, connect_k=connect_k)
         best_col_1, score, depth_reached, proven = py_engine.solve(
-            norm_moves, one_indexed=True, max_depth=max_depth, timeout=timeout
+            norm_moves, one_indexed=True, max_depth=effective_depth, timeout=timeout
         )
 
     # Validate against open_cols if provided
