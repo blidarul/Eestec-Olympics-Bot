@@ -80,7 +80,15 @@ class SpeechRules:
             # squashed matching only for terms of 4+ letters (short ones would match inside normal words)
             if len(term["squash"]) >= 4 and (term["squash"] in sq or term["dedup"] in sqd):
                 return True
-        return False
+        return self._alex_guard(text)
+
+    def _alex_guard(self, text):
+        """Second opinion from solvers/guard.py (plurals, listed translations, diacritics). Optional: any problem = no hit."""
+        try:
+            from solvers.guard import forbidden_check
+            return bool(forbidden_check(str(text), list(self.terms)).get("hit"))
+        except Exception:
+            return False
 
     violates = mentions_forbidden  # the same test for a line we are about to send
 
