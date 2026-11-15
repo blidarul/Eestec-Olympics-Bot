@@ -11,12 +11,12 @@ class TestStagHunt(unittest.TestCase):
     def test_switches_to_hare_against_unreliable_opponent(self):
         # Opponent played hare 3 times, stag 1 time (p = 0.25 < 0.60)
         obs = (
-            "STAG HUNT (10 rounds). Round 5/10. Scores: you 9, opponent 12.\n"
-            "Round history:\n"
-            "  Round 1: you stag (+0), opponent hare (+3)\n"
-            "  Round 2: you hare (+3), opponent hare (+3)\n"
-            "  Round 3: you stag (+5), opponent stag (+5)\n"
-            "  Round 4: you stag (+0), opponent hare (+3)\n"
+            "STAG HUNT (10 rounds). Round 5 of 10. Scores: you 9, opponent 12.\n"
+            "Past expeditions history:\n"
+            "  Round 1: you stag (+0), opp hare (+3) -> player 1 deserted\n"
+            "  Round 2: you hare (+3), opp hare (+3) -> mutual hare\n"
+            "  Round 3: you stag (+5), opp stag (+5) -> mutual stag\n"
+            "  Round 4: you stag (+0), opp hare (+3) -> player 1 deserted\n"
         )
         act = solve_stag_hunt(["stag", "hare"], observation=obs, rules="Both hunt STAG: +5 points each")
         self.assertEqual(act, "hare")
