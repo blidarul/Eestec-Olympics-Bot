@@ -217,5 +217,16 @@ class TestOpponentChatProfiling(unittest.TestCase):
         self.assertEqual(loaded["injection_indicators"], 1)
 
 
+    def test_enriched_family_defaults(self):
+        line_grid = chatsafe._pick_safe_default([], family="grid_board")
+        self.assertIn(line_grid, chatsafe.FAMILY_DEFAULTS["grid_board"])
+
+        line_dice = chatsafe._pick_safe_default([], family="dice_push")
+        self.assertIn(line_dice, chatsafe.FAMILY_DEFAULTS["dice_push"])
+
+        line_simul = chatsafe._pick_safe_default([], family="matrix_simultaneous")
+        self.assertIn(line_simul, chatsafe.FAMILY_DEFAULTS["matrix_simultaneous"])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -110,7 +110,7 @@ def synthesize_playbook(
     return baseline
 
 
-def format_playbook_for_prompt(playbook: dict[str, Any], max_len: int = 400) -> str:
+def format_playbook_for_prompt(playbook: dict[str, Any], max_len: int = 800) -> str:
     """Format structured playbook into a concise section for the turn prompt."""
     if not isinstance(playbook, dict):
         return ""
@@ -118,19 +118,19 @@ def format_playbook_for_prompt(playbook: dict[str, Any], max_len: int = 400) -> 
     lines = []
     invs = playbook.get("invariants")
     if invs and isinstance(invs, list):
-        lines.append("- Invariants: " + "; ".join(str(x) for x in invs[:2]))
+        lines.append("- Invariants: " + "; ".join(str(x) for x in invs[:3]))
 
     traps = playbook.get("traps")
     if traps and isinstance(traps, list):
-        lines.append("- Traps to Avoid: " + "; ".join(str(x) for x in traps[:2]))
+        lines.append("- Traps to Avoid: " + "; ".join(str(x) for x in traps[:3]))
 
     guidelines = playbook.get("opening_guidelines")
     if guidelines and isinstance(guidelines, list):
-        lines.append("- Guidelines: " + "; ".join(str(x) for x in guidelines[:2]))
+        lines.append("- Guidelines: " + "; ".join(str(x) for x in guidelines[:3]))
 
     goals = playbook.get("endgame_goals")
     if goals and isinstance(goals, list):
-        lines.append("- Goals: " + "; ".join(str(x) for x in goals[:1]))
+        lines.append("- Goals: " + "; ".join(str(x) for x in goals[:2]))
 
     res = "\n".join(lines).strip()
     return res[:max_len]

@@ -233,6 +233,13 @@ OBSERVATION
         self.assertTrue(fb_u.startswith("guess "))
         self.assertTrue(fb_u[6:].isupper())
 
+    def test_grid_validation_without_explicit_dims(self):
+        g = ActionGrammar(kind="grid", grid_cols=0, grid_rows=0)
+        self.assertTrue(g.validate("A1"))
+        self.assertTrue(g.validate("B2"))
+        self.assertTrue(g.validate("move C3"))
+        self.assertFalse(g.validate("invalid_token"))
+
 
 if __name__ == "__main__":
     unittest.main()

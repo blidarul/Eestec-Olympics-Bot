@@ -7,11 +7,23 @@ SAFE_DEFAULTS = ("Ready.", "Your move.", "Proceed.", "Standing by.", "Playing.")
 
 FAMILY_DEFAULTS = {
     "grid": ("Controlling that square.", "Solid position.", "Marking cell.", "Playing move."),
+    "grid_board": ("Controlling that square.", "Solid position.", "Marking cell.", "Playing move."),
     "think_ahead": ("Solid position.", "Marking cell.", "Proceeding.", "Playing move."),
     "guessing": ("Testing hypothesis.", "Narrowing the range.", "Checking candidate.", "Eliminating options."),
     "deduction": ("Testing hypothesis.", "Narrowing the search.", "Checking candidate.", "Eliminating options."),
     "deals": ("Submitting proposal.", "Holding valuation.", "Reviewing terms.", "Proceeding."),
+    "negotiation": ("Submitting proposal.", "Holding valuation.", "Reviewing terms.", "Proceeding."),
+    "bargaining": ("Submitting proposal.", "Holding valuation.", "Reviewing terms.", "Proceeding."),
     "bluff": ("Play is made.", "Cards on table.", "Turn complete.", "Proceeding."),
+    "cards_hidden": ("Play is made.", "Cards on table.", "Turn complete.", "Proceeding."),
+    "dice_push": ("Rolling the dice.", "Banking points.", "Pushing the turn.", "Holding."),
+    "pig": ("Rolling the dice.", "Banking points.", "Pushing the turn.", "Holding."),
+    "chance": ("Rolling the dice.", "Banking points.", "Pushing the turn.", "Holding."),
+    "matrix_simultaneous": ("Revealing play.", "Submitting choice.", "Coordinating move.", "Playing."),
+    "simultaneous": ("Revealing play.", "Submitting choice.", "Coordinating move.", "Playing."),
+    "qa_guardrails": ("Carefully answering.", "Adhering to facts.", "Validating source.", "Proceeding."),
+    "guardrails": ("Carefully answering.", "Adhering to facts.", "Validating source.", "Proceeding."),
+    "truth": ("Carefully answering.", "Adhering to facts.", "Validating source.", "Proceeding."),
 }
 
 PRIVATE_LINE = re.compile(
@@ -119,8 +131,9 @@ def _pick_safe_default(clean_terms, default=None, family=None) -> str:
     pool = []
     if default and str(default).strip():
         pool.append(str(default).strip())
-    if family and family in FAMILY_DEFAULTS:
-        pool.extend(FAMILY_DEFAULTS[family])
+    fam_key = str(family or "").strip().lower()
+    if fam_key in FAMILY_DEFAULTS:
+        pool.extend(FAMILY_DEFAULTS[fam_key])
     pool.extend(SAFE_DEFAULTS)
 
     try:

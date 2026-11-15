@@ -79,7 +79,9 @@ class ActionGrammar:
             except ValueError:
                 return False
 
-            if 0 <= col_idx < self.grid_cols and 0 <= row_idx < self.grid_rows:
+            col_ok = (0 <= col_idx < self.grid_cols) if self.grid_cols > 0 else (col_idx >= 0)
+            row_ok = (0 <= row_idx < self.grid_rows) if self.grid_rows > 0 else (row_idx >= 0)
+            if col_ok and row_ok:
                 return True
             return False
 
