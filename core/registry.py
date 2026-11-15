@@ -141,6 +141,12 @@ def route(rules, artifacts, entries=None) -> Route:
     if fam in FAMILY_DIRS:
         if fam == "matrix_simultaneous":
             is_blotto = "blotto" in str(rules).lower() or "battlefield" in str(rules).lower()
+            is_pd = "prisoner" in str(rules).lower()
+            is_stag = "stag" in str(rules).lower()
+            if is_pd:
+                return Route(generic, "prisoner's dilemma specialized engine -> core/generic", fam)
+            if is_stag:
+                return Route(generic, "stag hunt specialized engine -> core/generic", fam)
             gr_kind = (art.get("grammar") or {}).get("kind")
             has_discrete = bool((art.get("grammar") or {}).get("discrete_actions")) or gr_kind == "discrete"
             if not is_blotto and not has_discrete:

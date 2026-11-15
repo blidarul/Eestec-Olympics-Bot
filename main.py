@@ -4,6 +4,7 @@ The main process imports nothing from strategies/, prep/, chat/: strategy work h
 worker process (core/worker.py) with a hard deadline, backed by core/fallback.py.
 """
 import json
+import os
 import sys
 import time
 import traceback

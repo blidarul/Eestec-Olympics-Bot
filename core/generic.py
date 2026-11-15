@@ -278,6 +278,57 @@ class Generic:
             except Exception:
                 traceback.print_exc()
 
+        # 9. Prisoner's Dilemma Fast-Path: Tit-for-Tat with End-Game Thresholding
+        is_pd = (
+            "prisoner" in rules_lower
+            or "prisoners_dilemma" in str(state.game_id).lower()
+            or (legal and set(a.lower().strip() for a in legal).issubset({"cooperate", "defect", "c", "d"}))
+        ) and any(kw in rules_lower or kw in str(state.observation or "").lower() for kw in ("cooperate", "defection", "quota"))
+        if is_pd:
+            try:
+                from optimization.prisoners_dilemma import solve_prisoners_dilemma
+                pd_act = solve_prisoners_dilemma(legal, observation=str(state.observation or ""), rules=state.rules)
+                if pd_act:
+                    v_act = validate.validate(pd_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "prisoners_dilemma_tft_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 10. Nim Fast-Path: Exact Sprague-Grundy & Misère Endgame Solver
+        is_nim = (
+            "nim" in rules_lower
+            or "nim" in str(state.game_id).lower()
+            or (legal and any("take " in a.lower() and "pile " in a.lower() for a in legal[:min(3, len(legal))]))
+        ) and "pile" in str(state.observation or "").lower()
+        if is_nim and legal:
+            try:
+                from optimization.nim import solve_nim
+                nim_act = solve_nim(legal, observation=str(state.observation or ""), rules=state.rules)
+                if nim_act:
+                    v_act = validate.validate(nim_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "nim_mathematical_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 11. Stag Hunt Fast-Path: Game-Theoretic Coordination & Invariant Lead Protection
+        is_stag = (
+            "stag" in rules_lower
+            or "stag_hunt" in str(state.game_id).lower()
+            or (legal and set(a.lower().strip() for a in legal).issubset({"stag", "hare", "s", "h"}))
+        ) and any(kw in rules_lower or kw in str(state.observation or "").lower() for kw in ("stag", "hare"))
+        if is_stag:
+            try:
+                from optimization.stag_hunt import solve_stag_hunt
+                stag_act = solve_stag_hunt(legal, observation=str(state.observation or ""), rules=state.rules)
+                if stag_act:
+                    v_act = validate.validate(stag_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "stag_hunt_game_theoretic_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
         llm = state.llm
         # Layer 2 assist: facts, certain moves (0 model calls), model-called tools
         t_assist = time.monotonic()
