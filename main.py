@@ -469,6 +469,14 @@ def main():
                     protocol.send({"type": "action", "action": a, "chat": c})
             except Exception:
                 traceback.print_exc()
+    try:
+        art = STATE.get("artifacts")
+        g = STATE.get("game") or {}
+        if art and g:
+            mem_dir = memory.game_dir(g.get("game_id", ""), g.get("rules", ""))
+            memory.save_json(os.path.join(mem_dir, "artifacts.json"), art)
+    except Exception:
+        pass
     wk.stop()
 
 

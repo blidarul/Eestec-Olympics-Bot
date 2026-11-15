@@ -98,8 +98,9 @@ def check_memory_budget(limit_mb: float = 1800.0) -> bool:
     """Check if resident memory is within safe operating limits (< 1.8 GB for 2 GB limit)."""
     rss = get_memory_rss_mb()
     if rss > limit_mb:
-        print(f"[optimization/budget] WARNING: High RSS memory: {rss:.1f} MB (limit: {limit_mb} MB)", file=sys.stderr)
-        return False
+        print(f"[optimization/budget] WARNING: High RSS memory: {rss:.1f} MB (limit: {limit_mb} MB) -> running emergency gc.collect()", file=sys.stderr)
+        gc.collect()
+        return get_memory_rss_mb() <= limit_mb
     return True
 
 
