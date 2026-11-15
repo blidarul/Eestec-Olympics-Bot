@@ -437,7 +437,15 @@ def parse_grid_bits(
     for l in lines:
         cleaned = l.strip().strip("|").strip()
         tokens = cleaned.split()
-        if tokens and all(t in (".", "X", "O", "x", "o") for t in tokens):
+        if len(tokens) == 1 and len(tokens[0]) > 1 and all(c in (".", "X", "O", "x", "o", "-", "0") for c in tokens[0]):
+            tokens = list(tokens[0])
+        elif not tokens and "|" in l:
+            tokens = [t.strip() for t in l.split("|") if t.strip()]
+        elif "|" in cleaned:
+            pipe_tokens = [t.strip() for t in cleaned.split("|") if t.strip()]
+            if len(pipe_tokens) > len(tokens):
+                tokens = pipe_tokens
+        if tokens and all(t in (".", "X", "O", "x", "o", "-", "0") for t in tokens):
             candidate_lines.append(tokens)
 
     if not candidate_lines:
@@ -459,7 +467,7 @@ def parse_grid_bits(
     for row_idx in range(r):
         for col_idx in range(c):
             token = grid_lines[row_idx][col_idx].upper()
-            if token != ".":
+            if token not in (".", "-", "0"):
                 bit = 1 << (col_idx * step + row_idx)
                 mask |= bit
                 if token == my_sym:
@@ -485,7 +493,15 @@ def solve_connect_four_from_obs(
 
     my_sym = "X"
     obs_lower = obs_text.lower()
-    if "you are o" in obs_lower or "play o" in obs_lower or "seat 1" in obs_lower:
+    if (
+        "you are o" in obs_lower
+        or "play o" in obs_lower
+        or "you play: o" in obs_lower
+        or "your piece: o" in obs_lower
+        or "seat 1" in obs_lower
+        or "player 2" in obs_lower
+        or bool(re.search(r"\b(?:you\s+are|you\s+play|your\s+piece|your\s+symbol)\b[^.\n]{0,15}\b[oO]\b", obs_text))
+    ):
         my_sym = "O"
     parsed = parse_grid_bits(obs_text, rows, cols, my_sym)
     if parsed is None:

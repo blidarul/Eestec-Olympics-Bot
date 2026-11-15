@@ -135,8 +135,9 @@ def _split_template(tpl: str, rules: str) -> dict | None:
         if kind == "word":
             m_wlen = re.search(r"\b(\d+)[ -](?:letters?|characters?|chars?)\b", rules, re.I) or re.search(r"length\s*(?:of|is|:)?\s*(\d+)", rules, re.I)
             w_len = int(m_wlen.group(1)) if m_wlen else 5
+            is_upper = raw.isupper() or "uppercase" in rules.lower() or "capital" in rules.lower()
             regex += rf"([A-Za-z0-9_-]{{{w_len}}})" if w_len else r"([A-Za-z0-9_-]+)"
-            out.append({"name": raw, "type": "word", "length": w_len, "min": None, "max": None})
+            out.append({"name": raw, "type": "word", "length": w_len, "case": "upper" if is_upper else "lower", "min": None, "max": None})
             pos = m.end()
             continue
         if kind == "int" and rng is None:
@@ -383,7 +384,8 @@ def _value(ph: dict, rnd, attempt: int, t: dict) -> str:
         w_len = ph.get("length") or 5
         from core.fallback import WORDS_BY_LENGTH
         words = WORDS_BY_LENGTH.get(w_len, WORDS_BY_LENGTH.get(5, ["words"]))
-        return rnd.choice(words)
+        w = rnd.choice(words)
+        return w.upper() if ph.get("case") == "upper" else w
     return rnd.choice(["a", "1", "x"]) if attempt else "1"
 
 

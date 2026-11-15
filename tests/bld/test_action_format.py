@@ -130,3 +130,18 @@ The word "guess" is optional. Examples: "guess 0123".
     assert all(c in "0123456789" for c in code)
     assert "exactly" not in val
 
+
+def test_word_template_uppercase():
+    rules = """WORD GUESSING
+ACTION FORMAT: "guess <WORD>" where WORD is a 5-letter uppercase word.
+"""
+    f = actionfmt.parse_template(rules)
+    assert f is not None
+    assert f["placeholders"][0]["type"] == "word"
+    assert f["placeholders"][0]["case"] == "upper"
+    val = actionfmt.fill(f, set(), "")
+    assert val.startswith("guess ")
+    w = val.split()[1]
+    assert w.isupper()
+    assert len(w) == 5
+

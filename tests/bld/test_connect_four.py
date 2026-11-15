@@ -87,6 +87,53 @@ def test_connect_four_replays_fixtures():
     assert 1 <= col <= 6
 
 
+def test_parse_grid_bits_formats():
+    from optimization.connect_four import parse_grid_bits
+
+    # 1. Spaced dots
+    obs_spaced = """
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. O . . . . .
+X X X . O O .
+"""
+    parsed1 = parse_grid_bits(obs_spaced, my_symbol="X")
+    assert parsed1 is not None
+    _, _, mask1, r1, c1 = parsed1
+    assert r1 == 6 and c1 == 7
+
+    # 2. Unspaced dots and symbols
+    obs_unspaced = """
+|.......|
+|.......|
+|.......|
+|.......|
+|.O.....|
+|XXX.OO.|
+"""
+    parsed2 = parse_grid_bits(obs_unspaced, my_symbol="X")
+    assert parsed2 is not None
+    _, _, mask2, r2, c2 = parsed2
+    assert r2 == 6 and c2 == 7
+    assert mask1 == mask2
+
+    # 3. Dash and zero representation
+    obs_dashes = """
+- - - - - - -
+- - - - - - -
+- - - - - - -
+- - - - - - -
+- O - - - - -
+X X X - O O -
+"""
+    parsed3 = parse_grid_bits(obs_dashes, my_symbol="X")
+    assert parsed3 is not None
+    _, _, mask3, r3, c3 = parsed3
+    assert mask3 == mask1
+
+
 def simulate_against_random(rows: int, cols: int, connect_k: int, num_games: int = 200):
     """Play full games against random bot. Bot plays Seat 0 on even games, Seat 1 on odd games."""
     step = rows + 1
