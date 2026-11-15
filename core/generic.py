@@ -241,6 +241,8 @@ class Generic:
                         "assist_source": s.get("source"),
                         "assist_ms": ms,
                     }
+                    if s.get("source") == "model" and s.get("chat"):
+                        info["chat_final"] = True
                     return Decision(move, chat, src, info)
         except Exception:
             traceback.print_exc()
@@ -261,7 +263,7 @@ class Generic:
         if move is None:  # after a warning this is the second try: most conservative rung (8.1)
             return Decision(fb_a, fb_c, "fallback")
         chat = hooks.filter_out(obj.get("c") or fb_c, forbidden)
-        return Decision(move, chat, "model")
+        return Decision(move, chat, "model", {"chat_final": True})
 
     def _build_llm_call(self, llm):
         if llm is None or not llm.available() or llm.over_budget():

@@ -8,12 +8,12 @@ import sys
 import time
 import traceback
 
-from core import actionfmt, fallback, forbidden, memory, protocol, validate, worker
+from core import actionfmt, clocks, fallback, forbidden, memory, protocol, validate, worker
 
-PREP_DEADLINE = 540.0  # arena gives 600 s
-START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
+PREP_DEADLINE = clocks.PREP_HARD_DEADLINE  # arena gives 600 s
+START_DEADLINE = clocks.START_RESPONSE_CAP  # arena gives 30 s (120 cold)
 COLD_PREP_CAP = 60.0  # code-only prep at a cold start (rule 4.3)
-TURN_DEADLINE = 12.0  # arena gives 20 s
+TURN_DEADLINE = clocks.MOVE_HARD_DEADLINE  # arena gives 20 s
 START_CHAT = "Ready."
 
 STATE = {"llm": None, "game": {}, "artifacts": {}, "prep": None, "my_actions": [], "prev_obs": ""}
@@ -299,7 +299,7 @@ def on_turn(msg, wk):
     fb_action, fb_chat = fallback.fallback_decision(msg, art, previous, rules=rules_text, opponent_chat=opp_chat_now)
     action, chat = fb_action, fb_chat
     try:
-        limit = min(TURN_DEADLINE, 0.6 * float(msg.get("seconds") or 20))
+        limit = clocks.compute_turn_deadline(msg.get("seconds"))
         game = STATE["game"]
         req = {"state": {
             "game_id": str(game.get("game_id", "")), "rules": str(game.get("rules", "")),

@@ -269,18 +269,35 @@ def solve_wordle_from_obs(
         if prefix and w_act.lower().startswith(prefix.lower()):
             w_act = w_act[len(prefix):].strip()
         if len(w_act) == length and w_act.isalpha():
-            for l in lines:
+            for idx, l in enumerate(lines):
                 if w_act.lower() in l.lower():
                     tail = l[l.lower().find(w_act.lower()) + len(w_act):]
                     fb = parse_feedback_pattern(tail, length)
+                    if (not fb or fb == "X" * length) and idx + 1 < len(lines):
+                        next_fb = parse_feedback_pattern(lines[idx + 1], length)
+                        if next_fb and next_fb != "X" * length:
+                            fb = next_fb
                     if fb:
                         history.append((w_act.lower(), fb))
                         solver.update_history(w_act.lower(), fb)
                         break
 
+    # Extract opponent feedback patterns to activate urgency detection
+    opp_colors: list[str] = []
+    in_opp = False
+    for l in lines:
+        if "opponent" in l.lower():
+            in_opp = True
+        elif in_opp and ("your guess" in l.lower() or "round" in l.lower() or not l.strip()):
+            in_opp = False
+        if in_opp:
+            pat = parse_feedback_pattern(l, length)
+            if pat and pat != "X" * length:
+                opp_colors.append(pat)
+
     avoid = {str(a).lower() for a in my_actions}
     avoid.update(g.lower() for g, _ in history)
-    best_w = solver.choose_best_guess(avoid=avoid, deadline=deadline)
+    best_w = solver.choose_best_guess(avoid=avoid, opponent_colors=opp_colors, deadline=deadline)
 
     action = f"{prefix}{best_w}".strip() if prefix else best_w
     info = {

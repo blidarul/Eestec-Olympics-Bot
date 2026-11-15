@@ -101,6 +101,13 @@ def _split_template(tpl: str, rules: str) -> dict | None:
             out.append({"name": raw, "type": "code", "length": length, "alpha": alpha, "min": None, "max": None})
             pos = m.end()
             continue
+        if kind == "word":
+            m_wlen = re.search(r"\b(\d+)[ -](?:letters?|characters?|chars?)\b", rules, re.I) or re.search(r"length\s*(?:of|is|:)?\s*(\d+)", rules, re.I)
+            w_len = int(m_wlen.group(1)) if m_wlen else 5
+            regex += rf"([A-Za-z0-9_-]{{{w_len}}})" if w_len else r"([A-Za-z0-9_-]+)"
+            out.append({"name": raw, "type": "word", "length": w_len, "min": None, "max": None})
+            pos = m.end()
+            continue
         if kind == "int" and rng is None:
             rng = _range_from_rules(rules, raw)
             if rng is None and _name_key(raw) in ("row", "col", "column", "cell", "x", "y"):
@@ -324,7 +331,10 @@ def _value(ph: dict, rnd, attempt: int, t: dict) -> str:
     if k == "text":
         return TEXT_DEFAULT
     if k == "word":
-        return rnd.choice(["play", "game", "star", "time", "open"])
+        w_len = ph.get("length") or 5
+        from core.fallback import WORDS_BY_LENGTH
+        words = WORDS_BY_LENGTH.get(w_len, WORDS_BY_LENGTH.get(5, ["words"]))
+        return rnd.choice(words)
     return rnd.choice(["a", "1", "x"]) if attempt else "1"
 
 
