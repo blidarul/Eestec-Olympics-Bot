@@ -211,6 +211,23 @@ class Generic:
             except Exception:
                 traceback.print_exc()
 
+        # 5. Dots and Boxes Fast-Path: Degree Analysis & Non-Sacrifice Policy
+        is_dab = (
+            "dots and boxes" in rules_lower
+            or "dots_and_boxes" in str(state.game_id).lower()
+            or (isinstance(legal, list) and legal and all(re.match(r"^line\s+[a-z]\d+[- ][a-z]\d+$", a.strip(), re.I) for a in legal[:min(3, len(legal))]))
+        )
+        if is_dab and legal:
+            try:
+                from optimization.dots_and_boxes import solve_dots_and_boxes
+                dab_act = solve_dots_and_boxes(legal, rules=state.rules, observation=state.observation)
+                if dab_act:
+                    v_act = validate.validate(dab_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "dots_and_boxes_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
         llm = state.llm
         # Layer 2 assist: facts, certain moves (0 model calls), model-called tools
         t_assist = time.monotonic()
