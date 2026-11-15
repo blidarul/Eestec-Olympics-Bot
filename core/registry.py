@@ -123,6 +123,8 @@ def route(rules, artifacts, entries=None) -> Route:
             return Route(s, "guessing family, " + ("feedback model verified" if fm.get("verified") else "built-in feedback model"), fam)
         notes.append("deduce declined (no built-in model fits)" if fm.get("verified") else
                      "feedback model unverified" + (f" ({fm['reason']})" if fm.get("reason") else ""))
+    if "pig" in str(rules).lower() or (fam in ("dice_push", "chance") and ("pig" in str(rules).lower() or "bank" in str(rules).lower())):
+        return Route(generic, "pig exact bellman dp -> core/generic", fam)
     if sim.get("verified"):
         if cls.get("has_hidden_information") or cls.get("is_simultaneous"):
             notes.append("simulator verified but game has hidden information or simultaneous moves")

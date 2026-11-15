@@ -222,6 +222,17 @@ OBSERVATION
         act2 = fallback_action(None, {}, avoid_also=["drop 4"], rules=c4_rules)
         self.assertEqual(act2, "drop 1")
 
+    def test_word_grammar_case_fallback(self):
+        g_lower = ActionGrammar(kind="word", word_length=5, word_prefix="guess ", case="lower")
+        fb_l = g_lower.fallback_action()
+        self.assertTrue(fb_l.startswith("guess "))
+        self.assertTrue(fb_l[6:].islower())
+
+        g_upper = ActionGrammar(kind="word", word_length=5, word_prefix="guess ", case="upper", case_sensitive=True)
+        fb_u = g_upper.fallback_action()
+        self.assertTrue(fb_u.startswith("guess "))
+        self.assertTrue(fb_u[6:].isupper())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -175,9 +175,10 @@ class ActionGrammar:
             length = self.word_length or 5
             pre = self.word_prefix or ""
             cands = WORDS_BY_LENGTH.get(length, [])
-            if cands:
-                return f"{pre}{cands[0]}"
-            return f"{pre}{'words'[:length]}" if length <= 5 else f"{pre}{'word' * 3}"[:length]
+            w = cands[0] if cands else ("words"[:length] if length <= 5 else ("word" * 3)[:length])
+            case = getattr(self, "case", None) or ("upper" if self.case_sensitive else "lower")
+            w_out = w.upper() if case == "upper" else w.lower()
+            return f"{pre}{w_out}"
         return "pass"
 
     def to_dict(self) -> dict[str, Any]:

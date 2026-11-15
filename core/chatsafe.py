@@ -15,8 +15,12 @@ FAMILY_DEFAULTS = {
 }
 
 PRIVATE_LINE = re.compile(
-    r"\b(?:your|you\s+hold|you\s+have|you\s+are\s+holding|confidential|classified|secret)\b.{0,30}\b"
-    r"(?:secret|passphrase|password|hand|cards?|private|hidden|dice|fleet|word|value|valuation|number|code|bid|budget|holding|hold|have)\b",
+    r"(?:"
+    r"^\s*(?:secret|password|passphrase|private|hidden|confidential|classified|your\s+(?:hand|cards?|dice|fleet|code|word|number|value|valuation|bid|budget|target))\s*[:=]"
+    r"|"
+    r"\b(?:your|you\s+hold|you\s+have|you\s+are\s+holding|confidential|classified|secret|hidden|private|internal|top\s+secret|my)\b.{0,30}\b"
+    r"(?:secret|passphrase|password|hand|cards?|private|hidden|dice|fleet|word|value|valuation|number|code|key|bid|budget|holding|hold|have|target|cell|location)\b"
+    r")",
     re.I,
 )
 
