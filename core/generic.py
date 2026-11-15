@@ -509,7 +509,7 @@ class Generic:
             facts_obj = getattr(a, "facts", None)
             s = getattr(a, "suggestion", None)
             if s and isinstance(s, dict) and s.get("action"):
-                move = validate.validate(s["action"], legal, art, rejected, no_repeat)
+                move = validate.validate(s["action"], legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
                 if move is not None:
                     chat = hooks.filter_out(s.get("chat") or fb_c, forbidden)
                     src = "strategy" if s.get("source") == "tool" else "model"
@@ -534,7 +534,7 @@ class Generic:
 
         # Strategic Solver Fallback from assist (if search_move or certain move was found)
         if a and getattr(a, "suggestion", None) and isinstance(a.suggestion, dict) and a.suggestion.get("action"):
-            cand = validate.validate(a.suggestion["action"], legal, art, rejected, no_repeat)
+            cand = validate.validate(a.suggestion["action"], legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
             if cand is not None:
                 cand_chat = hooks.filter_out(a.suggestion.get("chat") or fb_c, forbidden)
                 return Decision(cand, cand_chat, "strategy", {"tool": "assist_solver_fallback", "action": cand, "why": a.suggestion.get("why", "")})
@@ -550,11 +550,14 @@ class Generic:
             obj = None
         if not obj:
             return Decision(fb_a, fb_c, "fallback")
-        a_act = obj.get("a")
-        move = validate.validate(a_act, legal, art, rejected, no_repeat)
+        a_act = obj.get("a") if obj.get("a") is not None else (obj.get("action") if obj.get("action") is not None else obj.get("move"))
+        if a_act is not None and not isinstance(a_act, str):
+            a_act = str(a_act)
+        move = validate.validate(a_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
         if move is None:  # after a warning this is the second try: most conservative rung (8.1)
             return Decision(fb_a, fb_c, "fallback")
-        chat = hooks.filter_out(obj.get("c") or fb_c, forbidden)
+        raw_c = obj.get("c") or obj.get("chat") or obj.get("message") or fb_c
+        chat = hooks.filter_out(raw_c, forbidden)
         return Decision(move, chat, "model", {"chat_final": True})
 
     def _build_llm_call(self, llm):
@@ -567,7 +570,10 @@ class Generic:
         try:
             if getattr(llm, "_client", None) is None:
                 from openai import OpenAI
-                llm._client = OpenAI(base_url=llm.info.get("base_url"), api_key=llm.info.get("api_key"), max_retries=0)
+                info = getattr(llm, "info", None) or {}
+                if not info.get("base_url") or not info.get("api_key"):
+                    return None
+                llm._client = OpenAI(base_url=info.get("base_url"), api_key=info.get("api_key"), max_retries=0)
             from solvers.toolloop import make_openai_llm_call
             base_call = make_openai_llm_call(llm._client, llm.model)
             def wrapped_call(messages, tools, timeout_s, max_tokens):
@@ -593,6 +599,8 @@ class Generic:
             parts.append("[AVAILABLE TOOLS]\n" + str(art["tools_prompt"])[:1000])
         if not state.legal_actions and state.rules:
             parts.append("[GAME RULES & ACTION INSTRUCTIONS]\n" + str(state.rules)[:3000])
+        elif state.rules:
+            parts.append("[GAME RULES & VICTORY CONDITIONS]\n" + str(state.rules)[:1200])
         parts.append("[CURRENT OBSERVATION & BOARD STATE]\n" + str(state.observation)[:6000])
 
         if facts:

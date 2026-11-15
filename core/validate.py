@@ -39,6 +39,8 @@ def _is_repeat_allowed(artifacts, observation="", rules=""):
 
 def validate(action, legal, artifacts=None, rejected=None, previous=(), observation="", rules=""):
     """`previous`: actions already sent in this game that must not be repeated (guessing games): treated like rejected."""
+    if action is not None and not isinstance(action, str):
+        action = str(action)
     if not isinstance(action, str) or not action.strip():
         return None
     action = action.strip()

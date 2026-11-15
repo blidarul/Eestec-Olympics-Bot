@@ -11,8 +11,8 @@ import sys
 
 PRICE_IN = 0.10 / 1e6   # 7.5
 PRICE_OUT = 0.50 / 1e6
-SKIP_AFTER_FAILS = 2
-SKIP_TURNS = 3
+SKIP_AFTER_FAILS = 3
+SKIP_TURNS = 1
 BUDGET_GUARD = 0.40  # per match (9.3): above this, no more model calls
 
 
@@ -69,14 +69,22 @@ class LLM:
             self._client = OpenAI(base_url=self.info["base_url"], api_key=self.info["api_key"], max_retries=0)
         thinking = ({"type": "disabled"} if not thinking_budget
                     else {"type": "enabled", "budget_tokens": max(1024, int(thinking_budget))})
-        resp = self._client.chat.completions.create(
-            model=self.model, max_tokens=max_tokens, timeout=timeout,
-            messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
-            extra_body={"thinking": thinking})
+        kw = {
+            "model": self.model,
+            "max_tokens": max_tokens,
+            "timeout": timeout,
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+            "extra_body": {"thinking": thinking},
+        }
+        if not thinking_budget:
+            kw["temperature"] = 0.2
+        resp = self._client.chat.completions.create(**kw)
         u = getattr(resp, "usage", None)
         if u:
             self.spend += (getattr(u, "prompt_tokens", 0) or 0) * PRICE_IN + \
                           (getattr(u, "completion_tokens", 0) or 0) * PRICE_OUT
+        if not getattr(resp, "choices", None):
+            return None
         ch = resp.choices[0]
         text = ch.message.content or ""
         if getattr(ch, "finish_reason", None) == "length":  # cut off (7.4): usable only if a complete JSON object is in it
