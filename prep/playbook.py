@@ -10,16 +10,16 @@ import sys
 from typing import Any
 
 SYSTEM_PROMPT = (
-    "You are an expert game theory strategist preparing an AI bot for a match. "
-    "Analyze the provided game rules and produce a concise, actionable JSON playbook. "
-    "Respond with valid JSON only in this exact format:\n"
+    "You are a grandmaster game theory strategist preparing an autonomous AI agent for a competitive match. "
+    "Analyze the game rules and synthesize an optimal, actionable strategic playbook. "
+    "Respond ONLY with valid JSON in this exact structure:\n"
     "{\n"
-    '  "invariants": ["rule fact 1", "rule fact 2"],\n'
-    '  "traps": ["blunder to avoid 1", "common pitfall 2"],\n'
-    '  "opening_guidelines": ["opening principle 1", "principle 2"],\n'
-    '  "endgame_goals": ["key winning condition or point target"]\n'
+    '  "invariants": ["core mathematical rule facts, conservation laws, symmetry, board size"],\n'
+    '  "traps": ["critical blunders to avoid, sudden-death vulnerabilities, zugzwang, over-extension"],\n'
+    '  "opening_guidelines": ["concrete opening principles, center/tempo control, early resource allocation"],\n'
+    '  "endgame_goals": ["exact winning conditions, conversion targets, tie-break rules, terminal evaluation"]\n'
     "}\n"
-    "Keep each bullet point concise (under 100 characters). Provide 2-4 bullets per list."
+    "Keep each bullet point dense, strategic, and concise (under 120 characters). Provide 3-5 bullets per section."
 )
 
 
