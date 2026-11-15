@@ -22,7 +22,7 @@ STATE = {"llm": None, "game": {}, "artifacts": {}, "prep": None, "my_actions": [
 
 def use_llm(msg):
     info = msg.get("llm")
-    if isinstance(info, dict) and info.get("api_key"):
+    if isinstance(info, dict) and info:
         if not STATE.get("llm"):
             STATE["llm"] = dict(info)
         else:

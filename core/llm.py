@@ -85,7 +85,7 @@ class LLM:
 
     def ask(self, system: str, user: str, *, prep: bool = False, timeout: float = 8.0,
             budget: int | None = None, max_tokens: int | None = None) -> str | None:
-        """Match call: thinking off, 250 tokens. Prep call: thinking 2000, max 4000 (7.3: budget >= 1024 and
+        """Match call: thinking off, 400 tokens default. Prep call: thinking 2000, max 4000 (7.3: budget >= 1024 and
         max_tokens >= budget + 1500; `budget`/`max_tokens` override for prep calls). None on any failure."""
         if not self.available():
             self.last_error = "skipped" if self.skip > 0 else "unavailable"
@@ -95,7 +95,8 @@ class LLM:
                 b = max(1024, int(budget or 2000))
                 text = self._call(system, user, b, max(int(max_tokens or 4000), b + 1500), timeout)
             else:
-                text = self._call(system, user, 0, 250, timeout)
+                tok = max(250, int(max_tokens or 400))
+                text = self._call(system, user, 0, tok, timeout)
         except Exception as e:  # network, auth, timeout...
             _log("llm error:", type(e).__name__, str(e)[:120])
             self.last_error = f"{type(e).__name__}: {str(e)[:80]}"
@@ -116,11 +117,65 @@ class LLM:
 def parse_json(text: str) -> dict | None:
     if not text:
         return None
+
+    def _try_load(s: str) -> dict | None:
+        try:
+            val = json.loads(s)
+            if isinstance(val, dict):
+                return val
+        except (ValueError, TypeError):
+            pass
+        # Clean trailing commas: e.g. {"a": 1,} -> {"a": 1}
+        try:
+            cleaned = re.sub(r",\s*([\}\]])", r"\1", s)
+            val = json.loads(cleaned)
+            if isinstance(val, dict):
+                return val
+        except (ValueError, TypeError):
+            pass
+        return None
+
+    # 1. Try markdown code fences first
+    fences = re.findall(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.S)
+    for f in reversed(fences):
+        obj = _try_load(f)
+        if obj is not None:
+            return obj
+
+    # 2. Try the greedy outer block
     m = re.search(r"\{.*\}", text, re.S)
-    if not m:
-        return None
-    try:
-        obj = json.loads(m.group(0))
-    except ValueError:
-        return None
-    return obj if isinstance(obj, dict) else None
+    if m:
+        obj = _try_load(m.group(0))
+        if obj is not None:
+            return obj
+
+    # 3. Extract all balanced JSON objects and try them in reverse order
+    starts = [i for i, ch in enumerate(text) if ch == '{']
+    for start in reversed(starts):
+        depth = 0
+        in_str = False
+        escape = False
+        for i in range(start, len(text)):
+            ch = text[i]
+            if escape:
+                escape = False
+                continue
+            if ch == '\\':
+                escape = True
+                continue
+            if ch == '"':
+                in_str = not in_str
+                continue
+            if not in_str:
+                if ch == '{':
+                    depth += 1
+                elif ch == '}':
+                    depth -= 1
+                    if depth == 0:
+                        cand = text[start : i + 1]
+                        obj = _try_load(cand)
+                        if obj is not None:
+                            return obj
+                        break
+
+    return None

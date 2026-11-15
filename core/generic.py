@@ -536,7 +536,8 @@ class Generic:
         if a and getattr(a, "suggestion", None) and isinstance(a.suggestion, dict) and a.suggestion.get("action"):
             cand = validate.validate(a.suggestion["action"], legal, art, rejected, no_repeat)
             if cand is not None:
-                return Decision(cand, fb_c, "strategy", {"tool": "assist_solver_fallback", "action": cand, "why": a.suggestion.get("why", "")})
+                cand_chat = hooks.filter_out(a.suggestion.get("chat") or fb_c, forbidden)
+                return Decision(cand, cand_chat, "strategy", {"tool": "assist_solver_fallback", "action": cand, "why": a.suggestion.get("why", "")})
 
         if llm is None or not llm.available() or llm.over_budget() or time.monotonic() > state.deadline - 1.0:
             return Decision(fb_a, fb_c, "fallback")
