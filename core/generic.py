@@ -228,6 +228,23 @@ class Generic:
             except Exception:
                 traceback.print_exc()
 
+        # 6. Reversi / Othello Fast-Path: Positional Matrix & Corner Dominance
+        is_reversi = (
+            "reversi" in rules_lower
+            or "othello" in rules_lower
+            or "reversi" in str(state.game_id).lower()
+        )
+        if is_reversi and legal:
+            try:
+                from optimization.reversi import solve_reversi
+                rev_act = solve_reversi(legal, observation=state.observation)
+                if rev_act:
+                    v_act = validate.validate(rev_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "reversi_positional_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
         llm = state.llm
         # Layer 2 assist: facts, certain moves (0 model calls), model-called tools
         t_assist = time.monotonic()
