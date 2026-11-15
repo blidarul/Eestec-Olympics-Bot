@@ -261,6 +261,23 @@ class Generic:
             except Exception:
                 traceback.print_exc()
 
+        # 8. Mini Chess Fast-Path: Tactical Material & Defense Engine
+        is_mini_chess = (
+            "mini chess" in rules_lower
+            or "mini_chess" in str(state.game_id).lower()
+            or "chess" in rules_lower
+        )
+        if is_mini_chess and legal:
+            try:
+                from optimization.mini_chess import solve_mini_chess
+                chess_act = solve_mini_chess(legal, observation=state.observation)
+                if chess_act:
+                    v_act = validate.validate(chess_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "mini_chess_tactical_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
         llm = state.llm
         # Layer 2 assist: facts, certain moves (0 model calls), model-called tools
         t_assist = time.monotonic()

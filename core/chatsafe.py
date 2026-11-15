@@ -21,6 +21,14 @@ PRIVATE_LINE = re.compile(
 )
 
 
+STOPWORDS = {
+    "the", "and", "for", "with", "from", "you", "your", "not", "never", "this", "that",
+    "are", "have", "has", "had", "was", "were", "been", "our", "all", "any", "one", "two",
+    "who", "what", "when", "where", "how", "can", "will", "may", "must", "shall", "into",
+    "onto", "out", "about", "above", "below", "secret", "private", "hidden",
+}
+
+
 def extract_private_tokens(observation: str) -> list[str]:
     """Numbers, codes, and passphrases from lines of observation showing OUR private state."""
     tokens = []
@@ -30,7 +38,7 @@ def extract_private_tokens(observation: str) -> list[str]:
         if PRIVATE_LINE.search(line):
             part = line.split(":", 1)[1] if ":" in line else line
             for tok in re.findall(r"[A-Za-z0-9_\-]{2,25}", part):
-                if tok.lower() not in {"the", "and", "for", "with", "from", "you", "your", "not", "never", "this", "that"}:
+                if tok.lower() not in STOPWORDS:
                     tokens.append(tok)
     return tokens[:40]
 
@@ -92,6 +100,17 @@ def wrap_untrusted(lines) -> str:
     return f"<untrusted_opponent_chat>\n{HEADER}\n{body}\n</untrusted_opponent_chat>"
 
 
+def _term_matches(text: str, term: str) -> bool:
+    """Check if term appears in text: enforces word boundaries for short terms (<= 4 chars) to prevent false positives."""
+    if not text or not term:
+        return False
+    if re.search(r"\b" + re.escape(term) + r"\b", text, flags=re.I):
+        return True
+    if len(term) >= 5 and term.lower() in text.lower():
+        return True
+    return False
+
+
 def _pick_safe_default(clean_terms, default=None, family=None) -> str:
     pool = []
     if default and str(default).strip():
@@ -103,11 +122,11 @@ def _pick_safe_default(clean_terms, default=None, family=None) -> str:
     try:
         from core import forbidden as fb_mod
         for cand in pool:
-            if not fb_mod.contains(cand, clean_terms) and not any(term.lower() in cand.lower() for term in clean_terms):
+            if not fb_mod.contains(cand, clean_terms) and not any(_term_matches(cand, term) for term in clean_terms):
                 return cand
     except Exception:
         for cand in pool:
-            if not any(term.lower() in cand.lower() for term in clean_terms):
+            if not any(_term_matches(cand, term) for term in clean_terms):
                 return cand
     return "Ready."
 
@@ -133,7 +152,7 @@ def filter_out(text, forbidden=None, default=None, family=None) -> str:
 
     # Substring / boundary fallback check for exact term hits
     for term in clean_terms:
-        if re.search(r"\b" + re.escape(term) + r"\b", t, flags=re.I) or term.lower() in t.lower():
+        if _term_matches(t, term):
             return _pick_safe_default(clean_terms, default, family)
 
     t = t[:180].strip()
