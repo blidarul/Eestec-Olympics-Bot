@@ -49,6 +49,8 @@ _FAMILY_KEYWORDS = {
         ("grid", 3.0), ("board", 2.0), ("column", 2.5), ("row", 2.0), ("diagonal", 3.0),
         ("connect", 3.0), ("cell", 2.5), ("straight line", 3.0), ("tic-tac-toe", 5.0),
         ("marks in a row", 4.0), ("empty cell", 3.0), ("coordinates", 2.0),
+        ("nim", 5.0), ("pile", 3.0), ("heap", 3.0), ("token", 2.5), ("tokens", 2.5),
+        ("reversi", 5.0), ("chess", 5.0), ("checkers", 5.0), ("hex", 5.0), ("take the last", 4.0),
     ],
     "deduction": [
         ("secret number", 4.0), ("secret", 2.5), ("higher", 3.0), ("lower", 3.0),
@@ -64,7 +66,7 @@ _FAMILY_KEYWORDS = {
     ],
     "cards_hidden": [
         ("card", 4.0), ("deck", 4.0), ("deal", 3.0), ("hand", 3.0), ("bet", 3.5),
-        ("pot", 3.5), ("fold", 4.0), ("call", 3.0), ("raise", 3.5), ("bluff", 3.0),
+        ("pot", 2.0), ("fold", 4.0), ("call", 3.0), ("raise", 3.5), ("bluff", 3.0),
         ("chips", 3.5), ("poker", 5.0), ("showdown", 4.0),
     ],
     "matrix_simultaneous": [
@@ -75,7 +77,8 @@ _FAMILY_KEYWORDS = {
     "negotiation": [
         ("bargain", 5.0), ("negotiat", 5.0), ("propose", 4.0), ("trade", 4.0),
         ("offer", 3.5), ("agree", 3.0), ("reject", 3.0), ("deal", 2.5),
-        ("surplus", 3.5), ("discount", 3.0),
+        ("surplus", 3.5), ("discount", 3.0), ("accept", 4.5), ("counter-offer", 4.5),
+        ("counter", 3.5), ("split", 3.5), ("agreement", 3.5), ("division", 3.0), ("share", 2.5),
     ],
     "qa_guardrails": [
         ("document", 4.0), ("passage", 4.0), ("forbidden", 5.0), ("topic", 3.5),
@@ -105,11 +108,12 @@ def classify_rules(rules_text: str) -> GameClassification:
     confidence = min(1.0, max_score / (total_score * 0.6 + 1.0))
 
     # Detect structural properties
-    has_dice = bool(re.search(r"\b(dice|die|roll|coin|random)\b", lower_text))
+    has_dice = bool(re.search(r"\b(dice|die|roll|rolling|coin\s+flip|push-your-luck)\b", lower_text)) and not bool(re.search(r"\b(roll-call|bankroll)\b", lower_text))
     has_secret = bool(re.search(r"\b(secret|hidden|concealed|private card)\b", lower_text))
     is_simul = bool(re.search(r"\b(simultaneous|both players move|same time)\b", lower_text))
 
-    is_deterministic = not has_dice and not bool(re.search(r"\b(shuffle|random|deal)\b", lower_text))
+    is_chance = has_dice or bool(re.search(r"\b(roll\s+dice|roll\s+the|coin\s+toss|roulette|spinner)\b", lower_text))
+    is_deterministic = not is_chance
     has_hidden_info = has_secret or (best_family in ("deduction", "cards_hidden"))
 
     turn_structure = "alternating"

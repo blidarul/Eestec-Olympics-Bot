@@ -14,6 +14,8 @@ if str(arena_dir) not in sys.path:
 from arena.practice.guess_number import GuessNumber
 from arena.practice.pig import Pig
 from arena.practice.tic_tac_toe import TicTacToe
+from arena.practice.bargaining import Bargaining
+from arena.practice.nim import Nim
 from prep.classifier import classify_rules
 
 
@@ -48,6 +50,23 @@ class TestClassifier(unittest.TestCase):
         self.assertFalse(cls_result.is_deterministic)
         self.assertEqual(cls_result.turn_structure, "push_your_luck")
         self.assertGreater(cls_result.confidence, 0.4)
+
+    def test_classify_bargaining(self):
+        game = Bargaining(Bargaining.variants()[0], seed=42)
+        rules = game.rules()
+        cls_result = classify_rules(rules)
+
+        self.assertEqual(cls_result.family, "negotiation")
+        self.assertTrue(cls_result.is_deterministic)
+
+    def test_classify_nim(self):
+        game = Nim(Nim.variants()[0], seed=42)
+        rules = game.rules()
+        cls_result = classify_rules(rules)
+
+        self.assertEqual(cls_result.family, "grid_board")
+        self.assertTrue(cls_result.is_deterministic)
+        self.assertFalse(cls_result.features.get("has_dice", False))
 
 
 if __name__ == "__main__":
