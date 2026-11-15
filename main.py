@@ -424,6 +424,11 @@ def on_end(msg):
             memory.update_opponent_chat_profile(opp, raw_chat)
     except Exception:
         traceback.print_exc()
+    try:
+        import gc
+        gc.collect()
+    except Exception:
+        pass
 
 
 def main():
