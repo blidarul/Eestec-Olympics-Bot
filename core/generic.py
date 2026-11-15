@@ -245,6 +245,22 @@ class Generic:
             except Exception:
                 traceback.print_exc()
 
+        # 7. Hex Fast-Path: Dual Dijkstra Shortest Path Bridge Potential
+        is_hex = (
+            "hex" in rules_lower
+            or "hex" in str(state.game_id).lower()
+        )
+        if is_hex and legal:
+            try:
+                from optimization.hex import solve_hex
+                hex_act = solve_hex(legal, observation=state.observation)
+                if hex_act:
+                    v_act = validate.validate(hex_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "hex_dijkstra_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
         llm = state.llm
         # Layer 2 assist: facts, certain moves (0 model calls), model-called tools
         t_assist = time.monotonic()
