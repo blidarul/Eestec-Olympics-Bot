@@ -12,7 +12,9 @@ import re
 
 TEXT_NAMES = ("text", "message", "free", "comment", "reason", "answer", "string", "sentence", "phrase", "say", "msg")
 WORD_NAMES = ("word", "letter", "name", "token")
-INT_NAMES = ("row", "col", "column", "cell", "count", "number", "num", "amount", "value", "index", "heap", "pile",
+CELL_NAMES = ("cell", "coord", "coordinate", "square")
+CODE_NAMES = ("code", "secret")
+INT_NAMES = ("row", "col", "column", "count", "number", "num", "amount", "value", "index", "heap", "pile",
              "id", "position", "pos", "size", "quantity", "qty", "x", "y", "n", "k", "bet", "stones", "line", "digit")
 PLACEHOLDER = re.compile(r"<([^<>\n]{1,40})>")
 RANGE_IN_NAME = re.compile(r"(-?\d+)\s*(?:-|–|to|\.\.)\s*(-?\d+)")
@@ -25,6 +27,12 @@ def _kind(name: str) -> str:
     for w in base:
         if w in TEXT_NAMES:
             return "text"
+    for w in base:
+        if w in CELL_NAMES or w.rstrip("s") in CELL_NAMES:
+            return "cell"
+    for w in base:
+        if w in CODE_NAMES:
+            return "code"
     for w in base:
         if w in WORD_NAMES and "number" not in base:
             return "word"
@@ -78,6 +86,21 @@ def _split_template(tpl: str, rules: str) -> dict | None:
             rng = (int(rm.group(1)), int(rm.group(2)))
             if kind not in ("text", "word"):
                 kind = "int"
+        if kind == "cell":
+            grid = grid or _grid_size(rules)
+            regex += r"([A-Za-z0-9_-]+)"
+            out.append({"name": raw, "type": "cell", "grid": grid, "min": None, "max": None})
+            pos = m.end()
+            continue
+        if kind == "code":
+            m_len = re.search(r"\b(\d+)\s*(?:characters?|digits?|letters?|chars?)\b", rules, re.I)
+            length = int(m_len.group(1)) if m_len else 4
+            m_chars = re.search(r"from\s+([A-Za-z0-9]+)", rules, re.I)
+            alpha = m_chars.group(1) if m_chars else "0123456789"
+            regex += r"(\S+)"
+            out.append({"name": raw, "type": "code", "length": length, "alpha": alpha, "min": None, "max": None})
+            pos = m.end()
+            continue
         if kind == "int" and rng is None:
             rng = _range_from_rules(rules, raw)
             if rng is None and _name_key(raw) in ("row", "col", "column", "cell", "x", "y"):
@@ -287,6 +310,17 @@ def _value(ph: dict, rnd, attempt: int, t: dict) -> str:
         if lo is None or hi is None:
             lo, hi = (1, 3) if attempt < 20 else (1, 20)
         return str(rnd.randint(lo, hi))
+    if k == "cell":
+        grid = ph.get("grid") or (6, 6)
+        r, c = grid[0], grid[1]
+        letter = chr(ord("a") + rnd.randint(0, min(25, c - 1)))
+        digit = rnd.randint(1, r)
+        return f"{letter}{digit}"
+    if k == "code":
+        alpha = list(ph.get("alpha") or "0123456789")
+        length = ph.get("length") or 4
+        rnd.shuffle(alpha)
+        return "".join(alpha[:length])
     if k == "text":
         return TEXT_DEFAULT
     if k == "word":
