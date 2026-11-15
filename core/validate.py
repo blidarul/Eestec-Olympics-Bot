@@ -31,6 +31,8 @@ def validate(action, legal, artifacts=None, rejected=None, previous=(), observat
         legal = [str(a) for a in legal]
         if action in legal:
             out = action
+        elif any(kw in str(rules).lower() or kw in str(observation).lower() for kw in ("document qa", "reference document")) and action.lower().startswith("answer "):
+            out = _validate_format(action, artifacts, observation=observation, rules=rules)
         else:
             n = _norm(action)
             norms = [(l, _norm(l)) for l in legal]

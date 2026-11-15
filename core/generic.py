@@ -105,8 +105,15 @@ class Generic:
             except Exception:
                 traceback.print_exc()
 
+        is_bulls_and_cows = (
+            "bulls and cows" in rules_lower
+            or "bulls_and_cows" in str(state.game_id).lower()
+            or "bulls," in str(state.observation or "").lower()
+            or "cows" in str(state.observation or "").lower()
+        )
+
         # 2. Wordle Duel Fast-Path: Entropy-based elimination solver
-        is_wordle = (
+        is_wordle = not is_bulls_and_cows and (
             gr.get("kind") == "word"
             or fam in ("word", "wordle")
             or "wordle" in rules_lower
@@ -378,6 +385,59 @@ class Generic:
                     v_act = validate.validate(bmb_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
                     if v_act is not None:
                         return Decision(v_act, fb_c, "strategy", {"tool": "blind_mans_bluff_bayesian_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 15. Document QA Fast-Path: Grounded Extractive Factual Engine
+        is_doc_qa = (
+            "document qa" in rules_lower
+            or "document_qa" in str(state.game_id).lower()
+            or "reference document" in rules_lower
+            or "reference document" in str(state.observation or "").lower()
+        )
+        if is_doc_qa:
+            try:
+                from optimization.document_qa import solve_doc_qa
+                dqa_act = solve_doc_qa(str(state.observation or ""))
+                if dqa_act:
+                    v_act = validate.validate(dqa_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "document_qa_extractive_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 16. Battleship Fast-Path: Optimal Naval Hunt-and-Target Engine
+        is_battleship = (
+            "battleship" in rules_lower
+            or "battleship" in str(state.game_id).lower()
+            or "your shots (targeting opponent" in str(state.observation or "").lower()
+        )
+        if is_battleship:
+            try:
+                from optimization.battleship import solve_battleship
+                bs_act = solve_battleship(str(state.observation or ""), rules_text=state.rules)
+                if bs_act:
+                    v_act = validate.validate(bs_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "battleship_hunt_target_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 17. Bulls and Cows Fast-Path: Exact Mastermind Candidate Elimination Solver
+        is_bulls_and_cows = (
+            "bulls and cows" in rules_lower
+            or "bulls_and_cows" in str(state.game_id).lower()
+            or "bulls," in str(state.observation or "").lower()
+            or "cows" in str(state.observation or "").lower()
+        )
+        if is_bulls_and_cows:
+            try:
+                from optimization.bulls_and_cows import solve_bulls_and_cows
+                bc_act = solve_bulls_and_cows(str(state.observation or ""), rules_text=state.rules)
+                if bc_act:
+                    v_act = validate.validate(bc_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "bulls_and_cows_elimination_optimal", "action": v_act})
             except Exception:
                 traceback.print_exc()
 

@@ -94,6 +94,9 @@ def _split_template(tpl: str, rules: str) -> dict | None:
     """One template string -> {"template", "regex", "placeholders"}; None when it has no placeholder."""
     phs = list(PLACEHOLDER.finditer(tpl))
     if not phs:
+        clean = tpl.strip()
+        if clean and len(clean.split()) <= 4 and re.match(r"^[A-Za-z0-9_ -]+$", clean):
+            return {"template": clean, "regex": "^" + _lit_regex(clean).strip() + "$", "placeholders": []}
         return None
     parts, regex, out, pos = [], "", [], 0
     grid = None
@@ -172,16 +175,21 @@ def _candidate_templates(rules: str) -> list[str]:
         line = m.group(0)
         line = re.sub(r"(?i)^.*?(?:action|move|answer|command|input)s?[ _-]*(?:format|syntax)\b", "", line, count=1)
         line = re.sub(r"^\s*(\([^)]*\))?\s*[:=-]?\s*", "", line)
-        head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|example)\b", line)[0]
+        head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|examples?|example|where|with|such that)\b", line)[0]
         segments = re.split(r"\s+\bOR\b\s+|\s*\|\s*", head)
         for seg in segments:
+            seg = re.split(r"\s{2,}|\t+", seg.strip())[0]
             quoted = re.findall(r"[\"“`]([^\"”`\n]{1,80})[\"”`]", seg)
             found = [q.strip() for q in quoted if PLACEHOLDER.search(q)]
-            if not found and PLACEHOLDER.search(seg):
-                bare = re.split(r"(?<=[>\w])\.(?:\s|$)", seg)[0].strip(" .:\t")
-                bare = re.sub(r"(?i)^(?:exactly|strictly|only|write|send|use)\s*:?\s*", "", bare).strip(" \"'`")
-                if bare:
-                    found = [bare]
+            if not found:
+                if PLACEHOLDER.search(seg):
+                    bare = re.split(r"(?<=[>\w])\.(?:\s|$)", seg)[0].strip(" .:\t")
+                    bare = re.sub(r"(?i)^(?:exactly|strictly|only|write|send|use)\s*:?\s*", "", bare).strip(" \"'`")
+                    bare = re.split(r"(?i)\s+\b(?:exactly|strictly|characters?|digits?|letters?|chars?|from|between|length)\b", bare)[0].strip()
+                    if bare:
+                        found = [bare]
+                elif len(segments) > 1 and len(seg.split()) <= 3 and re.match(r"^[A-Za-z0-9_ -]+$", seg):
+                    found = [seg.strip()]
             for t in found:
                 if t not in cands:
                     cands.append(t)
@@ -189,15 +197,21 @@ def _candidate_templates(rules: str) -> list[str]:
         sec = re.search(r"(?i:\b(?:action|move|answer|command|input)s?[ _-]*(?:format|syntax)\b)\s*:?\s*(.*?)(?=\n[A-Z][A-Z0-9\s_]{2,}(?:\([^\)]*\))?\s*\n|\Z)", rules, re.DOTALL)
         if sec:
             for line in sec.group(1).splitlines()[:6]:
-                head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|example|where)\b", line)[0]
+                head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|examples?|example|where|with|such that)\b", line)[0]
                 segments = re.split(r"\s+\bOR\b\s+|\s*\|\s*", head)
                 for seg in segments:
+                    seg = re.split(r"\s{2,}|\t+", seg.strip())[0]
                     quoted = re.findall(r"[\"“`]([^\"”`\n]{1,80})[\"”`]", seg)
                     found = [q.strip() for q in quoted if PLACEHOLDER.search(q)]
-                    if not found and PLACEHOLDER.search(seg):
-                        m_ph = re.search(r"((?:[A-Za-z0-9_-]+\s+)*<[^<>\n]+>(?:\s+<[^<>\n]+>|\s+[A-Za-z0-9_-]+)*)", seg)
-                        if m_ph:
-                            found = [m_ph.group(1).strip()]
+                    if not found:
+                        if PLACEHOLDER.search(seg):
+                            m_ph = re.search(r"((?:[A-Za-z0-9_-]+\s+)*<[^<>\n]+>(?:\s+<[^<>\n]+>|\s+[A-Za-z0-9_-]+)*)", seg)
+                            if m_ph:
+                                cand = m_ph.group(1).strip()
+                                cand = re.split(r"(?i)\s+\b(?:exactly|strictly|characters?|digits?|letters?|chars?|from|between|length)\b", cand)[0].strip()
+                                found = [cand]
+                        elif len(segments) > 1 and len(seg.split()) <= 3 and re.match(r"^[A-Za-z0-9_ -]+$", seg):
+                            found = [seg.strip()]
                     for t in found:
                         if t not in cands:
                             cands.append(t)
@@ -211,15 +225,15 @@ def parse_template(rules: str, extra: str = "") -> dict | None:
         p = _split_template(t, rules)
         if p:
             tpls.append(p)
-    if not tpls:
+    if not tpls or not any(t["placeholders"] for t in tpls):
         return None
-    main = tpls[0]
+    main = next((t for t in tpls if t["placeholders"]), tpls[0])
     fmt = {"template": main["template"], "regex": main["regex"], "placeholders": main["placeholders"],
            "templates": tpls}
     if len(tpls) > 1:
         fmt["regex"] = "|".join(f"(?:{t['regex']})" for t in tpls)
     # self-check against the example(s) of the rules: a template that rejects the rules' own example is unreliable
-    examples = re.findall(r"(?i)(?:e\.g\.|for example|example)[:,]?\s*[\"“`]([^\"”`\n]{1,80})[\"”`]", rules)
+    examples = re.findall(r"(?i)(?:e\.g\.|for example|examples?)[:,]?\s*[\"“`]([^\"”`\n]{1,80})[\"”`]", rules)
     for ex in examples:
         if PLACEHOLDER.search(ex):
             continue

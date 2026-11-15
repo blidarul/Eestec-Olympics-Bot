@@ -111,3 +111,22 @@ def test_ensure_template_from_rules_when_prep_missing():
     art = {}
     main.ensure_action_template(art, {"rules": CLAIM})
     assert actionfmt.has_template(art["action_format"])
+
+
+def test_parse_bulls_and_cows_action_format():
+    rules = """ACTION FORMAT
+    guess <code>      exactly 4 characters from 0123456789
+The word "guess" is optional. Examples: "guess 0123".
+"""
+    f = actionfmt.parse_template(rules)
+    assert f is not None
+    assert f["template"] == "guess <code>"
+    assert f["placeholders"][0]["type"] == "code"
+    assert f["placeholders"][0]["length"] == 4
+    val = actionfmt.fill(f, set(), "")
+    assert val.startswith("guess ")
+    code = val.split()[1]
+    assert len(code) == 4
+    assert all(c in "0123456789" for c in code)
+    assert "exactly" not in val
+

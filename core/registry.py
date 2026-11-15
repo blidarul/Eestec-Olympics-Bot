@@ -134,6 +134,8 @@ def route(rules, artifacts, entries=None) -> Route:
             notes.append("search declined")
     elif sim:
         notes.append("simulator unverified" + (f" ({sim['reason']})" if sim.get("reason") else ""))
+    if "document" in str(rules).lower() or "reference document" in str(rules).lower():
+        return Route(generic, "document qa specialized engine -> core/generic", fam)
     if fam == "guardrails":
         s = _find(entries, rules, art, fam_dir="guardrails")
         if s:
@@ -145,6 +147,8 @@ def route(rules, artifacts, entries=None) -> Route:
             return Route(generic, "rubinstein bargaining specialized engine -> core/generic", fam)
         if "blind man" in str(rules).lower() or "blind_mans_bluff" in str(rules).lower():
             return Route(generic, "blind man's bluff specialized engine -> core/generic", fam)
+        if "document" in str(rules).lower() or "reference document" in str(rules).lower():
+            return Route(generic, "document qa specialized engine -> core/generic", fam)
         if fam == "matrix_simultaneous":
             is_blotto = "blotto" in str(rules).lower() or "battlefield" in str(rules).lower()
             is_pd = "prisoner" in str(rules).lower()

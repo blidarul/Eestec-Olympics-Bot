@@ -271,6 +271,7 @@ def wk_filter(text, forbidden):
 
 def on_turn(msg, wk):
     t0 = time.monotonic()
+    use_llm(msg)
     source, model_error, meta = "fallback", None, {}
     art = STATE["artifacts"]
     if art.get("cold_prep") and not art.get("cold_verified"):  # cold container: verify the simulator on the first real turn
