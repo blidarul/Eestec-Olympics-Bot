@@ -329,6 +329,58 @@ class Generic:
             except Exception:
                 traceback.print_exc()
 
+        # 12. Sealed-Bid Auction Fast-Path: Vickrey Truthful Bidding & First-Price Shading
+        is_auction = (
+            "auction" in rules_lower
+            or "sealed_auction" in str(state.game_id).lower()
+            or "sealed-bid" in rules_lower
+            or (legal and all(a.lower().strip().startswith("bid ") for a in legal[:min(3, len(legal))]))
+        ) and any(kw in rules_lower or kw in str(state.observation or "").lower() for kw in ("valuation", "bid", "pricing"))
+        if is_auction and legal:
+            try:
+                from optimization.sealed_auction import solve_sealed_auction
+                auc_act = solve_sealed_auction(legal, observation=str(state.observation or ""), rules=state.rules)
+                if auc_act:
+                    v_act = validate.validate(auc_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "sealed_auction_game_theoretic_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 13. Rubinstein Bargaining Fast-Path: Alternating Offers & Winning Split Thresholding
+        is_bargaining = (
+            "bargain" in rules_lower
+            or "bargaining" in str(state.game_id).lower()
+            or (legal and any(a.lower().strip().startswith("offer ") for a in legal[:min(3, len(legal))]))
+        ) and any(kw in rules_lower or kw in str(state.observation or "").lower() for kw in ("pot", "coins", "offer"))
+        if is_bargaining and legal:
+            try:
+                from optimization.bargaining import solve_bargaining
+                bar_act = solve_bargaining(legal, observation=str(state.observation or ""), rules=state.rules)
+                if bar_act:
+                    v_act = validate.validate(bar_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "rubinstein_bargaining_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 14. Blind Man's Bluff Fast-Path: Bayesian Odds & Pot Equity Engine
+        is_bmb = (
+            "blind man" in rules_lower
+            or "blind_mans_bluff" in str(state.game_id).lower()
+            or "forehead" in rules_lower
+        ) and any(kw in rules_lower or kw in str(state.observation or "").lower() for kw in ("forehead", "opponent's card"))
+        if is_bmb and legal:
+            try:
+                from optimization.blind_mans_bluff import solve_blind_mans_bluff
+                bmb_act = solve_blind_mans_bluff(legal, observation=str(state.observation or ""), rules=state.rules)
+                if bmb_act:
+                    v_act = validate.validate(bmb_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "blind_mans_bluff_bayesian_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
         llm = state.llm
         # Layer 2 assist: facts, certain moves (0 model calls), model-called tools
         t_assist = time.monotonic()

@@ -139,6 +139,12 @@ def route(rules, artifacts, entries=None) -> Route:
         if s:
             return Route(s, "guardrails family", fam)
     if fam in FAMILY_DIRS:
+        if "auction" in str(rules).lower():
+            return Route(generic, "sealed auction specialized engine -> core/generic", fam)
+        if "bargain" in str(rules).lower():
+            return Route(generic, "rubinstein bargaining specialized engine -> core/generic", fam)
+        if "blind man" in str(rules).lower() or "blind_mans_bluff" in str(rules).lower():
+            return Route(generic, "blind man's bluff specialized engine -> core/generic", fam)
         if fam == "matrix_simultaneous":
             is_blotto = "blotto" in str(rules).lower() or "battlefield" in str(rules).lower()
             is_pd = "prisoner" in str(rules).lower()
