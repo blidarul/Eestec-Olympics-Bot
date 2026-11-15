@@ -12,7 +12,7 @@ def _as_list(x):
     return [str(i) for i in x] if isinstance(x, (list, tuple)) else []
 
 
-def fallback_chat(artifacts: dict | None, forbidden: list | None = None) -> str:
+def fallback_chat(artifacts: dict | None, forbidden: list | None = None, family: str | None = None) -> str:
     bank = _as_list((artifacts or {}).get("chat_bank"))
     clean_terms = [str(term).strip().lower() for term in (forbidden or []) if str(term).strip()]
     if clean_terms:
@@ -21,10 +21,15 @@ def fallback_chat(artifacts: dict | None, forbidden: list | None = None) -> str:
         bank = [b for b in bank if b.strip()]
     if bank:
         return random.choice(bank)[:180]
-    for cand in ("Ready.", "Your move.", "Proceed.", "Standing by."):
-        if not any(term in cand.lower() for term in clean_terms):
-            return cand
-    return NEUTRAL_CHAT
+    fam = family or (artifacts or {}).get("family") or (artifacts or {}).get("prep_family")
+    try:
+        from core import chatsafe
+        return chatsafe._pick_safe_default(clean_terms, family=fam)
+    except Exception:
+        for cand in ("Ready.", "Your move.", "Proceed.", "Standing by."):
+            if not any(term in cand.lower() for term in clean_terms):
+                return cand
+        return NEUTRAL_CHAT
 
 
 def norm(s) -> str:

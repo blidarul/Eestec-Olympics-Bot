@@ -148,6 +148,30 @@ def cold_prep(msg, wk):
     return art if isinstance(art, dict) and art else {}
 
 
+def contextual_ready_line(msg, terms, art):
+    """Contextual transition lines across match games for Rule 6.1 continuity."""
+    try:
+        g_idx = int(msg.get("game_index", 1) or 1)
+        if g_idx <= 1:
+            return None
+        prev = g_idx - 1
+        mscore = msg.get("match_score") or {}
+        my_s = float(mscore.get("you", 0.0) or 0.0)
+        opp_s = float(mscore.get("opponent", 0.0) or 0.0)
+        if my_s == opp_s:
+            cand = f"Good game in game {prev}. Reset for game {g_idx}."
+        elif my_s > opp_s:
+            cand = f"On to game {g_idx}. Ready when you are."
+        else:
+            cand = f"Well played in game {prev}. Let's see how game {g_idx} goes."
+        from core import forbidden
+        if not forbidden.contains(cand, terms):
+            return cand
+    except Exception:
+        pass
+    return None
+
+
 def on_start(msg, wk):
     t0 = time.monotonic()
     use_llm(msg)
@@ -165,13 +189,16 @@ def on_start(msg, wk):
     ensure_forbidden_terms(STATE["artifacts"], msg)
     terms0 = STATE["artifacts"].get("forbidden_terms") or []
     chat = None
-    try:  # chat.pipeline.ready_line in the worker (pure code, filtered, never empty); main keeps the 2 s start clock
-        ans = wk.ask({"kind": "ready_line", "rules": msg.get("rules", ""), "forbidden": terms0,
-                      "seed": str(msg.get("match_id", ""))}, max(0.2, START_DEADLINE - 0.3 - (time.monotonic() - t0)))
-        line = ans.get("line") if isinstance(ans, dict) else None
-        chat = line if isinstance(line, str) and line.strip() else None
-    except Exception:
-        traceback.print_exc()
+    if int(msg.get("game_index", 1) or 1) > 1:
+        chat = contextual_ready_line(msg, terms0, STATE["artifacts"])
+    if chat is None:
+        try:  # chat.pipeline.ready_line in the worker (pure code, filtered, never empty); main keeps the 2 s start clock
+            ans = wk.ask({"kind": "ready_line", "rules": msg.get("rules", ""), "forbidden": terms0,
+                          "seed": str(msg.get("match_id", ""))}, max(0.2, START_DEADLINE - 0.3 - (time.monotonic() - t0)))
+            line = ans.get("line") if isinstance(ans, dict) else None
+            chat = line if isinstance(line, str) and line.strip() else None
+        except Exception:
+            traceback.print_exc()
     if chat is None:
         chat = fallback.fallback_chat(STATE["artifacts"]) if STATE["artifacts"].get("chat_bank") else START_CHAT
         chat = wk_filter(chat, terms0)
@@ -375,11 +402,15 @@ def on_end(msg):
     protocol.log(f"game {msg.get('game_index')} {msg.get('result')}: {msg.get('reason')}")  # never exit here
     try:
         g = STATE["game"]
+        opp = g.get("opponent") or g.get("opponent_id")
         memory.append_log(memory.game_dir(g.get("game_id", ""), g.get("rules", "")), {
             "t": time.time(), "match_id": g.get("match_id"), "game_index": msg.get("game_index"),
             "result": msg.get("result"), "reason": str(msg.get("reason", ""))[:200],
-            "opponent": g.get("opponent") or g.get("opponent_id"), "variant": (g.get("variant") or {}).get("label")
+            "opponent": opp, "variant": (g.get("variant") or {}).get("label")
             if isinstance(g.get("variant"), dict) else None})
+        raw_chat = msg.get("chat")
+        if opp and isinstance(raw_chat, list):
+            memory.update_opponent_chat_profile(opp, raw_chat)
     except Exception:
         traceback.print_exc()
 
