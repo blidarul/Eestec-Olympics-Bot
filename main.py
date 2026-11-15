@@ -14,7 +14,7 @@ PREP_DEADLINE = 540.0  # arena gives 600 s
 START_DEADLINE = 2.0  # arena gives 30 s (120 cold)
 COLD_PREP_CAP = 60.0  # code-only prep at a cold start (rule 4.3)
 TURN_DEADLINE = 12.0  # arena gives 20 s
-START_CHAT = "Ready when you are."
+START_CHAT = "Ready."
 
 STATE = {"llm": None, "game": {}, "artifacts": {}, "prep": None, "my_actions": [], "prev_obs": ""}
 
@@ -216,7 +216,7 @@ def clean_line(chat, terms, art=None):
     try:
         if not terms or not forbidden.contains(chat, terms):
             return chat
-        bank = [str(b) for b in ((art or {}).get("chat_bank") or [])] + [fallback.NEUTRAL_CHAT, START_CHAT, "Good luck.", "Go on."]
+        bank = [str(b) for b in ((art or {}).get("chat_bank") or [])] + [fallback.NEUTRAL_CHAT, START_CHAT, "Proceed.", "Standing by."]
         return next((b for b in bank if b.strip() and not forbidden.contains(b, terms)), fallback.NEUTRAL_CHAT)
     except Exception:
         return fallback.NEUTRAL_CHAT
@@ -268,7 +268,8 @@ def on_turn(msg, wk):
     # fallback FIRST, from the message alone
     use_fmt = not (isinstance(legal, list) and legal)  # legal_actions null/empty: the rules' template is the only guard
     fmt = actionfmt.from_artifacts(art, warning) if use_fmt else None
-    fb_action, fb_chat = fallback.fallback_decision(msg, art, previous, rules=rules_text)
+    opp_chat_now = chat_texts(msg.get("chat"))
+    fb_action, fb_chat = fallback.fallback_decision(msg, art, previous, rules=rules_text, opponent_chat=opp_chat_now)
     action, chat = fb_action, fb_chat
     try:
         limit = min(TURN_DEADLINE, 0.6 * float(msg.get("seconds") or 20))
@@ -337,8 +338,11 @@ def on_turn(msg, wk):
         action, source = safe, "fallback"
         meta["tool"] = "fallback"
         meta["reason"] = "action contained a forbidden term"
-    chat = wk_filter(protocol.clean_chat(chat), terms)
-    chat = clean_line(chat, terms, art)
+    from core import chatsafe
+    obs_priv = chatsafe.extract_private_tokens(obs) + chatsafe.extract_private_chunks(obs)
+    all_terms = list(dict.fromkeys(list(terms) + obs_priv))
+    chat = wk_filter(protocol.clean_chat(chat), all_terms)
+    chat = clean_line(chat, all_terms, art)
     protocol.send({"type": "action", "action": action, "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
     mine.append(action)
     STATE["prev_obs"] = obs

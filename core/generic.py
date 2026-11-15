@@ -56,8 +56,8 @@ class Generic:
         no_repeat = list(state.my_actions or []) if is_guess else []
         fb_a = fallback.fallback_action(legal, art, rejected, conservative=warned, avoid_also=no_repeat,
                                       observation=str(state.observation or ""), warning=state.warning if warned else None,
-                                      rules=state.rules)
-        fb_c = hooks.filter_out(fallback.fallback_chat(art), forbidden)
+                                      rules=state.rules, opponent_chat=state.opponent_chat)
+        fb_c = hooks.filter_out(fallback.fallback_chat(art, forbidden=forbidden), forbidden)
 
         # Specialized Solver Fast-Paths:
         # 1. Connect Four Fast-Path: Bitboard alpha-beta solver

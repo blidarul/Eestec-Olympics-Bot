@@ -33,14 +33,21 @@ def _generic_decide(state, last_resort):
 
 
 def resolve_turn_chat(d, state, art):
-    """Chat handling (Issues #41 & #42, Rule 6.4):
+    """Chat handling (Issues #41 & #42, Rule 6.4, 6.8):
     If strategy co-generated chat (bluff, deals, guardrails, model) or marked info["chat_final"]=True,
     preserve strategy chat. Only generate reply_line when d.chat is empty or a generic neutral/bank line.
     Passes decision, chat_full, and game to chat.reply_line.
+    Strictly filters out any speech rules, forbidden terms, and private observation secrets (passphrases, codes).
     """
+    from core import chatsafe, fallback
+    obs = str(getattr(state, "observation", "") or "")
+    priv_tokens = chatsafe.extract_private_tokens(obs)
+    priv_chunks = chatsafe.extract_private_chunks(obs)
+    base_forbidden = list(fallback._as_list(art.get("forbidden_terms")))
+    all_forbidden = list(dict.fromkeys(base_forbidden + priv_tokens + priv_chunks))
+
     info = dict(getattr(d, "info", None) or {})
-    from core import fallback
-    bank = set(fallback._as_list(art.get("chat_bank"))) | {fallback.NEUTRAL_CHAT, "Your move.", "Good game."}
+    bank = set(fallback._as_list(art.get("chat_bank"))) | {fallback.NEUTRAL_CHAT, "Your move.", "Good game.", "Ready."}
     cur_chat = str(d.chat).strip() if d.chat is not None else ""
     is_neutral_or_bank = (not cur_chat) or (d.chat in bank) or (cur_chat in bank)
     is_chat_final = bool(info.get("chat_final")) or (info.get("chat_override") is False)
@@ -53,7 +60,7 @@ def resolve_turn_chat(d, state, art):
                     state.opponent_chat,
                     state.turn,
                     state.rules,
-                    art.get("forbidden_terms"),
+                    all_forbidden,
                     art.get("family", ""),
                     decision=d,
                     chat_full=getattr(state, "chat_full", []),
@@ -64,7 +71,7 @@ def resolve_turn_chat(d, state, art):
                     state.opponent_chat,
                     state.turn,
                     state.rules,
-                    art.get("forbidden_terms"),
+                    all_forbidden,
                     art.get("family", ""),
                 )
             if r_line and isinstance(r_line, str) and r_line.strip():
@@ -73,16 +80,19 @@ def resolve_turn_chat(d, state, art):
             pass
 
     if not (d.chat and str(d.chat).strip()):
-        d.chat = fallback.fallback_chat(art)
+        d.chat = fallback.fallback_chat(art, forbidden=all_forbidden)
 
     # Safety filter: ensure final chat adheres to speech rules & forbidden terms
     try:
         import chat
-        filtered = chat.filter_out(d.chat, art.get("forbidden_terms"))
+        filtered = chat.filter_out(d.chat, all_forbidden)
         if filtered and isinstance(filtered, str) and filtered.strip():
             d.chat = filtered
     except Exception:
         pass
+
+    # Core safety filter: last wall
+    d.chat = chatsafe.filter_out(d.chat, all_forbidden)
     return d.chat
 
 

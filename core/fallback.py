@@ -12,10 +12,19 @@ def _as_list(x):
     return [str(i) for i in x] if isinstance(x, (list, tuple)) else []
 
 
-def fallback_chat(artifacts: dict | None) -> str:
+def fallback_chat(artifacts: dict | None, forbidden: list | None = None) -> str:
     bank = _as_list((artifacts or {}).get("chat_bank"))
-    bank = [b for b in bank if b.strip()]
-    return random.choice(bank)[:200] if bank else NEUTRAL_CHAT
+    clean_terms = [str(term).strip().lower() for term in (forbidden or []) if str(term).strip()]
+    if clean_terms:
+        bank = [b for b in bank if b.strip() and not any(term in b.lower() for term in clean_terms)]
+    else:
+        bank = [b for b in bank if b.strip()]
+    if bank:
+        return random.choice(bank)[:180]
+    for cand in ("Ready.", "Your move.", "Proceed.", "Standing by."):
+        if not any(term in cand.lower() for term in clean_terms):
+            return cand
+    return NEUTRAL_CHAT
 
 
 def norm(s) -> str:
@@ -127,7 +136,8 @@ def _extract_rules_examples(rules: str) -> list[str]:
 
 
 def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, conservative: bool = False,
-                    avoid_also=(), observation: str = "", warning: dict | None = None, rules: str = "") -> str:
+                    avoid_also=(), observation: str = "", warning: dict | None = None, rules: str = "",
+                    opponent_chat: list | None = None) -> str:
     """Always-legal move. `avoid_also`: actions already sent in this game (guessing games must not repeat)."""
     art = artifacts or {}
     policy = art.get("fallback_policy") if isinstance(art.get("fallback_policy"), dict) else {}
@@ -139,12 +149,30 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
     taken_norms = {norm(a) for a in avoid}
     if legal:
         legal = [str(a) for a in legal]
-        for p in prefer:
-            if p in legal and p not in avoid and norm(p) not in taken_norms:
-                return p
+        pref_ok = [p for p in prefer if p in legal and p not in avoid and norm(p) not in taken_norms]
+        if pref_ok:
+            if conservative:
+                return pref_ok[0]
+            if opponent_chat and len(pref_ok) > 1:
+                try:
+                    from chat.influence import pick_among_equal
+                    chosen, _ = pick_among_equal(pref_ok, opponent_chat)
+                    if chosen:
+                        return chosen
+                except Exception:
+                    pass
+            return pref_ok[0]
         ok = [a for a in legal if a not in avoid and norm(a) not in taken_norms]
         if conservative:  # most deterministic rung: first acceptable legal move
             return ok[0] if ok else legal[0]
+        if opponent_chat and ok and len(ok) > 1:
+            try:
+                from chat.influence import pick_among_equal
+                chosen, _ = pick_among_equal(ok, opponent_chat)
+                if chosen:
+                    return chosen
+            except Exception:
+                pass
         return random.choice(ok) if ok else legal[0]
     # 0. A template parsed from the rules (core/actionfmt.py): fill it with valid, unused parameters.
     #    When a template exists the generic lists below (pass, guess N, grid names) are never used (8.1, 9.4).
@@ -262,8 +290,17 @@ def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, 
     return "pass_alt"
 
 
-def fallback_decision(msg: dict, artifacts: dict | None, previous=(), rules: str = "") -> tuple[str, str]:
+def fallback_decision(msg: dict, artifacts: dict | None, previous=(), rules: str = "", opponent_chat: list | None = None) -> tuple[str, str]:
+    art = artifacts or {}
     warning = msg.get("warning") if isinstance(msg.get("warning"), dict) else {}
-    action = fallback_action(msg.get("legal_actions"), artifacts, warning.get("rejected"), avoid_also=previous,
-                             observation=str(msg.get("observation", "")), warning=warning, rules=rules)
-    return action, fallback_chat(artifacts)
+    if opponent_chat is not None:
+        opp_chat = opponent_chat
+    else:
+        raw_chat = msg.get("chat") if isinstance(msg, dict) else None
+        opp_chat = [c.get("text", "") for c in raw_chat if isinstance(c, dict) and c.get("from") == "opponent" and c.get("text")] if isinstance(raw_chat, list) else None
+    action = fallback_action(msg.get("legal_actions"), artifacts, warning.get("rejected"),
+                             conservative=bool(warning), avoid_also=previous,
+                             observation=str(msg.get("observation", "")), warning=warning, rules=rules,
+                             opponent_chat=opp_chat)
+    chat = fallback_chat(artifacts, forbidden=(artifacts or {}).get("forbidden_terms"))
+    return action, chat
