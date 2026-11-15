@@ -47,8 +47,16 @@ class Generic:
             return Decision(legal[0], hooks.filter_out(fallback.fallback_chat(art), forbidden), "strategy")
         warned = isinstance(state.warning, dict) and bool(state.warning)
         rules_lower = (state.rules or "").lower()
-        is_blotto_game = "blotto" in rules_lower or "battlefield" in rules_lower or "soldiers this round:" in str(state.observation or "").lower()
-        is_guess = not is_blotto_game and (
+        is_not_guess = (
+            "blotto" in rules_lower
+            or "battlefield" in rules_lower
+            or "soldiers this round:" in str(state.observation or "").lower()
+            or "auction" in rules_lower
+            or "bargain" in rules_lower
+            or "poker" in rules_lower
+            or "dice" in rules_lower
+        )
+        is_guess = not is_not_guess and (
             art.get("family") in ("guessing", "deduction", "word", "wordle")
             or art.get("prep_family") in ("guessing", "deduction", "word", "wordle")
             or (art.get("grammar") or {}).get("kind") in ("word", "numeric_range")
@@ -87,11 +95,14 @@ class Generic:
                         if v_act is not None:
                             return Decision(v_act, fb_c, "strategy", {"tool": "c4_opening_book", "action": v_act, "col": book_col})
 
+                m_dim = re.search(r"(\d+)\s*[xX]\s*(\d+)", state.observation or "")
+                c4_rows = int(m_dim.group(1)) if m_dim else int(gr.get("grid_rows") or 6)
+                c4_cols = int(m_dim.group(2)) if m_dim else int(gr.get("grid_cols") or 7)
                 from optimization.connect_four import solve_connect_four_from_obs
                 c4_res = solve_connect_four_from_obs(
                     state.observation,
-                    rows=int(gr.get("grid_rows") or 6),
-                    cols=int(gr.get("grid_cols") or 7),
+                    rows=c4_rows,
+                    cols=c4_cols,
                     connect_k=int(gr.get("parameters", {}).get("connect_k") or 4),
                     open_cols=[int(x) for x in re.findall(r"\d+", " ".join(legal))] if legal else None,
                     deadline=state.deadline - 1.0,
@@ -438,6 +449,39 @@ class Generic:
                     v_act = validate.validate(bc_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
                     if v_act is not None:
                         return Decision(v_act, fb_c, "strategy", {"tool": "bulls_and_cows_elimination_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 18. Liar's Dice Fast-Path: Exact Binomial Probabilistic Strategist
+        is_liars_dice = (
+            "liar's dice" in rules_lower
+            or "liars_dice" in str(state.game_id).lower()
+            or ("liar" in rules_lower and "dice" in rules_lower)
+        )
+        if is_liars_dice:
+            try:
+                from optimization.liars_dice import solve_liars_dice
+                ld_act = solve_liars_dice(str(state.observation or ""), rules_text=state.rules, legal_actions=legal)
+                if ld_act:
+                    v_act = validate.validate(ld_act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                    if v_act is not None:
+                        return Decision(v_act, fb_c, "strategy", {"tool": "liars_dice_probabilistic_optimal", "action": v_act})
+            except Exception:
+                traceback.print_exc()
+
+        # 19. Taboo Duel Fast-Path: Instant Zero-Latency Guardrail Safe Replies
+        is_taboo_duel = (
+            "taboo duel" in rules_lower
+            or "taboo_duel" in str(state.game_id).lower()
+            or ("banned words" in rules_lower and "forbidden" in rules_lower)
+        )
+        if is_taboo_duel:
+            try:
+                if legal:
+                    for act in legal:
+                        v_act = validate.validate(act, legal, art, rejected, no_repeat, observation=state.observation, rules=state.rules)
+                        if v_act is not None:
+                            return Decision(v_act, fb_c, "strategy", {"tool": "taboo_duel_instant_safe", "action": v_act})
             except Exception:
                 traceback.print_exc()
 

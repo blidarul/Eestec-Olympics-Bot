@@ -75,14 +75,19 @@ def solve_stag_hunt(legal: list[str] | None, observation: str = "", rules: str =
     # 1. Round 1: probe with stag
     if rnd == 1 or total_past == 0:
         target = "stag"
-    # 2. Invariant Lead Protection:
+    # 2. Immediate Tit-For-Tat defection punishment:
+    # If the opponent defected with 'hare' in the last round, retaliate with 'hare'!
+    # This prevents random bots or defectors from exploiting us.
+    elif data.get("last_opp_move") == "hare":
+        target = "hare"
+    # 3. Invariant Lead Protection:
     # If we have a lead and rounds remaining are few (<= 2), playing hare ensures opponent can never gain points on us
     elif my_score > opp_score and (max_rnd - rnd <= 2):
         target = "hare"
     # If we are far ahead (>= 4 points ahead), always play hare to lock the win
     elif my_score >= opp_score + 4:
         target = "hare"
-    # 3. Opponent Bayesian estimation
+    # 4. Opponent Bayesian estimation
     else:
         p_opp_stag = opp_stags / total_past
         threshold = 3.0 / stag_payoff  # 0.60 for 5, 0.50 for 6

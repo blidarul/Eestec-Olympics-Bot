@@ -21,6 +21,22 @@ def _fuzzy(norms, n):
     return best if score >= FUZZY else None
 
 
+def _is_repeat_allowed(artifacts, observation="", rules=""):
+    obs_lower = (observation or "").lower()
+    rules_lower = (rules or "").lower()
+    return (
+        _is_blotto(artifacts, observation=observation, rules=rules)
+        or "auction" in obs_lower
+        or "auction" in rules_lower
+        or "bargain" in obs_lower
+        or "bargain" in rules_lower
+        or "poker" in obs_lower
+        or "poker" in rules_lower
+        or "dice" in obs_lower
+        or "dice" in rules_lower
+    )
+
+
 def validate(action, legal, artifacts=None, rejected=None, previous=(), observation="", rules=""):
     """`previous`: actions already sent in this game that must not be repeated (guessing games): treated like rejected."""
     if not isinstance(action, str) or not action.strip():
@@ -44,7 +60,7 @@ def validate(action, legal, artifacts=None, rejected=None, previous=(), observat
     if rejected is not None:
         if str(out) == str(rejected) or _norm(out) == _norm(rejected):
             return None
-    if previous and not _is_blotto(artifacts, observation=observation, rules=rules):
+    if previous and not _is_repeat_allowed(artifacts, observation=observation, rules=rules):
         prev_norms = {_norm(p) for p in previous}
         if _norm(out) in prev_norms or str(out) in previous:
             return None

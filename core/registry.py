@@ -147,6 +147,8 @@ def route(rules, artifacts, entries=None) -> Route:
             return Route(generic, "rubinstein bargaining specialized engine -> core/generic", fam)
         if "blind man" in str(rules).lower() or "blind_mans_bluff" in str(rules).lower():
             return Route(generic, "blind man's bluff specialized engine -> core/generic", fam)
+        if "liar" in str(rules).lower() or "liars_dice" in str(rules).lower():
+            return Route(generic, "liar's dice specialized engine -> core/generic", fam)
         if "document" in str(rules).lower() or "reference document" in str(rules).lower():
             return Route(generic, "document qa specialized engine -> core/generic", fam)
         if fam == "matrix_simultaneous":

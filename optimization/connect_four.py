@@ -417,32 +417,55 @@ def solve_connect_four(
     return best_col_1, info
 
 
-def parse_grid_bits(obs_text: str, rows: int, cols: int, my_symbol: str = "X") -> tuple[int, int, int] | None:
-    """Parse text grid into (my_pieces_bitmask, opp_pieces_bitmask, full_mask)."""
+def parse_moves_from_obs(obs_text: str) -> list[int]:
+    """Extract list of dropped column integers (1-indexed) from observation history."""
+    m = re.search(r"Moves so far:\s*(.+)", obs_text, re.I)
+    if not m:
+        return []
+    return [int(x) for x in re.findall(r"drop\s+(\d+)", m.group(1), re.I)]
+
+
+def parse_grid_bits(
+    obs_text: str,
+    rows: int | None = None,
+    cols: int | None = None,
+    my_symbol: str = "X",
+) -> tuple[int, int, int, int, int] | None:
+    """Parse text grid into (my_pieces_bitmask, opp_pieces_bitmask, full_mask, actual_rows, actual_cols)."""
     lines = [l.strip() for l in obs_text.splitlines() if l.strip()]
-    grid_lines = []
+    candidate_lines = []
     for l in lines:
         cleaned = l.strip().strip("|").strip()
         tokens = cleaned.split()
-        if len(tokens) == cols and all(t in (".", "X", "O", "x", "o") for t in tokens):
-            grid_lines.append(tokens)
-    if len(grid_lines) != rows:
+        if tokens and all(t in (".", "X", "O", "x", "o") for t in tokens):
+            candidate_lines.append(tokens)
+
+    if not candidate_lines:
         return None
-    # grid_lines[0] is top row (rows - 1), grid_lines[-1] is bottom row (0)
-    grid_lines = list(reversed(grid_lines))
+
+    actual_rows = len(candidate_lines)
+    actual_cols = len(candidate_lines[0])
+    if not all(len(row) == actual_cols for row in candidate_lines):
+        return None
+
+    r = actual_rows
+    c = actual_cols
+
+    # grid_lines[0] is top row (r - 1), grid_lines[-1] is bottom row (0)
+    grid_lines = list(reversed(candidate_lines))
     my_p, mask = 0, 0
-    step = rows + 1
+    step = r + 1
     my_sym = my_symbol.upper()
-    for r in range(rows):
-        for c in range(cols):
-            token = grid_lines[r][c].upper()
+    for row_idx in range(r):
+        for col_idx in range(c):
+            token = grid_lines[row_idx][col_idx].upper()
             if token != ".":
-                bit = 1 << (c * step + r)
+                bit = 1 << (col_idx * step + row_idx)
                 mask |= bit
                 if token == my_sym:
                     my_p |= bit
     opp_p = mask ^ my_p
-    return my_p, opp_p, mask
+    return my_p, opp_p, mask, r, c
 
 
 def solve_connect_four_from_obs(
@@ -464,22 +487,54 @@ def solve_connect_four_from_obs(
     obs_lower = obs_text.lower()
     if "you are o" in obs_lower or "play o" in obs_lower or "seat 1" in obs_lower:
         my_sym = "O"
-    bits = parse_grid_bits(obs_text, rows, cols, my_sym)
-    if bits is None:
+    parsed = parse_grid_bits(obs_text, rows, cols, my_sym)
+    if parsed is None:
         return None
-    cur_p, opp_p, mask = bits
+    cur_p, opp_p, mask, act_rows, act_cols = parsed
+
+    # Fast path for empty board
+    if mask == 0:
+        center = (act_cols + 1) // 2
+        return center, {
+            "col": center,
+            "col_0": center - 1,
+            "action": f"drop {center}",
+            "score": 0,
+            "depth": 1,
+            "proven": False,
+            "ms": 0,
+            "engine": "center_opening",
+        }
+
+    # If observation provides move history, use C native engine solver
+    moves = parse_moves_from_obs(obs_text)
+    if moves:
+        try:
+            res = solve_connect_four(
+                moves,
+                rows=act_rows,
+                cols=act_cols,
+                connect_k=connect_k,
+                open_cols=open_cols,
+                deadline=deadline,
+                max_depth=max_depth,
+            )
+            if res is not None:
+                return res
+        except Exception:
+            pass
 
     if max_depth is None or max_depth == 12:
-        if rows * cols <= 30:
+        if act_rows * act_cols <= 30:
             effective_depth = 16
-        elif rows * cols <= 45:
+        elif act_rows * act_cols <= 45:
             effective_depth = 10
         else:
             effective_depth = 6
     else:
         effective_depth = max_depth
 
-    py_engine = PythonBitboardEngine(rows=rows, cols=cols, connect_k=connect_k)
+    py_engine = PythonBitboardEngine(rows=act_rows, cols=act_cols, connect_k=connect_k)
     best_col_1, score, depth_reached, proven = py_engine.solve_board(
         cur_p, opp_p, mask, one_indexed=True, max_depth=effective_depth, timeout=timeout
     )
