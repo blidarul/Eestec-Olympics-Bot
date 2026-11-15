@@ -68,6 +68,28 @@ def _grid_size(rules: str):
     return None
 
 
+def _options_from_rules(rules: str, name: str) -> list[str] | None:
+    """Extract explicit enumerated options for a placeholder (e.g. 'Where <spell_name> is one of: MEDITATE, FIREBALL...')."""
+    if not rules or not name:
+        return None
+    k = _name_key(name)
+    patterns = [
+        rf"(?:where\s+)?<{re.escape(name)}>\s+(?:is|can be|must be)?\s*(?:one of|any of)\s*:?\s*([A-Za-z0-9_,\s/|'-]+?)(?:\.|\n|\Z)",
+        rf"\b{re.escape(name)}\s+(?:is|can be|must be)?\s*(?:one of|any of)\s*:?\s*([A-Za-z0-9_,\s/|'-]+?)(?:\.|\n|\Z)",
+        rf"\b{re.escape(k)}\w*\s+(?:is|can be|must be)?\s*(?:one of|any of)\s*:?\s*([A-Za-z0-9_,\s/|'-]+?)(?:\.|\n|\Z)",
+        r"(?:one of|any of)\s*:?\s*([A-Za-z0-9_,\s/|'-]+?)(?:\.|\n|\Z)",
+    ]
+    for pat in patterns:
+        m = re.search(pat, rules, re.I)
+        if m:
+            raw_opts = m.group(1).strip()
+            parts = re.split(r"[,/|]|\bor\b", raw_opts)
+            cleaned = [p.strip(" \t\r\n\"'`.:;()[]{}") for p in parts if p.strip(" \t\r\n\"'`.:;()[]{}")]
+            if len(cleaned) >= 2:
+                return cleaned
+    return None
+
+
 def _split_template(tpl: str, rules: str) -> dict | None:
     """One template string -> {"template", "regex", "placeholders"}; None when it has no placeholder."""
     phs = list(PLACEHOLDER.finditer(tpl))
@@ -86,6 +108,12 @@ def _split_template(tpl: str, rules: str) -> dict | None:
             rng = (int(rm.group(1)), int(rm.group(2)))
             if kind not in ("text", "word"):
                 kind = "int"
+        options = _options_from_rules(rules, raw)
+        if options:
+            regex += r"(" + "|".join(re.escape(opt) for opt in options) + r")"
+            out.append({"name": raw, "type": "choice", "options": options, "min": None, "max": None})
+            pos = m.end()
+            continue
         if kind == "cell":
             grid = grid or _grid_size(rules)
             regex += r"([A-Za-z0-9_-]+)"
@@ -145,30 +173,34 @@ def _candidate_templates(rules: str) -> list[str]:
         line = re.sub(r"(?i)^.*?(?:action|move|answer|command|input)s?[ _-]*(?:format|syntax)\b", "", line, count=1)
         line = re.sub(r"^\s*(\([^)]*\))?\s*[:=-]?\s*", "", line)
         head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|example)\b", line)[0]
-        quoted = re.findall(r"[\"“`]([^\"”`\n]{1,80})[\"”`]", head)
-        found = [q.strip() for q in quoted if PLACEHOLDER.search(q)]
-        if not found and PLACEHOLDER.search(head):
-            bare = re.split(r"(?<=[>\w])\.(?:\s|$)", head)[0].strip(" .:\t")
-            bare = re.sub(r"(?i)^(?:exactly|strictly|only|write|send|use)\s*:?\s*", "", bare).strip(" \"'`")
-            if bare:
-                found = [bare]
-        for t in found:
-            if t not in cands:
-                cands.append(t)
+        segments = re.split(r"\s+\bOR\b\s+|\s*\|\s*", head)
+        for seg in segments:
+            quoted = re.findall(r"[\"“`]([^\"”`\n]{1,80})[\"”`]", seg)
+            found = [q.strip() for q in quoted if PLACEHOLDER.search(q)]
+            if not found and PLACEHOLDER.search(seg):
+                bare = re.split(r"(?<=[>\w])\.(?:\s|$)", seg)[0].strip(" .:\t")
+                bare = re.sub(r"(?i)^(?:exactly|strictly|only|write|send|use)\s*:?\s*", "", bare).strip(" \"'`")
+                if bare:
+                    found = [bare]
+            for t in found:
+                if t not in cands:
+                    cands.append(t)
     if not cands:
         sec = re.search(r"(?i:\b(?:action|move|answer|command|input)s?[ _-]*(?:format|syntax)\b)\s*:?\s*(.*?)(?=\n[A-Z][A-Z0-9\s_]{2,}(?:\([^\)]*\))?\s*\n|\Z)", rules, re.DOTALL)
         if sec:
             for line in sec.group(1).splitlines()[:6]:
                 head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|example|where)\b", line)[0]
-                quoted = re.findall(r"[\"“`]([^\"”`\n]{1,80})[\"”`]", head)
-                found = [q.strip() for q in quoted if PLACEHOLDER.search(q)]
-                if not found and PLACEHOLDER.search(head):
-                    m_ph = re.search(r"([A-Za-z0-9_-]+\s+<[^<>\n]+>|<[^<>\n]+>\s+[A-Za-z0-9_-]+|<[^<>\n]+>)", head)
-                    if m_ph:
-                        found = [m_ph.group(1).strip()]
-                for t in found:
-                    if t not in cands:
-                        cands.append(t)
+                segments = re.split(r"\s+\bOR\b\s+|\s*\|\s*", head)
+                for seg in segments:
+                    quoted = re.findall(r"[\"“`]([^\"”`\n]{1,80})[\"”`]", seg)
+                    found = [q.strip() for q in quoted if PLACEHOLDER.search(q)]
+                    if not found and PLACEHOLDER.search(seg):
+                        m_ph = re.search(r"((?:[A-Za-z0-9_-]+\s+)*<[^<>\n]+>(?:\s+<[^<>\n]+>|\s+[A-Za-z0-9_-]+)*)", seg)
+                        if m_ph:
+                            found = [m_ph.group(1).strip()]
+                    for t in found:
+                        if t not in cands:
+                            cands.append(t)
     return cands
 
 
@@ -330,6 +362,9 @@ def _value(ph: dict, rnd, attempt: int, t: dict) -> str:
         return "".join(alpha[:length])
     if k == "text":
         return TEXT_DEFAULT
+    if k == "choice" or ph.get("options"):
+        opts = ph.get("options") or []
+        return rnd.choice(opts) if opts else "1"
     if k == "word":
         w_len = ph.get("length") or 5
         from core.fallback import WORDS_BY_LENGTH

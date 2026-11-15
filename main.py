@@ -22,7 +22,10 @@ STATE = {"llm": None, "game": {}, "artifacts": {}, "prep": None, "my_actions": [
 def use_llm(msg):
     info = msg.get("llm")
     if isinstance(info, dict) and info.get("api_key"):
-        STATE["llm"] = info  # always the latest (7.2)
+        if not STATE.get("llm"):
+            STATE["llm"] = dict(info)
+        else:
+            STATE["llm"].update({k: v for k, v in info.items() if v})
 
 
 def chat_texts(chat):
@@ -279,11 +282,15 @@ def on_turn(msg, wk):
             traceback.print_exc()
             art["cold_verified"] = True
     legal = msg.get("legal_actions")
+    obs = str(msg.get("observation", ""))
+    if not legal and obs:
+        obs_acts = fallback.extract_obs_actions(obs)
+        if obs_acts:
+            legal = obs_acts
     warning = msg.get("warning") if isinstance(msg.get("warning"), dict) else None
     mine = STATE["my_actions"]
     if warning and mine:
         mine.pop()  # the turn is re-sent after a rejected answer: that answer does not count as played
-    obs = str(msg.get("observation", ""))
     rules_text = str(STATE["game"].get("rules", ""))
     is_blotto_game = "blotto" in rules_text.lower() or "battlefield" in rules_text.lower() or "soldiers this round:" in obs.lower()
     guessing = not is_blotto_game and (
@@ -370,6 +377,8 @@ def on_turn(msg, wk):
     all_terms = list(dict.fromkeys(list(terms) + obs_priv))
     chat = wk_filter(protocol.clean_chat(chat), all_terms)
     chat = clean_line(chat, all_terms, art)
+    if not action:
+        action = fb_action or (legal[0] if (isinstance(legal, list) and legal) else "pass")
     protocol.send({"type": "action", "action": action, "chat": protocol.clean_chat(chat) or fallback.NEUTRAL_CHAT})
     mine.append(action)
     STATE["prev_obs"] = obs

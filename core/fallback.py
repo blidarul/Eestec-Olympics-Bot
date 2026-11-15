@@ -140,10 +140,31 @@ def _extract_rules_examples(rules: str) -> list[str]:
     return [q.strip() for q in re.findall(r'["\']([^"\']+)["\']', sec) if q.strip() and len(q) < 40 and '<' not in q]
 
 
+def extract_obs_actions(observation: str) -> list[str]:
+    """Extract legal/available actions when observation explicitly lists them (e.g. 'Affordable spells: ...', 'Available moves: ...')."""
+    if not observation:
+        return []
+    patterns = [
+        r"(?i:affordable\s+spells|available\s+(?:spells|actions|moves)|legal\s+(?:actions|moves|choices))\s*:\s*([^\n\.]+)",
+    ]
+    for pat in patterns:
+        m = re.search(pat, observation)
+        if m:
+            raw = m.group(1).strip()
+            acts = [re.sub(r"""^["']|["']$""", "", a.strip()) for a in re.split(r"[,;]", raw) if a.strip()]
+            if acts:
+                return acts
+    return []
+
+
 def fallback_action(legal, artifacts: dict | None, rejected: str | None = None, conservative: bool = False,
                     avoid_also=(), observation: str = "", warning: dict | None = None, rules: str = "",
                     opponent_chat: list | None = None) -> str:
     """Always-legal move. `avoid_also`: actions already sent in this game (guessing games must not repeat)."""
+    if not legal and observation:
+        obs_acts = extract_obs_actions(observation)
+        if obs_acts:
+            legal = obs_acts
     art = artifacts or {}
     policy = art.get("fallback_policy") if isinstance(art.get("fallback_policy"), dict) else {}
     prefer = _as_list(policy.get("prefer"))
