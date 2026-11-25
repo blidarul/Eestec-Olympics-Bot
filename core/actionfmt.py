@@ -172,9 +172,10 @@ def _lit_regex(lit: str) -> str:
 def _candidate_templates(rules: str) -> list[str]:
     """Template strings from the lines that carry the ACTION FORMAT (quoted first, bare line otherwise)."""
     cands: list[str] = []
-    for m in re.finditer(r"(?im)^.*?\b(?:action|move|answer|command|input)s?[ _-]*(?:format|syntax)\b[^\n]*", rules):
+    header_pattern = r"(?im)^.*?\b(?:action|move|answer|command|input|turn)s?[ _-]*(?:format|syntax|options?|rules?)?\b[^\n]*"
+    for m in re.finditer(header_pattern, rules):
         line = m.group(0)
-        line = re.sub(r"(?i)^.*?(?:action|move|answer|command|input)s?[ _-]*(?:format|syntax)\b", "", line, count=1)
+        line = re.sub(r"(?i)^.*?(?:action|move|answer|command|input|turn)s?[ _-]*(?:format|syntax|options?|rules?)?\b", "", line, count=1)
         line = re.sub(r"^\s*(\([^)]*\))?\s*[:=-]?\s*", "", line)
         head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|examples?|example|where|with|such that)\b", line)[0]
         segments = re.split(r"\s+\bOR\b\s+|\s*\|\s*", head)
@@ -195,7 +196,7 @@ def _candidate_templates(rules: str) -> list[str]:
                 if t not in cands:
                     cands.append(t)
     if not cands:
-        sec = re.search(r"(?i:\b(?:action|move|answer|command|input)s?[ _-]*(?:format|syntax)\b)\s*:?\s*(.*?)(?=\n[A-Z][A-Z0-9\s_]{2,}(?:\([^\)]*\))?\s*\n|\Z)", rules, re.DOTALL)
+        sec = re.search(r"(?i:\b(?:action|move|answer|command|input|turn)s?[ _-]*(?:format|syntax|options?|rules?)?\b)\s*:?\s*(.*?)(?=\n[A-Z][A-Z0-9\s_]{2,}(?:\([^\)]*\))?\s*\n|\Z)", rules, re.DOTALL)
         if sec:
             for line in sec.group(1).splitlines()[:6]:
                 head = re.split(r"(?i)[,;]?\s*\b(?:e\.g\.|eg\.|for example|examples?|example|where|with|such that)\b", line)[0]
@@ -216,6 +217,20 @@ def _candidate_templates(rules: str) -> list[str]:
                     for t in found:
                         if t not in cands:
                             cands.append(t)
+    if not cands:
+        for m in re.finditer(r"[\"“`]([A-Za-z0-9_-]+(?:\s+<[^<>\n]{1,30}>)+)[\"”`]", rules):
+            cand = m.group(1).strip()
+            if cand not in cands:
+                cands.append(cand)
+    if not cands:
+        for line in rules.splitlines():
+            line_str = line.strip(" \t-*>")
+            if PLACEHOLDER.search(line_str):
+                m_cmd = re.match(r"^([A-Za-z0-9_-]+(?:\s+<[^<>\n]{1,30}>)+)$", line_str)
+                if m_cmd:
+                    cand = m_cmd.group(1).strip()
+                    if cand not in cands:
+                        cands.append(cand)
     return cands
 
 

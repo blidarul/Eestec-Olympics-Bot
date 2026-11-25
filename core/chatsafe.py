@@ -149,12 +149,26 @@ def _pick_safe_default(clean_terms, default=None, family=None) -> str:
 
 
 def filter_out(text, forbidden=None, default=None, family=None) -> str:
-    """Filter outgoing chat: ensure no forbidden terms, speech rule words, or observation secrets (6.8).
-    If a forbidden word is detected, replace with a clean, context-appropriate default rather than
-    mutilating the sentence into an awkward fragment.
-    """
+    """Filter outgoing chat: ensure no forbidden terms, speech rule words, or observation secrets (6.8)."""
     t = " ".join(str(text or "").split())
     clean_terms = [str(term).strip() for term in (forbidden or []) if str(term).strip()]
+    if not t:
+        return _pick_safe_default(clean_terms, default, family)
+
+    if family is not None or default is not None:
+        try:
+            from core import forbidden as fb_mod
+            if fb_mod.contains(t, clean_terms):
+                return _pick_safe_default(clean_terms, default, family)
+        except Exception:
+            pass
+        for term in clean_terms:
+            if _term_matches(t, term):
+                return _pick_safe_default(clean_terms, default, family)
+
+    for term in clean_terms:
+        t = re.sub(re.escape(term), "", t, flags=re.I)
+    t = " ".join(t.split())[:200].strip()
     if not t:
         return _pick_safe_default(clean_terms, default, family)
 
@@ -172,6 +186,5 @@ def filter_out(text, forbidden=None, default=None, family=None) -> str:
         if _term_matches(t, term):
             return _pick_safe_default(clean_terms, default, family)
 
-    t = t[:180].strip()
     return t or _pick_safe_default(clean_terms, default, family)
 

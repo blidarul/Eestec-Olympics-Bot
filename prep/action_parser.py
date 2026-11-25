@@ -392,7 +392,7 @@ def parse_action_grammar(rules_text: str, sample_turn: dict | None = None) -> Ac
             if re.search(rf"\b{name}[-\s]letters?\b", combined_text, re.IGNORECASE):
                 parsed_word_len = val
                 break
-    has_word_clues = bool(re.search(r"\b(?:wordle|secret word|hangman|anagram)\b", combined_text, re.IGNORECASE))
+    has_word_clues = bool(re.search(r"\b(?:wordle|secret(?:\s+\w+)?\s+word|word\s+game|guess\s+(?:the\s+)?word|hangman|anagram)\b", combined_text, re.IGNORECASE))
     guess_word_m = bool(re.search(r"guess\s+(?:a\s+)?word", action_section, re.IGNORECASE))
     word_game = (parsed_word_len is not None and has_word_clues) or (has_word_clues and (guess_word_m or "guess <word>" in action_section.lower()))
     if re.search(r"\b(?:bulls and cows|mastermind|secret code)\b", combined_text, re.IGNORECASE):

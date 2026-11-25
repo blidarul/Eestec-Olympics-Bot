@@ -145,3 +145,30 @@ ACTION FORMAT: "guess <WORD>" where WORD is a 5-letter uppercase word.
     assert w.isupper()
     assert len(w) == 5
 
+
+def test_flexible_header_and_rules_scan():
+    rules_actions = """BATTLE ARENA
+ACTIONS:
+claim <row>-<col>
+"""
+    f1 = actionfmt.parse_template(rules_actions)
+    assert f1 is not None
+    assert "claim" in f1["template"]
+
+    rules_commands = """NAVAL WAR
+### COMMANDS:
+fire <col><row>
+"""
+    f2 = actionfmt.parse_template(rules_commands)
+    assert f2 is not None
+    assert "fire" in f2["template"]
+
+    rules_inlined = """AUCTION HOUSE
+Players alternate bidding. Each round you must send "bid <amount>" to stay in.
+e.g. "bid 50".
+"""
+    f3 = actionfmt.parse_template(rules_inlined)
+    assert f3 is not None
+    assert f3["template"] == "bid <amount>"
+    assert f3["placeholders"][0]["type"] == "int"
+

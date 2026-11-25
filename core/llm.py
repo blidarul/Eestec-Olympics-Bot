@@ -11,8 +11,8 @@ import sys
 
 PRICE_IN = 0.10 / 1e6   # 7.5
 PRICE_OUT = 0.50 / 1e6
-SKIP_AFTER_FAILS = 3
-SKIP_TURNS = 1
+SKIP_AFTER_FAILS = 2
+SKIP_TURNS = 3
 BUDGET_GUARD = 0.40  # per match (9.3): above this, no more model calls
 
 

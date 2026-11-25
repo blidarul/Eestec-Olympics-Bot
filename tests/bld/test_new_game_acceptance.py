@@ -37,8 +37,6 @@ def test_new_game_has_no_fallback_without_llm():
         None,
         empty_art,
         avoid_also=["CAST MEDITATE"],  # Base example avoided
-        observation=obs,
-        rules=rules,
     )
     # The generic fallback will be a generic string (e.g. 'pass'), which is strictly illegal in ElementalDuel
     norm = game.normalize(0, fb)

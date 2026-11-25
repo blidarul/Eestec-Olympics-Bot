@@ -592,7 +592,7 @@ class Generic:
             from prep.playbook import format_playbook_for_prompt
             pb_txt = format_playbook_for_prompt(art["playbook_structured"])
             if pb_txt:
-                parts.append("[STRATEGIC PLAYBOOK GUIDELINES]\n" + pb_txt)
+                parts.append("[STRATEGIC PLAYBOOK GUIDELINES]\nStrategy Guidelines:\n" + pb_txt)
         elif art.get("playbook"):
             parts.append("[STRATEGIC PLAYBOOK]\n" + str(art["playbook"])[:1200])
         if art.get("tools_prompt"):
