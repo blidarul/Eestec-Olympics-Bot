@@ -154,6 +154,8 @@ def route(rules, artifacts, entries=None) -> Route:
         if "document" in str(rules).lower() or "reference document" in str(rules).lower():
             return Route(generic, "document qa specialized engine -> core/generic", fam)
         if fam == "matrix_simultaneous":
+            if "elemental" in str(rules).lower() or "spell" in str(rules).lower() or "mana" in str(rules).lower():
+                return Route(generic, "elemental duel specialized engine -> core/generic", fam)
             is_blotto = "blotto" in str(rules).lower() or "battlefield" in str(rules).lower()
             is_pd = "prisoner" in str(rules).lower()
             is_stag = "stag" in str(rules).lower()
@@ -161,10 +163,11 @@ def route(rules, artifacts, entries=None) -> Route:
                 return Route(generic, "prisoner's dilemma specialized engine -> core/generic", fam)
             if is_stag:
                 return Route(generic, "stag hunt specialized engine -> core/generic", fam)
-            gr_kind = (art.get("grammar") or {}).get("kind")
-            has_discrete = bool((art.get("grammar") or {}).get("discrete_actions")) or gr_kind == "discrete"
-            if not is_blotto and not has_discrete:
-                return Route(generic, "matrix_simultaneous without discrete matrix actions -> core/generic", fam)
+            if art.get("grammar"):
+                gr_kind = (art.get("grammar") or {}).get("kind")
+                has_discrete = bool((art.get("grammar") or {}).get("discrete_actions")) or gr_kind == "discrete"
+                if not is_blotto and not has_discrete:
+                    return Route(generic, "matrix_simultaneous without discrete matrix actions -> core/generic", fam)
         s = _find(entries, rules, art, fam_dir=FAMILY_DIRS[fam])
         if s:
             return Route(s, f"{fam} family -> strategies/{FAMILY_DIRS[fam]}", fam)
