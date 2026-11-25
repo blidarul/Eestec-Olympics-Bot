@@ -459,7 +459,7 @@ def main():
                 on_start(msg, wk)
             elif kind == "turn":
                 on_turn(msg, wk)
-            elif kind == "end":
+            elif kind in ("end", "match_over"):
                 on_end(msg)
             elif kind == "shutdown":
                 break
@@ -470,9 +470,12 @@ def main():
                 if kind == "prep":
                     protocol.send({"type": "ready"})
                 elif kind == "start":
-                    protocol.send({"type": "ready", "chat": START_CHAT})
+                    terms = forbidden.extract_terms(str(msg.get("rules", "")))
+                    chat = fallback.fallback_chat(None, forbidden=terms)
+                    protocol.send({"type": "ready", "chat": chat or START_CHAT})
                 elif kind == "turn":
-                    a, c = fallback.fallback_decision(msg, None)
+                    rules_txt = str((STATE.get("game") or {}).get("rules", ""))
+                    a, c = fallback.fallback_decision(msg, STATE.get("artifacts"), rules=rules_txt)
                     protocol.send({"type": "action", "action": a, "chat": c})
             except Exception:
                 traceback.print_exc()
